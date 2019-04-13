@@ -19,10 +19,11 @@ class TableComponent extends Component {
     });
     super(props);
     this.state = {
-      columns: (props.records || []).map(record => {
-        record.isVisible = true;
-        return record;
-      }),
+      columns:
+        (props.records || []).map(record => {
+          record.isVisible = true;
+          return record;
+        }) || [],
       bulkSelect: false,
       selectedRows: [],
       searchKeys: searchKeys,

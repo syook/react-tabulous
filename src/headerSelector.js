@@ -37,7 +37,7 @@ const HeaderSelector = props => {
                 : 'Hide fields'}
           </Button>
         }
-        content={<ColumnList columns={props.columns} toggleColumns={props.toggleColumns} />}
+        content={<ColumnList columns={props.columns || []} toggleColumns={props.toggleColumns} />}
         hoverable
         on="click"
         position="bottom center"

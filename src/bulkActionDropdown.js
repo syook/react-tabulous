@@ -5,7 +5,7 @@ const BulkActionList = props => {
   return (
     <>
       <Dropdown
-        text={`Bulk Action (${props.selectedRows.length} selected)`}
+        text={`Bulk Action (${(props.selectedRows || []).length} selected)`}
         button
         className="icon bulk-action right labeled">
         <Dropdown.Menu>

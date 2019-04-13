@@ -11,25 +11,15 @@ export const findStartPage = (numberOfPages, currentPage) => {
 };
 
 export const findPageRange = (numberOfPages, startPage) => {
-  return Array.from(
-    new Array(Math.min(3, numberOfPages)),
-    (x, i) => i + startPage
-  );
+  return Array.from(new Array(Math.min(3, numberOfPages)), (x, i) => i + startPage);
 };
 
-// currentdata in paginations
-export const findCurrentData = (
-  searchedDataFound,
-  currentPage,
-  rowsPerPage
-) => {
+// current data in pagination
+export const findCurrentData = (searchedDataFound, currentPage, rowsPerPage) => {
   if (searchedDataFound.length < rowsPerPage.value) {
     return searchedDataFound;
   }
-  return searchedDataFound.slice(
-    (currentPage - 1) * rowsPerPage.value,
-    currentPage * rowsPerPage.value
-  );
+  return searchedDataFound.slice((currentPage - 1) * rowsPerPage.value, currentPage * rowsPerPage.value);
 };
 
 // search for a query in an object

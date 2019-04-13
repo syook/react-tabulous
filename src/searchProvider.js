@@ -7,11 +7,11 @@ import { searchObj } from './utils';
 export const SearchContext = React.createContext();
 
 export default class SearchProvider extends PureComponent {
-  state = { searchText: '', data: this.props.data };
+  state = { searchText: '', data: this.props.data || [] };
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.data, this.props.data)) {
-      this.setState({ data: this.props.data });
+    if (this.props.data && !isEqual(prevProps.data, this.props.data)) {
+      this.setState({ data: this.props.data || [] });
     }
   }
 
@@ -25,7 +25,7 @@ export default class SearchProvider extends PureComponent {
     // if (searchText !== currentSearchText) return;
 
     let data = searchedObjects.filter(searchedObject => searchedObject);
-    this.setState({ data });
+    this.setState({ data: data || [] });
   };
 
   onChangeSearchText = e => {
@@ -39,14 +39,13 @@ export default class SearchProvider extends PureComponent {
   render() {
     return (
       <SearchContext.Provider value={{ ...this.state }}>
-        <div className='tableMenuHeader'>
+        <div className="tableMenuHeader">
           <span
             style={{
               fontSize: '24px',
               fontWeight: 'normal',
               color: 'rgb(102, 119, 151)',
-            }}
-          >
+            }}>
             {this.props.name}
           </span>
 
@@ -55,29 +54,29 @@ export default class SearchProvider extends PureComponent {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
-            }}
-          >
-            <div id='tableButtons' />
+            }}>
+            <div id="tableButtons" />
             <Input
-              iconPosition='left'
+              iconPosition="left"
               placeholder={this.props.placeholder || 'Search...'}
               style={styles.searchInputDiv}
-              onChange={this.onChangeSearchText}
-            >
-              <Icon name='search' />
-              <input className='searchInput' style={styles.searchInput} value={this.state.searchText} />
+              onChange={this.onChangeSearchText}>
+              <Icon name="search" />
+              <input className="searchInput" style={styles.searchInput} value={this.state.searchText} />
               <Icon
-                name='close'
+                name="close"
                 style={styles.closeIcon}
                 onClick={() => this.onChangeSearchText({ target: { value: '' } })}
               />
             </Input>
           </div>
         </div>
-        {!this.state.data.length && (
-          <div className='noRecordsDiv'>{!this.props.data.length ? this.props.noDataText : 'No Results Found'}</div>
+        {!(this.state.data || []).length && (
+          <div className="noRecordsDiv">
+            {!(this.props.data || []).length ? this.props.noDataText : 'No Results Found'}
+          </div>
         )}
-        {!!this.state.data.length && this.props.children}
+        {!!(this.state.data || []).length && this.props.children}
       </SearchContext.Provider>
     );
   }
