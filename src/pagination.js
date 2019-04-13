@@ -68,7 +68,7 @@ export default class PaginationProvider extends Component {
 
   componentDidUpdate(prevProps) {
     if ((this.props.data || []).length !== (prevProps.data || []).length) {
-      const rowCount = this.props.data.length
+      const rowCount = this.props.data.length;
       const numberOfPages = Math.ceil(rowCount / this.state.rowsPerPage.value);
       this.setState({ numberOfPages, rowCount });
     }
@@ -97,16 +97,18 @@ export default class PaginationProvider extends Component {
     data = findCurrentData(data, currentPage, rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage.value;
     return (
-      <PaginationContext.Provider value={{ ...this.state, data, startIndex }}>
-        {children}
-        <Pagination
-          {...this.props}
-          {...this.state}
-          pageRange={pageRange}
-          onSelectRowsPerPage={this.onSelectRowsPerPage}
-          setCurrentPage={this.setCurrentPage}
-        />
-      </PaginationContext.Provider>
+      <Table>
+        <PaginationContext.Provider value={{ ...this.state, data, startIndex }}>
+          {children}
+          <Pagination
+            {...this.props}
+            {...this.state}
+            pageRange={pageRange}
+            onSelectRowsPerPage={this.onSelectRowsPerPage}
+            setCurrentPage={this.setCurrentPage}
+          />
+        </PaginationContext.Provider>
+      </Table>
     );
   }
 }
@@ -122,13 +124,14 @@ const Pagination = props => {
   return (
     <Table.Footer>
       <Table.Row>
-        <Table.HeaderCell className="paginationFooter" colSpan={props.numberOfColumns}>
+        <Table.HeaderCell className='paginationFooter' colSpan={props.numberOfColumns}>
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-            }}>
+            }}
+          >
             <Label ribbon>
               Total {props.name} : {props.rowCount}
             </Label>
@@ -140,7 +143,8 @@ const Pagination = props => {
                     fontSize: '13px',
                     fontWeight: 'normal',
                     margin: '0px 15px',
-                  }}>
+                  }}
+                >
                   Show
                 </span>
                 <Select
@@ -154,9 +158,9 @@ const Pagination = props => {
                   isClearable={false}
                   isSearchable={false}
                 />
-                <Menu floated="right" pagination>
-                  <MenuItem icon="angle double left" page={1} onClick={handlePageClick(props)} />
-                  <MenuItem data-direction="LEFT" onClick={handleDirectionClick(props)} icon="angle left" />
+                <Menu floated='right' pagination>
+                  <MenuItem icon='angle double left' page={1} onClick={handlePageClick(props)} />
+                  <MenuItem data-direction='LEFT' onClick={handleDirectionClick(props)} icon='angle left' />
                   {props.pageRange.map((pageIndex, index) => (
                     <MenuItem
                       key={`table-footer-${index}`}
@@ -164,11 +168,11 @@ const Pagination = props => {
                       page={pageIndex}
                       onClick={handlePageClick(props)}
                       active={pageIndex === props.currentPage}
-                      as="a"
+                      as='a'
                     />
                   ))}
-                  <MenuItem data-direction="RIGHT" onClick={handleDirectionClick(props)} icon="angle right" />
-                  <MenuItem icon="angle double right" page={props.numberOfPages} onClick={handlePageClick(props)} />
+                  <MenuItem data-direction='RIGHT' onClick={handleDirectionClick(props)} icon='angle right' />
+                  <MenuItem icon='angle double right' page={props.numberOfPages} onClick={handlePageClick(props)} />
                 </Menu>
               </div>
             )}
