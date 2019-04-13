@@ -31,14 +31,22 @@ tableConfig = [
 
 actionConfig = [
   {
-    action: 'Edit',
-    show: row => true,
+    action: 'Show',
+    show: _row => true,
     function: this.onShow,
+    icon: 'eye',
+  },
+  {
+    action: 'Edit',
+    show: _row => true,
+    function: this.onShow,
+    icon: 'pencil',
   },
   {
     action: 'Delete',
-    show: row => true,
-    function: this.onShow,
+    show: _row => true,
+    function: this.onDelete,
+    icon: 'trash',
   },
 ];
 

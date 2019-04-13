@@ -92,12 +92,12 @@ export default class PaginationProvider extends Component {
 
   render() {
     let { children, data } = this.props;
-    let { currentPage, rowsPerPage } = this.state;
+    let { currentPage = 1, rowsPerPage = 5 } = this.state;
     let pageRange = findPageRange({ ...this.state });
     data = findCurrentData(data, currentPage, rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage.value;
     return (
-      <Table>
+      <Table sortable celled padded className="tableStyle left aligned">
         <PaginationContext.Provider value={{ ...this.state, data, startIndex }}>
           {children}
           <Pagination
@@ -124,14 +124,13 @@ const Pagination = props => {
   return (
     <Table.Footer>
       <Table.Row>
-        <Table.HeaderCell className='paginationFooter' colSpan={props.numberOfColumns}>
+        <Table.HeaderCell className="paginationFooter" colSpan={props.numberOfColumns}>
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-            }}
-          >
+            }}>
             <Label ribbon>
               Total {props.name} : {props.rowCount}
             </Label>
@@ -143,8 +142,7 @@ const Pagination = props => {
                     fontSize: '13px',
                     fontWeight: 'normal',
                     margin: '0px 15px',
-                  }}
-                >
+                  }}>
                   Show
                 </span>
                 <Select
@@ -158,9 +156,9 @@ const Pagination = props => {
                   isClearable={false}
                   isSearchable={false}
                 />
-                <Menu floated='right' pagination>
-                  <MenuItem icon='angle double left' page={1} onClick={handlePageClick(props)} />
-                  <MenuItem data-direction='LEFT' onClick={handleDirectionClick(props)} icon='angle left' />
+                <Menu floated="right" pagination>
+                  <MenuItem icon="angle double left" page={1} onClick={handlePageClick(props)} />
+                  <MenuItem data-direction="LEFT" onClick={handleDirectionClick(props)} icon="angle left" />
                   {props.pageRange.map((pageIndex, index) => (
                     <MenuItem
                       key={`table-footer-${index}`}
@@ -168,11 +166,11 @@ const Pagination = props => {
                       page={pageIndex}
                       onClick={handlePageClick(props)}
                       active={pageIndex === props.currentPage}
-                      as='a'
+                      as="a"
                     />
                   ))}
-                  <MenuItem data-direction='RIGHT' onClick={handleDirectionClick(props)} icon='angle right' />
-                  <MenuItem icon='angle double right' page={props.numberOfPages} onClick={handlePageClick(props)} />
+                  <MenuItem data-direction="RIGHT" onClick={handleDirectionClick(props)} icon="angle right" />
+                  <MenuItem icon="angle double right" page={props.numberOfPages} onClick={handlePageClick(props)} />
                 </Menu>
               </div>
             )}

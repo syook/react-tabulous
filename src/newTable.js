@@ -12,25 +12,25 @@ import { SortContext } from './sort';
 
 class TableComponent extends Component {
   constructor(props) {
-    const searchkeys = {};
-    props.records.map(r => {
-      if (r.isSearchable) searchkeys[r.column] = true;
+    const searchKeys = {};
+    (props.records || []).map(r => {
+      if (r.isSearchable) searchKeys[r.column] = true;
       return r;
     });
     super(props);
     this.state = {
-      columns: props.records.map(record => {
+      columns: (props.records || []).map(record => {
         record.isVisible = true;
         return record;
       }),
       bulkSelect: false,
       selectedRows: [],
-      searchKeys: searchkeys,
+      searchKeys: searchKeys,
     };
   }
 
   enableBulkSelect = ({ checked }) => {
-    const selectedRows = checked ? this.props.data.map(i => i._id) : [];
+    const selectedRows = checked ? this.props.data.map(i => i['_id'] || i['id']) : [];
     this.setState({ bulkSelect: checked, selectedRows });
   };
 
@@ -51,7 +51,7 @@ class TableComponent extends Component {
 
   render() {
     const props = this.props;
-    const hasBulkActions = props.bulkActions.length;
+    const hasBulkActions = (props.bulkActions || []).length;
     const visibleColumns = this.state.columns.filter(d => d.isVisible);
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
     return (
@@ -66,8 +66,9 @@ class TableComponent extends Component {
                   toggleColumns={this.toggleColumns}
                 />
                 {hasBulkActions && this.state.selectedRows.length ? (
-                  <BulkActionList bulkActions={this.props.bulkActions} selectedRows={this.state.selectedRows} />
+                  <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
                 ) : null}
+                <div id="custom-data-holder" style={{ textAlign: 'right' }} />
                 <SortProvider data={searchProps.data || []}>
                   <SortContext.Consumer>
                     {sortProps =>
@@ -80,6 +81,7 @@ class TableComponent extends Component {
                                   <Table.Header>
                                     <Table.Row>
                                       <Table.HeaderCell>
+                                        {' '}
                                         {hasBulkActions ? (
                                           <Checkbox
                                             checked={this.state.bulkSelect}
@@ -143,18 +145,21 @@ const _TableHeader = ({ column, index, sortProps }) => {
   const isDescendingDisabled =
     sortProps.column && sortProps.column === column.column && sortProps.direction === 'descending';
   return (
-    <Table.HeaderCell key={`table-header-cell-${index}`}>
+    <Table.HeaderCell
+      key={`table-header-cell-${index}`}
+      sorted={column.column === sortProps.column ? sortProps.direction : null}
+      onClick={sortProps.handleSort(column.column, sortProps.direction === 'ascending' ? 'descending' : 'ascending')}>
       <Icon
-        name='arrow up'
+        name="arrow up"
         color={isAscendingDisabled ? 'blue' : 'grey'}
-        disabled={isAscendingDisabled}
-        onClick={sortProps.handleSort(column.column, 'ascending')}
+        // disabled={isAscendingDisabled}
+        // onClick={sortProps.handleSort(column.column, 'ascending')}
       />
       <Icon
-        name='arrow down'
+        name="arrow down"
         color={isDescendingDisabled ? 'blue' : 'grey'}
-        disabled={isDescendingDisabled}
-        onClick={sortProps.handleSort(column.column, 'descending')}
+        // disabled={isDescendingDisabled}
+        // onClick={sortProps.handleSort(column.column, 'descending')}
       />
       {column.heading}
     </Table.HeaderCell>

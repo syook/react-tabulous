@@ -17,7 +17,7 @@ export default class SortProvider extends Component {
     }
   }
 
-  handleSort = (clickedColumn, clickedDirection) => () => {
+  handleSort = (clickedColumn, clickedDirection = 'ascending') => () => {
     if (!clickedColumn) return;
     const { column, data, direction } = this.state;
 
