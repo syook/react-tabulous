@@ -23,7 +23,7 @@ const TableActions = props => {
               icon
               // color={findColor(action.action)} // Parent need to pas color, if needed to display
               onClick={() => action.function([props.ids])}
-              size="medium">
+              size="small">
               <Icon name={action.icon} /> {action.action}
             </Button>
           ) : null

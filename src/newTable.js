@@ -25,6 +25,7 @@ class TableComponent extends Component {
           return record;
         }) || [],
       bulkSelect: false,
+      indeterminateSelect: false,
       selectedRows: [],
       searchKeys: searchKeys,
     };
@@ -32,15 +33,24 @@ class TableComponent extends Component {
 
   enableBulkSelect = ({ checked }) => {
     const selectedRows = checked ? this.props.data.map(i => i['_id'] || i['id']) : [];
-    this.setState({ bulkSelect: checked, selectedRows });
+    this.setState({ bulkSelect: checked, selectedRows, indeterminateSelect: false });
   };
 
-  updateSelectedRows = ({ checked }, row_id) => {
+  updateSelectedRows = ({ checked }, row_id, rowCount) => {
     let selectedRows = this.state.selectedRows;
     const rowIndex = selectedRows.indexOf(row_id);
     if (rowIndex > -1 && !checked) selectedRows.splice(rowIndex, 1);
     if (rowIndex === -1) selectedRows.push(row_id);
-    this.setState({ selectedRows });
+
+    let bulkSelect = false;
+    let indeterminateSelect = false;
+    const selectedRowsLength = selectedRows.length;
+    if (selectedRowsLength && selectedRowsLength !== rowCount) {
+      indeterminateSelect = true;
+    } else if (selectedRowsLength === rowCount) {
+      bulkSelect = true;
+    }
+    this.setState({ selectedRows, bulkSelect, indeterminateSelect });
   };
 
   toggleColumns = (column, { checked }) => {
@@ -82,14 +92,14 @@ class TableComponent extends Component {
                                   <Table.Header>
                                     <Table.Row>
                                       <Table.HeaderCell>
-                                        {' '}
+                                        Sl.no{' '}
                                         {hasBulkActions ? (
                                           <Checkbox
                                             checked={this.state.bulkSelect}
+                                            indeterminate={this.state.indeterminateSelect}
                                             onChange={(e, { checked }) => this.enableBulkSelect({ checked })}
                                           />
                                         ) : null}{' '}
-                                        Sl.no
                                       </Table.HeaderCell>
                                       {visibleColumns.map((column, index) =>
                                         _TableHeader({ column, index, sortProps })
@@ -106,7 +116,7 @@ class TableComponent extends Component {
                                             <Checkbox
                                               checked={this.state.selectedRows.includes(row._id)}
                                               onChange={(e, { checked }) =>
-                                                this.updateSelectedRows({ checked }, row._id)
+                                                this.updateSelectedRows({ checked }, row._id, paginationProps.rowCount)
                                               }
                                             />
                                           ) : null}
