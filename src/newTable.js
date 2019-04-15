@@ -159,7 +159,11 @@ const _TableHeader = ({ column, index, sortProps }) => {
     <Table.HeaderCell
       key={`table-header-cell-${index}`}
       sorted={column.column === sortProps.column ? sortProps.direction : null}
-      onClick={sortProps.handleSort(column.column, sortProps.direction === 'ascending' ? 'descending' : 'ascending')}>
+      onClick={sortProps.handleSort(
+        column.column,
+        sortProps.direction === 'ascending' ? 'descending' : 'ascending',
+        column.type
+      )}>
       <Icon
         name="arrow up"
         color={isAscendingDisabled ? 'blue' : 'grey'}

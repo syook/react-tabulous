@@ -9,6 +9,7 @@ tableConfig = [
   {
     heading: 'Name',
     column: 'name',
+    type: 'String',
     cell: ({ row }) => row.name,
     isSortable: true,
     isSearchable: true,
@@ -16,6 +17,7 @@ tableConfig = [
   {
     heading: 'Description',
     column: 'description',
+    type: 'String',
     cell: ({ row }) => row.description,
     isSortable: true,
     isSearchable: true,
@@ -23,7 +25,16 @@ tableConfig = [
   {
     heading: 'Availability',
     column: 'availability',
-    cell: ({ row }) => row.availability ? 'true' : 'false',
+    type: 'Boolean'
+    cell: ({ row }) => row.availability ? 'Yes' : 'No',
+    isSortable: true,
+    isSearchable: true,
+  },
+  {
+    heading: 'Created at',
+    column: 'createdAt',
+    type: 'Date'
+    cell: ({ row }) => row.createdAt,
     isSortable: true,
     isSearchable: true,
   }
@@ -32,15 +43,15 @@ tableConfig = [
 actionConfig = [
   {
     action: 'Show',
-    show: _row => true,
     function: this.onShow,
     icon: 'eye',
+    show: _row => true,
   },
   {
     action: 'Edit',
-    show: _row => true,
     function: this.onShow,
     icon: 'pencil',
+    show: _row => true,
   },
   {
     action: 'Delete',
@@ -53,13 +64,13 @@ actionConfig = [
 ...
 
 <Table
-  data={this.props.objects}
-  records={tableConfig}
-  mandatoryFields={['Name']}
-  includeAction={true}
   actionConfig={actionConfig}
   bulkActions={[{ action: 'delete', function: onDelete }]}
-  name='MenuItems'
+  data={this.props.objects}
+  includeAction={true}
+  mandatoryFields={['Name']}
+  name='Menu Items'
+  records={tableConfig}
 />
 
 ...
