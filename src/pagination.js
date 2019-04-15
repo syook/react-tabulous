@@ -68,15 +68,16 @@ export default class PaginationProvider extends Component {
 
   componentDidUpdate(prevProps) {
     if ((this.props.data || []).length !== (prevProps.data || []).length) {
-      const rowCount = this.props.data.length
-      const numberOfPages = Math.ceil(rowCount / this.state.rowsPerPage.value);
-      this.setState({ numberOfPages, rowCount });
+      const rowCount = this.props.data.length;
+      let { currentPage = 1, rowsPerPage = { value: 10, label: '10 Items' } } = this.state;
+      const numberOfPages = Math.ceil(rowCount / rowsPerPage.value);
+      if (numberOfPages < currentPage) currentPage = numberOfPages;
+
+      this.setState({ currentPage, numberOfPages, rowCount });
     }
   }
 
-  setCurrentPage = currentPage => {
-    this.setState({ currentPage });
-  };
+  setCurrentPage = currentPage => this.setState({ currentPage });
 
   onSelectRowsPerPage = (selectedRowsPerPage = { value: 10, label: '10 Items' }) => {
     let { currentPage, rowCount } = this.state;
@@ -92,21 +93,23 @@ export default class PaginationProvider extends Component {
 
   render() {
     let { children, data } = this.props;
-    let { currentPage, rowsPerPage } = this.state;
+    let { currentPage = 1, rowsPerPage = 5 } = this.state;
     let pageRange = findPageRange({ ...this.state });
     data = findCurrentData(data, currentPage, rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage.value;
     return (
-      <PaginationContext.Provider value={{ ...this.state, data, startIndex }}>
-        {children}
-        <Pagination
-          {...this.props}
-          {...this.state}
-          pageRange={pageRange}
-          onSelectRowsPerPage={this.onSelectRowsPerPage}
-          setCurrentPage={this.setCurrentPage}
-        />
-      </PaginationContext.Provider>
+      <Table sortable celled padded className="tableStyle left aligned">
+        <PaginationContext.Provider value={{ ...this.state, data, startIndex }}>
+          {children}
+          <Pagination
+            {...this.props}
+            {...this.state}
+            pageRange={pageRange}
+            onSelectRowsPerPage={this.onSelectRowsPerPage}
+            setCurrentPage={this.setCurrentPage}
+          />
+        </PaginationContext.Provider>
+      </Table>
     );
   }
 }

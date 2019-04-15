@@ -2,16 +2,16 @@ import React, { PureComponent } from 'react';
 import isEqual from 'lodash/isEqual';
 import { Icon, Input } from 'semantic-ui-react';
 
-import { searchObj } from '../containers/utils';
+import { searchObj } from './utils';
 
 export const SearchContext = React.createContext();
 
 export default class SearchProvider extends PureComponent {
-  state = { searchText: '', data: this.props.data };
+  state = { searchText: '', data: this.props.data || [] };
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.data, this.props.data)) {
-      this.setState({ data: this.props.data });
+    if (this.props.data && !isEqual(prevProps.data, this.props.data)) {
+      this.setState({ data: this.props.data || [] });
     }
   }
 
@@ -25,7 +25,7 @@ export default class SearchProvider extends PureComponent {
     // if (searchText !== currentSearchText) return;
 
     let data = searchedObjects.filter(searchedObject => searchedObject);
-    this.setState({ data });
+    this.setState({ data: data || [] });
   };
 
   onChangeSearchText = e => {
@@ -71,10 +71,12 @@ export default class SearchProvider extends PureComponent {
             </Input>
           </div>
         </div>
-        {!this.state.data.length && (
-          <div className="noRecordsDiv">{!this.props.data.length ? this.props.noDataText : 'No Results Found'}</div>
+        {!(this.state.data || []).length && (
+          <div className="noRecordsDiv">
+            {!(this.props.data || []).length ? this.props.noDataText : 'No Results Found'}
+          </div>
         )}
-        {!!this.state.data.length && this.props.children}
+        {!!(this.state.data || []).length && this.props.children}
       </SearchContext.Provider>
     );
   }

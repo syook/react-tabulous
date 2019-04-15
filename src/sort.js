@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 
 import sortBy from 'lodash/sortBy';
+import isEqual from 'lodash/isEqual';
 
 export const SortContext = React.createContext();
 
 export default class SortProvider extends Component {
   state = {
     column: null,
-    data: [...(this.props || {}).data],
+    data: [...(this.props.data || [])],
     direction: null,
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.data !== prevProps.data) {
-      this.setState({ data: [...this.props.data] });
+    if (this.props.data && !isEqual(this.props.data, prevProps.data)) {
+      this.setState({ data: [...(this.props.data || [])] });
     }
   }
 
-  handleSort = (clickedColumn, clickedDirection) => () => {
+  handleSort = (clickedColumn, clickedDirection = 'ascending') => () => {
     if (!clickedColumn) return;
     const { column, data, direction } = this.state;
 
