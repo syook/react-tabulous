@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Table, Label, Menu, Checkbox, Icon } from 'semantic-ui-react';
-import TableActions from './tableActions';
+import { Checkbox, Icon, Label, Menu, Table } from 'semantic-ui-react';
+
 import BulkActionList from './bulkActionDropdown';
 import HeaderSelector from './headerSelector';
-import SearchProvider from './searchProvider';
-import { SearchContext } from './searchProvider';
 import PaginationProvider from './pagination';
-import { PaginationContext } from './pagination';
+import SearchProvider from './searchProvider';
 import SortProvider from './sort';
+import TableActions from './tableActions';
+import { PaginationContext } from './pagination';
+import { SearchContext } from './searchProvider';
 import { SortContext } from './sort';
 
 class TableComponent extends Component {
@@ -158,7 +159,7 @@ const _TableHeader = ({ column, index, sortProps }) => {
   return (
     <Table.HeaderCell
       key={`table-header-cell-${index}`}
-      sorted={column.column === sortProps.column ? sortProps.direction : null}
+      // sorted={column.column === sortProps.column ? sortProps.direction : null}
       onClick={sortProps.handleSort(
         column.column,
         sortProps.direction === 'ascending' ? 'descending' : 'ascending',
