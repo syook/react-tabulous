@@ -13,6 +13,7 @@ tableConfig = [
     cell: ({ row }) => row.name,
     isSortable: true,
     isSearchable: true,
+    isFilterable: true,
   },
   {
     heading: 'Description',

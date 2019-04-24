@@ -7,11 +7,11 @@ import { searchObj } from './utils';
 export const SearchContext = React.createContext();
 
 export default class SearchProvider extends PureComponent {
-  state = { searchText: '', data: this.props.data || [] };
+  state = { searchText: '', data: this.props.data };
 
   componentDidUpdate(prevProps) {
-    if (this.props.data && !isEqual(prevProps.data, this.props.data)) {
-      this.setState({ data: this.props.data || [] });
+    if (!isEqual(prevProps.data, this.props.data)) {
+      this.setState({ data: this.props.data });
     }
   }
 
@@ -25,7 +25,7 @@ export default class SearchProvider extends PureComponent {
     // if (searchText !== currentSearchText) return;
 
     let data = searchedObjects.filter(searchedObject => searchedObject);
-    this.setState({ data: data || [] });
+    this.setState({ data });
   };
 
   onChangeSearchText = e => {
@@ -71,12 +71,10 @@ export default class SearchProvider extends PureComponent {
             </Input>
           </div>
         </div>
-        {!(this.state.data || []).length && (
-          <div className="noRecordsDiv">
-            {!(this.props.data || []).length ? this.props.noDataText : 'No Results Found'}
-          </div>
+        {!this.state.data.length && (
+          <div className="noRecordsDiv">{!this.props.data.length ? this.props.noDataText : 'No Results Found'}</div>
         )}
-        {!!(this.state.data || []).length && this.props.children}
+        {!!this.state.data.length && this.props.children}
       </SearchContext.Provider>
     );
   }

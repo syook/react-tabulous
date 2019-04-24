@@ -1,15 +1,19 @@
+import { Checkbox, Icon, Label, Table } from 'semantic-ui-react';
 import React, { Component } from 'react';
-import { Checkbox, Icon, Label, Menu, Table } from 'semantic-ui-react';
 
 import BulkActionList from './bulkActionDropdown';
 import HeaderSelector from './headerSelector';
+import { PaginationContext } from './pagination';
 import PaginationProvider from './pagination';
+import { SearchContext } from './searchProvider';
 import SearchProvider from './searchProvider';
+
+import { FilterContext } from './filterProvider';
+import FilterProvider from './filterProvider';
+
+import { SortContext } from './sort';
 import SortProvider from './sort';
 import TableActions from './tableActions';
-import { PaginationContext } from './pagination';
-import { SearchContext } from './searchProvider';
-import { SortContext } from './sort';
 
 class TableComponent extends Component {
   constructor(props) {
@@ -65,12 +69,15 @@ class TableComponent extends Component {
     const props = this.props;
     const hasBulkActions = (props.bulkActions || []).length;
     const visibleColumns = this.state.columns.filter(d => d.isVisible);
+    const filterableColumns = visibleColumns.filter(d => d.isFilterable);
+
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
           {searchProps =>
-            !!searchProps.data.length && (
+            console.log(searchProps) ||
+            (!!searchProps.data.length && (
               <div>
                 <HeaderSelector
                   hiddenColumnCount={hiddenColumnCount}
@@ -80,70 +87,87 @@ class TableComponent extends Component {
                 {hasBulkActions && this.state.selectedRows.length ? (
                   <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
                 ) : null}
-                <div id="custom-data-holder" style={{ textAlign: 'right' }} />
-                <SortProvider data={searchProps.data || []}>
-                  <SortContext.Consumer>
-                    {sortProps =>
-                      !!sortProps.data.length && (
-                        <PaginationProvider {...props} data={sortProps.data || []}>
-                          <PaginationContext.Consumer>
-                            {paginationProps =>
-                              !!paginationProps.data.length && (
-                                <>
-                                  <Table.Header>
-                                    <Table.Row>
-                                      <Table.HeaderCell>
-                                        Sl.no{' '}
-                                        {hasBulkActions ? (
-                                          <Checkbox
-                                            checked={this.state.bulkSelect}
-                                            indeterminate={this.state.indeterminateSelect}
-                                            onChange={(e, { checked }) => this.enableBulkSelect({ checked })}
-                                          />
-                                        ) : null}{' '}
-                                      </Table.HeaderCell>
-                                      {visibleColumns.map((column, index) =>
-                                        _TableHeader({ column, index, sortProps })
-                                      )}
-                                      {props.includeAction ? <Table.HeaderCell> Actions </Table.HeaderCell> : null}
-                                    </Table.Row>
-                                  </Table.Header>
-                                  <Table.Body>
-                                    {paginationProps.data.map((row, index1) => (
-                                      <Table.Row key={index1}>
-                                        <Table.Cell>
-                                          <Label ribbon>{paginationProps.startIndex + index1 + 1}</Label>
-                                          {hasBulkActions ? (
-                                            <Checkbox
-                                              checked={this.state.selectedRows.includes(row._id)}
-                                              onChange={(e, { checked }) =>
-                                                this.updateSelectedRows({ checked }, row._id, paginationProps.rowCount)
-                                              }
-                                            />
-                                          ) : null}
-                                        </Table.Cell>
-                                        {visibleColumns.map((column, index2) =>
-                                          _TableCell({ column, index2, data: paginationProps, row })
-                                        )}
-                                        {props.includeAction ? (
-                                          <Table.Cell>
-                                            <TableActions actions={props.actionConfig} row={row} />
-                                          </Table.Cell>
-                                        ) : null}
-                                      </Table.Row>
-                                    ))}
-                                  </Table.Body>
-                                </>
+                <FilterProvider
+                  data={searchProps.data || []}
+                  filterableColumns={filterableColumns}
+                  columns={this.state.columns}>
+                  <FilterContext.Consumer>
+                    {filterProps => (
+                      <>
+                        <div id="custom-data-holder" style={{ textAlign: 'right' }} />
+                        <SortProvider data={filterProps.data || []}>
+                          <SortContext.Consumer>
+                            {sortProps =>
+                              !!sortProps.data.length && (
+                                <PaginationProvider {...props} data={sortProps.data || []}>
+                                  <PaginationContext.Consumer>
+                                    {paginationProps =>
+                                      !!paginationProps.data.length && (
+                                        <>
+                                          <Table.Header>
+                                            <Table.Row>
+                                              <Table.HeaderCell>
+                                                Sl.no{' '}
+                                                {hasBulkActions ? (
+                                                  <Checkbox
+                                                    checked={this.state.bulkSelect}
+                                                    indeterminate={this.state.indeterminateSelect}
+                                                    onChange={(e, { checked }) => this.enableBulkSelect({ checked })}
+                                                  />
+                                                ) : null}{' '}
+                                              </Table.HeaderCell>
+                                              {visibleColumns.map((column, index) =>
+                                                _TableHeader({ column, index, sortProps })
+                                              )}
+                                              {props.includeAction ? (
+                                                <Table.HeaderCell> Actions </Table.HeaderCell>
+                                              ) : null}
+                                            </Table.Row>
+                                          </Table.Header>
+                                          <Table.Body>
+                                            {paginationProps.data.map((row, index1) => (
+                                              <Table.Row key={index1}>
+                                                <Table.Cell>
+                                                  <Label ribbon>{paginationProps.startIndex + index1 + 1}</Label>
+                                                  {hasBulkActions ? (
+                                                    <Checkbox
+                                                      checked={this.state.selectedRows.includes(row._id)}
+                                                      onChange={(e, { checked }) =>
+                                                        this.updateSelectedRows(
+                                                          { checked },
+                                                          row._id,
+                                                          paginationProps.rowCount
+                                                        )
+                                                      }
+                                                    />
+                                                  ) : null}
+                                                </Table.Cell>
+                                                {visibleColumns.map((column, index2) =>
+                                                  _TableCell({ column, index2, data: paginationProps, row })
+                                                )}
+                                                {props.includeAction ? (
+                                                  <Table.Cell>
+                                                    <TableActions actions={props.actionConfig} row={row} />
+                                                  </Table.Cell>
+                                                ) : null}
+                                              </Table.Row>
+                                            ))}
+                                          </Table.Body>
+                                        </>
+                                      )
+                                    }
+                                  </PaginationContext.Consumer>
+                                </PaginationProvider>
                               )
                             }
-                          </PaginationContext.Consumer>
-                        </PaginationProvider>
-                      )
-                    }
-                  </SortContext.Consumer>
-                </SortProvider>
+                          </SortContext.Consumer>
+                        </SortProvider>
+                      </>
+                    )}
+                  </FilterContext.Consumer>
+                </FilterProvider>
               </div>
-            )
+            ))
           }
         </SearchContext.Consumer>
       </SearchProvider>
