@@ -2,6 +2,7 @@
 
 ```js
 import Table from 'syook-table-v5';
+import moment from 'moment';
 
 ...
 
@@ -22,6 +23,17 @@ tableConfig = [
     cell: ({ row }) => row.description,
     isSortable: true,
     isSearchable: true,
+    isFilterable: true,
+  },
+  {
+    heading: 'Category',
+    column: 'category',
+    type: 'Select',
+    cell: ({ row }) => row.category,
+    options: [{ value: 'Electrical', label: 'Electrical' }, { value: 'Mechanical', label: 'Mechanical' }],
+    isSortable: true,
+    isSearchable: true,
+    isFilterable: true,
   },
   {
     heading: 'Availability',
@@ -35,7 +47,7 @@ tableConfig = [
     heading: 'Created at',
     column: 'createdAt',
     type: 'Date'
-    cell: ({ row }) => row.createdAt,
+    cell: ({ row }) => moment(row.createdAt).formatOf('DD-MMM-YYYY hh:mm A'),
     isSortable: true,
     isSearchable: true,
   }

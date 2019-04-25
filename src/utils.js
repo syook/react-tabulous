@@ -59,7 +59,9 @@ export const createPropertyOption = (valueProperty, labelProperty) => option => 
   };
 };
 
-export const queryCondition = (attrValue, searchValue, query) => {
+export const queryCondition = (attrValue = '', searchValue = '', query = '') => {
+  attrValue = (attrValue || '').toLowerCase();
+  searchValue = (searchValue || '').toLowerCase();
   switch (query) {
     case 'Contains':
       return attrValue && attrValue.includes(searchValue);

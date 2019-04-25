@@ -36,9 +36,13 @@ class TableComponent extends Component {
     };
   }
 
-  enableBulkSelect = ({ checked }) => {
-    const selectedRows = checked ? this.props.data.map(i => i['_id'] || i['id']) : [];
+  enableBulkSelect = ({ checked }, data = []) => {
+    const selectedRows = checked ? data.map(i => i['_id'] || i['id']) : [];
     this.setState({ bulkSelect: checked, selectedRows, indeterminateSelect: false });
+  };
+
+  resetBulkSelection = () => {
+    this.setState({ bulkSelect: false, indeterminateSelect: false, selectedRows: [] });
   };
 
   updateSelectedRows = ({ checked }, row_id, rowCount) => {
@@ -76,8 +80,7 @@ class TableComponent extends Component {
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
           {searchProps =>
-            console.log(searchProps) ||
-            (!!searchProps.data.length && (
+            !!searchProps.data.length && (
               <div>
                 <HeaderSelector
                   hiddenColumnCount={hiddenColumnCount}
@@ -99,7 +102,10 @@ class TableComponent extends Component {
                           <SortContext.Consumer>
                             {sortProps =>
                               !!sortProps.data.length && (
-                                <PaginationProvider {...props} data={sortProps.data || []}>
+                                <PaginationProvider
+                                  {...props}
+                                  data={sortProps.data || []}
+                                  resetBulkSelection={this.resetBulkSelection}>
                                   <PaginationContext.Consumer>
                                     {paginationProps =>
                                       !!paginationProps.data.length && (
@@ -112,7 +118,9 @@ class TableComponent extends Component {
                                                   <Checkbox
                                                     checked={this.state.bulkSelect}
                                                     indeterminate={this.state.indeterminateSelect}
-                                                    onChange={(e, { checked }) => this.enableBulkSelect({ checked })}
+                                                    onChange={(e, { checked }) =>
+                                                      this.enableBulkSelect({ checked }, paginationProps.data)
+                                                    }
                                                   />
                                                 ) : null}{' '}
                                               </Table.HeaderCell>
@@ -167,7 +175,7 @@ class TableComponent extends Component {
                   </FilterContext.Consumer>
                 </FilterProvider>
               </div>
-            ))
+            )
           }
         </SearchContext.Consumer>
       </SearchProvider>

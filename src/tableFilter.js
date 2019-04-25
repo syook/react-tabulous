@@ -9,13 +9,17 @@ import { predicateOptions, filterQueriesOptions } from './constants';
 
 class TableFilter extends Component {
   render() {
+    const selectedFilters = (this.props.selectedFilters || []).filter(filter => filter.value || '').length;
+    let buttonText =
+      selectedFilters === 1 ? '1 filter' : selectedFilters >= 1 ? `${selectedFilters} filters` : 'Filter';
+
     return (
       // <div style={{ textAlign: 'left' }}>
       <Popup
         trigger={
-          <span>
-            <Icon name="filter" /> Filter
-          </span>
+          <Button size="small" style={{ backgroundColor: selectedFilters ? '#d1f7c4' : null }}>
+            <Icon name="filter" /> {buttonText}
+          </Button>
         }
         content={<FilterDiv {...this.props} />}
         on="click"
@@ -27,33 +31,41 @@ class TableFilter extends Component {
 }
 
 const FilterDiv = props => {
-  const indexOnePredicate = props.selectedFilters.length > 1 ? props.selectedFilters[1].predicate : null;
-
+  const selectedFilters = props.selectedFilters || [];
+  const indexOnePredicate = selectedFilters.length > 1 ? selectedFilters[1].predicate : null;
+  const secondarySelectionDisabled = selectedFilters.length > 1;
   return (
     <div style={{ width: '60em' }}>
-      <List divided relaxed>
-        {props.selectedFilters.map((column, index) => (
-          <List.Item key={index}>
-            <List.Content>
-              <FilterGrid
-                index={index}
-                column={column}
-                removeFilter={props.removeFilter}
-                updateSelectedFilters={props.updateSelectedFilters}
-                indexOnePredicate={indexOnePredicate}
-                filterableColumns={props.filterableColumns}
-              />
-            </List.Content>
-          </List.Item>
-        ))}
-      </List>
-      <Button primary onClick={props.addFilter}>
-        <Icon name="add" /> Add Filter{' '}
-      </Button>
-      <Button positive onClick={props.applyFilter} disabled={!(props.selectedFilters || []).length}>
-        {' '}
-        Apply Filter{' '}
-      </Button>
+      {selectedFilters.length ? (
+        <List divided relaxed>
+          {selectedFilters.map((column, index) => (
+            <List.Item key={index}>
+              <List.Content>
+                <FilterGrid
+                  index={index}
+                  column={column}
+                  removeFilter={props.removeFilter}
+                  updateSelectedFilters={props.updateSelectedFilters}
+                  indexOnePredicate={indexOnePredicate}
+                  filterableColumns={props.filterableColumns}
+                  secondarySelectionDisabled={secondarySelectionDisabled}
+                />
+              </List.Content>
+            </List.Item>
+          ))}
+        </List>
+      ) : (
+        <div style={{ opacity: 0.5 }}>No filters applied to this view</div>
+      )}
+      <div>
+        <Button primary size="small" onClick={props.addFilter}>
+          <Icon name="add" /> Add Filter{' '}
+        </Button>
+        <Button positive size="small" onClick={props.applyFilter} disabled={!(props.selectedFilters || []).length}>
+          {' '}
+          Apply Filter{' '}
+        </Button>
+      </div>
     </div>
   );
 };
@@ -77,6 +89,7 @@ const FilterGrid = props => {
         <Grid.Column>
           <Select
             isSearchable={false}
+            isDisabled={props.column.predicate === 'Where' || (props.secondarySelectionDisabled && props.index > 1)}
             options={predicateOptionConditions}
             value={{ value: props.column.predicate, label: props.column.predicate }}
             onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
@@ -120,12 +133,12 @@ const InputCategories = props => {
         onChange={e => props.updateSelectedFilters('value', e.target.value, props.index)}
       />
     );
-  } else if (props.column.type === 'Dropdown') {
+  } else if (props.column.type === 'Select') {
     return (
       <Select
         options={findColumnOptions(props.filterableColumns, props.column.attribute)}
-        value={props.column.value}
-        onChange={value => props.updateSelectedFilters('value', value, props.index)}
+        value={{ value: props.column.value, label: props.column.value }}
+        onChange={({ value }) => props.updateSelectedFilters('value', value, props.index)}
       />
     );
   } else {

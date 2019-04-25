@@ -73,6 +73,7 @@ export default class PaginationProvider extends Component {
       const numberOfPages = Math.ceil(rowCount / rowsPerPage.value);
       if (numberOfPages < currentPage) currentPage = numberOfPages;
 
+      this.props.resetBulkSelection();
       this.setState({ currentPage, numberOfPages, rowCount });
     }
   }
@@ -121,7 +122,6 @@ const Pagination = props => {
     rowsPerPageOptions.find(obj => obj.value >= props.rowCount) || rowsPerPageOptions[rowsPerPageOptions.length - 1]
   ).value;
   const pageOptions = rowsPerPageOptions.filter(obj => +obj.value <= +maxRowOptionAvailable);
-
   return (
     <Table.Footer>
       <Table.Row>
