@@ -22,7 +22,6 @@ export default class FilterProvider extends Component {
   updateSelectedFilters = (attribute, value, index) => {
     const { selectedFilters: filters } = this.state;
     const { columns } = this.props;
-    debugger;
     let filterToBeUpdated = filters[index];
     if (index === 1 && attribute === 'predicate') {
       filters.slice(2).forEach(element => (element.predicate = value));
