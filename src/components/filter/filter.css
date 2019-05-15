@@ -55,13 +55,30 @@
 
 /* for single select */
 
-.singleSelect .css-16pqwjk-indicatorContainer,
+/* .singleSelect .css-16pqwjk-indicatorContainer, */
 .singleSelect .css-bgvzuu-indicatorSeparator {
   display: none;
 }
 
 .singleSelect .css-bg1rzq-control {
   border: none;
+}
+
+/* reducing the padding btn text and svg icon */
+
+.singleSelect .css-1hwfws3 {
+  padding-right: 0;
+  justify-content: center;
+}
+
+.singleSelect .css-16pqwjk-indicatorContainer {
+  padding-left: 0;
+}
+
+/* bgc on hover */
+
+.singleSelect .css-bg1rzq-control:hover {
+  background: #f2f2f2;
 }
 
 .singleSelect .css-1szy77t-control:hover,
@@ -75,9 +92,9 @@
   min-height: 30px !important;
 }
 
-.css-1szy77t-control svg {
+/* .css-1szy77t-control svg {
   display: none !important;
-}
+} */
 
 /* show only 2 values for multi-select */
 .filter-multi-select {

@@ -36,7 +36,11 @@ const HeaderSelector = props => {
           <Button
             size="small"
             icon
-            style={{ background: hiddenColumnsCount ? '#3498DB' : 'rgb(109, 180, 226)', color: '#fff' }}>
+            style={{
+              background: hiddenColumnsCount ? '#3498DB' : 'rgb(109, 180, 226)',
+              color: '#fff',
+              padding: hiddenColumnsCount ? '0.78em 0.6em 0.78em' : '',
+            }}>
             <Icon name="eye slash outline" />{' '}
             {hiddenColumnsCount === 1
               ? '1 hidden column'

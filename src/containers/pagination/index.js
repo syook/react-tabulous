@@ -38,6 +38,99 @@ export default class PaginationProvider extends PureComponent {
   //   return false;
   // }
 
+  // resizable
+
+  // resizableGrid = table => {
+  //   const row = table.getElementsByTagName('tr')[0];
+  //   const cols = row ? row.children : undefined;
+  //   if (!cols) return;
+
+  //   table.style.overflow = 'hidden';
+  //   const tableHeight = table.offsetHeight;
+
+  //   for (let i = 0; i < cols.length; i++) {
+  //     const div = this.createDiv(tableHeight);
+  //     let currentColumn = cols[i];
+  //     if (currentColumn.innerText && !['Actions', 'S.No'].includes(currentColumn.innerText)) {
+  //       cols[i].appendChild(div);
+  //       cols[i].style.position = 'relative';
+  //       this.setListeners(div);
+  //     }
+  //   }
+  // };
+
+  // setListeners = div => {
+  //   let pageX, curCol, nxtCol, curColWidth, nxtColWidth;
+
+  //   div.addEventListener('mousedown', e => {
+  //     curCol = e.target.parentElement;
+  //     nxtCol = curCol.nextElementSibling;
+  //     pageX = e.pageX;
+
+  //     const padding = this.paddingDiff(curCol);
+
+  //     curColWidth = curCol.offsetWidth - padding;
+  //     if (nxtCol) nxtColWidth = nxtCol.offsetWidth - padding;
+  //   });
+
+  //   div.addEventListener('mouseover', e => {
+  //     e.target.style.borderRight = '2px solid #0000ff';
+  //   });
+
+  //   div.addEventListener('mouseout', e => {
+  //     e.target.style.borderRight = '';
+  //   });
+
+  //   document.addEventListener('mousemove', e => {
+  //     if (curCol) {
+  //       const diffX = e.pageX - pageX;
+
+  //       if (nxtCol) nxtCol.style.width = nxtColWidth - diffX + 'px';
+
+  //       curCol.style.minWidth = curColWidth + diffX + 'px';
+  //     }
+  //   });
+
+  //   document.addEventListener('mouseup', e => {
+  //     curCol = undefined;
+  //     nxtCol = undefined;
+  //     pageX = undefined;
+  //     nxtColWidth = undefined;
+  //     curColWidth = undefined;
+  //   });
+  // };
+
+  // createDiv = height => {
+  //   let div = document.createElement('div');
+  //   div.style.top = 0;
+  //   div.style.right = 0;
+  //   div.style.width = '5px';
+  //   div.style.position = 'absolute';
+  //   div.style.cursor = 'col-resize';
+  //   div.style.userSelect = 'none';
+  //   div.style.height = height + 'px';
+  //   return div;
+  // };
+
+  // paddingDiff = col => {
+  //   if (this.getStyleVal(col, 'box-sizing') === 'border-box') {
+  //     return 0;
+  //   }
+
+  //   const padLeft = this.getStyleVal(col, 'padding-left');
+  //   const padRight = this.getStyleVal(col, 'padding-right');
+  //   return +padLeft + +padRight;
+  // };
+
+  // getStyleVal = (elm, css) => {
+  //   return window.getComputedStyle(elm, null).getPropertyValue(css);
+  // };
+
+  // componentDidMount() {
+  //   let table = document.querySelector('.tableStyle');
+  //   this.resizableGrid(table);
+  // }
+
   componentDidUpdate(prevProps) {
     if ((this.props.data || []) && !isEqual(this.props.data, prevProps.data)) {
       const rowCount = this.props.data.length;
@@ -96,7 +189,10 @@ export default class PaginationProvider extends PureComponent {
     const rowCount = (this.props.data || []).length;
 
     return (
-      <div className="scrollable-table" style={{ maxWidth: '100vw', overflow: 'auto hidden', marginTop: '10px' }}>
+      <div
+        className="scrollable-table table-scroll"
+        id="table-scroll"
+        style={{ maxWidth: '100%', overflow: 'auto hidden', marginTop: '10px' }}>
         <Table sortable celled padded className="tableStyle left aligned">
           <PaginationContext.Provider
             value={{ ...this.state, data, startIndex, rowCount, resetToFirstPage: this.resetToFirstPage }}>

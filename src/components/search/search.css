@@ -23,12 +23,12 @@
 }
 
 .noRecordsDiv {
-  padding: 10px 10px;
+  font-size: 1.1em;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  padding: 10px;
   border: 1px solid #ddd;
-  text-align: center;
+  border-top: none;
+  grid-column: 1/10;
+  box-sizing: border-box;
 }
-
-/* .ui.disabled.input {
-  cursor: not-allowed !important;
-  pointer-events: all !important;
-} */

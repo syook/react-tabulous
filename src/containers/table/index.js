@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Checkbox, Table } from 'semantic-ui-react';
 
@@ -79,7 +80,7 @@ class TableComponent extends Component {
 
   render() {
     const props = this.props;
-    const hasBulkActions = (props.bulkActions || []).length;
+    const hasBulkActions = (props.bulkActionDefs || []).length;
     const visibleColumns = this.state.columns.filter(d => d.isVisible);
     const filterableColumns = visibleColumns.filter(d => d.isFilterable);
 
@@ -100,7 +101,7 @@ class TableComponent extends Component {
                 toggleAllColumns={this.toggleAllColumns}
               />
               {hasBulkActions && this.state.selectedRows.length ? (
-                <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
+                <BulkActionList bulkActions={props.bulkActionDefs} selectedRows={this.state.selectedRows} />
               ) : null}
 
               <FilterProvider
@@ -110,9 +111,11 @@ class TableComponent extends Component {
                 <FilterContext.Consumer>
                   {filterProps => (
                     <>
-                      <div style={{ gridColumn: '3/4', gridRow: '1/2', alignSelf: 'center' }}>
-                        {this.props.children()}
-                      </div>
+                      {this.props.children ? (
+                        <div style={{ gridColumn: '3/4', gridRow: '1/2', alignSelf: 'center' }}>
+                          {this.props.children}
+                        </div>
+                      ) : null}
                       <SortProvider data={filterProps.data || []}>
                         <SortContext.Consumer>
                           {sortProps => (
@@ -200,5 +203,40 @@ class TableComponent extends Component {
     );
   }
 }
+
+TableComponent.propTypes = {
+  actionDefs: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      icon: PropTypes.string,
+      color: PropTypes.string,
+      isVisible: PropTypes.func,
+      isLoading: PropTypes.func,
+      isDisabled: PropTypes.func,
+      function: PropTypes.func,
+    })
+  ),
+  bulkActionDefs: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      function: PropTypes.func,
+    })
+  ),
+  columnDefs: PropTypes.arrayOf(
+    PropTypes.shape({
+      cell: PropTypes.func,
+      field: PropTypes.string,
+      headerName: PropTypes.string,
+      isFilterable: PropTypes.bool,
+      isSearchable: PropTypes.bool,
+      isSortable: PropTypes.bool,
+      type: PropTypes.string,
+    })
+  ),
+  data: PropTypes.array,
+  includeAction: PropTypes.bool,
+  mandatoryFields: PropTypes.arrayOf(PropTypes.string),
+  name: PropTypes.string,
+};
 
 export default TableComponent;

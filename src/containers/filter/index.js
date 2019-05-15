@@ -61,6 +61,9 @@ export default class FilterProvider extends PureComponent {
       if (newQuery) filterToBeUpdated.query = newQuery;
     }
 
+    if (attribute === 'query') {
+      filterToBeUpdated.query = value;
+    }
     this.setState({ selectedFilters: [...filters] });
   };
 
@@ -131,24 +134,7 @@ export default class FilterProvider extends PureComponent {
         />
         {children}
 
-        {parentDataCount && !stateDataCount ? (
-          <div
-            className="noRecordsDiv"
-            style={{
-              fontSize: '1.1em',
-              letterSpacing: '0.5px',
-              fontWeight: 500,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingLeft: 0,
-              paddingRight: 0,
-              margin: 0,
-              borderTop: 'none',
-            }}>
-            {'No Results Found'}
-          </div>
-        ) : null}
+        {parentDataCount && !stateDataCount ? <div className="noRecordsDiv">{'No Results Found'}</div> : null}
       </FilterContext.Provider>
     );
   }

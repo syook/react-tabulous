@@ -35,11 +35,10 @@ code {
   margin-right: 10px;
 }
 
-.resizable {
+/* .resizable {
   resize: horizontal;
   overflow: auto;
-  /* width: 210px; */
   display: block;
   min-width: 210px;
   min-height: 50px;
-}
+} */

@@ -14,7 +14,7 @@ const BulkActionList = props => {
         {(props.bulkActions || []).map((action, index) => (
           <Dropdown.Item
             key={`BulkActionList-${index}`}
-            text={action.action}
+            text={action.name}
             onClick={() => action.function(props.selectedRows)}
           />
         ))}

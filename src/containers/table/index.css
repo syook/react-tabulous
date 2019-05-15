@@ -1,9 +1,22 @@
 .main-table_layout {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(9, 1fr);
 }
 
 .main-table_layout .scrollable-table {
-  grid-column: 1/11;
+  grid-column: 1/10;
 }
+
+/* .table-scroll {
+  float: left;
+}
+.tbody {
+  height: 400px;
+  overflow-y: auto;
+  width: 100%;
+}
+.table-scroll table {
+  border-collapse: collapse;
+  width: 100%;
+} */

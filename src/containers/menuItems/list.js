@@ -60,7 +60,7 @@ class MenuItemList extends Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
-      isResizable: true,
+      // isResizable: true,
     },
     {
       headerName: 'Category',
@@ -83,7 +83,7 @@ class MenuItemList extends Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
-      isResizable: true,
+      // isResizable: true,
     },
     {
       headerName: 'Expertise',
@@ -152,16 +152,17 @@ class MenuItemList extends Component {
 
   render() {
     return (
-      <TableComponent
-        actionDefs={this.actionDefs}
-        bulkActions={this.bulkActionDefs}
-        data={this.state.data || []}
-        includeAction={true}
-        mandatoryFields={['Name']}
-        name={'Table Name'}
-        columnDefs={this.columnDefs}>
-        {this.customComponents}
-      </TableComponent>
+      <>
+        <TableComponent
+          actionDefs={this.actionDefs}
+          bulkActionDefs={this.bulkActionDefs}
+          columnDefs={this.columnDefs}
+          data={this.state.data || []}
+          includeAction={true}
+          mandatoryFields={['Name']}
+          name={'Table Name'}
+        />
+      </>
     );
   }
 }

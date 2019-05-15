@@ -30,6 +30,7 @@ const TableFilter = props => {
             color: '#fff',
             gridArea: '1 / 2',
             alignSelf: 'center',
+            marginLeft: '8px',
             // position: 'absolute',
             // top: 0,
             // right: '50%',
@@ -105,7 +106,7 @@ const FilterGrid = props => {
       <div style={{ maxWidth: '40px', paddingTop: 'inherit', flex: '1 0 auto' }}>
         <Icon name="remove" onClick={() => props.removeFilter(props.index)} />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '100px' }}>
+      <div style={{ flex: '1 0 auto', minWidth: '100px', marginLeft: 10 }}>
         <Select
           className="singleSelect"
           isSearchable={false}
@@ -115,7 +116,7 @@ const FilterGrid = props => {
           onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
         />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '100px' }}>
+      <div style={{ flex: '1 0 auto', minWidth: '100px', marginLeft: 10 }}>
         <Select
           className="singleSelect"
           options={props.filterableColumns.map(createPropertyOption('field', 'headerName'))}
@@ -123,7 +124,7 @@ const FilterGrid = props => {
           onChange={value => props.updateSelectedFilters('attribute', value.value, props.index)}
         />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '100px' }}>
+      <div style={{ flex: '1 0 auto', minWidth: '100px', marginLeft: 10 }}>
         <Select
           className="singleSelect"
           options={queryOperatorOptions}
@@ -133,7 +134,7 @@ const FilterGrid = props => {
         />
       </div>
       {['is empty', 'is not empty'].includes(props.column.query) ? null : (
-        <div className="text-input" style={{ flex: '1 0 auto', minWidth: '100px' }}>
+        <div className="text-input" style={{ flex: '1 0 auto', minWidth: '100px', marginLeft: 10 }}>
           <InputCategories
             column={props.column}
             updateSelectedFilters={props.updateSelectedFilters}
