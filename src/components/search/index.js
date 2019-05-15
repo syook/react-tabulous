@@ -6,16 +6,19 @@ import { Icon, Input } from 'semantic-ui-react';
 const SearchComponent = props => {
   return (
     <div>
-      {/* {props.name && (
-        <span
+      {props.name && (
+        <div
           style={{
+            color: 'rgb(102, 119, 151)',
             fontSize: '24px',
             fontWeight: 'normal',
-            color: 'rgb(102, 119, 151)',
+            paddingLeft: '15px',
+            paddingTop: '5px',
+            textAlign: 'left',
           }}>
           {props.name}
-        </span>
-      )} */}
+        </div>
+      )}
 
       <div
         style={{

@@ -122,6 +122,7 @@ class TableComponent extends Component {
                             <PaginationProvider
                               {...props}
                               data={sortProps.data || []}
+                              resetPagination={sortProps.resetPagination}
                               resetBulkSelection={this.resetBulkSelection}>
                               <PaginationContext.Consumer>
                                 {paginationProps => (
@@ -236,7 +237,8 @@ TableComponent.propTypes = {
   data: PropTypes.array,
   includeAction: PropTypes.bool,
   mandatoryFields: PropTypes.arrayOf(PropTypes.string),
-  name: PropTypes.string,
+  tableFooterName: PropTypes.string,
+  tableName: PropTypes.string,
 };
 
 export default TableComponent;

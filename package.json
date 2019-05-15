@@ -1,6 +1,6 @@
 {
   "name": "syook-table-v5",
-  "version": "0.1.20",
+  "version": "0.1.23",
   "description": "Table made easy",
   "main": "lib/syook-table.min.js",
   "files": [
@@ -21,8 +21,7 @@
   },
   "homepage": "https://github.com/syook/syook-table#readme",
   "scripts": {
-    "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js"
   },
   "eslintConfig": {
     "extends": "react-app"

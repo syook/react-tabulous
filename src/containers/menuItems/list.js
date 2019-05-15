@@ -67,10 +67,12 @@ class MenuItemList extends Component {
       field: 'category',
       type: 'SingleSelect',
       cell: rowObject => rowObject.category,
-      options: ['Grocery', 'Electronics', 'Home', 'Shoes', 'Computers', 'Outdoors', 'Clothing'].map(category => ({
-        value: category,
-        label: category,
-      })),
+      options: ['Grocery', 'Electronics', 'Home', 'Shoes', 'Computers', 'Outdoors', 'Clothing'].map(
+        (category, index) => ({
+          value: index,
+          label: category,
+        })
+      ),
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
@@ -152,17 +154,16 @@ class MenuItemList extends Component {
 
   render() {
     return (
-      <>
-        <TableComponent
-          actionDefs={this.actionDefs}
-          bulkActionDefs={this.bulkActionDefs}
-          columnDefs={this.columnDefs}
-          data={this.state.data || []}
-          includeAction={true}
-          mandatoryFields={['Name']}
-          name={'Table Name'}
-        />
-      </>
+      <TableComponent
+        actionDefs={this.actionDefs}
+        bulkActionDefs={this.bulkActionDefs}
+        columnDefs={this.columnDefs}
+        data={this.state.data || []}
+        includeAction={true}
+        mandatoryFields={['Name']}
+        tableName={'Users of all roles'}
+        tableFooterName={'Users'}
+      />
     );
   }
 }

@@ -16,22 +16,6 @@ export default class FilterProvider extends PureComponent {
     filterDisabled: false,
   };
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (!isEqual(nextProps.data, this.props.data)) {
-  //     return true;
-  //   }
-  //   if (!isEqual(nextState.data, this.state.data)) {
-  //     return true;
-  //   }
-  //   if (!isEqual(nextState.selectedFilters, this.state.selectedFilters)) {
-  //     return true;
-  //   }
-  //   if (nextState.filterDisabled !== this.state.filterDisabled) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   componentDidUpdate(prevProps) {
     if ((this.props.data || []) && !isEqual(this.props.data, prevProps.data)) {
       this.applyFilter();
@@ -107,10 +91,8 @@ export default class FilterProvider extends PureComponent {
     const searchedData = [...this.props.data] || [];
     if (!selectedFilters.length) return this.setFilteredData(searchedData);
 
-    console.time('Start-Filter');
     const filteredData = loopFilters(searchedData, selectedFilters);
     this.setFilteredData(filteredData);
-    console.timeEnd('Start-Filter');
   };
 
   setFilteredData = (data = []) => this.setState({ data, filterDisabled: false });

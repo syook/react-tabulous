@@ -26,7 +26,7 @@ const Pagination = props => {
               alignItems: 'center',
             }}>
             <Label ribbon>
-              Total {props.name} : {props.rowCount}
+              Total {props.tableFooterName} : {props.rowCount}
             </Label>
             {props.rowCount > 5 && (
               <div style={{ display: 'flex', alignItems: 'center' }}>

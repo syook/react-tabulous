@@ -7,7 +7,6 @@ import { Popup, Button, Icon, Input, Checkbox } from 'semantic-ui-react';
 import { createPropertyOption } from '../utils';
 import { findColumnOptions } from '../utils';
 import './filter.css';
-// import DropdownSelect from '../dropdownSelect/dropdownSelect';
 
 import DateTimeComponent from '../dateTime';
 
@@ -31,9 +30,6 @@ const TableFilter = props => {
             gridArea: '1 / 2',
             alignSelf: 'center',
             marginLeft: '8px',
-            // position: 'absolute',
-            // top: 0,
-            // right: '50%',
           }}>
           <Icon name="filter" /> {buttonText}
         </Button>
@@ -75,12 +71,7 @@ const FilterDiv = props => {
           <Icon name="add" size="small" /> Add Filter{' '}
         </Button>
         {!props.filtersSelected || props.filterDisabled ? null : (
-          <Button
-            className="filter_btn apply"
-            size="small"
-            onClick={props.applyFilter}
-            // disabled={}
-            loading={props.filterDisabled}>
+          <Button className="filter_btn apply" size="small" onClick={props.applyFilter} loading={props.filterDisabled}>
             {' '}
             Apply Filter{' '}
           </Button>

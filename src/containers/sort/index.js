@@ -11,27 +11,8 @@ export default class SortProvider extends PureComponent {
     columnType: null,
     data: [...(this.props.data || [])],
     direction: null,
+    resetPagination: false,
   };
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (!isEqual(nextProps.data, this.props.data)) {
-  //     return true;
-  //   }
-  //   if (!isEqual(nextState.data, this.state.data)) {
-  //     return true;
-  //   }
-  //   if (nextState.direction !== this.state.direction) {
-  //     return true;
-  //   }
-  //   if (nextState.columnName !== this.state.columnName) {
-  //     return true;
-  //   }
-  //   if (nextState.columnType !== this.state.columnType) {
-  //     return true;
-  //   }
-  //   console.log('Sort not rendering');
-  //   return false;
-  // }
 
   componentDidUpdate(prevProps) {
     if (this.props.data && !isEqual(this.props.data, prevProps.data)) {
@@ -64,14 +45,15 @@ export default class SortProvider extends PureComponent {
         columnType,
         data: sortedData,
         direction,
+        resetPagination: !this.state.resetPagination,
       });
-      return;
+    } else {
+      this.setState({
+        data: data.reverse(),
+        direction,
+        resetPagination: !this.state.resetPagination,
+      });
     }
-
-    this.setState({
-      data: data.reverse(),
-      direction,
-    });
   };
 
   render() {

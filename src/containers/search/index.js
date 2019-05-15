@@ -50,7 +50,7 @@ export default class SearchProvider extends Component {
         <SearchContext.Provider value={{ ...this.state }}>
           <SearchComponent
             disabled={!mainDataCount}
-            name={this.props.name}
+            name={this.props.tableName}
             onChangeSearchText={this.onChangeSearchText}
             searchText={this.state.searchText}
           />
@@ -58,7 +58,7 @@ export default class SearchProvider extends Component {
           {!stateDataCount && (
             <div style={{ padding: '0 15px' }}>
               <div className="noRecordsDiv">
-                {!mainDataCount ? `No ${this.props.name || 'data'} to Display` : 'No Results Found'}
+                {!mainDataCount ? `No ${this.props.tableName || 'data'} to Display` : 'No Results Found'}
               </div>
             </div>
           )}
