@@ -44,7 +44,7 @@ export default class FilterProvider extends PureComponent {
     let filterToBeUpdated = filters[index];
 
     if (index === 1 && attribute === 'predicate') {
-      filters.slice(2).forEach(element => (element.predicate = value));
+      filters.slice(1).forEach(element => (element.predicate = value));
     }
 
     if (attribute === 'value') {

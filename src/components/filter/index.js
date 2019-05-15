@@ -177,7 +177,7 @@ const InputCategories = props => {
           value={selectValue}
           hideSelectedOptions={false}
           onChange={value => {
-            const newValue = isMultiSelect ? value.map(({ value }) => value) : (value || {}).value ? [value.value] : [];
+            const newValue = isMultiSelect ? value.map(({ label }) => label) : (value || {}).label ? [value.label] : [];
             props.updateSelectedFilters('value', newValue, props.index);
           }}
         />
