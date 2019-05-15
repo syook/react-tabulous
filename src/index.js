@@ -1,3 +1,3 @@
-import CustomTable from './newTable';
+import SyookTable from './containers/table';
 
-export default CustomTable;
+export default SyookTable;

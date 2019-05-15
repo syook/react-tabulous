@@ -1,0 +1,9 @@
+.table-actions .button {
+  background: #5da1cd;
+  color: #fff;
+}
+
+.table-actions .button:hover {
+  background: #5da0cde7;
+  color: #fff;
+}

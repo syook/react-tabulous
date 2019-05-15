@@ -1,29 +1,44 @@
-# Syook-Table 🎉
-
-```js
-...
-
-import SyookTable from 'syook-table-v5';
-import format from 'date-fns/format'
+import './list.css';
+import React, { Component } from 'react';
+import format from 'date-fns/format';
 import { Button, Input } from 'semantic-ui-react';
 
-...
+import TableComponent from '../table';
 
-onDelete = ids => {
-  console.log('onDelete', ids);
-};
+class MenuItemList extends Component {
+  state = { data: [] };
 
-onShow = rowObject => {
-  console.log('onShow', rowObject);
-};
+  async componentDidMount() {
+    try {
+      const baseUrl = process.env.REACT_APP_BASE_URL;
+      // const baseUrl = 'http://localhost:5000';
+      if (baseUrl) {
+        const response = await fetch(`${baseUrl}/menuItems`);
+        const { data } = await response.json();
+        if ((data || []).length) {
+          this.setState({ data });
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-onEdit = rowObject => {
-  console.log('onEdit', rowObject);
-};
+  onDelete = ids => {
+    console.log('onDelete', ids);
+  };
 
-onInputChange = ({ rowObject, value: newValue }) => {
-  console.log({ rowObject, newValue });
-};
+  onShow = args => {
+    console.log('onShow', args);
+  };
+
+  onEdit = args => {
+    console.log('onEdit', args);
+  };
+
+  onInputChange = ({ rowObject, value: newValue }) => {
+    console.log({ rowObject, newValue });
+  };
 
   columnDefs = [
     {
@@ -131,22 +146,24 @@ onInputChange = ({ rowObject, value: newValue }) => {
       <Button disabled size="small" onClick={() => null}>
         Button 1
       </Button>
-      <Button onClick={() => null}>Button 2</Button>
+      {/* <Button onClick={() => null}>Button 2</Button> */}
     </>
   );
 
-...
+  render() {
+    return (
+      <TableComponent
+        actionDefs={this.actionDefs}
+        bulkActions={this.bulkActionDefs}
+        data={this.state.data || []}
+        includeAction={true}
+        mandatoryFields={['Name']}
+        name={'Table Name'}
+        columnDefs={this.columnDefs}>
+        {this.customComponents}
+      </TableComponent>
+    );
+  }
+}
 
-<SyookTable
-  actionDefs={this.actionDefs}
-  bulkActions={this.bulkActionDefs}
-  data={this.state.data || []}
-  includeAction={true} // optional
-  mandatoryFields={['Name']} // optional
-  name={'Table Name'} // optional
-  columnDefs={this.columnDefs}>
-  {this.customComponents}
-</SyookTable>
-
-...
-```
+export default MenuItemList;

@@ -11,11 +11,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.tableStyle {
-  border-top-left-radius: 0px !important;
-  border-top-right-radius: 0px !important;
-}
-
 .paginationFooter .ui.menu .item:before {
   background: #d6e7f3 !important;
 }
@@ -35,6 +30,16 @@ code {
 
 .ui.button.dropdown.bulk-action {
   background: #3496d8;
+  /* border: none; */
   color: #fff;
   margin-right: 10px;
+}
+
+.resizable {
+  resize: horizontal;
+  overflow: auto;
+  /* width: 210px; */
+  display: block;
+  min-width: 210px;
+  min-height: 50px;
 }
