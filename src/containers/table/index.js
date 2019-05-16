@@ -83,8 +83,9 @@ class TableComponent extends Component {
     const hasBulkActions = (props.bulkActionDefs || []).length;
     const visibleColumns = this.state.columns.filter(d => d.isVisible);
     const filterableColumns = visibleColumns.filter(d => d.isFilterable);
+    const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
+    const hiddenColumnsCount = this.state.columns.length - visibleColumns.length;
 
-    const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
@@ -95,8 +96,8 @@ class TableComponent extends Component {
                 padding: '0 15px',
               }}>
               <HeaderSelector
-                hiddenColumnCount={hiddenColumnCount}
-                columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName))}
+                hiddenColumnsCount={hiddenColumnsCount}
+                columns={hidableColumns}
                 toggleColumns={this.toggleColumns}
                 toggleAllColumns={this.toggleAllColumns}
               />

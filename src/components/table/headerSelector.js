@@ -27,8 +27,7 @@ const ColumnList = ({ columns, toggleAllColumns, toggleColumns }) => {
   );
 };
 
-const HeaderSelector = props => {
-  const hiddenColumnsCount = props.hiddenColumnCount;
+const HeaderSelector = ({ hiddenColumnsCount, columns, toggleColumns, toggleAllColumns }) => {
   return (
     <div style={{ textAlign: 'left', gridColumn: '1/2', gridRow: 1, alignSelf: 'center' }}>
       <Popup
@@ -36,6 +35,7 @@ const HeaderSelector = props => {
           <Button
             size="small"
             icon
+            disabled={!columns.length}
             style={{
               background: hiddenColumnsCount ? '#3498DB' : 'rgb(109, 180, 226)',
               color: '#fff',
@@ -50,11 +50,7 @@ const HeaderSelector = props => {
           </Button>
         }
         content={
-          <ColumnList
-            columns={props.columns || []}
-            toggleColumns={props.toggleColumns}
-            toggleAllColumns={props.toggleAllColumns}
-          />
+          <ColumnList columns={columns || []} toggleColumns={toggleColumns} toggleAllColumns={toggleAllColumns} />
         }
         hoverable
         on="click"
