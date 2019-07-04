@@ -6,7 +6,7 @@ const TerserWebpackPlugin = require('terser-webpack-plugin');
 let plugins = [
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: "'production'",
+      NODE_ENV: "'development'",
     },
   }),
   new webpack.NamedModulesPlugin(),
@@ -15,7 +15,7 @@ let plugins = [
 const entry = [path.resolve(path.join(__dirname, './src/index.js'))];
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   name: 'server',
   plugins: plugins,
   target: 'node',
@@ -66,5 +66,6 @@ module.exports = {
     console: false,
     global: false,
     process: false,
+    debugger: false,
   },
 };

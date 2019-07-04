@@ -11,13 +11,15 @@ const BulkActionList = props => {
       style={{ gridColumn: '4/6', alignSelf: 'center' }}
       className="icon bulk-action right labeled">
       <Dropdown.Menu>
-        {(props.bulkActions || []).map((action, index) => (
-          <Dropdown.Item
-            key={`BulkActionList-${index}`}
-            text={action.name}
-            onClick={() => action.function(props.selectedRows)}
-          />
-        ))}
+        {(props.bulkActions || [])
+          .filter(a => a.isVisible !== false)
+          .map((action, index) => (
+            <Dropdown.Item
+              key={`BulkActionList-${index}`}
+              text={action.name}
+              onClick={() => action.function(props.selectedRows)}
+            />
+          ))}
       </Dropdown.Menu>
     </Dropdown>
   );
