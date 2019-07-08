@@ -25,8 +25,8 @@ export const fetchSortedData = ({ data = [], columnType, columnName, direction }
     case 'singleselect':
       let firstValue, secondValue;
       return data.sort((a, b) => {
-        firstValue = a[columnName] || '';
-        secondValue = b[columnName] || '';
+        firstValue = (a[columnName] || '').toString();
+        secondValue = (b[columnName] || '').toString();
         return isAscending ? firstValue.localeCompare(secondValue) : secondValue.localeCompare(firstValue);
       });
 

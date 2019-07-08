@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import orderBy from 'lodash/orderBy';
 import { Checkbox, Table } from 'semantic-ui-react';
 
 import FilterProvider, { FilterContext } from '../filter';
@@ -99,14 +98,13 @@ class TableComponent extends Component {
               style={{
                 padding: '0 15px',
               }}>
-              {hidableColumns.length ? (
-                <HeaderSelector
-                  hiddenColumnCount={hiddenColumnCount}
-                  columns={hidableColumns}
-                  toggleColumns={this.toggleColumns}
-                  toggleAllColumns={this.toggleAllColumns}
-                />
-              ) : null}
+              <HeaderSelector
+                hiddenColumnCount={hiddenColumnCount}
+                columns={hidableColumns}
+                disabled={!hidableColumns.length}
+                toggleColumns={this.toggleColumns}
+                toggleAllColumns={this.toggleAllColumns}
+              />
               {hasBulkActions && this.state.selectedRows.length ? (
                 <BulkActionList bulkActions={props.bulkActionDefs} selectedRows={this.state.selectedRows} />
               ) : null}
@@ -123,7 +121,7 @@ class TableComponent extends Component {
                           {this.props.children}
                         </div>
                       ) : null}
-                      <SortProvider data={orderBy(filterProps.data, ['name'], ['asc'])}>
+                      <SortProvider data={filterProps.data || []}>
                         <SortContext.Consumer>
                           {sortProps => (
                             <PaginationProvider

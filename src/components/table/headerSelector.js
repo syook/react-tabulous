@@ -2,7 +2,7 @@ import './headerSelector.css';
 import React from 'react';
 import { Button, Popup, List, Icon, Checkbox } from 'semantic-ui-react';
 
-const ColumnList = ({ columns, toggleAllColumns, toggleColumns }) => {
+const ColumnList = ({ columns, toggleAllColumns, toggleColumns, disabled }) => {
   return (
     <List key={`hide-selector-list`}>
       {(columns || []).map((column, index) => (
@@ -11,6 +11,7 @@ const ColumnList = ({ columns, toggleAllColumns, toggleColumns }) => {
             <Checkbox
               style={{ marginRight: 8 }}
               checked={column.isVisible}
+              disabled={disabled}
               onChange={(_e, { checked }) => toggleColumns(column.headerName, { checked })}
             />{' '}
             <span>{column.headerName}</span>
@@ -27,7 +28,7 @@ const ColumnList = ({ columns, toggleAllColumns, toggleColumns }) => {
   );
 };
 
-const HeaderSelector = ({ hiddenColumnsCount, columns, toggleColumns, toggleAllColumns }) => {
+const HeaderSelector = ({ hiddenColumnsCount, columns, toggleColumns, toggleAllColumns, disabled }) => {
   return (
     <div style={{ textAlign: 'left', gridColumn: '1/2', gridRow: 1, alignSelf: 'center' }}>
       <Popup
@@ -50,7 +51,12 @@ const HeaderSelector = ({ hiddenColumnsCount, columns, toggleColumns, toggleAllC
           </Button>
         }
         content={
-          <ColumnList columns={columns || []} toggleColumns={toggleColumns} toggleAllColumns={toggleAllColumns} />
+          <ColumnList
+            columns={columns || []}
+            toggleColumns={toggleColumns}
+            toggleAllColumns={toggleAllColumns}
+            disabled={disabled}
+          />
         }
         hoverable
         on="click"
