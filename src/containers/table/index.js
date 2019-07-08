@@ -161,21 +161,22 @@ class TableComponent extends Component {
                                     </Table.Header>
                                     <Table.Body>
                                       {paginationProps.data.map((row, index1) => {
-                                        const includeCheckbox = props.showCheckbox(row);
                                         return (
                                           <Table.Row key={index1}>
-                                            {hasBulkActions && includeCheckbox !== false ? (
+                                            {hasBulkActions ? (
                                               <Table.Cell>
-                                                <Checkbox
-                                                  checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
-                                                  onChange={(e, { checked }) =>
-                                                    this.updateSelectedRows(
-                                                      { checked },
-                                                      row['_id'] || row['id'],
-                                                      paginationProps.rowCount
-                                                    )
-                                                  }
-                                                />
+                                                {props.showCheckbox(row) !== false ? (
+                                                  <Checkbox
+                                                    checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
+                                                    onChange={(e, { checked }) =>
+                                                      this.updateSelectedRows(
+                                                        { checked },
+                                                        row['_id'] || row['id'],
+                                                        paginationProps.rowCount
+                                                      )
+                                                    }
+                                                  />
+                                                ) : null}
                                               </Table.Cell>
                                             ) : null}
 
