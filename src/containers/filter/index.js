@@ -26,7 +26,7 @@ export default class FilterProvider extends PureComponent {
     const { selectedFilters: filters } = this.state;
     const { columns } = this.props;
     let filterToBeUpdated = filters[index];
-
+    //to change the predicate of all filters to the first predicate to match the query
     if (index === 1 && attribute === 'predicate') {
       filters.slice(1).forEach(element => (element.predicate = value));
     }
@@ -40,7 +40,7 @@ export default class FilterProvider extends PureComponent {
       filterToBeUpdated.label = currentColumn.headerName;
       filterToBeUpdated.attribute = currentColumn.field;
       filterToBeUpdated['value'] = undefined;
-
+      //picks the first query which matches this type
       const newQuery = ((filterOperators[filterToBeUpdated.type] || [])[0] || {}).value;
       if (newQuery) filterToBeUpdated.query = newQuery;
     }

@@ -53,7 +53,7 @@ const styles = {
     position: 'relative',
     top: '35px',
     marginLeft: '10px',
-    zIndex: 99999,
+    zIndex: 9,
     right: '15px',
     borderRadius: '3px',
   },

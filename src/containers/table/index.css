@@ -1,22 +1,28 @@
 .main-table_layout {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
 }
+/* table header fixed and scroller x and y */
 
-.main-table_layout .scrollable-table {
-  grid-column: 1/10;
-}
-
-/* .table-scroll {
-  float: left;
-}
-.tbody {
-  height: 400px;
-  overflow-y: auto;
-  width: 100%;
-}
-.table-scroll table {
+table {
   border-collapse: collapse;
   width: 100%;
-} */
+}
+th,
+td {
+  background: #fff;
+  padding: 8px 16px;
+}
+
+.tableFixHead {
+  overflow: auto;
+  max-height: calc(100vh - 1rem);
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+}
+
+.tableBody-scroll::-webkit-scrollbar {
+  width: 0;
+}

@@ -29,6 +29,5 @@
   padding: 10px;
   border: 1px solid #ddd;
   border-top: none;
-  grid-column: 1/10;
   box-sizing: border-box;
 }

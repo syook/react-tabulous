@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Select from 'react-select';
-import moment from 'moment';
 import { Popup, Button, Icon, Input, Checkbox } from 'semantic-ui-react';
 
 import { createPropertyOption } from '../utils';
@@ -9,6 +8,7 @@ import { findColumnOptions } from '../utils';
 import './filter.css';
 
 import DateTimeComponent from '../dateTime';
+import DateComponent from '../date';
 
 import { predicateOptions, filterOperators } from '../../constants';
 
@@ -27,9 +27,7 @@ const TableFilter = props => {
           style={{
             backgroundColor: selectedFilters ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
             color: '#fff',
-            gridArea: '1 / 2',
-            alignSelf: 'center',
-            marginLeft: '8px',
+            marginRight: '10px',
           }}>
           <Icon name="filter" /> {buttonText}
         </Button>
@@ -180,19 +178,22 @@ const InputCategories = props => {
           onChange={(e, { checked }) => props.updateSelectedFilters('value', checked, props.index)}
         />
       );
-    case 'Date':
+    case 'DateTime':
       return (
         <DateTimeComponent
           dateFormat="DD-MMM-YYYY"
-          value={
-            props.column.value && props.column.value instanceof moment
-              ? props.column.value
-              : moment(props.column.value || '', 'DD-MMM-YYYY hh:mm A')
-          }
+          value={props.column.value}
           onChange={date => props.updateSelectedFilters('value', date, props.index)}
         />
       );
-
+    case 'date':
+      return (
+        <DateComponent
+          dateFormat="DD-MMM-YYYY"
+          value={props.column.value}
+          onChange={date => props.updateSelectedFilters('value', date, props.index)}
+        />
+      );
     default:
       return null;
   }

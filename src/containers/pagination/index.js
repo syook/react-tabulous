@@ -60,13 +60,13 @@ export default class PaginationProvider extends PureComponent {
     this.setCurrentPage(+data.page || 1);
   };
 
-  handleDirectionClick = props => e => {
+  handleDirectionClick = e => {
     const { currentPage } = this.state;
     const direction = e.currentTarget.dataset['direction'];
     let change = 0;
     if (direction === 'LEFT' && currentPage > 1) {
       change = -1;
-    } else if (direction === 'RIGHT' && currentPage < props.numberOfPages) {
+    } else if (direction === 'RIGHT' && currentPage < this.state.numberOfPages) {
       change = 1;
     }
     if (change !== 0) {
@@ -83,11 +83,8 @@ export default class PaginationProvider extends PureComponent {
     const rowCount = (this.props.data || []).length;
 
     return (
-      <div
-        className="scrollable-table table-scroll"
-        id="table-scroll"
-        style={{ maxWidth: '100%', overflow: 'auto hidden', marginTop: '10px' }}>
-        <Table sortable celled padded className="tableStyle left aligned">
+      <div className="scrollable-table tableFixHead" style={{ maxWidth: '100%', marginTop: '10px' }}>
+        <Table sortable celled padded className="tableStyle left aligned table-fixed">
           <PaginationContext.Provider
             value={{ ...this.state, data, startIndex, rowCount, resetToFirstPage: this.resetToFirstPage }}>
             {children}

@@ -27,18 +27,3 @@ code {
 .paginationFooter .css-11unzgr > div {
   padding: 5px 10px !important;
 }
-
-.ui.button.dropdown.bulk-action {
-  background: #3496d8;
-  /* border: none; */
-  color: #fff;
-  margin-right: 10px;
-}
-
-/* .resizable {
-  resize: horizontal;
-  overflow: auto;
-  display: block;
-  min-width: 210px;
-  min-height: 50px;
-} */

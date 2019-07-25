@@ -2,7 +2,7 @@ import './headerSelector.css';
 import React from 'react';
 import { Button, Popup, List, Icon, Checkbox } from 'semantic-ui-react';
 
-const ColumnList = ({ columns, toggleAllColumns, toggleColumns, disabled }) => {
+const ColumnList = ({ columns, toggleAllColumns, toggleColumns }) => {
   return (
     <List key={`hide-selector-list`}>
       {(columns || []).map((column, index) => (
@@ -11,7 +11,6 @@ const ColumnList = ({ columns, toggleAllColumns, toggleColumns, disabled }) => {
             <Checkbox
               style={{ marginRight: 8 }}
               checked={column.isVisible}
-              disabled={disabled}
               onChange={(_e, { checked }) => toggleColumns(column.headerName, { checked })}
             />{' '}
             <span>{column.headerName}</span>
@@ -28,19 +27,20 @@ const ColumnList = ({ columns, toggleAllColumns, toggleColumns, disabled }) => {
   );
 };
 
-const HeaderSelector = ({ hiddenColumnsCount, columns, toggleColumns, toggleAllColumns, disabled }) => {
+const HeaderSelector = props => {
+  const hiddenColumnsCount = props.hiddenColumnCount;
   return (
-    <div style={{ textAlign: 'left', gridColumn: '1/2', gridRow: 1, alignSelf: 'center' }}>
+    <div style={{ textAlign: 'left', display: 'inline-block' }}>
       <Popup
         trigger={
           <Button
             size="small"
             icon
-            disabled={!columns.length}
             style={{
               background: hiddenColumnsCount ? '#3498DB' : 'rgb(109, 180, 226)',
               color: '#fff',
               padding: hiddenColumnsCount ? '0.78em 0.6em 0.78em' : '',
+              marginRight: '10px',
             }}>
             <Icon name="eye slash outline" />{' '}
             {hiddenColumnsCount === 1
@@ -52,10 +52,9 @@ const HeaderSelector = ({ hiddenColumnsCount, columns, toggleColumns, toggleAllC
         }
         content={
           <ColumnList
-            columns={columns || []}
-            toggleColumns={toggleColumns}
-            toggleAllColumns={toggleAllColumns}
-            disabled={disabled}
+            columns={props.columns || []}
+            toggleColumns={props.toggleColumns}
+            toggleAllColumns={props.toggleAllColumns}
           />
         }
         hoverable

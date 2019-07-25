@@ -46,7 +46,7 @@ export default class SearchProvider extends Component {
     const stateDataCount = (this.state.data || []).length;
 
     return (
-      <div style={{ textAlign: 'center' }}>
+      <div>
         <SearchContext.Provider value={{ ...this.state }}>
           <SearchComponent
             disabled={!mainDataCount}

@@ -1,15 +1,19 @@
-import './dateTime.css';
-import DateTime from 'react-datetime';
+// import './dateTime.css';
+import 'react-datepicker/dist/react-datepicker.css';
+
+import DatePicker from 'react-datepicker';
 import React from 'react';
 
 const DateTimeComponent = props => {
   return (
-    <DateTime
-      className="datatime_select"
-      closeOnSelect={true}
-      dateFormat={props.dateFormat}
-      value={props.value}
+    <DatePicker
+      selected={props.value}
       onChange={date => props.onChange(date)}
+      showTimeSelect
+      timeFormat="HH:mm"
+      timeIntervals={1}
+      dateFormat="MMMM d, yyyy h:mm aa"
+      timeCaption="time"
     />
   );
 };

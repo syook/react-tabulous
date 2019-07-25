@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import orderBy from 'lodash/orderBy';
 import { Checkbox, Table } from 'semantic-ui-react';
 
 import FilterProvider, { FilterContext } from '../filter';
@@ -98,13 +99,14 @@ class TableComponent extends Component {
               style={{
                 padding: '0 15px',
               }}>
-              <HeaderSelector
-                hiddenColumnCount={hiddenColumnCount}
-                columns={hidableColumns}
-                disabled={!hidableColumns.length}
-                toggleColumns={this.toggleColumns}
-                toggleAllColumns={this.toggleAllColumns}
-              />
+              {hidableColumns.length ? (
+                <HeaderSelector
+                  hiddenColumnCount={hiddenColumnCount}
+                  columns={hidableColumns}
+                  toggleColumns={this.toggleColumns}
+                  toggleAllColumns={this.toggleAllColumns}
+                />
+              ) : null}
               {hasBulkActions && this.state.selectedRows.length ? (
                 <BulkActionList bulkActions={props.bulkActionDefs} selectedRows={this.state.selectedRows} />
               ) : null}
@@ -117,11 +119,9 @@ class TableComponent extends Component {
                   {filterProps => (
                     <>
                       {this.props.children ? (
-                        <div style={{ gridColumn: '3/4', gridRow: '1/2', alignSelf: 'center' }}>
-                          {this.props.children}
-                        </div>
+                        <div style={{ display: 'inline-block' }}>{this.props.children}</div>
                       ) : null}
-                      <SortProvider data={filterProps.data || []}>
+                      <SortProvider data={orderBy(filterProps.data, ['name'], ['asc'])}>
                         <SortContext.Consumer>
                           {sortProps => (
                             <PaginationProvider
@@ -161,22 +161,21 @@ class TableComponent extends Component {
                                     </Table.Header>
                                     <Table.Body>
                                       {paginationProps.data.map((row, index1) => {
+                                        const includeCheckbox = props.showCheckbox(row);
                                         return (
                                           <Table.Row key={index1}>
-                                            {hasBulkActions ? (
+                                            {hasBulkActions && includeCheckbox !== false ? (
                                               <Table.Cell>
-                                                {props.showCheckbox(row) !== false ? (
-                                                  <Checkbox
-                                                    checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
-                                                    onChange={(e, { checked }) =>
-                                                      this.updateSelectedRows(
-                                                        { checked },
-                                                        row['_id'] || row['id'],
-                                                        paginationProps.rowCount
-                                                      )
-                                                    }
-                                                  />
-                                                ) : null}
+                                                <Checkbox
+                                                  checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
+                                                  onChange={(e, { checked }) =>
+                                                    this.updateSelectedRows(
+                                                      { checked },
+                                                      row['_id'] || row['id'],
+                                                      paginationProps.rowCount
+                                                    )
+                                                  }
+                                                />
                                               </Table.Cell>
                                             ) : null}
 

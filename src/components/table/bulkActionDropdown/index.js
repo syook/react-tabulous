@@ -8,7 +8,6 @@ const BulkActionList = props => {
     <Dropdown
       text={`Bulk Action (${(props.selectedRows || []).length} selected)`}
       button
-      style={{ gridColumn: '4/6', alignSelf: 'center' }}
       className="icon bulk-action right labeled">
       <Dropdown.Menu>
         {(props.bulkActions || [])
