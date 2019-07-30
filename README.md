@@ -91,17 +91,17 @@ actionConfig = [
 
 a. Available Column Options 
 
-| Command | Description | Type |
-| --- | --- | --- |
-| `headerName` | Name of Column to be shown in header | String |
-| `field` | field name as in the data | String |
-| `type` | type of the field | String |
-| `cell` | returns the value to be shown in the column cell| Function |
-| `isSortable` | is column sortable| Boolean |
-| `isSearchable` | is column searchable| Boolean |
-| `isFilterable` | is column filterable| Boolean |
-| `omitInHideList` | should the column be omitted in table and show/hide dropdown | Boolean |
-| `options` | array of options if the type is MultiSelect or Single Select | Boolean |
+| Command | Description | Type | isRequired | Default
+| --- | --- | --- | --- | --- |
+| `headerName` | Name of Column to be shown in header | String | true | 
+| `field` | field name as in the data | String | true | 
+| `type` | type of the field | String | true | 
+| `cell` | returns the value to be shown in the column cell| Function | true
+| `isSortable` | is column sortable| Boolean | false
+| `isSearchable` | is column searchable| Boolean | false
+| `isFilterable` | is column filterable| Boolean | false
+| `omitInHideList` | should the column be omitted in table and show/hide dropdown | Boolean | false
+| `options` | array of options if the type is MultiSelect or Single Select | Array | false | []
 
 
 b. Action Config Options : actions will be shown in action column in table
