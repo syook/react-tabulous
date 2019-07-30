@@ -130,5 +130,5 @@ c. Available Types
 `String` |  contains, does not contains, is, is not, is empty, is not empty  | 
 `Date` |  is, is not, is after, is before, is empty, is not empty | 
 `Number` |  =, =/ , < , <=, > , >= , is empty, is not empty  | 
-`SingleSelect` |  has any of, has none of, is empty, is not empty | 
-`MultiSelect` |  is, is not, is empty, is not empty,  | 
+`SingleSelect` |  has any of, has none of, is empty, is not empty | options: []
+`MultiSelect` |  is, is not, is empty, is not empty,  | options: []
