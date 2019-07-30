@@ -102,3 +102,23 @@ a. Available Column Options
 | `isFilterable` | is column filterable| Boolean |
 | `omitInHideList` | should the column be omitted in table and show/hide dropdown | Boolean |
 | `options` | array of options if the type is MultiSelect or Single Select | Boolean |
+
+
+b. Action Config Options : actions will be shown in action column in table
+
+| Command | Description | Type |
+| --- | --- | --- |
+| `isVisible` | Function which returns if the action is visible or not | Function |
+  `isDisabled` | Function which returns if the action is disabled or not | Function |
+  `function` | Function to be executed on action event | Function |
+  `icon` | Icon name to represent the action | Function |
+  `name` | Name of action | string
+  `color` | color of action component | string
+  `iconColor` | color of icon | string
+  `size` | size of icon | string
+  `inverted` | to enable inverted behaviour of action element | function 
+  `iconInverted` | to enable inverted behaviour of icon | boolean
+  `className` | any custom classname to be applied for action element | string
+  `iconClassName` | any custom classname to be applied for icon| string
+  `hasCustomComponent` | if the action is any custom component other than button | boolean
+  `customComponent` | the component that needs to returned if the action has custom component | function 
