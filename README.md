@@ -91,7 +91,7 @@ actionConfig = [
 
 a. Available Column Options 
 
-| Command | Description | Type | isRequired | Default
+| Option | Description | Type | isRequired | Default
 | --- | --- | --- | --- | --- |
 | `headerName` | Name of Column to be shown in header | String | true | 
 | `field` | field name as in the data | String | true | 
@@ -106,7 +106,7 @@ a. Available Column Options
 
 b. Action Config Options : actions will be shown in action column in table
 
-| Command | Description | Type |
+| Option | Description | Type |
 | --- | --- | --- |
 | `isVisible` | Function which returns if the action is visible or not | Function |
   `isDisabled` | Function which returns if the action is disabled or not | Function |
@@ -122,3 +122,9 @@ b. Action Config Options : actions will be shown in action column in table
   `iconClassName` | any custom classname to be applied for icon| string
   `hasCustomComponent` | if the action is any custom component other than button | boolean
   `customComponent` | the component that needs to returned if the action has custom component | function 
+
+c. Available Types
+
+| Type | Filter queries available | Extra props needed | 
+| --- | --- | --- |
+`string` |  contains, does not contains, is, is not, is empty, is not empty,  | 
