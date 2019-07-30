@@ -88,3 +88,10 @@ actionConfig = [
 
 ...
 ```
+
+Available Column Options 
+
+| Command | Description |
+| --- | --- |
+| `heading` | Name of Column to be shown in header |
+| `column` | Column name as in the data |
