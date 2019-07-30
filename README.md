@@ -89,7 +89,7 @@ actionConfig = [
 ...
 ```
 
-Available Column Options 
+a. Available Column Options 
 
 | Command | Description | Type |
 | --- | --- | --- |
@@ -100,3 +100,5 @@ Available Column Options
 | `isSortable` | is column sortable| Boolean |
 | `isSearchable` | is column searchable| Boolean |
 | `isFilterable` | is column filterable| Boolean |
+| `omitInHideList` | should the column be omitted in table and show/hide dropdown | Boolean |
+| `options` | array of options if the type is MultiSelect or Single Select | Boolean |
