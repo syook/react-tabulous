@@ -1,6 +1,6 @@
 {
   "name": "syook-table-v5",
-  "version": "0.1.41",
+  "version": "0.1.42",
   "description": "Table made easy",
   "main": "lib/syook-table.min.js",
   "files": [
@@ -71,6 +71,7 @@
     "webpack-cli": "^3.3.2"
   },
   "dependencies": {
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "react-datepicker": "^2.8.0"
   }
 }

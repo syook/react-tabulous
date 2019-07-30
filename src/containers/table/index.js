@@ -164,8 +164,8 @@ class TableComponent extends Component {
                                         const includeCheckbox = props.showCheckbox(row);
                                         return (
                                           <Table.Row key={index1}>
-                                            {hasBulkActions && includeCheckbox !== false ? (
-                                              <Table.Cell>
+                                            <Table.Cell>
+                                              {hasBulkActions && includeCheckbox !== false ? (
                                                 <Checkbox
                                                   checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
                                                   onChange={(e, { checked }) =>
@@ -176,9 +176,8 @@ class TableComponent extends Component {
                                                     )
                                                   }
                                                 />
-                                              </Table.Cell>
-                                            ) : null}
-
+                                              ) : null}
+                                            </Table.Cell>
                                             <Table.Cell>
                                               <label>{paginationProps.startIndex + index1 + 1}</label>
                                             </Table.Cell>

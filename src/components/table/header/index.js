@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Table } from 'semantic-ui-react';
 
 const TableHeader = ({ column, index, sortProps, defaultSort, disabled }) => {
-  const { isSortable, isResizable = false, headerName, field } = column;
+  const { isSortable, isResizable = false, headerName, headerMessage, headerMessageColor, field } = column;
 
   return (
     <Table.HeaderCell
@@ -22,10 +22,13 @@ const TableHeader = ({ column, index, sortProps, defaultSort, disabled }) => {
             })
           : undefined
       }>
-      <span>{headerName}</span>
-      {isSortable && !disabled && sortProps.columnName !== field && defaultSort !== column.headerName && (
-        <Icon name="sort" />
-      )}
+      <span>
+        {headerName}
+        {isSortable && !disabled && sortProps.columnName !== field && defaultSort !== column.headerName && (
+          <Icon name="sort" />
+        )}
+      </span>
+      <p style={{ color: headerMessageColor || 'blueviolet' }}> {headerMessage} </p>
     </Table.HeaderCell>
   );
 };
