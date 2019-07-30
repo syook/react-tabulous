@@ -91,12 +91,12 @@ actionConfig = [
 
 Available Column Options 
 
-| Command | Description |
-| --- | --- |
-| `headerName` | Name of Column to be shown in header |
-| `field` | field name as in the data |
-| `type` | type of the field |
-| `cell` | function, which returns the value to be shown in the column cell|
-| `isSortable` | boolean if the column is sortable|
-| `isSearchable` | boolean if the column is searchable|
-| `isFilterable` | boolean if the column is filterable|
+| Command | Description | Type |
+| --- | --- | --- |
+| `headerName` | Name of Column to be shown in header | String |
+| `field` | field name as in the data | String |
+| `type` | type of the field | String |
+| `cell` | returns the value to be shown in the column cell| Function |
+| `isSortable` | is column sortable| Boolean |
+| `isSearchable` | is column searchable| Boolean |
+| `isFilterable` | is column filterable| Boolean |
