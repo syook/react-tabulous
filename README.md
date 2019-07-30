@@ -93,5 +93,10 @@ Available Column Options
 
 | Command | Description |
 | --- | --- |
-| `heading` | Name of Column to be shown in header |
-| `column` | Column name as in the data |
+| `headerName` | Name of Column to be shown in header |
+| `field` | field name as in the data |
+| `type` | type of the field |
+| `cell` | function, which returns the value to be shown in the column cell|
+| `isSortable` | boolean if the column is sortable|
+| `isSearchable` | boolean if the column is searchable|
+| `isFilterable` | boolean if the column is filterable|
