@@ -3,9 +3,16 @@ import './actions.css';
 import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 
-const TableActions = ({ actions, row }) => {
+const TableActions = ({ actions, row, actionOnHover }) => {
   return (
-    <div className="table-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div
+      className={`table-actions ${actionOnHover ? 'onHoverActions' : null}`}
+      style={{
+        display: actionOnHover ? 'none' : 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        whiteSpace: 'nowrap',
+      }}>
       {(actions || []).map((action, index) => {
         if (typeof action.isVisible === 'function' && !action.isVisible(row)) {
           return null;

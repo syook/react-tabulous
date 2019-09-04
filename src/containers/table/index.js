@@ -135,7 +135,7 @@ class TableComponent extends Component {
                                     <Table.Header style={{ textAlign: 'center' }}>
                                       <Table.Row>
                                         {hasBulkActions ? (
-                                          <Table.HeaderCell>
+                                          <Table.HeaderCell className="bulkAction-check" style={{ zIndex: 5 }}>
                                             <Checkbox
                                               checked={this.state.bulkSelect}
                                               disabled={!paginationProps.rowCount}
@@ -156,14 +156,18 @@ class TableComponent extends Component {
                                             disabled: !paginationProps.rowCount,
                                           })
                                         )}
-                                        {props.includeAction ? <Table.HeaderCell> Actions </Table.HeaderCell> : null}
+                                        {!props.actionOnHover ? (
+                                          props.includeAction ? (
+                                            <Table.HeaderCell style={{ zIndex: 5 }}>Actions</Table.HeaderCell>
+                                          ) : null
+                                        ) : null}
                                       </Table.Row>
                                     </Table.Header>
                                     <Table.Body>
                                       {paginationProps.data.map((row, index1) => {
                                         const includeCheckbox = props.showCheckbox(row);
                                         return (
-                                          <Table.Row key={index1}>
+                                          <Table.Row key={index1} className="main-table-row">
                                             <Table.Cell>
                                               {hasBulkActions && includeCheckbox !== false ? (
                                                 <Checkbox
@@ -186,8 +190,12 @@ class TableComponent extends Component {
                                               TableCell({ column, index2, data: paginationProps, row })
                                             )}
                                             {props.includeAction ? (
-                                              <Table.Cell style={{ whiteSpace: 'nowrap' }}>
-                                                <TableActions actions={props.actionDefs} row={row} />
+                                              <Table.Cell className="table-action_buttons">
+                                                <TableActions
+                                                  actionOnHover={props.actionOnHover}
+                                                  actions={props.actionDefs}
+                                                  row={row}
+                                                />
                                               </Table.Cell>
                                             ) : null}
                                           </Table.Row>

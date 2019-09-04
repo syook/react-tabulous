@@ -27,3 +27,38 @@ code {
 .paginationFooter .css-11unzgr > div {
   padding: 5px 10px !important;
 }
+
+.ui.celled.table tr td {
+  padding: 10px 10px !important;
+  color: #26547c;
+  border-bottom: 1px solid rgb(241, 245, 247) !important;
+}
+
+.tableStyle thead tr {
+  z-index: 4;
+}
+
+.main-table-row {
+  position: relative;
+}
+
+.ui.celled.table tr td.table-action_buttons {
+  width: 0;
+  position: relative;
+  padding: 0 !important;
+}
+
+.table-actions.onHoverActions {
+  z-index: 1;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  background-color: #fff;
+}
+
+.ui.celled.table tbody tr:hover .table-actions {
+  cursor: pointer;
+  display: flex !important;
+}
