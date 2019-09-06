@@ -134,8 +134,8 @@ class TableComponent extends Component {
                                   <>
                                     <Table.Header style={{ textAlign: 'center' }}>
                                       <Table.Row>
-                                        {hasBulkActions ? (
-                                          <Table.HeaderCell className="bulkAction-check" style={{ zIndex: 5 }}>
+                                        <Table.HeaderCell className="bulkAction-check" style={{ zIndex: 5 }}>
+                                          {hasBulkActions ? (
                                             <Checkbox
                                               checked={this.state.bulkSelect}
                                               disabled={!paginationProps.rowCount}
@@ -144,9 +144,9 @@ class TableComponent extends Component {
                                                 this.enableBulkSelect({ checked }, filterProps.data)
                                               }
                                             />
-                                          </Table.HeaderCell>
-                                        ) : null}
-                                        <Table.HeaderCell>S.No </Table.HeaderCell>
+                                          ) : null}
+                                          <span> S.No </span>
+                                        </Table.HeaderCell>
                                         {visibleColumns.map((column, index) =>
                                           TableHeader({
                                             column,
@@ -171,6 +171,7 @@ class TableComponent extends Component {
                                             <Table.Cell>
                                               {hasBulkActions && includeCheckbox !== false ? (
                                                 <Checkbox
+                                                  className="bulkAction_check"
                                                   checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
                                                   onChange={(e, { checked }) =>
                                                     this.updateSelectedRows(
@@ -181,8 +182,6 @@ class TableComponent extends Component {
                                                   }
                                                 />
                                               ) : null}
-                                            </Table.Cell>
-                                            <Table.Cell>
                                               <label>{paginationProps.startIndex + index1 + 1}</label>
                                             </Table.Cell>
 
