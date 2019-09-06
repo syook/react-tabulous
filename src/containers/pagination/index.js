@@ -83,7 +83,9 @@ export default class PaginationProvider extends PureComponent {
     const rowCount = (this.props.data || []).length;
 
     return (
-      <div className="scrollable-table tableFixHead" style={{ maxWidth: '100%', marginTop: '10px' }}>
+      <div
+        className={`scrollable-table tableFixHead ${this.props.tableScroll ? 'shouldSroll' : ''}`}
+        style={{ maxWidth: '100%', marginTop: '10px' }}>
         <Table sortable celled padded className="tableStyle left aligned table-fixed">
           <PaginationContext.Provider
             value={{ ...this.state, data, startIndex, rowCount, resetToFirstPage: this.resetToFirstPage }}>
