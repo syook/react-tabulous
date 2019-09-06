@@ -59,6 +59,7 @@ const HeaderSelector = props => {
         }
         hoverable
         on="click"
+        hideOnScroll
         position="bottom center"
         className="selectColumns-btn"
       />

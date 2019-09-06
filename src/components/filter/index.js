@@ -34,6 +34,7 @@ const TableFilter = props => {
       }
       content={<FilterDiv {...props} filtersSelected={!!selectedFilters} />}
       on="click"
+      hideOnScroll
       position="bottom center"
     />
   );
