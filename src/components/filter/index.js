@@ -34,7 +34,7 @@ const TableFilter = props => {
       }
       content={<FilterDiv {...props} filtersSelected={!!selectedFilters} />}
       on="click"
-      hideOnScroll
+      pinned
       position="bottom center"
     />
   );
