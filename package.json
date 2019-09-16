@@ -1,6 +1,6 @@
 {
   "name": "syook-table-v5",
-  "version": "0.1.46",
+  "version": "0.1.48",
   "description": "Table made easy",
   "main": "lib/syook-table.min.js",
   "files": [
