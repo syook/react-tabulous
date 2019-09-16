@@ -108,7 +108,7 @@ const filterData = ({ data, attribute, value, query, type }) => {
   return data.filter(d =>
     queryCondition({
       attrValue: d[attribute] || '',
-      searchValue: value || '',
+      searchValue: value.trim() || '',
       query,
       attributeType: type || '',
     })
