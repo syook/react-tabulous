@@ -15,7 +15,11 @@ td {
 
 .shouldSroll {
   max-height: calc(100vh - 1rem);
-  overflow: auto;
+  overflow-y: auto;
+}
+
+.tableFixHead {
+  overflow-x: auto;
 }
 
 .tableFixHead thead th {
