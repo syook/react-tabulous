@@ -84,7 +84,7 @@ export default class PaginationProvider extends PureComponent {
 
     return (
       <div
-        className={`scrollable-table tableFixHead ${this.props.tableScroll ? 'shouldSroll' : ''}`}
+        className={`scrollable-table tableFixHead ${this.props.tableScroll ? 'shouldSroll' : null}`}
         style={{ maxWidth: '100%', marginTop: '10px' }}>
         <Table sortable celled padded className="tableStyle left aligned table-fixed">
           <PaginationContext.Provider

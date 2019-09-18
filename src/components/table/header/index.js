@@ -6,6 +6,7 @@ const TableHeader = ({ column, index, sortProps, defaultSort, disabled }) => {
 
   return (
     <Table.HeaderCell
+      style={{ minWidth: 200, whiteSpace: 'normal' }}
       sorted={
         (isSortable && !disabled && sortProps.columnName && sortProps.columnName === field) ||
         defaultSort === column.headerName
