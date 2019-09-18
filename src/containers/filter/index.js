@@ -54,7 +54,7 @@ export default class FilterProvider extends PureComponent {
   addFilter = () => {
     const { columns } = this.props;
 
-    const firstFilterableAttribute = columns.find(d => d.isFilterable && d.type === 'String');
+    const firstFilterableAttribute = columns.find(d => d.isFilterable);
     const filters = this.state.selectedFilters;
     let newFilter = {};
     let predicate = 'Where';
