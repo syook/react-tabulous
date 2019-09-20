@@ -169,22 +169,33 @@ class TableComponent extends Component {
                                         return (
                                           <Table.Row key={index1} className="main-table-row">
                                             <Table.Cell>
-                                              {hasBulkActions && includeCheckbox !== false ? (
-                                                <Checkbox
-                                                  className="bulkAction_check"
-                                                  checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
-                                                  onChange={(e, { checked }) =>
-                                                    this.updateSelectedRows(
-                                                      { checked },
-                                                      row['_id'] || row['id'],
-                                                      paginationProps.rowCount
-                                                    )
-                                                  }
-                                                />
-                                              ) : null}
-                                              <label style={{ marginLeft: includeCheckbox !== false ? 10 : '25px' }}>
-                                                {paginationProps.startIndex + index1 + 1}
-                                              </label>
+                                              <div
+                                                style={{
+                                                  display: 'flex',
+                                                  justifyContent:
+                                                    includeCheckbox !== false ? 'flex-end' : 'space-between',
+                                                }}>
+                                                {hasBulkActions && includeCheckbox !== false ? (
+                                                  <Checkbox
+                                                    className="bulkAction_check"
+                                                    checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
+                                                    onChange={(e, { checked }) =>
+                                                      this.updateSelectedRows(
+                                                        { checked },
+                                                        row['_id'] || row['id'],
+                                                        paginationProps.rowCount
+                                                      )
+                                                    }
+                                                  />
+                                                ) : null}
+                                                <div
+                                                  style={{
+                                                    textAlign: 'right',
+                                                    marginRight: '10px',
+                                                  }}>
+                                                  {paginationProps.startIndex + index1 + 1}
+                                                </div>
+                                              </div>
                                             </Table.Cell>
 
                                             {visibleColumns.map((column, index2) =>

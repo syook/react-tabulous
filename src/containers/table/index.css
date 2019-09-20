@@ -32,8 +32,8 @@ td {
   width: 0;
 }
 .ui.fitted.checkbox.bulkAction_check {
-  min-height: 12px;
-  margin-right: 10px;
+  align-self: flex-end;
+  margin-right: 30px;
 }
 
 .bulkAction-check .ui.fitted.checkbox {
