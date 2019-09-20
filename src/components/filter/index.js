@@ -18,7 +18,6 @@ const TableFilter = props => {
 
   return (
     <Popup
-      size="small"
       className="filter-popUp"
       trigger={
         <Button
@@ -34,7 +33,9 @@ const TableFilter = props => {
       }
       content={<FilterDiv {...props} filtersSelected={!!selectedFilters} />}
       on="click"
-      pinned
+      flowing
+      positionFixed
+      // pinned
       position="bottom center"
     />
   );
