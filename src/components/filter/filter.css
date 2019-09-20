@@ -4,11 +4,6 @@
   min-width: 200px;
 }
 
-.filter-wrapper .text-input .css-1pcexqc-container {
-  min-width: 150px;
-  max-width: 150px;
-}
-
 .filter-wrapper .text-input .css-1pcexqc-container .css-16pqwjk-indicatorContainer {
   padding: 2px;
 }
@@ -46,6 +41,11 @@
 }
 .filter-popUp::before {
   display: none;
+}
+
+.filter-wrapper .css-ssi0ig-container,
+.filter-wrapper .css-1pcexqc-container {
+  max-width: 100px !important;
 }
 
 .ui.button:disabled {

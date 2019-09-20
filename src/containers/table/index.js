@@ -182,7 +182,9 @@ class TableComponent extends Component {
                                                   }
                                                 />
                                               ) : null}
-                                              <label>{paginationProps.startIndex + index1 + 1}</label>
+                                              <label style={{ marginLeft: includeCheckbox !== false ? 10 : '25px' }}>
+                                                {paginationProps.startIndex + index1 + 1}
+                                              </label>
                                             </Table.Cell>
 
                                             {visibleColumns.map((column, index2) =>
