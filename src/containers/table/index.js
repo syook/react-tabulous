@@ -172,8 +172,7 @@ class TableComponent extends Component {
                                               <div
                                                 style={{
                                                   display: 'flex',
-                                                  justifyContent:
-                                                    includeCheckbox !== false ? 'flex-end' : 'space-between',
+                                                  justifyContent: 'space-between',
                                                 }}>
                                                 {hasBulkActions && includeCheckbox !== false ? (
                                                   <Checkbox
@@ -191,7 +190,8 @@ class TableComponent extends Component {
                                                 <div
                                                   style={{
                                                     textAlign: 'right',
-                                                    marginRight: '10px',
+                                                    marginLeft: 'auto',
+                                                    marginRight: '5px',
                                                   }}>
                                                   {paginationProps.startIndex + index1 + 1}
                                                 </div>

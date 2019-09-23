@@ -33,7 +33,6 @@ td {
 }
 .ui.fitted.checkbox.bulkAction_check {
   align-self: flex-end;
-  margin-right: 30px;
 }
 
 .bulkAction-check .ui.fitted.checkbox {
