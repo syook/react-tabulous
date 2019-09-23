@@ -6,7 +6,7 @@ import { Button, Icon } from 'semantic-ui-react';
 const TableActions = ({ actions, row, actionOnHover }) => {
   return (
     <div
-      className={`table-actions ${actionOnHover ? 'onHoverActions' : null}`}
+      className={`table-actions ${actionOnHover ? 'onHoverActions' : ''}`}
       style={{
         display: actionOnHover ? 'none' : 'flex',
         alignItems: 'center',
