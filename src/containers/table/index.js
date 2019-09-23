@@ -167,12 +167,13 @@ class TableComponent extends Component {
                                       {paginationProps.data.map((row, index1) => {
                                         const includeCheckbox = props.showCheckbox(row);
                                         return (
-                                          <Table.Row key={index1} className="main-table-row">
+                                          <Table.Row key={`column-${index1}`} className="main-table-row">
                                             <Table.Cell>
                                               <div
                                                 style={{
                                                   display: 'flex',
-                                                  justifyContent: 'space-between',
+                                                  justifyContent:
+                                                    includeCheckbox !== false ? 'flex-end' : 'space-between',
                                                 }}>
                                                 {hasBulkActions && includeCheckbox !== false ? (
                                                   <Checkbox
@@ -190,8 +191,7 @@ class TableComponent extends Component {
                                                 <div
                                                   style={{
                                                     textAlign: 'right',
-                                                    marginLeft: 'auto',
-                                                    marginRight: '5px',
+                                                    marginRight: '10px',
                                                   }}>
                                                   {paginationProps.startIndex + index1 + 1}
                                                 </div>
