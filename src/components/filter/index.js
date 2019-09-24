@@ -35,8 +35,7 @@ const TableFilter = props => {
       on="click"
       flowing
       positionFixed
-      // pinned
-      position="bottom center"
+      position="bottom left"
     />
   );
 };
