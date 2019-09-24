@@ -1,6 +1,6 @@
 {
-  "name": "react-tabulous",
-  "version": "0.0.4",
+  "name": "@syook/react-tabulous",
+  "version": "0.1.0",
   "description": "Terrifically fabulous React Table",
   "main": "lib/syook-table.min.js",
   "files": [
@@ -14,6 +14,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/syook/syook-table.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "Syook",
   "bugs": {
