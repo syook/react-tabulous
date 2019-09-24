@@ -58,7 +58,8 @@ const HeaderSelector = props => {
           />
         }
         on="click"
-        positionFixed
+        pinned
+        // positionFixed
         position="bottom center"
         className="selectColumns-btn"
       />
