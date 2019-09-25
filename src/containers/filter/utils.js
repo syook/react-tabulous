@@ -40,6 +40,7 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
         return attrValue && isEqualDate(attrValue, searchValue);
       }
       if (attributeType === 'singleselect') {
+        console.log({ searchValue, attrValue });
         return (searchValue || [])[0] && isEqual(attrValue, searchValue[0]);
       }
       if (attributeType === 'boolean') {
@@ -104,11 +105,19 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
   }
 };
 
+const findSearchValue = (type, value) => {
+  if (type === 'String') {
+    return value ? value.trim() : '';
+  } else {
+    return value;
+  }
+};
+
 const filterData = ({ data, attribute, value, query, type }) => {
   return data.filter(d =>
     queryCondition({
       attrValue: d[attribute] || '',
-      searchValue: type === 'String' && value ? value.trim() : '',
+      searchValue: findSearchValue(type, value),
       query,
       attributeType: type || '',
     })
