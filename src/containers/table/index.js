@@ -204,8 +204,7 @@ class TableComponent extends Component {
                                                 <div
                                                   style={{
                                                     textAlign: 'right',
-                                                    marginLeft: 'auto',
-                                                    marginRight: '5px',
+                                                    margin: '0 auto',
                                                   }}>
                                                   {paginationProps.startIndex + index1 + 1}
                                                 </div>
