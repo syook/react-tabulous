@@ -1,6 +1,6 @@
 {
   "name": "@syook/react-tabulous",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Terrifically fabulous React Table",
   "main": "lib/syook-table.min.js",
   "files": [
