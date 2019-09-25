@@ -34,8 +34,3 @@ td {
 .ui.fitted.checkbox.bulkAction_check {
   align-self: flex-end;
 }
-
-.bulkAction-check .ui.fitted.checkbox {
-  min-height: 14px;
-  margin-right: 10px;
-}

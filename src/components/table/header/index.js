@@ -23,13 +23,11 @@ const TableHeader = ({ column, index, sortProps, defaultSort, disabled }) => {
             })
           : undefined
       }>
-      <span>
-        {headerName}
-        {isSortable && !disabled && sortProps.columnName !== field && defaultSort !== column.headerName && (
-          <Icon name="sort" />
-        )}
-      </span>
-      <p style={{ color: headerMessageColor || 'blueviolet' }}> {headerMessage} </p>
+      {headerName}
+      {isSortable && !disabled && sortProps.columnName !== field && defaultSort !== column.headerName && (
+        <Icon name="sort" />
+      )}{' '}
+      <p style={{ color: headerMessageColor || 'blueviolet', display: 'inline-block' }}> {headerMessage} </p>
     </Table.HeaderCell>
   );
 };

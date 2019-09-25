@@ -135,17 +135,31 @@ class TableComponent extends Component {
                                     <Table.Header style={{ textAlign: 'center' }}>
                                       <Table.Row>
                                         <Table.HeaderCell className="bulkAction-check" style={{ zIndex: 5 }}>
-                                          {hasBulkActions ? (
-                                            <Checkbox
-                                              checked={this.state.bulkSelect}
-                                              disabled={!paginationProps.rowCount}
-                                              indeterminate={this.state.indeterminateSelect}
-                                              onChange={(e, { checked }) =>
-                                                this.enableBulkSelect({ checked }, filterProps.data)
-                                              }
-                                            />
-                                          ) : null}
-                                          <span> S.No </span>
+                                          <div
+                                            style={{
+                                              display: 'flex',
+                                              justifyContent: 'space-between',
+                                              alignItems: 'center',
+                                              minWidth: '70px',
+                                            }}>
+                                            {hasBulkActions ? (
+                                              <Checkbox
+                                                checked={this.state.bulkSelect}
+                                                disabled={!paginationProps.rowCount}
+                                                indeterminate={this.state.indeterminateSelect}
+                                                onChange={(e, { checked }) =>
+                                                  this.enableBulkSelect({ checked }, filterProps.data)
+                                                }
+                                              />
+                                            ) : null}
+                                            <div
+                                              style={{
+                                                textAlign: 'right',
+                                                margin: '0 auto',
+                                              }}>
+                                              S.No
+                                            </div>
+                                          </div>
                                         </Table.HeaderCell>
                                         {visibleColumns.map((column, index) =>
                                           TableHeader({
