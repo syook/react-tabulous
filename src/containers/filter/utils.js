@@ -1,6 +1,5 @@
-import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-
+import isEmpty from 'lodash/isEmpty';
 // import moment from 'moment';
 // import startOfMinute from 'date-fns/startOfMinute';
 
@@ -18,17 +17,6 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
     attrValue = attrValue ? startOfMinute(new Date(attrValue)) : '';
     searchValue = searchValue ? startOfMinute(new Date(searchValue)) : '';
   }
-  // moment-js
-  // if (attributeType === 'date') {
-  //   attrValue =
-  //     attrValue && attrValue instanceof moment
-  //       ? attrValue.startOf('minute')
-  //       : moment(attrValue || '').startOf('minute');
-  //   searchValue =
-  //     searchValue && searchValue instanceof moment
-  //       ? searchValue.startOf('minute')
-  //       : moment(searchValue || '').startOf('minute');
-  // }
 
   switch (query) {
     case 'contains':
@@ -40,7 +28,7 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
         return attrValue && isEqualDate(attrValue, searchValue);
       }
       if (attributeType === 'singleselect') {
-        console.log({ searchValue, attrValue });
+        if ((searchValue || [])[0] === 0) return isEqual(attrValue, searchValue[0]);
         return (searchValue || [])[0] && isEqual(attrValue, searchValue[0]);
       }
       if (attributeType === 'boolean') {
@@ -52,15 +40,16 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
         return attrValue && !isEqualDate(attrValue, searchValue);
       }
       if (attributeType === 'singleselect') {
+        if ((searchValue || [])[0] === 0) return isEqual(attrValue, searchValue[0]);
         return (searchValue || [])[0] && !isEqual(attrValue, searchValue[0]);
       }
       return attrValue && !isEqual(attrValue, searchValue);
     case 'is empty':
       if (attributeType === 'date') return !attrValue;
-      return isEmpty(attrValue);
+      return attrValue === 0 ? false : isEmpty(attrValue.toString());
     case 'is not empty':
       if (attributeType === 'date') return !!attrValue;
-      return !isEmpty(attrValue);
+      return attrValue === 0 ? true : isEmpty(attrValue.toString());
 
     // Date
     case 'is before':
@@ -113,10 +102,15 @@ const findSearchValue = (type, value) => {
   }
 };
 
+const findAttrValue = (d, attribute) => {
+  if (d[attribute] === 0) return d[attribute];
+  return d[attribute] || '';
+};
+
 const filterData = ({ data, attribute, value, query, type }) => {
   return data.filter(d =>
     queryCondition({
-      attrValue: d[attribute] || '',
+      attrValue: findAttrValue(d, attribute),
       searchValue: findSearchValue(type, value),
       query,
       attributeType: type || '',
@@ -148,3 +142,15 @@ export const loopFilters = (data, filters) => {
       return [];
   }
 };
+
+// moment-js
+// if (attributeType === 'date') {
+//   attrValue =
+//     attrValue && attrValue instanceof moment
+//       ? attrValue.startOf('minute')
+//       : moment(attrValue || '').startOf('minute');
+//   searchValue =
+//     searchValue && searchValue instanceof moment
+//       ? searchValue.startOf('minute')
+//       : moment(searchValue || '').startOf('minute');
+// }
