@@ -13,6 +13,7 @@ import HeaderSelector from '../../components/table/headerSelector';
 import TableActions from '../../components/table/actions';
 import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
+import WoStatus from '../../components/woStatus/woStatus';
 import './index.css';
 
 class TableComponent extends Component {
@@ -187,6 +188,8 @@ class TableComponent extends Component {
                                                 style={{
                                                   display: 'flex',
                                                   justifyContent: 'space-between',
+                                                  flexDirection: props.showWoStatus ? 'row-reverse' : null,
+                                                  alignItems: 'baseline',
                                                 }}>
                                                 {hasBulkActions && includeCheckbox !== false ? (
                                                   <Checkbox
@@ -201,6 +204,19 @@ class TableComponent extends Component {
                                                     }
                                                   />
                                                 ) : null}
+                                                {props.showWoStatus ? (
+                                                  <WoStatus
+                                                    IconName="check"
+                                                    IconColor="green"
+                                                    WoStatus="Ok"
+                                                    content="Workorder is completed with status Ok"
+                                                  />
+                                                ) : // <WoStatus
+                                                //   IconName="clock"
+                                                //   IconColor="orange"
+                                                //   content="Workorder is completed with status Not Ok"
+                                                // />
+                                                null}
                                                 <div
                                                   style={{
                                                     textAlign: 'right',
