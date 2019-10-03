@@ -205,7 +205,7 @@ class TableComponent extends Component {
                                                   />
                                                 ) : null}
                                                 {props.showWoStatus ? (
-                                                  <WoStatus showWorkOrderStatus={props.showWoStatus} />
+                                                  <WoStatus showWorkOrderStatus={props.showWoStatus(row)} />
                                                 ) : null}
                                                 <div
                                                   style={{
