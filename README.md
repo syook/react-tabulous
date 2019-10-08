@@ -151,3 +151,10 @@ actionConfig = [
 
 ...
 ```
+
+## Contributing Guidelines
+Please refer [CONTRIBUTING.md](https://github.com/syook/syook-table/blob/master/CONTRIBUTING.md)
+
+## License
+
+[MIT License](https://github.com/syook/syook-table/blob/master/LICENSE.md)
