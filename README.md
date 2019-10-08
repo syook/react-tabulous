@@ -1,6 +1,6 @@
 # Syook-Table 🎉
 
-## Instalation
+## Installation
 To use in your own project, install it via npm package.
 
 `npm i syook-table-v5`
@@ -9,10 +9,9 @@ Or you can clone and build it.
 
 `git clone git@github.com:syook/syook-table.git`
 
-`npm run builb`
+`npm run build`
 
 The files will be under `./lib` folder.
-
 
 
 ## Options
