@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 
-import TableFilter from './tableFilter';
+import TableFilter from './table-filter';
 
 import { loopFilters } from './utils';
 
