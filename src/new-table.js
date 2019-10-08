@@ -1,19 +1,19 @@
 import { Checkbox, Icon, Label, Table } from 'semantic-ui-react';
 import React, { Component } from 'react';
 
-import BulkActionList from './bulkActionDropdown';
-import HeaderSelector from './headerSelector';
+import BulkActionList from './bulk-action-dropdown';
+import HeaderSelector from './header-selector';
 import { PaginationContext } from './pagination';
 import PaginationProvider from './pagination';
-import { SearchContext } from './searchProvider';
-import SearchProvider from './searchProvider';
+import { SearchContext } from './search-provider';
+import SearchProvider from './search-provider';
 
-import { FilterContext } from './filterProvider';
-import FilterProvider from './filterProvider';
+import { FilterContext } from './filter-provider';
+import FilterProvider from './filter-provider';
 
 import { SortContext } from './sort';
 import SortProvider from './sort';
-import TableActions from './tableActions';
+import TableActions from './table-actions';
 
 class TableComponent extends Component {
   constructor(props) {
@@ -88,7 +88,7 @@ class TableComponent extends Component {
                   toggleColumns={this.toggleColumns}
                 />
                 {hasBulkActions && this.state.selectedRows.length ? (
-                  <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
+                  <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows}/>
                 ) : null}
                 <FilterProvider
                   data={searchProps.data || []}
@@ -97,7 +97,7 @@ class TableComponent extends Component {
                   <FilterContext.Consumer>
                     {filterProps => (
                       <>
-                        <div id="custom-data-holder" style={{ textAlign: 'right' }} />
+                        <div id="custom-data-holder" style={{ textAlign: 'right' }}/>
                         <SortProvider data={filterProps.data || []}>
                           <SortContext.Consumer>
                             {sortProps =>
@@ -125,7 +125,7 @@ class TableComponent extends Component {
                                                 ) : null}{' '}
                                               </Table.HeaderCell>
                                               {visibleColumns.map((column, index) =>
-                                                _TableHeader({ column, index, sortProps })
+                                                _TableHeader({ column, index, sortProps }),
                                               )}
                                               {props.includeAction ? (
                                                 <Table.HeaderCell> Actions </Table.HeaderCell>
@@ -144,18 +144,18 @@ class TableComponent extends Component {
                                                         this.updateSelectedRows(
                                                           { checked },
                                                           row._id,
-                                                          paginationProps.rowCount
+                                                          paginationProps.rowCount,
                                                         )
                                                       }
                                                     />
                                                   ) : null}
                                                 </Table.Cell>
                                                 {visibleColumns.map((column, index2) =>
-                                                  _TableCell({ column, index2, data: paginationProps, row })
+                                                  _TableCell({ column, index2, data: paginationProps, row }),
                                                 )}
                                                 {props.includeAction ? (
                                                   <Table.Cell>
-                                                    <TableActions actions={props.actionConfig} row={row} />
+                                                    <TableActions actions={props.actionConfig} row={row}/>
                                                   </Table.Cell>
                                                 ) : null}
                                               </Table.Row>
@@ -195,7 +195,7 @@ const _TableHeader = ({ column, index, sortProps }) => {
       onClick={sortProps.handleSort(
         column.column,
         sortProps.direction === 'ascending' ? 'descending' : 'ascending',
-        column.type
+        column.type,
       )}>
       <Icon
         name="arrow up"
