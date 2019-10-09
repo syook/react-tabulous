@@ -1,9 +1,9 @@
-# Syook-Table 🎉
+# React-Tabulous 🎉
 
 ```js
 ...
 
-import SyookTable from 'syook-table-v5';
+import ReactTabulous from 'react-tabulous';
 import format from 'date-fns/format'
 import { Button, Input } from 'semantic-ui-react';
 
@@ -137,16 +137,16 @@ customComponents = () => (
 
 ...
 
-<SyookTable
+<ReactTabulous
   actionDefs={this.actionDefs}
   bulkActionDefs={this.bulkActionDefs}
   data={this.state.data || []}
-  includeAction={true} // optional
-  mandatoryFields={['Name']} // optional
-  name={'Table Name'} // optional
+  includeAction={true}
+  mandatoryFields={['Name']}
+  name={'Table Name'}
   columnDefs={this.columnDefs}>
-  {this.customComponents} // optional
-</SyookTable>
+  {this.customComponents}
+</ReactTabulous>
 
 ...
 ```

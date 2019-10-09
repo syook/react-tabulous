@@ -1,28 +1,29 @@
 {
-  "name": "@syook/react-tabulous",
-  "version": "0.1.12",
+  "name": "react-tabulous",
+  "version": "0.1.13",
   "description": "Terrifically fabulous React Table",
-  "main": "lib/syook-table.min.js",
+  "main": "lib/react-tabulous.min.js",
   "files": [
     "README.md",
     "lib/"
   ],
   "keywords": [
     "syook",
-    "table"
+    "table",
+    "react"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/syook/syook-table.git"
+    "url": "git+https://github.com/syook/react-tabulous.git"
   },
   "publishConfig": {
     "access": "public"
   },
   "author": "Syook",
   "bugs": {
-    "url": "https://github.com/syook/syook-table/issues"
+    "url": "https://github.com/syook/react-tabulous/issues"
   },
-  "homepage": "https://github.com/syook/syook-table#readme",
+  "homepage": "https://github.com/syook/react-tabulous#readme",
   "scripts": {
     "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js"
   },
