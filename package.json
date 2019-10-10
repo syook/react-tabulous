@@ -1,6 +1,6 @@
 {
   "name": "react-tabulous",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Terrifically fabulous React Table",
   "main": "lib/react-tabulous.min.js",
   "files": [
@@ -25,7 +25,10 @@
   },
   "homepage": "https://github.com/syook/react-tabulous#readme",
   "scripts": {
-    "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node_modules/.bin/webpack-dev-server --mode development --open --hot",
+    "build": "node_modules/.bin/webpack --config webpack.prod.js --mode production",
+    "serve": "node_modules/.bin/http-server ./dist"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -71,8 +74,9 @@
     "react-select": "^2.4.3",
     "semantic-ui-react": "0.88.1",
     "style-loader": "^0.23.1",
-    "webpack": "^4.31.0",
-    "webpack-cli": "^3.3.2"
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
   },
   "dependencies": {
     "prettier": "^1.18.2",

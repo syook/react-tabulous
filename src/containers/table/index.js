@@ -9,11 +9,11 @@ import SearchProvider, { SearchContext } from '../search';
 import SortProvider, { SortContext } from '../sort';
 
 import BulkActionList from '../../components/table/bulkActionDropdown';
-import HeaderSelector from '../../components/table/headerSelector';
+import HeaderSelector from '../../components/table/header-selector';
 import TableActions from '../../components/table/actions';
 import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
-import WoStatus from '../../components/woStatus/woStatus';
+import StatusIcon from '../../components/wo-status/wo-status';
 import './index.css';
 
 class TableComponent extends Component {
@@ -188,7 +188,7 @@ class TableComponent extends Component {
                                                 style={{
                                                   display: 'flex',
                                                   justifyContent: 'space-between',
-                                                  flexDirection: props.showWoStatus ? 'row-reverse' : null,
+                                                  flexDirection: props.showStatusIcon ? 'row-reverse' : null,
                                                   alignItems: 'baseline',
                                                 }}>
                                                 {hasBulkActions && includeCheckbox !== false ? (
@@ -204,8 +204,8 @@ class TableComponent extends Component {
                                                     }
                                                   />
                                                 ) : null}
-                                                {props.showWoStatus ? (
-                                                  <WoStatus showWorkOrderStatus={props.showWoStatus(row)} />
+                                                {props.showStatusIcon ? (
+                                                  <StatusIcon showStatusIcon={props.showStatusIcon(row)} />
                                                 ) : null}
                                                 <div
                                                   style={{
