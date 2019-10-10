@@ -1,0 +1,9 @@
+.ui.button.dropdown.bulk-action {
+  background: #3496d8;
+  border: none;
+  color: #fff;
+  padding-left: 15px !important;
+  padding-right: 35px !important;
+  margin-right: 10px;
+  z-index: 21;
+}

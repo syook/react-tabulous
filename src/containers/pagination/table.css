@@ -1,0 +1,30 @@
+.scrollable-table .tableStyle {
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+}
+.tableStyle .tbody {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.tableStyle thead > tr th {
+  /* border: none !important; */
+
+  color: #26547c !important;
+  background: #f1f5f7 !important;
+}
+
+.tableStyle .ui.ribbon.label {
+  background: #d6e7f3;
+  color: #26547c;
+}
+
+.tableStyle tbody tr td:first-child {
+  text-align: left !important;
+}
+
+.tableStyle tbody tr td {
+  color: #26547c;
+  text-align: center !important;
+}

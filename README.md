@@ -1,4 +1,4 @@
-# Syook-Table 🎉
+# React-Tabulous 🎉
 
 ## Installation
 To use in your own project, install it via npm package.
@@ -64,90 +64,152 @@ The files will be under `./lib` folder.
 ## Example
 
 ```js
-import Table from 'syook-table-v5';
-import moment from 'moment';
+...
+
+import ReactTabulous from 'react-tabulous';
+import format from 'date-fns/format'
+import { Button, Input } from 'semantic-ui-react';
 
 ...
 
-tableConfig = [
+onDelete = ids => {
+  console.log('onDelete', ids);
+};
+
+onShow = rowObject => {
+  console.log('onShow', rowObject);
+};
+
+onEdit = rowObject => {
+  console.log('onEdit', rowObject);
+};
+
+onInputChange = ({ rowObject, value: newValue }) => {
+  console.log({ rowObject, newValue });
+};
+
+columnDefs = [
   {
-    heading: 'Name',
-    column: 'name',
+    headerName: 'Name',
+    field: 'name',
     type: 'String',
-    cell: ({ row }) => row.name,
+    cell: rowObject => (
+      <Input value={rowObject.name} onChange={(_e, { value }) => this.onInputChange({ value, rowObject })} />
+    ),
     isSortable: true,
     isSearchable: true,
     isFilterable: true,
   },
   {
-    heading: 'Description',
-    column: 'description',
+    headerName: 'Description',
+    field: 'description',
     type: 'String',
-    cell: ({ row }) => row.description,
+    cell: rowObject => rowObject.description,
+    isSortable: true,
+    isSearchable: true,
+    isFilterable: true,
+    isResizable: true,
+  },
+  {
+    headerName: 'Category',
+    field: 'category',
+    type: 'SingleSelect',
+    cell: rowObject => rowObject.category,
+    options: ['Grocery', 'Electronics', 'Home', 'Shoes', 'Computers', 'Outdoors', 'Clothing'].map((category, index) => ({
+      value: index,
+      label: category,
+    })),
     isSortable: true,
     isSearchable: true,
     isFilterable: true,
   },
   {
-    heading: 'Category',
-    column: 'category',
-    type: 'Select',
-    cell: ({ row }) => row.category,
-    options: [{ value: 'Electrical', label: 'Electrical' }, { value: 'Mechanical', label: 'Mechanical' }],
+    headerName: 'Price',
+    field: 'price',
+    type: 'Number',
+    cell: rowObject => rowObject.price,
     isSortable: true,
     isSearchable: true,
     isFilterable: true,
+    isResizable: true,
   },
   {
-    heading: 'Availability',
-    column: 'availability',
-    type: 'Boolean'
-    cell: ({ row }) => row.availability ? 'Yes' : 'No',
+    headerName: 'Expertise',
+    field: 'isExpertised',
+    type: 'Boolean',
+    cell: rowObject => (rowObject.isExpertised ? 'Yes' : 'No'),
     isSortable: true,
-    isSearchable: true,
+    isSearchable: false,
+    isFilterable: true,
   },
   {
-    heading: 'Created at',
-    column: 'createdAt',
-    type: 'Date'
-    cell: ({ row }) => moment(row.createdAt).formatOf('DD-MMM-YYYY hh:mm A'),
+    headerName: 'Availability',
+    field: 'availability',
+    type: 'MultiSelect',
+    cell: rowObject => rowObject.availability.join(', '),
+    options: ['Yes', 'No', 'Maybe'].map(a => ({ value: a, label: a })),
     isSortable: true,
-    isSearchable: true,
-  }
+    isSearchable: false,
+    isFilterable: true,
+  },
+  {
+    headerName: 'Started at',
+    field: 'created',
+    cell: rowObject => format(new Date(rowObject.created), 'dd-MMM-yyyy hh:mm a'),
+    type: 'Date',
+    isSortable: true,
+    isSearchable: false,
+    isFilterable: true,
+    isResizable: true,
+  },
 ];
 
-actionConfig = [
+updatingObjectId = () => false;
+
+actionDefs = [
   {
-    action: 'Show',
+    name: 'Show',
+    isVisible: _rowObject => true,
+    isDisabled: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
+    isLoading: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
     function: this.onShow,
     icon: 'eye',
-    show: _row => true,
+    color: '#85C1E9',
   },
   {
-    action: 'Edit',
-    function: this.onShow,
-    icon: 'pencil',
-    show: _row => true,
-  },
-  {
-    action: 'Delete',
-    show: _row => true,
-    function: this.onDelete,
+    name: 'Delete',
+    isVisible: rowObject => !rowObject.isDeleted,
+    isDisabled: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
+    isLoading: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
+    function: rowObject => this.onDelete(rowObject),
     icon: 'trash',
+    color: '#E8515D',
   },
 ];
 
+bulkActionDefs = [{ action: 'delete', function: this.onDelete }];
+
+customComponents = () => (
+  <>
+    <Button disabled size="small" onClick={() => null}>
+      Button 1
+    </Button>
+    <Button onClick={() => null}>Button 2</Button>
+  </>
+);
+
 ...
 
-<Table
-  actionConfig={actionConfig}
-  bulkActions={[{ action: 'delete', function: onDelete }]}
-  data={this.props.objects}
+<ReactTabulous
+  actionDefs={this.actionDefs}
+  bulkActionDefs={this.bulkActionDefs}
+  data={this.state.data || []}
   includeAction={true}
   mandatoryFields={['Name']}
-  name='Menu Items'
-  records={tableConfig}
-/>
+  name={'Table Name'}
+  columnDefs={this.columnDefs}>
+  {this.customComponents}
+</ReactTabulous>
 
 ...
 ```

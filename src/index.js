@@ -1,3 +1,3 @@
-import CustomTable from './new-table';
+import ReactTabulous from './containers/table';
 
-export default CustomTable;
+export default ReactTabulous;

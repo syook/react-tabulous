@@ -11,11 +11,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.tableStyle {
-  border-top-left-radius: 0px !important;
-  border-top-right-radius: 0px !important;
-}
-
 .paginationFooter .ui.menu .item:before {
   background: #d6e7f3 !important;
 }
@@ -33,8 +28,18 @@ code {
   padding: 5px 10px !important;
 }
 
-.ui.button.dropdown.bulk-action {
-  background: #3496d8;
-  color: #fff;
-  margin-right: 10px;
+.ui.celled.table tr td {
+  color: #26547c;
+  border-bottom: 1px solid rgb(241, 245, 247) !important;
+}
+
+.tableStyle thead tr {
+  z-index: 4;
+}
+
+.main-table-row {
+  position: relative;
+}
+.main-table-row td {
+  padding: 14px;
 }

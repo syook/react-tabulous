@@ -6,7 +6,7 @@ const TerserWebpackPlugin = require('terser-webpack-plugin');
 let plugins = [
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: "'production'",
+      NODE_ENV: "'development'",
     },
   }),
   new webpack.NamedModulesPlugin(),
@@ -15,7 +15,7 @@ let plugins = [
 const entry = [path.resolve(path.join(__dirname, './src/index.js'))];
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   name: 'server',
   plugins: plugins,
   target: 'node',
@@ -23,7 +23,7 @@ module.exports = {
   output: {
     publicPath: './lib/',
     path: path.resolve(__dirname, './lib/'),
-    filename: 'syook-table.min.js',
+    filename: 'react-tabulous.min.js',
     libraryTarget: 'commonjs2',
   },
   resolve: {
@@ -40,16 +40,13 @@ module.exports = {
         },
       },
       {
-        test: /\.s?css$/,
+        test: /\.css$/,
         use: [
           {
             loader: 'style-loader',
           },
           {
             loader: 'css-loader',
-          },
-          {
-            loader: 'sass-loader',
           },
         ],
       },
@@ -69,5 +66,6 @@ module.exports = {
     console: false,
     global: false,
     process: false,
+    debugger: false,
   },
 };
