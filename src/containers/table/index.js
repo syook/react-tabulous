@@ -8,12 +8,12 @@ import PaginationProvider, { PaginationContext } from '../pagination';
 import SearchProvider, { SearchContext } from '../search';
 import SortProvider, { SortContext } from '../sort';
 
-import BulkActionList from '../../components/table/bulkActionDropdown';
+import BulkActionList from '../../components/table/bulk-action-dropdown';
 import HeaderSelector from '../../components/table/header-selector';
 import TableActions from '../../components/table/actions';
 import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
-import StatusIcon from '../../components/wo-status/wo-status';
+import StatusIcon from '../../components/status-icon/status-icon';
 import './index.css';
 
 class TableComponent extends Component {
