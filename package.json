@@ -1,6 +1,6 @@
 {
-  "name": "react-tabulous",
-  "version": "2.0.0",
+  "name": "@syook/react-tabulous",
+  "version": "2.0.1",
   "description": "Terrifically fabulous React Table",
   "main": "lib/react-tabulous.min.js",
   "files": [
@@ -17,7 +17,7 @@
     "url": "git+https://github.com/syook/react-tabulous.git"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com/"
   },
   "author": "Syook",
   "bugs": {

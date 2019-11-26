@@ -4,7 +4,7 @@
 
 To use in your own project, install it via npm package.
 
-`npm i react-tabulous`
+`npm i @syook/react-tabulous`
 
 Or you can clone and build it.
 
