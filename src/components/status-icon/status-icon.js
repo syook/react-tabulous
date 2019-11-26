@@ -1,20 +1,20 @@
 import React from 'react';
 import { Icon, Popup } from 'semantic-ui-react';
 
-const renderIcons = (IconName, WoStatus, IconColor) => {
+const renderIcons = (IconName, StatusIcon, IconColor) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <Icon name={IconName} color={IconColor} /> <span style={{ marginLeft: '2px' }}>{WoStatus}</span>
+      <Icon name={IconName} color={IconColor} /> <span style={{ marginLeft: '2px' }}>{StatusIcon}</span>
     </div>
   );
 };
 
-const WoStatus = props => {
+const StatusIcon = props => {
   return (
     <Popup
       trigger={renderIcons(
         props.showWorkOrderStatus.IconName,
-        props.showWorkOrderStatus.WoStatus,
+        props.showWorkOrderStatus.StatusIcon,
         props.showWorkOrderStatus.IconColor
       )}
       content={props.showWorkOrderStatus.content}
@@ -23,4 +23,4 @@ const WoStatus = props => {
   );
 };
 
-export default WoStatus;
+export default StatusIcon;
