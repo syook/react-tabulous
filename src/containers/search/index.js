@@ -41,6 +41,11 @@ export default class SearchProvider extends Component {
     this.search(searchText);
   };
 
+  componentWillReceiveProps(prevProps, prevState) {
+    //searching when receiving props it helps to retain the searched data in table
+    this.search(this.state.searchText);
+  }
+
   render() {
     const mainDataCount = (this.props.data || []).length;
     const stateDataCount = (this.state.data || []).length;
