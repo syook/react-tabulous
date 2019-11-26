@@ -1,6 +1,6 @@
 {
   "name": "react-tabulous",
-  "version": "0.1.14",
+  "version": "2.0.0",
   "description": "Terrifically fabulous React Table",
   "main": "lib/react-tabulous.min.js",
   "files": [
@@ -27,7 +27,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node_modules/.bin/webpack-dev-server --mode development --open --hot",
-    "build": "node_modules/.bin/webpack --config webpack.prod.js --mode production",
+    "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js",
     "serve": "node_modules/.bin/http-server ./dist"
   },
   "eslintConfig": {
