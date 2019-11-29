@@ -13,6 +13,7 @@ export default class SearchProvider extends Component {
   state = { searchText: '', data: [...(this.props.data || [])] };
 
   componentDidUpdate(prevProps) {
+    this.search(this.state.searchText);
     if (!isEqual(prevProps.data, this.props.data)) {
       this.setState({ data: [...(this.props.data || [])] });
     }
@@ -40,11 +41,6 @@ export default class SearchProvider extends Component {
     this.setState({ searchText });
     this.search(searchText);
   };
-
-  componentWillReceiveProps(prevProps, prevState) {
-    //searching when receiving props it helps to retain the searched data in table
-    this.search(this.state.searchText);
-  }
 
   render() {
     const mainDataCount = (this.props.data || []).length;
