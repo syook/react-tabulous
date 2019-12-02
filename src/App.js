@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactTabulous from './containers/table';
-import { Button, Input } from 'semantic-ui-react';
+import { Input } from 'semantic-ui-react';
 export default class App extends React.Component {
   //you can manipulate this component for testing
   constructor(props) {
