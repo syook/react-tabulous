@@ -1,4 +1,4 @@
-import './bulk-action-dropdown.css';
+import './bulkActionDropdown.css';
 
 import React from 'react';
 import { Dropdown } from 'semantic-ui-react';

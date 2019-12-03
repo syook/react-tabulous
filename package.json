@@ -1,34 +1,30 @@
 {
-  "name": "react-tabulous",
-  "version": "0.1.13",
+  "name": "@syook/react-tabulous",
+  "version": "0.1.9",
   "description": "Terrifically fabulous React Table",
-  "main": "lib/react-tabulous.min.js",
+  "main": "lib/syook-table.min.js",
   "files": [
     "README.md",
     "lib/"
   ],
   "keywords": [
     "syook",
-    "table",
-    "react"
+    "table"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/syook/react-tabulous.git"
+    "url": "git+https://github.com/syook/syook-table.git"
   },
   "publishConfig": {
     "access": "public"
   },
   "author": "Syook",
   "bugs": {
-    "url": "https://github.com/syook/react-tabulous/issues"
+    "url": "https://github.com/syook/syook-table/issues"
   },
-  "homepage": "https://github.com/syook/react-tabulous#readme",
+  "homepage": "https://github.com/syook/syook-table#readme",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node_modules/.bin/webpack-dev-server --mode development --open --hot",
-    "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js",
-    "serve": "node_modules/.bin/http-server ./dist"
+    "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -75,8 +71,7 @@
     "semantic-ui-react": "0.88.1",
     "style-loader": "^0.23.1",
     "webpack": "^4.31.0",
-    "webpack-cli": "^3.3.2",
-    "webpack-dev-server": "^3.8.2"
+    "webpack-cli": "^3.3.2"
   },
   "dependencies": {
     "prettier": "^1.18.2",

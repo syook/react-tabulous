@@ -8,12 +8,12 @@ import PaginationProvider, { PaginationContext } from '../pagination';
 import SearchProvider, { SearchContext } from '../search';
 import SortProvider, { SortContext } from '../sort';
 
-import BulkActionList from '../../components/table/bulk-action-dropdown';
-import HeaderSelector from '../../components/table/header-selector';
+import BulkActionList from '../../components/table/bulkActionDropdown';
+import HeaderSelector from '../../components/table/headerSelector';
 import TableActions from '../../components/table/actions';
 import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
-import StatusIcon from '../../components/status-icon/status-icon';
+import WoStatus from '../../components/woStatus/woStatus';
 import './index.css';
 
 class TableComponent extends Component {
@@ -188,7 +188,7 @@ class TableComponent extends Component {
                                                 style={{
                                                   display: 'flex',
                                                   justifyContent: 'space-between',
-                                                  flexDirection: props.showStatusIcon ? 'row-reverse' : null,
+                                                  flexDirection: props.showWoStatus ? 'row-reverse' : null,
                                                   alignItems: 'baseline',
                                                 }}>
                                                 {hasBulkActions && includeCheckbox !== false ? (
@@ -204,9 +204,19 @@ class TableComponent extends Component {
                                                     }
                                                   />
                                                 ) : null}
-                                                {props.showStatusIcon ? (
-                                                  <StatusIcon showStatusIcon={props.showStatusIcon(row)} />
-                                                ) : null}
+                                                {props.showWoStatus ? (
+                                                  <WoStatus
+                                                    IconName="check"
+                                                    IconColor="green"
+                                                    WoStatus="Ok"
+                                                    content="Workorder is completed with status Ok"
+                                                  />
+                                                ) : // <WoStatus
+                                                //   IconName="clock"
+                                                //   IconColor="orange"
+                                                //   content="Workorder is completed with status Not Ok"
+                                                // />
+                                                null}
                                                 <div
                                                   style={{
                                                     textAlign: 'right',

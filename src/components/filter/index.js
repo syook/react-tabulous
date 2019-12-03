@@ -7,7 +7,7 @@ import { createPropertyOption } from '../utils';
 import { findColumnOptions } from '../utils';
 import './filter.css';
 
-import DateTimeComponent from '../date-time';
+import DateTimeComponent from '../dateTime';
 import DateComponent from '../date';
 
 import { predicateOptions, filterOperators } from '../../constants';

@@ -1,3 +1,3 @@
- import ReactTabulous from './containers/table';
+import SyookTable from './containers/table';
 
-export default ReactTabulous;
+export default SyookTable;
