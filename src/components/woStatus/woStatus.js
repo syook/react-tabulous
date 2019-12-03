@@ -12,13 +12,9 @@ const renderIcons = (IconName, WoStatus, IconColor) => {
 const WoStatus = props => {
   return (
     <Popup
-    trigger={renderIcons(
-      props.showWorkOrderStatus.IconName,
-      props.showWorkOrderStatus.WoStatus,
-      props.showWorkOrderStatus.IconColor
-    )}
-    content={props.showWorkOrderStatus.content}
-    position={props.showWorkOrderStatus.position || 'top left'}
+      trigger={renderIcons(props.IconName, props.WoStatus, props.IconColor)}
+      content={props.content}
+      position={props.position || 'top left'}
     />
   );
 };
