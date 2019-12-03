@@ -205,18 +205,8 @@ class TableComponent extends Component {
                                                   />
                                                 ) : null}
                                                 {props.showWoStatus ? (
-                                                  <WoStatus
-                                                    IconName="check"
-                                                    IconColor="green"
-                                                    WoStatus="Ok"
-                                                    content="Workorder is completed with status Ok"
-                                                  />
-                                                ) : // <WoStatus
-                                                //   IconName="clock"
-                                                //   IconColor="orange"
-                                                //   content="Workorder is completed with status Not Ok"
-                                                // />
-                                                null}
+                                               <WoStatus showWorkOrderStatus={props.showWoStatus(row)} />
+                                               ) : null}
                                                 <div
                                                   style={{
                                                     textAlign: 'right',
