@@ -14,9 +14,7 @@ export default class SearchProvider extends Component {
 
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.data, this.props.data)) {
-      this.setState({ data: [...(this.props.data || [])] }, () => {
-        this.search(this.state.searchText);
-      });
+      this.setState({ data: [...(this.props.data || [])] });
     }
   }
 
