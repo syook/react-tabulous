@@ -1,4 +1,4 @@
-import './headerSelector.css';
+import './header-selector.css';
 import React from 'react';
 import { Button, Popup, List, Icon, Checkbox } from 'semantic-ui-react';
 

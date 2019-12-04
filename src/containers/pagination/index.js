@@ -1,5 +1,5 @@
 import './table.css';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import isEqual from 'lodash/isEqual';
 import { Table } from 'semantic-ui-react';
 
@@ -9,7 +9,7 @@ import { findPageRange, findCurrentData } from './utils';
 
 export const PaginationContext = React.createContext();
 
-export default class PaginationProvider extends Component {
+export default class PaginationProvider extends PureComponent {
   constructor(props) {
     super(props);
     const rowsPerPage = { value: 10, label: '10 Items' };

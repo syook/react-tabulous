@@ -1,6 +1,6 @@
 {
   "name": "@syook/react-tabulous",
-  "version": "2.0.11",
+  "version": "2.0.2",
   "description": "Terrifically fabulous React Table",
   "main": "lib/react-tabulous.min.js",
   "files": [
@@ -9,14 +9,15 @@
   ],
   "keywords": [
     "syook",
-    "table"
+    "table",
+    "react"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/syook/react-tabulous.git"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com/"
   },
   "author": "Syook",
   "bugs": {
@@ -24,7 +25,10 @@
   },
   "homepage": "https://github.com/syook/react-tabulous#readme",
   "scripts": {
-    "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js"
+    "start": "react-scripts start",
+    "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,11 +45,6 @@
       "git add"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
@@ -55,7 +54,6 @@
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.4",
-    "babel-loader": "^8.0.6",
     "css-loader": "^2.1.1",
     "date-fns": "^2.0.0-alpha.27",
     "html-webpack-plugin": "^3.2.0",
@@ -70,11 +68,27 @@
     "react-select": "^2.4.3",
     "semantic-ui-react": "0.88.1",
     "style-loader": "^0.23.1",
-    "webpack": "^4.31.0",
+    "webpack": "^4.29.6",
     "webpack-cli": "^3.3.2"
   },
   "dependencies": {
     "prettier": "^1.18.2",
-    "react-datepicker": "^2.8.0"
+    "react-datepicker": "^2.8.0",
+    "date-fns": "^2.0.0-alpha.27",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-datetime": "^2.16.3",
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.0",
+    "react-select": "^2.4.3",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.86.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

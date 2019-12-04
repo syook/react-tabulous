@@ -1,3 +1,6 @@
-import SyookTable from './containers/table';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
 
-export default SyookTable;
+ReactDOM.render(<App />, document.getElementById('root'));
