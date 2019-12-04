@@ -23,7 +23,7 @@ module.exports = {
   output: {
     publicPath: './lib/',
     path: path.resolve(__dirname, './lib/'),
-    filename: 'syook-table.min.js',
+    filename: 'react-tabulous.min.js',
     libraryTarget: 'commonjs2',
   },
   resolve: {
