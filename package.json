@@ -17,7 +17,7 @@
     "url": "git+https://github.com/syook/react-tabulous.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "access": "public"
   },
   "author": "Syook",
   "bugs": {
