@@ -15,7 +15,7 @@ import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
 import './index.css';
 
-class TableComponent extends Component {
+class SyookTable extends Component {
   constructor(props) {
     const searchKeys = {};
     super(props);
@@ -246,7 +246,7 @@ class TableComponent extends Component {
   }
 }
 
-TableComponent.propTypes = {
+SyookTable.propTypes = {
   actionDefs: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
@@ -282,8 +282,8 @@ TableComponent.propTypes = {
   tableName: PropTypes.string,
 };
 
-TableComponent.defaultProps = {
+SyookTable.defaultProps = {
   showCheckbox: () => {},
 };
 
-export default TableComponent;
+export default SyookTable;
