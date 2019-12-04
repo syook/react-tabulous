@@ -8,14 +8,15 @@ import PaginationProvider, { PaginationContext } from '../pagination';
 import SearchProvider, { SearchContext } from '../search';
 import SortProvider, { SortContext } from '../sort';
 
-import BulkActionList from '../../components/table/bulkActionDropdown';
-import HeaderSelector from '../../components/table/headerSelector';
+import BulkActionList from '../../components/table/bulk-action-dropdown';
+import HeaderSelector from '../../components/table/header-selector';
 import TableActions from '../../components/table/actions';
 import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
+import StatusIcon from '../../components/status-icon/status-icon';
 import './index.css';
 
-class SyookTable extends Component {
+class TableComponent extends Component {
   constructor(props) {
     const searchKeys = {};
     super(props);
@@ -187,6 +188,8 @@ class SyookTable extends Component {
                                                 style={{
                                                   display: 'flex',
                                                   justifyContent: 'space-between',
+                                                  flexDirection: props.showStatusIcon ? 'row-reverse' : null,
+                                                  alignItems: 'baseline',
                                                 }}>
                                                 {hasBulkActions && includeCheckbox !== false ? (
                                                   <Checkbox
@@ -200,6 +203,9 @@ class SyookTable extends Component {
                                                       )
                                                     }
                                                   />
+                                                ) : null}
+                                                {props.showStatusIcon ? (
+                                                  <StatusIcon showStatusIcon={props.showStatusIcon(row)} />
                                                 ) : null}
                                                 <div
                                                   style={{
@@ -246,7 +252,7 @@ class SyookTable extends Component {
   }
 }
 
-SyookTable.propTypes = {
+TableComponent.propTypes = {
   actionDefs: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
@@ -282,8 +288,8 @@ SyookTable.propTypes = {
   tableName: PropTypes.string,
 };
 
-SyookTable.defaultProps = {
+TableComponent.defaultProps = {
   showCheckbox: () => {},
 };
 
-export default SyookTable;
+export default TableComponent;

@@ -12,7 +12,7 @@ let plugins = [
   new webpack.NamedModulesPlugin(),
 ];
 
-const entry = [path.resolve(path.join(__dirname, './src/index.js'))];
+const entry = [path.resolve(path.join(__dirname, './src/indexWeb.js'))];
 
 module.exports = {
   mode: 'production',
