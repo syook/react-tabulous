@@ -93,7 +93,6 @@ class TableComponent extends Component {
     const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
-    console.log(props);
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
