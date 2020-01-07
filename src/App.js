@@ -7,7 +7,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       data: [
-        { id: 1, name: 'harsh', description: 'something', isDeleted: false },
+        { id: 1, name: 'harsh', is_completed: true, description: 'something', isDeleted: false },
         { id: 2, name: 'dh', description: 'dadss', isDeleted: true },
       ],
     };
@@ -91,6 +91,7 @@ export default class App extends React.Component {
           includeAction={true}
           mandatoryFields={['Name']}
           name={'Table Name'}
+          enableIcon={true}
         />
       </div>
     );

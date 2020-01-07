@@ -15,6 +15,8 @@ import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
 import StatusIcon from '../../components/status-icon/status-icon';
 import './index.css';
+import clock from './clock.svg';
+import check from './check.svg';
 
 class TableComponent extends Component {
   constructor(props) {
@@ -91,6 +93,7 @@ class TableComponent extends Component {
     const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
+    console.log(props);
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
@@ -212,7 +215,32 @@ class TableComponent extends Component {
                                                     textAlign: 'right',
                                                     margin: '0 auto',
                                                   }}>
-                                                  {paginationProps.startIndex + index1 + 1}
+                                                  {props.enableIcon ? (
+                                                    <>
+                                                      {paginationProps.startIndex + index1 + 1}
+                                                      {row.is_completed ? (
+                                                        <img
+                                                          style={{
+                                                            height: '15px',
+                                                            width: '20px',
+                                                            padding: '0px 0px 0px 8px',
+                                                          }}
+                                                          src={check}
+                                                        />
+                                                      ) : (
+                                                        <img
+                                                          style={{
+                                                            width: '20px',
+                                                            padding: '0px 0px 0px 8px',
+                                                            height: '15px',
+                                                          }}
+                                                          src={clock}
+                                                        />
+                                                      )}
+                                                    </>
+                                                  ) : (
+                                                    paginationProps.startIndex + index1 + 1
+                                                  )}
                                                 </div>
                                               </div>
                                             </Table.Cell>
