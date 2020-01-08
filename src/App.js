@@ -92,6 +92,7 @@ export default class App extends React.Component {
           mandatoryFields={['Name']}
           name={'Table Name'}
           enableIcon={true}
+          isIcon={'is_completed'}
         />
       </div>
     );

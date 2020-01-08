@@ -93,6 +93,7 @@ class TableComponent extends Component {
     const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
+    const isIcon = props.isIcon;
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
@@ -217,7 +218,7 @@ class TableComponent extends Component {
                                                   {props.enableIcon ? (
                                                     <>
                                                       {paginationProps.startIndex + index1 + 1}
-                                                      {row.is_completed ? (
+                                                      {row[isIcon] ? (
                                                         <img
                                                           style={{
                                                             height: '15px',
