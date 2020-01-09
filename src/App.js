@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactTabulous from './containers/table';
 import { Input } from 'semantic-ui-react';
+import clock from './containers/table/clock.svg';
+import check from './containers/table/check.svg';
 export default class App extends React.Component {
   //you can manipulate this component for testing
   constructor(props) {
@@ -93,6 +95,26 @@ export default class App extends React.Component {
           name={'Table Name'}
           enableIcon={true}
           isIcon={'is_completed'}
+          onTrue={
+            <img
+              style={{
+                height: '15px',
+                width: '20px',
+                padding: '0px 0px 0px 8px',
+              }}
+              src={check}
+            />
+          }
+          onFalse={
+            <img
+              style={{
+                width: '20px',
+                padding: '0px 0px 0px 8px',
+                height: '15px',
+              }}
+              src={clock}
+            />
+          }
         />
       </div>
     );

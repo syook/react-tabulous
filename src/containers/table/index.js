@@ -218,25 +218,7 @@ class TableComponent extends Component {
                                                   {props.enableIcon ? (
                                                     <>
                                                       {paginationProps.startIndex + index1 + 1}
-                                                      {row[isIcon] ? (
-                                                        <img
-                                                          style={{
-                                                            height: '15px',
-                                                            width: '20px',
-                                                            padding: '0px 0px 0px 8px',
-                                                          }}
-                                                          src={check}
-                                                        />
-                                                      ) : (
-                                                        <img
-                                                          style={{
-                                                            width: '20px',
-                                                            padding: '0px 0px 0px 8px',
-                                                            height: '15px',
-                                                          }}
-                                                          src={clock}
-                                                        />
-                                                      )}
+                                                      {row[isIcon] ? props.onTrue : props.onFalse}
                                                     </>
                                                   ) : (
                                                     paginationProps.startIndex + index1 + 1
