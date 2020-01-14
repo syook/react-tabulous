@@ -181,7 +181,6 @@ class TableComponent extends Component {
                                     <Table.Body>
                                       {paginationProps.data.map((row, index1) => {
                                         const includeCheckbox = props.showCheckbox(row);
-                                        console.log(row);
                                         return (
                                           <Table.Row key={`column-${index1}`} className="main-table-row">
                                             <Table.Cell>
