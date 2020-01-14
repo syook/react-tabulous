@@ -15,8 +15,6 @@ import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
 import StatusIcon from '../../components/status-icon/status-icon';
 import './index.css';
-import clock from './clock.svg';
-import check from './check.svg';
 
 class TableComponent extends Component {
   constructor(props) {
@@ -93,7 +91,6 @@ class TableComponent extends Component {
     const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
-    const isIcon = props.isIcon;
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
@@ -184,6 +181,7 @@ class TableComponent extends Component {
                                     <Table.Body>
                                       {paginationProps.data.map((row, index1) => {
                                         const includeCheckbox = props.showCheckbox(row);
+                                        console.log(row);
                                         return (
                                           <Table.Row key={`column-${index1}`} className="main-table-row">
                                             <Table.Cell>
@@ -215,14 +213,8 @@ class TableComponent extends Component {
                                                     textAlign: 'right',
                                                     margin: '0 auto',
                                                   }}>
-                                                  {props.enableIcon ? (
-                                                    <>
-                                                      {paginationProps.startIndex + index1 + 1}
-                                                      {row[isIcon] ? props.onTrue : props.onFalse}
-                                                    </>
-                                                  ) : (
-                                                    paginationProps.startIndex + index1 + 1
-                                                  )}
+                                                  {paginationProps.startIndex + index1 + 1}
+                                                  {props.enableIcon ? props.showIcon(row) : null}
                                                 </div>
                                               </div>
                                             </Table.Cell>

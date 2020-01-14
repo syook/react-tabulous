@@ -82,7 +82,29 @@ export default class App extends React.Component {
       color: '#E8515D',
     },
   ];
-
+  showIcon = row => {
+    return row.is_completed ? (
+      <img
+        alt="tick"
+        style={{
+          height: '15px',
+          width: '20px',
+          padding: '0px 0px 0px 8px',
+        }}
+        src={check}
+      />
+    ) : (
+      <img
+        alt="clock"
+        style={{
+          width: '20px',
+          padding: '0px 0px 0px 8px',
+          height: '15px',
+        }}
+        src={clock}
+      />
+    );
+  };
   render() {
     return (
       <div>
@@ -93,28 +115,8 @@ export default class App extends React.Component {
           includeAction={true}
           mandatoryFields={['Name']}
           name={'Table Name'}
+          showIcon={this.showIcon}
           enableIcon={true}
-          isIcon={'is_completed'}
-          onTrue={
-            <img
-              style={{
-                height: '15px',
-                width: '20px',
-                padding: '0px 0px 0px 8px',
-              }}
-              src={check}
-            />
-          }
-          onFalse={
-            <img
-              style={{
-                width: '20px',
-                padding: '0px 0px 0px 8px',
-                height: '15px',
-              }}
-              src={clock}
-            />
-          }
         />
       </div>
     );
