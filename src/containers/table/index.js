@@ -213,6 +213,7 @@ class TableComponent extends Component {
                                                     margin: '0 auto',
                                                   }}>
                                                   {paginationProps.startIndex + index1 + 1}
+                                                  {props.enableIcon ? props.showIcon(row) : null}
                                                 </div>
                                               </div>
                                             </Table.Cell>
