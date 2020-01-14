@@ -72,18 +72,17 @@
     "webpack-cli": "^3.3.2"
   },
   "dependencies": {
-    "prettier": "^1.18.2",
-    "react-datepicker": "^2.8.0",
     "date-fns": "^2.0.0-alpha.27",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
+    "prettier": "^1.18.2",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-datepicker": "^2.8.0",
     "react-datetime": "^2.16.3",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.0",
     "react-select": "^2.4.3",
-    "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.86.0"
   },
   "husky": {
