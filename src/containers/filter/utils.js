@@ -49,7 +49,7 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
       return attrValue === 0 ? false : isEmpty(attrValue.toString());
     case 'is not empty':
       if (attributeType === 'date') return !!attrValue;
-      return attrValue === 0 ? true : isEmpty(attrValue.toString());
+      return attrValue === 0 ? true : !isEmpty(attrValue.toString());
 
     // Date
     case 'is before':
