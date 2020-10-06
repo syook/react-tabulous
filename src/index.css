@@ -33,6 +33,10 @@ code {
   border-bottom: 1px solid rgb(241, 245, 247) !important;
 }
 
+.ui.ribbon.label {
+  left: 0px !important;
+}
+
 .tableStyle thead tr {
   z-index: 4;
 }
