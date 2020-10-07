@@ -206,6 +206,7 @@ customComponents = () => (
   mandatoryFields={['Name']}
   name={'Table Name'}
   columnDefs={this.columnDefs}>
+  isShowSerialNumber={true}
   {this.customComponents}
 </ReactTabulous>
 

@@ -155,7 +155,7 @@ class TableComponent extends Component {
                                             </div>
                                           </Table.HeaderCell>
                                         ) : null}
-                                        {this.props.serialize && (
+                                        {this.props.isShowSerialNumber && (
                                           <Table.HeaderCell>
                                             <div
                                               style={{
@@ -214,7 +214,7 @@ class TableComponent extends Component {
                                                 </div>
                                               </Table.Cell>
                                             ) : null}
-                                            {this.props.serialize && (
+                                            {this.props.isShowSerialNumber && (
                                               <Table.Cell>
                                                 <div
                                                   style={{
