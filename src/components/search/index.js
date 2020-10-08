@@ -56,6 +56,7 @@ const styles = {
     zIndex: 9,
     right: '15px',
     borderRadius: '3px',
+    maxWidth: '300px',
   },
   closeIcon: {
     position: 'absolute',
