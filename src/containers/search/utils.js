@@ -29,10 +29,9 @@ export const searchObj = (obj, query, searchKeys) => {
         found = true;
         return found;
       }
-    } // end if key is searchable
-  } // end for every key in object
+    }
+  }
   return found;
-  // return found;
 };
 
 export const getSearchTextFilteredData = ({ data = [], searchText = '', searchKeys = {} }) => {
