@@ -96,6 +96,7 @@ export default class App extends React.Component {
           name={'Table Name'}
           showIcon={this.showIcon}
           enableIcon={true}
+          isShowSerialNumber
         />
       </div>
     );

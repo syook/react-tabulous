@@ -2,7 +2,7 @@
 export const searchObj = (obj, query, searchKeys) => {
   let found = false;
   for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(searchKeys, key)) {
+    if (Object.prototype.hasOwnProperty.call(searchKeys, key) || typeof obj[key] === 'object') {
       const value = obj[key];
       if (typeof value === 'object') {
         if (Array.isArray(value)) {
