@@ -1,8 +1,9 @@
 // search for a query in an object
-export const searchObj = (obj, query, searchKeys) => {
+export const searchObj = (obj, query, searchKeys, isAllowDeepSearch) => {
   let found = false;
   for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(searchKeys, key) || typeof obj[key] === 'object') {
+    const allowDeepSearch = isAllowDeepSearch && typeof obj[key] === 'object';
+    if (Object.prototype.hasOwnProperty.call(searchKeys, key) || allowDeepSearch) {
       const value = obj[key];
       if (typeof value === 'object') {
         if (Array.isArray(value)) {
@@ -34,11 +35,11 @@ export const searchObj = (obj, query, searchKeys) => {
   return found;
 };
 
-export const getSearchTextFilteredData = ({ data = [], searchText = '', searchKeys = {} }) => {
+export const getSearchTextFilteredData = ({ data = [], searchText = '', searchKeys = {}, isAllowDeepSearch }) => {
   if (!searchText) return data;
   return (
     (data || []).filter(object => {
-      const isFound = searchObj(object, searchText.toLowerCase(), searchKeys);
+      const isFound = searchObj(object, searchText.toLowerCase(), searchKeys, isAllowDeepSearch);
       return isFound;
     }) || []
   );
