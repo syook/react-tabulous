@@ -97,6 +97,7 @@ export default class App extends React.Component {
           showIcon={this.showIcon}
           enableIcon={true}
           isShowSerialNumber
+          isAllowDeepSearch
         />
       </div>
     );
