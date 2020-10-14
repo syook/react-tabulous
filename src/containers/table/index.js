@@ -188,7 +188,7 @@ class TableComponent extends Component {
                                         const includeCheckbox = props.showCheckbox(row);
                                         return (
                                           <Table.Row key={`column-${index1}`} className="main-table-row">
-                                            {hasBulkActions && includeCheckbox !== false ? (
+                                            {hasBulkActions && includeCheckbox ? (
                                               <Table.Cell>
                                                 <div
                                                   style={{
