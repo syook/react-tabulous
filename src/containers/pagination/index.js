@@ -83,26 +83,28 @@ export default class PaginationProvider extends PureComponent {
     const rowCount = (this.props.data || []).length;
 
     return (
-      <div
-        className={`scrollable-table tableFixHead ${this.props.tableScroll ? 'shouldSroll' : null}`}
-        style={{ maxWidth: '100%', marginTop: '10px' }}>
-        <Table sortable celled padded className="tableStyle left aligned table-fixed">
-          <PaginationContext.Provider
-            value={{ ...this.state, data, startIndex, rowCount, resetToFirstPage: this.resetToFirstPage }}>
-            {children}
-            <Pagination
-              {...this.props}
-              {...this.state}
-              handleDirectionClick={this.handleDirectionClick}
-              handlePageClick={this.handlePageClick}
-              onSelectRowsPerPage={this.onSelectRowsPerPage}
-              pageRange={pageRange}
-              rowCount={rowCount}
-              setCurrentPage={this.setCurrentPage}
-            />
-          </PaginationContext.Provider>
-        </Table>
-      </div>
+      <>
+        <div
+          className={`scrollable-table tableFixHead ${this.props.tableScroll ? 'shouldSroll' : null}`}
+          style={{ maxWidth: '100%', marginTop: '10px' }}>
+          <Table sortable celled padded className="tableStyle left aligned table-fixed">
+            <PaginationContext.Provider
+              value={{ ...this.state, data, startIndex, rowCount, resetToFirstPage: this.resetToFirstPage }}>
+              {children}
+            </PaginationContext.Provider>
+          </Table>
+        </div>
+        <Pagination
+          {...this.props}
+          {...this.state}
+          handleDirectionClick={this.handleDirectionClick}
+          handlePageClick={this.handlePageClick}
+          onSelectRowsPerPage={this.onSelectRowsPerPage}
+          pageRange={pageRange}
+          rowCount={rowCount}
+          setCurrentPage={this.setCurrentPage}
+        />
+      </>
     );
   }
 }

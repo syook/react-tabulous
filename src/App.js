@@ -1,3 +1,4 @@
+import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import ReactTabulous from './containers/table';
 import { Input } from 'semantic-ui-react';
@@ -95,6 +96,8 @@ export default class App extends React.Component {
           name={'Table Name'}
           showIcon={this.showIcon}
           enableIcon={true}
+          isShowSerialNumber
+          isAllowDeepSearch
         />
       </div>
     );

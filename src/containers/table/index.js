@@ -135,15 +135,15 @@ class TableComponent extends Component {
                                   <>
                                     <Table.Header style={{ textAlign: 'center' }}>
                                       <Table.Row>
-                                        <Table.HeaderCell className="bulkAction-check" style={{ zIndex: 5 }}>
-                                          <div
-                                            style={{
-                                              display: 'flex',
-                                              justifyContent: 'space-between',
-                                              alignItems: 'center',
-                                              minWidth: '70px',
-                                            }}>
-                                            {hasBulkActions ? (
+                                        {hasBulkActions ? (
+                                          <Table.HeaderCell className="bulkAction-check" style={{ zIndex: 5 }}>
+                                            <div
+                                              style={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                minWidth: '70px',
+                                              }}>
                                               <Checkbox
                                                 checked={this.state.bulkSelect}
                                                 disabled={!paginationProps.rowCount}
@@ -152,7 +152,11 @@ class TableComponent extends Component {
                                                   this.enableBulkSelect({ checked }, filterProps.data)
                                                 }
                                               />
-                                            ) : null}
+                                            </div>
+                                          </Table.HeaderCell>
+                                        ) : null}
+                                        {this.props.isShowSerialNumber && (
+                                          <Table.HeaderCell>
                                             <div
                                               style={{
                                                 textAlign: 'right',
@@ -160,8 +164,9 @@ class TableComponent extends Component {
                                               }}>
                                               S.No
                                             </div>
-                                          </div>
-                                        </Table.HeaderCell>
+                                          </Table.HeaderCell>
+                                        )}
+
                                         {visibleColumns.map((column, index) =>
                                           TableHeader({
                                             column,
@@ -183,15 +188,15 @@ class TableComponent extends Component {
                                         const includeCheckbox = props.showCheckbox(row);
                                         return (
                                           <Table.Row key={`column-${index1}`} className="main-table-row">
-                                            <Table.Cell>
-                                              <div
-                                                style={{
-                                                  display: 'flex',
-                                                  justifyContent: 'space-between',
-                                                  flexDirection: props.showStatusIcon ? 'row-reverse' : null,
-                                                  alignItems: 'baseline',
-                                                }}>
-                                                {hasBulkActions && includeCheckbox !== false ? (
+                                            {hasBulkActions && includeCheckbox !== false ? (
+                                              <Table.Cell>
+                                                <div
+                                                  style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    flexDirection: props.showStatusIcon ? 'row-reverse' : null,
+                                                    alignItems: 'baseline',
+                                                  }}>
                                                   <Checkbox
                                                     className="bulkAction_check"
                                                     checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
@@ -203,10 +208,14 @@ class TableComponent extends Component {
                                                       )
                                                     }
                                                   />
-                                                ) : null}
-                                                {props.showStatusIcon ? (
-                                                  <StatusIcon showStatusIcon={props.showStatusIcon(row)} />
-                                                ) : null}
+                                                  {props.showStatusIcon ? (
+                                                    <StatusIcon showStatusIcon={props.showStatusIcon(row)} />
+                                                  ) : null}
+                                                </div>
+                                              </Table.Cell>
+                                            ) : null}
+                                            {this.props.isShowSerialNumber && (
+                                              <Table.Cell>
                                                 <div
                                                   style={{
                                                     textAlign: 'right',
@@ -215,8 +224,8 @@ class TableComponent extends Component {
                                                   {paginationProps.startIndex + index1 + 1}
                                                   {props.enableIcon ? props.showIcon(row) : null}
                                                 </div>
-                                              </div>
-                                            </Table.Cell>
+                                              </Table.Cell>
+                                            )}
 
                                             {visibleColumns.map((column, index2) =>
                                               TableCell({ column, index2, data: paginationProps, row })
