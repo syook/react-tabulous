@@ -23,6 +23,7 @@ const Pagination = props => {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '10px 0',
+          width: '100%',
         }}>
         <Label ribbon>
           Total {props.tableFooterName} : {props.rowCount}
