@@ -69,9 +69,13 @@ const FilterDiv = props => {
           <Icon name="add" size="small" /> Add Filter{' '}
         </Button>
         {!props.filtersSelected || props.filterDisabled ? null : (
-          <Button className="filter_btn apply" size="small" onClick={props.applyFilter} loading={props.filterDisabled}>
-            {' '}
-            Apply Filter{' '}
+          <Button
+            positive
+            className="filter_btn apply"
+            size="small"
+            onClick={props.applyFilter}
+            loading={props.filterDisabled}>
+            Apply Filter
           </Button>
         )}
       </div>
@@ -106,7 +110,7 @@ const FilterGrid = props => {
           menuPlacement="auto"
         />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '100px', marginLeft: 10 }}>
+      <div style={{ flex: '2 0 auto', minWidth: '100px', marginLeft: 10 }}>
         <Select
           className="singleSelect"
           options={props.filterableColumns.map(createPropertyOption('field', 'headerName'))}
@@ -115,7 +119,7 @@ const FilterGrid = props => {
           menuPlacement="auto"
         />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '100px', marginLeft: 10 }}>
+      <div style={{ flex: '2 0 auto', minWidth: '100px', marginLeft: 10 }}>
         <Select
           className="singleSelect"
           options={queryOperatorOptions}
