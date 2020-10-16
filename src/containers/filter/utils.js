@@ -103,8 +103,15 @@ const findSearchValue = (type, value) => {
 };
 
 const findAttrValue = (d, attribute) => {
-  if (d[attribute] === 0) return d[attribute];
-  return d[attribute] || '';
+  const foundValue = d[attribute];
+  if (foundValue || foundValue === 0) return foundValue;
+  for (const key of Object.keys(d)) {
+    if (typeof d[key] === 'object' && !!d[key]) {
+      if (d[key][attribute] || d[key][attribute] === 0) {
+        return d[key][attribute];
+      }
+    }
+  }
 };
 
 const filterData = ({ data, attribute, value, query, type }) => {
