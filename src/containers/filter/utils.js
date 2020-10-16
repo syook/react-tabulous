@@ -102,13 +102,20 @@ const findSearchValue = (type, value) => {
   }
 };
 
-const findAttrValue = (d, attribute) => {
-  const foundValue = d[attribute];
+const findAttrValue = (obj, attribute) => {
+  const foundValue = obj[attribute];
   if (foundValue || foundValue === 0) return foundValue;
-  for (const key of Object.keys(d)) {
-    if (typeof d[key] === 'object' && !!d[key]) {
-      if (d[key][attribute] || d[key][attribute] === 0) {
-        return d[key][attribute];
+  for (const key of Object.keys(obj)) {
+    const value = obj[key];
+    if (typeof value === 'object' && !!value) {
+      if (Array.isArray(value)) {
+        let subValue;
+        for (subValue of value) {
+          let result = findAttrValue(subValue, attribute);
+          if (result) return result;
+        }
+      } else {
+        if (value[attribute] || value[attribute] === 0) return value[attribute];
       }
     }
   }
