@@ -105,7 +105,7 @@ const findSearchValue = (type, value) => {
 const findAttrValue = (obj, attribute) => {
   const foundValue = obj[attribute];
   if (foundValue || foundValue === 0) return foundValue;
-  for (const key of Object.keys(obj)) {
+  for (const key in obj) {
     const value = obj[key];
     if (typeof value === 'object' && !!value) {
       if (Array.isArray(value)) {
