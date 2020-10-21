@@ -1,7 +1,7 @@
 .filter-wrapper {
   display: flex;
   flex-flow: column;
-  min-width: 200px;
+  width: 700px;
 }
 
 .filter-wrapper .text-input .css-1pcexqc-container .css-16pqwjk-indicatorContainer {
@@ -11,16 +11,17 @@
   height: 15px;
   width: 15px;
 }
+.filter-wrapper .text-input .ui.input {
+  width: 100%;
+}
 
 .filter-wrapper .text-input .ui.input input {
   min-width: 150px;
-  max-width: 150px;
 }
 
 .filter-btns .filter_btn {
   background: none;
   color: #5c5c5c;
-  padding: 0;
   margin: 0 5px;
   font-weight: 500;
 }
@@ -41,11 +42,6 @@
 }
 .filter-popUp::before {
   display: none;
-}
-
-.filter-wrapper .css-ssi0ig-container,
-.filter-wrapper .css-1pcexqc-container {
-  max-width: 100px !important;
 }
 
 .ui.button:disabled {
