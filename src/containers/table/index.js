@@ -16,31 +16,22 @@ import TableCell from '../../components/table/cell';
 import StatusIcon from '../../components/status-icon/status-icon';
 import './index.css';
 
-const getTableColumns = (columnDefs, searchKeys) => {
-  return (
-    (columnDefs || [])
-      .filter(c => c.omitInHideList !== true)
-      .map(record => {
-        if (record.isSearchable && record.field) {
-          searchKeys[record.field] = true;
-        }
-        record.isVisible = true;
-        return record;
-      }) || []
-  );
-};
-
 class TableComponent extends Component {
   constructor(props) {
-    const searchKeys = {};
     super(props);
     this.state = {
-      columns: getTableColumns(props.columnDefs, searchKeys),
+      columns: this.getTableColumns(this.props.columnDefs).columnDefs,
       bulkSelect: false,
       indeterminateSelect: false,
       selectedRows: [],
-      searchKeys: searchKeys,
+      searchKeys: this.getTableColumns(this.props.columnDefs).searchKeys,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.columnDefs !== prevProps.columnDefs) {
+      this.setState({ columns: this.getTableColumns(this.props.columnDefs).columnDefs });
+    }
   }
 
   enableBulkSelect = ({ checked }, data = []) => {
@@ -50,6 +41,22 @@ class TableComponent extends Component {
 
   resetBulkSelection = () => {
     this.setState({ bulkSelect: false, indeterminateSelect: false, selectedRows: [] });
+  };
+
+  getTableColumns = columnDefs => {
+    return columnDefs.reduce(
+      (tableColumnDefs, columnDef) => {
+        if (!columnDef.omitInHideList) {
+          if (columnDef.isSearchable && columnDef.field) {
+            tableColumnDefs.searchKeys[columnDef.field] = true;
+          }
+          columnDef.isVisible = true;
+          tableColumnDefs.columnDefs.push(columnDef);
+          return tableColumnDefs;
+        }
+      },
+      { columnDefs: [], searchKeys: {} }
+    );
   };
 
   updateSelectedRows = ({ checked }, row_id, rowCount) => {
@@ -70,16 +77,14 @@ class TableComponent extends Component {
   };
 
   toggleColumns = (columnName, { checked }) => {
-    const tableColumns = getTableColumns(this.props.columnDefs, this.state.searchKeys);
-    let columns = tableColumns || [];
-    let updatableColumn = tableColumns.find(c => c.headerName === columnName) || {};
+    let columns = this.state.columns || [];
+    let updatableColumn = this.state.columns.find(c => c.headerName === columnName) || {};
     updatableColumn.isVisible = checked;
     this.setState({ columns: [...columns] });
   };
 
   toggleAllColumns = checked => {
-    const tableColumns = getTableColumns(this.props.columnDefs, this.state.searchKeys);
-    const updatedColumns = tableColumns.map(column => {
+    const updatedColumns = this.state.columns.map(column => {
       if (this.props.mandatoryFields.includes(column.headerName)) {
         return column;
       }
@@ -91,25 +96,13 @@ class TableComponent extends Component {
 
   render() {
     const props = this.props;
-    const searchKeys = {};
-    const headerColumnDefs =
-      (props.columnDefs || [])
-        .filter(c => c.omitInHideList !== true)
-        .map(record => {
-          if (record.isSearchable && record.field) {
-            searchKeys[record.field] = true;
-          }
-          record.isVisible = true;
-          return record;
-        }) || [];
     const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
-    const tableColumns = getTableColumns(props.columnDefs, searchKeys);
-    const visibleColumns = tableColumns.filter(d => d.isVisible);
+    const visibleColumns = this.state.columns.filter(d => d.isVisible);
     const filterableColumns = visibleColumns.filter(d => d.isFilterable);
 
-    const hidableColumns = tableColumns.filter(c => !props.mandatoryFields.includes(c.headerName));
+    const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
-    const hiddenColumnCount = tableColumns.length - visibleColumns.length;
+    const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
@@ -134,7 +127,7 @@ class TableComponent extends Component {
               <FilterProvider
                 data={searchProps.data || []}
                 filterableColumns={filterableColumns}
-                columns={headerColumnDefs}>
+                columns={this.state.columns}>
                 <FilterContext.Consumer>
                   {filterProps => (
                     <>
