@@ -47,3 +47,8 @@ code {
 .main-table-row td {
   padding: 14px;
 }
+
+.scrollable-table.tableFixHead {
+  max-height: 1000px;
+  overflow: auto;
+}
