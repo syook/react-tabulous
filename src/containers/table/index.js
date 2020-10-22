@@ -36,16 +36,6 @@ class TableComponent extends Component {
     super(props);
     this.state = {
       columns: getTableColumns(props.columnDefs, searchKeys),
-      // columns:
-      //   (props.columnDefs || [])
-      //     .filter(c => c.omitInHideList !== true)
-      //     .map(record => {
-      //       if (record.isSearchable && record.field) {
-      //         searchKeys[record.field] = true;
-      //       }
-      //       record.isVisible = true;
-      //       return record;
-      //     }) || [],
       bulkSelect: false,
       indeterminateSelect: false,
       selectedRows: [],
