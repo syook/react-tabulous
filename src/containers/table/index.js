@@ -20,7 +20,7 @@ class TableComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns: this.getTableColumns(this.props.columnDefs).columnDefs,
+      columns: this.getTableColumns(this.props.columnDefs).columnDefs || {},
       bulkSelect: false,
       indeterminateSelect: false,
       selectedRows: [],
@@ -43,7 +43,7 @@ class TableComponent extends Component {
     this.setState({ bulkSelect: false, indeterminateSelect: false, selectedRows: [] });
   };
 
-  getTableColumns = columnDefs => {
+  getTableColumns = (columnDefs = []) => {
     return columnDefs.reduce(
       (tableColumnDefs, columnDef) => {
         if (!columnDef.omitInHideList) {
