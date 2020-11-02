@@ -49,7 +49,7 @@ class TableComponent extends Component {
   getTableColumns = (columnDefs = []) => {
     return columnDefs.reduce(
       (tableColumnDefs, columnDef) => {
-        if (!columnDef.omitInHideList) {
+        if (columnDef.omitInHideList !== true) {
           if (columnDef.isSearchable && columnDef.field) {
             tableColumnDefs.searchKeys[columnDef.field] = true;
           }
