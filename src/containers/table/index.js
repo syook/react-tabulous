@@ -20,17 +20,20 @@ class TableComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns: this.getTableColumns(this.props.columnDefs).columnDefs || {},
+      columns: this.getTableColumns(this.props.columnDefs).columnDefs || [],
       bulkSelect: false,
       indeterminateSelect: false,
       selectedRows: [],
-      searchKeys: this.getTableColumns(this.props.columnDefs).searchKeys,
+      searchKeys: this.getTableColumns(this.props.columnDefs).searchKeys || [],
     };
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.columnDefs !== prevProps.columnDefs) {
-      this.setState({ columns: this.getTableColumns(this.props.columnDefs).columnDefs });
+      this.setState({
+        columns: this.getTableColumns(this.props.columnDefs).columnDefs || [],
+        searchKeys: this.getTableColumns(this.props.columnDefs).searchKeys || [],
+      });
     }
   }
 
