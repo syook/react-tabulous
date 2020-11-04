@@ -19,23 +19,13 @@ import './index.css';
 
 class TableComponent extends Component {
   constructor(props) {
-    const searchKeys = {};
     super(props);
     this.state = {
-      columns:
-        (props.columnDefs || [])
-          .filter(c => c.omitInHideList !== true)
-          .map(record => {
-            if (record.isSearchable && record.field) {
-              searchKeys[record.field] = true;
-            }
-            record.isVisible = true;
-            return record;
-          }) || [],
+      columns: this.getTableColumns(this.props.columnDefs).columnDefs || [],
       bulkSelect: false,
       indeterminateSelect: false,
       selectedRows: [],
-      searchKeys: searchKeys,
+      searchKeys: this.getTableColumns(this.props.columnDefs).searchKeys || [],
     };
   }
 
@@ -49,6 +39,7 @@ class TableComponent extends Component {
       });
     }
   }
+
   enableBulkSelect = ({ checked }, data = []) => {
     const selectedRows = checked ? data.map(i => i['_id'] || i['id']) : [];
     this.setState({ bulkSelect: checked, selectedRows, indeterminateSelect: false });
@@ -56,6 +47,22 @@ class TableComponent extends Component {
 
   resetBulkSelection = () => {
     this.setState({ bulkSelect: false, indeterminateSelect: false, selectedRows: [] });
+  };
+
+  getTableColumns = (columnDefs = []) => {
+    return columnDefs.reduce(
+      (tableColumnDefs, columnDef) => {
+        if (columnDef.omitInHideList !== true) {
+          if (columnDef.isSearchable && columnDef.field) {
+            tableColumnDefs.searchKeys[columnDef.field] = true;
+          }
+          columnDef.isVisible = true;
+          tableColumnDefs.columnDefs.push(columnDef);
+          return tableColumnDefs;
+        }
+      },
+      { columnDefs: [], searchKeys: {} }
+    );
   };
 
   updateSelectedRows = ({ checked }, row_id, rowCount) => {
