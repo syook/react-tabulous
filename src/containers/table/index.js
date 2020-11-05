@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import orderBy from 'lodash/orderBy';
+import isEqual from 'lodash/isEqual';
 import { Checkbox, Table } from 'semantic-ui-react';
 
 import FilterProvider, { FilterContext } from '../filter';
@@ -29,7 +30,9 @@ class TableComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.columnDefs !== prevProps.columnDefs) {
+    const columnDefs = (this.props.columnDefs || []).map(def => def.headerName);
+    const prevColumnDefs = (prevProps.columnDefs || []).map(def => def.headerName);
+    if (!isEqual(columnDefs, prevColumnDefs)) {
       this.setState({
         columns: this.getTableColumns(this.props.columnDefs).columnDefs || [],
         searchKeys: this.getTableColumns(this.props.columnDefs).searchKeys || [],
