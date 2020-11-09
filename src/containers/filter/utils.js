@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import { isAfter, isBefore, startOfMinute, isEqual as isEqualDate } from 'date-fns';
 
-const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', query = '' }) => {
+const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', query = '', placeholder }) => {
   attributeType = (attributeType || '').toLowerCase();
   if (attributeType === 'string') {
     attrValue = (attrValue || '').toLowerCase();
@@ -46,11 +46,10 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
       return attrValue && !isEqual(attrValue, searchValue);
     case 'is empty':
       if (attributeType === 'date') return !attrValue;
-      return attrValue === 0 ? false : isEmpty(attrValue.toString());
+      return attrValue === 0 ? false : attrValue === placeholder || isEmpty(attrValue.toString());
     case 'is not empty':
       if (attributeType === 'date') return !!attrValue;
-      return attrValue === 0 ? true : !isEmpty(attrValue.toString());
-
+      return attrValue === 0 ? true : attrValue !== placeholder && !isEmpty(attrValue.toString());
     // Date
     case 'is before':
       // return attrValue.isBefore(searchValue);
@@ -121,34 +120,35 @@ const findAttrValue = (obj, attribute) => {
   }
 };
 
-const filterData = ({ data, attribute, value, query, type }) => {
+const filterData = ({ data, attribute, value, query, type, placeholder }) => {
   return data.filter(d =>
     queryCondition({
       attrValue: findAttrValue(d, attribute),
       searchValue: findSearchValue(type, value),
       query,
       attributeType: type || '',
+      placeholder,
     })
   );
 };
 
-export const loopFilters = (data, filters) => {
+export const loopFilters = (data, filters, placeholder) => {
   const filterLength = (filters || []).length;
   if (!filterLength) return data;
-  if (filterLength === 1) return filterData({ data, ...filters[0] });
+  if (filterLength === 1) return filterData({ data, ...filters[0], placeholder });
 
   switch (filters[1].predicate) {
     case 'And':
       let andPredicateFilteredData = data;
       filters.forEach(filter => {
-        andPredicateFilteredData = filterData({ data: andPredicateFilteredData, ...filter });
+        andPredicateFilteredData = filterData({ data: andPredicateFilteredData, ...filter, placeholder });
       });
       return andPredicateFilteredData;
 
     case 'Or':
       let orPredicateFilteredData = [];
       filters.forEach(filter => {
-        const currentFilterData = filterData({ data, ...filter });
+        const currentFilterData = filterData({ data, ...filter, placeholder });
         orPredicateFilteredData = [...new Set([...orPredicateFilteredData, ...currentFilterData])];
       });
       return orPredicateFilteredData;

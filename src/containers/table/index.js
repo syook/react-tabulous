@@ -105,6 +105,7 @@ class TableComponent extends Component {
     const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
     const visibleColumns = this.state.columns.filter(d => d.isVisible);
     const filterableColumns = visibleColumns.filter(d => d.isFilterable);
+    const emptyCellPlaceHolder = this.props.emptyCellPlaceHolder || '';
 
     const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
@@ -133,7 +134,8 @@ class TableComponent extends Component {
               <FilterProvider
                 data={searchProps.data || []}
                 filterableColumns={filterableColumns}
-                columns={this.state.columns}>
+                columns={this.state.columns}
+                emptyCellPlaceHolder={emptyCellPlaceHolder}>
                 <FilterContext.Consumer>
                   {filterProps => (
                     <>
@@ -246,7 +248,13 @@ class TableComponent extends Component {
                                             )}
 
                                             {visibleColumns.map((column, index2) =>
-                                              TableCell({ column, index2, data: paginationProps, row })
+                                              TableCell({
+                                                column,
+                                                index2,
+                                                data: paginationProps,
+                                                row,
+                                                emptyCellPlaceHolder,
+                                              })
                                             )}
                                             {props.includeAction ? (
                                               <Table.Cell className="table-action_buttons">

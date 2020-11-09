@@ -8,8 +8,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       data: [
-        { id: 1, name: 'harsh', is_completed: true, description: 'something', isDeleted: false },
-        { id: 2, name: 'dh', description: 'dadss', isDeleted: true },
+        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'something', isDeleted: false },
+        { id: 2, name: 'Harsh Singh', description: '', isDeleted: true },
       ],
     };
   }
