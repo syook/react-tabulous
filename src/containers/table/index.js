@@ -105,7 +105,7 @@ class TableComponent extends Component {
     const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
     const visibleColumns = this.state.columns.filter(d => d.isVisible);
     const filterableColumns = visibleColumns.filter(d => d.isFilterable);
-    const emptyCellPlaceHolder = this.props.emptyCellPlaceHolder || 'N/A';
+    const emptyCellPlaceHolder = this.props.emptyCellPlaceHolder || '';
 
     const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
