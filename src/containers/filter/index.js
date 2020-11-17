@@ -113,6 +113,8 @@ export default class FilterProvider extends PureComponent {
           removeFilter={this.removeFilter}
           selectedFilters={this.state.selectedFilters}
           updateSelectedFilters={this.updateSelectedFilters}
+          downloadExcel={this.props.downloadExcel}
+          addRecord={this.props.addRecord}
         />
         {children}
 

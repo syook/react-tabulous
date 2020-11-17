@@ -1,5 +1,15 @@
 import orderBy from 'lodash/orderBy';
 
+const getData = (a, b, columnName = '', isAscending) => {
+  let firstValue, secondValue;
+  firstValue = (a || {})[columnName] || '';
+  secondValue = (b || {})[columnName] || '';
+  if (typeof firstValue === 'number' || typeof secondValue === 'number') {
+    return isAscending ? +firstValue - +secondValue : +secondValue - +firstValue;
+  }
+  return isAscending ? firstValue.localeCompare(secondValue) : secondValue.localeCompare(firstValue);
+};
+
 export const fetchSortedData = ({ data = [], columnType, columnName, direction }) => {
   if (!columnName || !columnType) return [];
 
@@ -23,14 +33,18 @@ export const fetchSortedData = ({ data = [], columnType, columnName, direction }
 
     case 'string':
     case 'singleselect':
-      let firstValue, secondValue;
       return data.sort((a, b) => {
-        firstValue = a[columnName] || '';
-        secondValue = b[columnName] || '';
-        if (typeof firstValue === 'number' || typeof secondValue === 'number') {
-          return isAscending ? +firstValue - +secondValue : +secondValue - +firstValue;
+        const foundValue = a[columnName];
+        if (foundValue || foundValue === 0) {
+          return getData(a, b, columnName, isAscending);
+        } else {
+          for (const key in a) {
+            const value = a[key] || {};
+            if (typeof value === 'object' && !!(a[key] || {})[columnName]) {
+              return getData(a[key], b[key], columnName, isAscending);
+            }
+          }
         }
-        return isAscending ? firstValue.localeCompare(secondValue) : secondValue.localeCompare(firstValue);
       });
 
     default:

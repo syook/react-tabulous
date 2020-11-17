@@ -99,6 +99,19 @@ export default class App extends React.Component {
           isShowSerialNumber
           isAllowDeepSearch
         />
+        <ReactTabulous
+          data={assetsToDisplay}
+          columnDefs={columnDefs}
+          actionDefs={this.actionDefs}
+          includeAction={true}
+          mandatoryFields={['Name']}
+          name={'Table Name'}
+          showIcon={this.showIcon}
+          enableIcon={true}
+          isAllowDeepSearch
+          emptyCellPlaceHolder="N/A"
+          defaultItemsToDisplay={50}
+        />
       </div>
     );
   }
