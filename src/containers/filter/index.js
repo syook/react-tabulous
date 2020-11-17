@@ -35,10 +35,10 @@ export default class FilterProvider extends PureComponent {
       filterToBeUpdated[attribute] = value;
     }
     if (attribute === 'attribute') {
-      const currentColumn = columns.find(i => i.field === value) || {};
+      const currentColumn = columns.find(i => i.headerName === value) || {};
       filterToBeUpdated['type'] = currentColumn.type || '';
       filterToBeUpdated.label = currentColumn.headerName;
-      filterToBeUpdated.attribute = currentColumn.field;
+      filterToBeUpdated.attribute = currentColumn.headerName;
       filterToBeUpdated['value'] = undefined;
       //picks the first query which matches this type
       const newQuery = ((filterOperators[filterToBeUpdated.type] || [])[0] || {}).value;
@@ -65,7 +65,7 @@ export default class FilterProvider extends PureComponent {
       predicate = 'And';
     }
     newFilter.predicate = predicate;
-    newFilter.attribute = firstFilterableAttribute.field;
+    newFilter.attribute = firstFilterableAttribute.headerName;
     newFilter.label = firstFilterableAttribute.headerName;
     const newQuery = ((filterOperators[firstFilterableAttribute.type] || [])[0] || {}).value;
     newQuery ? (newFilter.query = newQuery) : (newFilter.query = 'contains');
