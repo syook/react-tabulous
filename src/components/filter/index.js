@@ -17,25 +17,57 @@ const TableFilter = props => {
   let buttonText = selectedFilters === 1 ? '1 filter' : selectedFilters >= 1 ? `${selectedFilters} filters` : 'Filter';
 
   return (
-    <Popup
-      className="filter-popUp"
-      trigger={
+    <>
+      <Popup
+        className="filter-popUp"
+        trigger={
+          <Button
+            size="small"
+            disabled={props.disabled}
+            style={{
+              backgroundColor: selectedFilters ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
+              color: '#fff',
+              marginRight: '10px',
+            }}>
+            <Icon name="filter" /> {buttonText}
+          </Button>
+        }
+        content={<FilterDiv {...props} filtersSelected={!!selectedFilters} />}
+        on="click"
+        positionFixed
+        position="bottom left"
+      />
+      {/* {props.downloadExcel && (
+        <Popup
+          content="Download Excel"
+          trigger={
+            <Button
+              compact
+              size="large"
+              style={{
+                border: '1px solid lightgrey',
+                color: '#1D6F42',
+                background: 'white'
+              }}
+              icon
+              onClick={props.downloadExcel}
+            >
+              <Icon name="file excel" />
+            </Button>
+          }
+        />
+      )}
+      {props.addRecord && (
         <Button
-          size="small"
-          disabled={props.disabled}
-          style={{
-            backgroundColor: selectedFilters ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
-            color: '#fff',
-            marginRight: '10px',
-          }}>
-          <Icon name="filter" /> {buttonText}
-        </Button>
-      }
-      content={<FilterDiv {...props} filtersSelected={!!selectedFilters} />}
-      on="click"
-      positionFixed
-      position="bottom left"
-    />
+          color="primary"
+          fluid
+          labelPosition="left"
+          icon="plus"
+          onClick={() => props.openForm(null)}
+          content="Create New"
+        />
+      )} */}
+    </>
   );
 };
 
@@ -113,7 +145,7 @@ const FilterGrid = props => {
       <div style={{ flex: '2 0 auto', minWidth: '100px', marginLeft: 10 }}>
         <Select
           className="singleSelect"
-          options={props.filterableColumns.map(createPropertyOption('field', 'headerName'))}
+          options={props.filterableColumns.map(createPropertyOption('headerName'))}
           value={{ value: props.column.label, label: props.column.label }}
           onChange={value => props.updateSelectedFilters('attribute', value.value, props.index)}
           menuPlacement="auto"

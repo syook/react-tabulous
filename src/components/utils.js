@@ -1,7 +1,9 @@
-export const createPropertyOption = (valueProperty, labelProperty) => option => {
+import get from 'lodash/get';
+
+export const createPropertyOption = property => option => {
   return {
-    value: option[valueProperty || 'id' || '_id'],
-    label: option[labelProperty || 'name'],
+    value: option[property || 'id' || '_id'],
+    label: option[property || 'name'],
   };
 };
 
@@ -16,7 +18,10 @@ export const getTableData = (columns, data, placeholder) => {
     const dataObj = {};
     visibleColumns.forEach((column, index) => {
       dataObj['obj'] = dataRecord;
-      dataObj[column.headerName] = column.value ? column.value(dataRecord) : placeholder;
+      dataObj[column.headerName] =
+        column.field && typeof column.field === 'function'
+          ? column.field(dataRecord)
+          : get(dataRecord, column.field) || placeholder;
     });
     tableData.push(dataObj);
     return tableData;

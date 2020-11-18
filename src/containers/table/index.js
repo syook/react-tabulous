@@ -322,7 +322,7 @@ TableComponent.propTypes = {
   columnDefs: PropTypes.arrayOf(
     PropTypes.shape({
       cell: PropTypes.func,
-      field: PropTypes.string,
+      field: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
       headerName: PropTypes.string,
       isFilterable: PropTypes.bool,
       isSearchable: PropTypes.bool,
