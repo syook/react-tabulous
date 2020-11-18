@@ -18,17 +18,17 @@ The files will be under `./lib` folder.
 
 ### a. Available Column Options
 
-| Option           | Description                                                     | Type     | isRequired | Default |
-| ---------------- | --------------------------------------------------------------- | -------- | ---------- | ------- |
-| `headerName`     | Name of Column to be shown in header                            | String   | true       |         |
-| `type`           | type of the field                                               | String   | true       |         |
-| `value`          | text value in the cell which will be used for search and filter | String   | true       |         |
-| `cell`           | returns the value to be shown in the column cell                | Function | true       |         |
-| `isSortable`     | is column sortable                                              | Boolean  | false      |         |
-| `isSearchable`   | is column searchable                                            | Boolean  | false      |         |
-| `isFilterable`   | is column filterable                                            | Boolean  | false      |         |
-| `omitInHideList` | should the column be omitted in table and show/hide dropdown    | Boolean  | false      |         |
-| `options`        | array of options if the type is MultiSelect or Single Select    | Array    | false      | []      |
+| Option           | Description                                                                         | Type               | isRequired | Default |
+| ---------------- | ----------------------------------------------------------------------------------- | ------------------ | ---------- | ------- |
+| `headerName`     | Name of Column to be shown in header                                                | String             | true       |         |
+| `type`           | type of the field                                                                   | String             | true       |         |
+| `field`          | String='path to get value to be displayed' function='function should return string' | String or function | true       |         |
+| `cell`           | returns the element to be shown in the column cell                                  | Function           | false      |         |
+| `isSortable`     | is column sortable                                                                  | Boolean            | false      |         |
+| `isSearchable`   | is column searchable                                                                | Boolean            | false      |         |
+| `isFilterable`   | is column filterable                                                                | Boolean            | false      |         |
+| `omitInHideList` | should the column be omitted in table and show/hide dropdown                        | Boolean            | false      |         |
+| `options`        | array of options if the type is MultiSelect or Single Select                        | Array              | false      | []      |
 
 ### b. Action Config Options : actions will be shown in action column in table
 
