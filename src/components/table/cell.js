@@ -6,10 +6,10 @@ const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder }) => {
   return (
     <Table.Cell key={`table-cell-${index2}`}>
       {column.cell
-        ? column.cell(row.obj)
+        ? column.cell(data[row.objIndex])
         : typeof column.field === 'function'
-        ? column.field(row.obj)
-        : get(row.obj, column.field) || emptyCellPlaceHolder}
+        ? column.field(data[row.objIndex])
+        : get(data[row.objIndex], column.field) || emptyCellPlaceHolder}
     </Table.Cell>
   );
 };

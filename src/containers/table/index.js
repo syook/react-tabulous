@@ -263,7 +263,7 @@ class TableComponent extends Component {
                                                 TableCell({
                                                   column,
                                                   index2,
-                                                  data: paginationProps,
+                                                  data: this.props.data,
                                                   row,
                                                   emptyCellPlaceHolder,
                                                 })

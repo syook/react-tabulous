@@ -14,10 +14,10 @@ export const findColumnOptions = (columns, attributeName) => {
 
 export const getTableData = (columns, data, placeholder) => {
   const visibleColumns = columns.filter(d => d.isVisible);
-  return data.reduce((tableData, dataRecord) => {
+  return data.reduce((tableData, dataRecord, index) => {
     const dataObj = {};
-    visibleColumns.forEach((column, index) => {
-      dataObj['obj'] = dataRecord;
+    visibleColumns.forEach(column => {
+      dataObj['objIndex'] = index;
       dataObj[column.headerName] =
         column.field && typeof column.field === 'function'
           ? column.field(dataRecord)
