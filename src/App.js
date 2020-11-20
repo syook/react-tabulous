@@ -6,9 +6,22 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      count: 10,
       data: [
-        { id: 1, name: 'harsh', is_completed: true, description: 'something', isDeleted: false },
-        { id: 2, name: 'dh', description: 'dadss', isDeleted: true },
+        { id: 1, name: 'name1', is_completed: true, description: 'something', isDeleted: false },
+        { id: 2, name: 'name2', description: 'descript', isDeleted: true },
+        { id: 3, name: 'name3', is_completed: true, description: 'something', isDeleted: false },
+        { id: 4, name: 'name4', description: 'descript', isDeleted: true },
+        { id: 5, name: 'name5', is_completed: true, description: 'something', isDeleted: false },
+        { id: 6, name: 'name6', description: 'descript', isDeleted: true },
+        { id: 7, name: 'name7', is_completed: true, description: 'something', isDeleted: false },
+        { id: 8, name: 'name8', description: 'descript', isDeleted: true },
+        { id: 9, name: 'name9', is_completed: true, description: 'something', isDeleted: false },
+        { id: 10, name: 'name10', description: 'descript', isDeleted: true },
+        { id: 11, name: 'name11', is_completed: true, description: 'something', isDeleted: false },
+        { id: 12, name: 'name12', description: 'descript', isDeleted: true },
+        { id: 13, name: 'name13', is_completed: true, description: 'something', isDeleted: false },
+        { id: 14, name: 'name14', description: 'descript', isDeleted: true },
       ],
     };
   }
@@ -23,6 +36,10 @@ export default class App extends React.Component {
   onEdit = rowObject => {
     console.log('onEdit', rowObject);
   };
+
+  componentDidMount() {
+    this.setState({ count: 16 });
+  }
 
   onInputChange = ({ rowObject, value: newValue }) => {
     const obj = this.state.data.find(item => item.id === rowObject.id);
@@ -88,6 +105,10 @@ export default class App extends React.Component {
       <div>
         <ReactTabulous
           data={this.state.data}
+          count={this.state.count}
+          fetchOnPageChange={page => {
+            console.log(page);
+          }}
           columnDefs={this.columnDefs}
           actionDefs={this.actionDefs}
           includeAction={true}
