@@ -47,6 +47,7 @@ const Pagination = props => {
             isSearchable={false}
             menuPlacement="auto"
             menuPortalTarget={document.querySelector('#root')}
+            menuPlacement="top"
           />
           <Menu floated="right" pagination>
             <MenuItem icon="angle double left" page={1} onClick={props.handlePageClick} />
