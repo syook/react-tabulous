@@ -108,7 +108,7 @@ export default class FilterProvider extends PureComponent {
         <Filter
           addFilter={this.addFilter}
           applyFilter={this.applyFilter}
-          disabled={!parentDataCount}
+          disabled={!parentDataCount || !filterableColumns.length}
           filterDisabled={this.state.filterDisabled}
           filterableColumns={filterableColumns}
           removeFilter={this.removeFilter}
