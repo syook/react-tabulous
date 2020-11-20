@@ -11,7 +11,6 @@ export const FilterContext = React.createContext();
 
 export default class FilterProvider extends PureComponent {
   state = {
-    data: [...(this.props.data || [])],
     selectedFilters: [],
     filterDisabled: false,
   };
@@ -89,21 +88,23 @@ export default class FilterProvider extends PureComponent {
     this.setState({ filterDisabled: true });
     const selectedFilters = filters && filters.length ? filters : this.state.selectedFilters;
     const searchedData = [...this.props.data] || [];
-    if (!selectedFilters.length) return this.setFilteredData(searchedData);
+    if (!selectedFilters.length) {
+      this.setState({ filterDisabled: false });
+      return searchedData;
+    }
 
     const filteredData = loopFilters(searchedData, selectedFilters, this.props.emptyCellPlaceHolder);
-    this.setFilteredData(filteredData);
+    this.setState({ filterDisabled: false });
+    return filteredData;
   };
-
-  setFilteredData = (data = []) => this.setState({ data, filterDisabled: false });
 
   render() {
     const { children, filterableColumns } = this.props;
     const parentDataCount = (this.props.data || []).length;
-    const stateDataCount = (this.state.data || []).length;
-
+    const data = this.applyFilter(this.state.selectedFilters);
+    const stateDataCount = (data || []).length;
     return (
-      <FilterContext.Provider value={{ ...this.state }}>
+      <FilterContext.Provider value={{ ...this.state, data }}>
         <Filter
           addFilter={this.addFilter}
           applyFilter={this.applyFilter}
@@ -113,8 +114,6 @@ export default class FilterProvider extends PureComponent {
           removeFilter={this.removeFilter}
           selectedFilters={this.state.selectedFilters}
           updateSelectedFilters={this.updateSelectedFilters}
-          downloadExcel={this.props.downloadExcel}
-          addRecord={this.props.addRecord}
         />
         {children}
 

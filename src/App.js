@@ -88,8 +88,8 @@ export default class App extends React.Component {
     return (
       <div>
         <ReactTabulous
-          data={assetsToDisplay}
-          columnDefs={columnDefs}
+          data={this.state.data}
+          columnDefs={this.columnDefs}
           actionDefs={this.actionDefs}
           includeAction={true}
           mandatoryFields={['Name']}

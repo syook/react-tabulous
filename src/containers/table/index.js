@@ -4,7 +4,7 @@ import orderBy from 'lodash/orderBy';
 import isEqual from 'lodash/isEqual';
 import { Checkbox, Table } from 'semantic-ui-react';
 
-import { getTableData } from '../../components/utils';
+import { getTableData, getTableColumns } from '../../components/utils';
 import FilterProvider, { FilterContext } from '../filter';
 import PaginationProvider, { PaginationContext } from '../pagination';
 import SearchProvider, { SearchContext } from '../search';
@@ -22,26 +22,35 @@ class TableComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns: this.getTableColumns(this.props.columnDefs).columnDefs || [],
+      columns: getTableColumns(this.props.columnDefs).columnDefs || [],
       bulkSelect: false,
       indeterminateSelect: false,
       selectedRows: [],
-      searchKeys: this.getTableColumns(this.props.columnDefs).searchKeys || [],
+      searchKeys: getTableColumns(this.props.columnDefs).searchKeys || [],
       data: [],
+    };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const columns = getTableColumns(props.columnDefs).columnDefs || [];
+    return {
+      data: getTableData(columns, props.data, props.emptyCellPlaceHolder),
     };
   }
 
   componentDidUpdate(prevProps) {
     const columnDefs = (this.props.columnDefs || []).map(def => def.headerName);
     const prevColumnDefs = (prevProps.columnDefs || []).map(def => def.headerName);
+    const columns = getTableColumns(this.props.columnDefs).columnDefs || [];
     if (!isEqual(columnDefs, prevColumnDefs)) {
       this.setState({
-        columns: this.getTableColumns(this.props.columnDefs).columnDefs || [],
-        searchKeys: this.getTableColumns(this.props.columnDefs).searchKeys || [],
+        columns,
+        searchKeys: getTableColumns(this.props.columnDefs).searchKeys || [],
+        data: getTableData(columns, this.props.data, this.props.emptyCellPlaceHolder),
       });
     }
-    if (!this.state.data.length && !!this.props.data.length) {
-      this.setState({ data: getTableData(this.state.columns, this.props.data, this.props.emptyCellPlaceHolder) });
+    if (!this.state.data.length && !!this.props.data.length && this.props.data.length !== prevProps.data.length) {
+      this.setState({ data: getTableData(columns, this.props.data, this.props.emptyCellPlaceHolder) });
     }
   }
 
@@ -52,23 +61,6 @@ class TableComponent extends Component {
 
   resetBulkSelection = () => {
     this.setState({ bulkSelect: false, indeterminateSelect: false, selectedRows: [] });
-  };
-
-  getTableColumns = (columnDefs = []) => {
-    return columnDefs.reduce(
-      (tableColumnDefs, columnDef) => {
-        if (columnDef.omitInHideList !== true) {
-          if (columnDef.isSearchable && columnDef.headerName) {
-            tableColumnDefs.searchKeys[columnDef.headerName] = true;
-          }
-          columnDef.isVisible = true;
-          tableColumnDefs.columnDefs.push(columnDef);
-          return tableColumnDefs;
-        }
-      },
-
-      { columnDefs: [], searchKeys: {} }
-    );
   };
 
   updateSelectedRows = ({ checked }, row_id, rowCount) => {
@@ -115,7 +107,6 @@ class TableComponent extends Component {
     const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
-
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys} tableData={this.state.data}>
         <SearchContext.Consumer>
@@ -142,154 +133,158 @@ class TableComponent extends Component {
                   data={searchProps.data || []}
                   filterableColumns={filterableColumns}
                   columns={this.state.columns}
-                  emptyCellPlaceHolder={emptyCellPlaceHolder}
-                  downloadExcel={props.downloadExcel}
-                  addRecord={props.addRecord}>
+                  emptyCellPlaceHolder={emptyCellPlaceHolder}>
                   <FilterContext.Consumer>
-                    {filterProps => (
-                      <>
-                        {this.props.children ? (
-                          <div style={{ display: 'inline-block' }}>{this.props.children}</div>
-                        ) : null}
-                        <SortProvider data={orderBy(filterProps.data, ['name'], ['asc'])}>
-                          <SortContext.Consumer>
-                            {sortProps => (
-                              <PaginationProvider
-                                {...props}
-                                data={sortProps.data || []}
-                                resetPagination={sortProps.resetPagination}
-                                resetBulkSelection={this.resetBulkSelection}
-                                defaultItemsToDisplay={props.defaultItemsToDisplay}>
-                                <PaginationContext.Consumer>
-                                  {paginationProps => (
-                                    <>
-                                      <Table.Header style={{ textAlign: 'center' }}>
-                                        <Table.Row>
-                                          {hasBulkActions ? (
-                                            <Table.HeaderCell className="bulkAction-check" style={{ zIndex: 5 }}>
-                                              <div
-                                                style={{
-                                                  display: 'flex',
-                                                  justifyContent: 'space-between',
-                                                  alignItems: 'center',
-                                                  minWidth: '70px',
-                                                }}>
-                                                <Checkbox
-                                                  checked={this.state.bulkSelect}
-                                                  disabled={!paginationProps.rowCount}
-                                                  indeterminate={this.state.indeterminateSelect}
-                                                  onChange={(e, { checked }) =>
-                                                    this.enableBulkSelect({ checked }, filterProps.data)
-                                                  }
-                                                />
-                                              </div>
-                                            </Table.HeaderCell>
-                                          ) : null}
-                                          {this.props.isShowSerialNumber && (
-                                            <Table.HeaderCell>
-                                              <div
-                                                style={{
-                                                  textAlign: 'right',
-                                                  margin: '0 auto',
-                                                }}>
-                                                S.No
-                                              </div>
-                                            </Table.HeaderCell>
-                                          )}
+                    {filterProps => {
+                      return (
+                        <>
+                          {this.props.children ? (
+                            <div style={{ display: 'inline-block' }}>{this.props.children}</div>
+                          ) : null}
+                          <SortProvider data={orderBy(filterProps.data, ['name'], ['asc'])}>
+                            <SortContext.Consumer>
+                              {sortProps => {
+                                return (
+                                  <PaginationProvider
+                                    {...props}
+                                    data={sortProps.data || []}
+                                    resetPagination={sortProps.resetPagination}
+                                    resetBulkSelection={this.resetBulkSelection}
+                                    defaultItemsToDisplay={props.defaultItemsToDisplay}>
+                                    <PaginationContext.Consumer>
+                                      {paginationProps => {
+                                        return (
+                                          <>
+                                            <Table.Header style={{ textAlign: 'center' }}>
+                                              <Table.Row>
+                                                {hasBulkActions ? (
+                                                  <Table.HeaderCell className="bulkAction-check" style={{ zIndex: 5 }}>
+                                                    <div
+                                                      style={{
+                                                        display: 'flex',
+                                                        justifyContent: 'space-between',
+                                                        alignItems: 'center',
+                                                        minWidth: '70px',
+                                                      }}>
+                                                      <Checkbox
+                                                        checked={this.state.bulkSelect}
+                                                        disabled={!paginationProps.rowCount}
+                                                        indeterminate={this.state.indeterminateSelect}
+                                                        onChange={(e, { checked }) =>
+                                                          this.enableBulkSelect({ checked }, filterProps.data)
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </Table.HeaderCell>
+                                                ) : null}
+                                                {this.props.isShowSerialNumber && (
+                                                  <Table.HeaderCell>
+                                                    <div
+                                                      style={{
+                                                        textAlign: 'right',
+                                                        margin: '0 auto',
+                                                      }}>
+                                                      S.No
+                                                    </div>
+                                                  </Table.HeaderCell>
+                                                )}
 
-                                          {visibleColumns.map((column, index) =>
-                                            TableHeader({
-                                              column,
-                                              index,
-                                              sortProps,
-                                              defaultSort: props.defaultSort,
-                                              disabled: !paginationProps.rowCount,
-                                            })
-                                          )}
-                                          {!props.actionOnHover ? (
-                                            props.includeAction ? (
-                                              <Table.HeaderCell style={{ zIndex: 5 }}>Actions</Table.HeaderCell>
-                                            ) : null
-                                          ) : null}
-                                        </Table.Row>
-                                      </Table.Header>
-                                      <Table.Body>
-                                        {paginationProps.data.map((row, index1) => {
-                                          const includeCheckbox = props.showCheckbox(row);
-                                          return (
-                                            <Table.Row key={`column-${index1}`} className="main-table-row">
-                                              {hasBulkActions && includeCheckbox !== false ? (
-                                                <Table.Cell>
-                                                  <div
-                                                    style={{
-                                                      display: 'flex',
-                                                      justifyContent: 'space-between',
-                                                      flexDirection: props.showStatusIcon ? 'row-reverse' : null,
-                                                      alignItems: 'baseline',
-                                                    }}>
-                                                    <Checkbox
-                                                      className="bulkAction_check"
-                                                      checked={this.state.selectedRows.includes(
-                                                        row['_id'] || row['id']
-                                                      )}
-                                                      onChange={(e, { checked }) =>
-                                                        this.updateSelectedRows(
-                                                          { checked },
-                                                          row['_id'] || row['id'],
-                                                          paginationProps.rowCount
-                                                        )
-                                                      }
-                                                    />
-                                                    {props.showStatusIcon ? (
-                                                      <StatusIcon showStatusIcon={props.showStatusIcon(row)} />
+                                                {visibleColumns.map((column, index) =>
+                                                  TableHeader({
+                                                    column,
+                                                    index,
+                                                    sortProps,
+                                                    defaultSort: props.defaultSort,
+                                                    disabled: !paginationProps.rowCount,
+                                                  })
+                                                )}
+                                                {!props.actionOnHover ? (
+                                                  props.includeAction ? (
+                                                    <Table.HeaderCell style={{ zIndex: 5 }}>Actions</Table.HeaderCell>
+                                                  ) : null
+                                                ) : null}
+                                              </Table.Row>
+                                            </Table.Header>
+                                            <Table.Body>
+                                              {paginationProps.data.map((row, index1) => {
+                                                const includeCheckbox = props.showCheckbox(row);
+                                                return (
+                                                  <Table.Row key={`column-${index1}`} className="main-table-row">
+                                                    {hasBulkActions && includeCheckbox !== false ? (
+                                                      <Table.Cell>
+                                                        <div
+                                                          style={{
+                                                            display: 'flex',
+                                                            justifyContent: 'space-between',
+                                                            flexDirection: props.showStatusIcon ? 'row-reverse' : null,
+                                                            alignItems: 'baseline',
+                                                          }}>
+                                                          <Checkbox
+                                                            className="bulkAction_check"
+                                                            checked={this.state.selectedRows.includes(
+                                                              row['_id'] || row['id']
+                                                            )}
+                                                            onChange={(e, { checked }) =>
+                                                              this.updateSelectedRows(
+                                                                { checked },
+                                                                row['_id'] || row['id'],
+                                                                paginationProps.rowCount
+                                                              )
+                                                            }
+                                                          />
+                                                          {props.showStatusIcon ? (
+                                                            <StatusIcon showStatusIcon={props.showStatusIcon(row)} />
+                                                          ) : null}
+                                                        </div>
+                                                      </Table.Cell>
                                                     ) : null}
-                                                  </div>
-                                                </Table.Cell>
-                                              ) : null}
-                                              {this.props.isShowSerialNumber && (
-                                                <Table.Cell>
-                                                  <div
-                                                    style={{
-                                                      textAlign: 'right',
-                                                      margin: '0 auto',
-                                                    }}>
-                                                    {paginationProps.startIndex + index1 + 1}
-                                                    {props.enableIcon ? props.showIcon(row) : null}
-                                                  </div>
-                                                </Table.Cell>
-                                              )}
+                                                    {this.props.isShowSerialNumber && (
+                                                      <Table.Cell>
+                                                        <div
+                                                          style={{
+                                                            textAlign: 'right',
+                                                            margin: '0 auto',
+                                                          }}>
+                                                          {paginationProps.startIndex + index1 + 1}
+                                                          {props.enableIcon ? props.showIcon(row) : null}
+                                                        </div>
+                                                      </Table.Cell>
+                                                    )}
 
-                                              {visibleColumns.map((column, index2) =>
-                                                TableCell({
-                                                  column,
-                                                  index2,
-                                                  data: this.props.data,
-                                                  row,
-                                                  emptyCellPlaceHolder,
-                                                })
-                                              )}
-                                              {props.includeAction ? (
-                                                <Table.Cell className="table-action_buttons">
-                                                  <TableActions
-                                                    actionOnHover={props.actionOnHover}
-                                                    actions={props.actionDefs}
-                                                    row={row}
-                                                  />
-                                                </Table.Cell>
-                                              ) : null}
-                                            </Table.Row>
-                                          );
-                                        })}
-                                      </Table.Body>
-                                    </>
-                                  )}
-                                </PaginationContext.Consumer>
-                              </PaginationProvider>
-                            )}
-                          </SortContext.Consumer>
-                        </SortProvider>
-                      </>
-                    )}
+                                                    {visibleColumns.map((column, index2) =>
+                                                      TableCell({
+                                                        column,
+                                                        index2,
+                                                        data: this.props.data,
+                                                        row,
+                                                        emptyCellPlaceHolder,
+                                                      })
+                                                    )}
+                                                    {props.includeAction ? (
+                                                      <Table.Cell className="table-action_buttons">
+                                                        <TableActions
+                                                          actionOnHover={props.actionOnHover}
+                                                          actions={props.actionDefs}
+                                                          row={row}
+                                                        />
+                                                      </Table.Cell>
+                                                    ) : null}
+                                                  </Table.Row>
+                                                );
+                                              })}
+                                            </Table.Body>
+                                          </>
+                                        );
+                                      }}
+                                    </PaginationContext.Consumer>
+                                  </PaginationProvider>
+                                );
+                              }}
+                            </SortContext.Consumer>
+                          </SortProvider>
+                        </>
+                      );
+                    }}
                   </FilterContext.Consumer>
                 </FilterProvider>
               </div>

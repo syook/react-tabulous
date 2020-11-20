@@ -37,36 +37,6 @@ const TableFilter = props => {
         positionFixed
         position="bottom left"
       />
-      {/* {props.downloadExcel && (
-        <Popup
-          content="Download Excel"
-          trigger={
-            <Button
-              compact
-              size="large"
-              style={{
-                border: '1px solid lightgrey',
-                color: '#1D6F42',
-                background: 'white'
-              }}
-              icon
-              onClick={props.downloadExcel}
-            >
-              <Icon name="file excel" />
-            </Button>
-          }
-        />
-      )}
-      {props.addRecord && (
-        <Button
-          color="primary"
-          fluid
-          labelPosition="left"
-          icon="plus"
-          onClick={() => props.openForm(null)}
-          content="Create New"
-        />
-      )} */}
     </>
   );
 };

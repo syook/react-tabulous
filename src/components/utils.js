@@ -27,3 +27,20 @@ export const getTableData = (columns, data, placeholder) => {
     return tableData;
   }, []);
 };
+
+export const getTableColumns = (columnDefs = []) => {
+  return columnDefs.reduce(
+    (tableColumnDefs, columnDef) => {
+      if (columnDef.omitInHideList !== true) {
+        if (columnDef.isSearchable && columnDef.headerName) {
+          tableColumnDefs.searchKeys[columnDef.headerName] = true;
+        }
+        columnDef.isVisible = true;
+        tableColumnDefs.columnDefs.push(columnDef);
+        return tableColumnDefs;
+      }
+    },
+
+    { columnDefs: [], searchKeys: {} }
+  );
+};

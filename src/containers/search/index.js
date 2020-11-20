@@ -11,7 +11,7 @@ import { getSearchTextFilteredData } from './utils';
 export const SearchContext = React.createContext();
 
 export default class SearchProvider extends Component {
-  state = { searchText: '', data: [...(this.props.tableData || [])] };
+  state = { searchText: '' };
 
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.tableData, this.props.tableData)) {
@@ -23,7 +23,7 @@ export default class SearchProvider extends Component {
     searchText => {
       const { tableData, searchKeys, isAllowDeepSearch } = this.props;
       if (!searchText || isEmpty(searchKeys)) {
-        this.setState({ data: [...(tableData || [])] });
+        return tableData;
       }
 
       const searchedObjects = getSearchTextFilteredData({
@@ -32,7 +32,7 @@ export default class SearchProvider extends Component {
         searchText,
         isAllowDeepSearch,
       });
-      this.setState({ data: searchedObjects });
+      return searchedObjects;
     },
     300,
     { leading: true, trailing: true }
@@ -49,10 +49,11 @@ export default class SearchProvider extends Component {
 
   render() {
     const mainDataCount = (this.props.tableData || []).length;
-    const stateDataCount = (this.state.data || []).length;
+    const data = this.search(this.state.searchText);
+    const stateDataCount = (data || []).length;
     return (
       <div>
-        <SearchContext.Provider value={{ ...this.state }}>
+        <SearchContext.Provider value={{ ...this.state, data }}>
           <SearchComponent
             disabled={!mainDataCount}
             name={this.props.tableName}

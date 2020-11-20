@@ -13,8 +13,8 @@ export default class PaginationProvider extends PureComponent {
   constructor(props) {
     super(props);
     const rowsPerPage = {
-      value: this.props.defaultItemsToDisplay || 50,
-      label: `${this.props.defaultItemsToDisplay || 50} Items`,
+      value: this.props.defaultItemsToDisplay || 10,
+      label: `${this.props.defaultItemsToDisplay || 10} Items`,
     };
     const rowCount = (props.data || []).length;
     this.state = {
@@ -51,7 +51,6 @@ export default class PaginationProvider extends PureComponent {
 
     const numberOfPages = Math.ceil(rowCount / selectedRowsPerPage.value);
     if (numberOfPages < currentPage) currentPage = numberOfPages;
-
     this.setState({
       numberOfPages,
       rowsPerPage: selectedRowsPerPage,
@@ -84,7 +83,6 @@ export default class PaginationProvider extends PureComponent {
     data = findCurrentData(data, currentPage, rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage.value;
     const rowCount = (this.props.data || []).length;
-
     return (
       <>
         <div
