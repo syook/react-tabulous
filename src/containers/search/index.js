@@ -28,14 +28,14 @@ export default class SearchProvider extends Component {
 
   search = debounce(
     searchText => {
-      const { data, searchKeys } = this.props;
+      const { data, searchKeys, isAllowDeepSearch } = this.props;
       if (!searchText || isEmpty(searchKeys)) {
         this.setState({ data: [...(data || [])] });
       }
       if (this.props.fetchOnPageChange) {
         this.props.fetchOnPageChange(1, searchText, searchKeys, this.state.rowsPerPage);
       } else {
-        const searchedObjects = getSearchTextFilteredData({ data, searchKeys, searchText });
+        const searchedObjects = getSearchTextFilteredData({ data, searchKeys, searchText, isAllowDeepSearch });
         this.setState({ data: searchedObjects });
       }
     },

@@ -59,6 +59,21 @@ The files will be under `./lib` folder.
 | `SingleSelect` | has any of, has none of, is empty, is not empty                 | options: []        |
 | `MultiSelect`  | is, is not, is empty, is not empty,                             | options: []        |
 
+### d. Component Props
+
+| Prop                   | Description                                                     | Default | Required | Type    |
+| ---------------------- | --------------------------------------------------------------- | ------- | -------- | ------- |
+| `mandatoryFields`      | ''                                                              |         | true     |         |
+| `data`                 | data for the table                                              |         | true     |         |
+| `columnDefs`           | is, is not, is empty, is not empty,                             |         | true     |         |
+| `actionDefs`           | contains, does not contains, is, is not, is empty, is not empty |         | false    |         |
+| `bulkActionDefs`       | is, is not, is after, is before, is empty, is not empty         |         | false    |         |
+| `name`                 | name of the table                                               |         | false    | string  |
+| `includeAction`        | to show actions column                                          | false   | false    | boolean |
+| `isShowSerialNumber`   | to show serial number column                                    | false   | false    | boolean |
+| `isAllowDeepSearch`    | allow a deep search in the data for the searched keyword        | false   | false    | boolean |
+| `emptyCellPlaceHolder` | placeholder for empty cells                                     |         | false    | string  |
+
 ## Example
 
 ```js
@@ -205,7 +220,9 @@ customComponents = () => (
   includeAction={true}
   mandatoryFields={['Name']}
   name={'Table Name'}
-  columnDefs={this.columnDefs}>
+  columnDefs={this.columnDefs}
+  isShowSerialNumber={true}
+  isAllowDeepSearch={true}>
   {this.customComponents}
 </ReactTabulous>
 

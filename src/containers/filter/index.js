@@ -92,7 +92,7 @@ export default class FilterProvider extends PureComponent {
     const searchedData = [...this.props.data] || [];
     if (!selectedFilters.length) return this.setFilteredData(searchedData);
 
-    const filteredData = loopFilters(searchedData, selectedFilters);
+    const filteredData = loopFilters(searchedData, selectedFilters, this.props.emptyCellPlaceHolder);
     this.setFilteredData(filteredData);
   };
 

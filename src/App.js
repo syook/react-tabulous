@@ -1,3 +1,4 @@
+import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import ReactTabulous from './containers/table';
 import { Input } from 'semantic-ui-react';
@@ -8,20 +9,8 @@ export default class App extends React.Component {
     this.state = {
       count: 10,
       data: [
-        { id: 1, name: 'name1', is_completed: true, description: 'something', isDeleted: false },
-        { id: 2, name: 'name2', description: 'descript', isDeleted: true },
-        { id: 3, name: 'name3', is_completed: true, description: 'something', isDeleted: false },
-        { id: 4, name: 'name4', description: 'descript', isDeleted: true },
-        { id: 5, name: 'name5', is_completed: true, description: 'something', isDeleted: false },
-        { id: 6, name: 'name6', description: 'descript', isDeleted: true },
-        { id: 7, name: 'name7', is_completed: true, description: 'something', isDeleted: false },
-        { id: 8, name: 'name8', description: 'descript', isDeleted: true },
-        { id: 9, name: 'name9', is_completed: true, description: 'something', isDeleted: false },
-        { id: 10, name: 'name10', description: 'descript', isDeleted: true },
-        { id: 11, name: 'name11', is_completed: true, description: 'something', isDeleted: false },
-        { id: 12, name: 'name12', description: 'descript', isDeleted: true },
-        { id: 13, name: 'name13', is_completed: true, description: 'something', isDeleted: false },
-        { id: 14, name: 'name14', description: 'descript', isDeleted: true },
+        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'something', isDeleted: false },
+        { id: 2, name: 'Harsh Singh', description: '', isDeleted: true },
       ],
     };
   }
@@ -116,6 +105,8 @@ export default class App extends React.Component {
           name={'Table Name'}
           showIcon={this.showIcon}
           enableIcon={true}
+          isShowSerialNumber
+          isAllowDeepSearch
         />
       </div>
     );
