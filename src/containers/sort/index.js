@@ -59,7 +59,9 @@ export default class SortProvider extends PureComponent {
   render() {
     const { children } = this.props;
     return (
-      <SortContext.Provider value={{ handleSort: this.handleSort, ...this.state }}>{children}</SortContext.Provider>
+      <SortContext.Provider value={{ handleSort: this.handleSort, ...this.state, count: this.props.count }}>
+        {children}
+      </SortContext.Provider>
     );
   }
 }

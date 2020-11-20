@@ -111,6 +111,7 @@ class TableComponent extends Component {
     const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
+
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
@@ -134,6 +135,7 @@ class TableComponent extends Component {
 
               <FilterProvider
                 data={searchProps.data || []}
+                count={searchProps.count}
                 filterableColumns={filterableColumns}
                 columns={this.state.columns}
                 emptyCellPlaceHolder={emptyCellPlaceHolder}>
@@ -143,12 +145,16 @@ class TableComponent extends Component {
                       {this.props.children ? (
                         <div style={{ display: 'inline-block' }}>{this.props.children}</div>
                       ) : null}
-                      <SortProvider data={orderBy(filterProps.data, ['name'], ['asc'])}>
+                      <SortProvider data={orderBy(filterProps.data, ['name'], ['asc'])} count={filterProps.count}>
                         <SortContext.Consumer>
                           {sortProps => (
                             <PaginationProvider
                               {...props}
                               data={sortProps.data || []}
+                              count={sortProps.count}
+                              fetchOnPageChange={props.fetchOnPageChange}
+                              searchText={searchProps.searchText}
+                              updateRowsPerPage={searchProps.updateRowsPerPage}
                               resetPagination={sortProps.resetPagination}
                               resetBulkSelection={this.resetBulkSelection}>
                               <PaginationContext.Consumer>
@@ -319,6 +325,8 @@ TableComponent.propTypes = {
     })
   ),
   data: PropTypes.array,
+  count: PropTypes.number,
+  fetchOnPageChange: PropTypes.func,
   includeAction: PropTypes.bool,
   mandatoryFields: PropTypes.arrayOf(PropTypes.string),
   tableFooterName: PropTypes.string,

@@ -12,6 +12,7 @@ export const FilterContext = React.createContext();
 export default class FilterProvider extends PureComponent {
   state = {
     data: [...(this.props.data || [])],
+
     selectedFilters: [],
     filterDisabled: false,
   };
@@ -103,7 +104,7 @@ export default class FilterProvider extends PureComponent {
     const stateDataCount = (this.state.data || []).length;
 
     return (
-      <FilterContext.Provider value={{ ...this.state }}>
+      <FilterContext.Provider value={{ ...this.state, count: this.props.count }}>
         <Filter
           addFilter={this.addFilter}
           applyFilter={this.applyFilter}

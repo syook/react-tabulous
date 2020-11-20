@@ -7,6 +7,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      count: 10,
       data: [
         { id: 1, name: 'Harsh Singh', is_completed: true, description: 'something', isDeleted: false },
         { id: 2, name: 'Harsh Singh', description: '', isDeleted: true },
@@ -24,6 +25,10 @@ export default class App extends React.Component {
   onEdit = rowObject => {
     console.log('onEdit', rowObject);
   };
+
+  componentDidMount() {
+    this.setState({ count: 16 });
+  }
 
   onInputChange = ({ rowObject, value: newValue }) => {
     const obj = this.state.data.find(item => item.id === rowObject.id);
@@ -94,6 +99,10 @@ export default class App extends React.Component {
       <div>
         <ReactTabulous
           data={this.state.data}
+          count={this.state.count}
+          fetchOnPageChange={page => {
+            console.log(page);
+          }}
           columnDefs={this.columnDefs}
           actionDefs={this.actionDefs}
           includeAction={true}

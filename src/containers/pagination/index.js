@@ -13,7 +13,7 @@ export default class PaginationProvider extends PureComponent {
   constructor(props) {
     super(props);
     const rowsPerPage = { value: 10, label: '10 Items' };
-    const rowCount = (props.data || []).length;
+    const rowCount = typeof props.count === 'number' ? props.count : (props.data || []).length;
     this.state = {
       currentPage: 1,
       numberOfColumns: 30,
@@ -23,8 +23,11 @@ export default class PaginationProvider extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if ((this.props.data || []) && !isEqual(this.props.data, prevProps.data)) {
-      const rowCount = this.props.data.length;
+    if (
+      ((this.props.data || []) && !isEqual(this.props.data, prevProps.data)) ||
+      !isEqual(this.props.count, prevProps.count)
+    ) {
+      const rowCount = typeof this.props.count === 'number' ? this.props.count : this.props.data.length;
 
       let { currentPage = 1, rowsPerPage = { value: 10, label: '10 Items' } } = this.state;
       const numberOfPages = Math.ceil(rowCount / rowsPerPage.value);
@@ -44,10 +47,13 @@ export default class PaginationProvider extends PureComponent {
 
   onSelectRowsPerPage = (selectedRowsPerPage = { value: 10, label: '10 Items' }) => {
     let { currentPage } = this.state;
-    const rowCount = (this.props.data || []).length;
+    const rowCount = typeof this.props.count === 'number' ? this.props.count : (this.props.data || []).length;
 
     const numberOfPages = Math.ceil(rowCount / selectedRowsPerPage.value);
     if (numberOfPages < currentPage) currentPage = numberOfPages;
+    this.props.updateRowsPerPage(selectedRowsPerPage.value);
+    if (this.props.fetchOnPageChange)
+      this.props.fetchOnPageChange(currentPage, this.props.searchText, null, selectedRowsPerPage.value);
 
     this.setState({
       numberOfPages,
@@ -57,6 +63,8 @@ export default class PaginationProvider extends PureComponent {
   };
 
   handlePageClick = (_e, data) => {
+    if (this.props.fetchOnPageChange)
+      this.props.fetchOnPageChange(+data.page, this.props.searchText, null, this.state.rowsPerPage.value);
     this.setCurrentPage(+data.page || 1);
   };
 
@@ -70,6 +78,14 @@ export default class PaginationProvider extends PureComponent {
       change = 1;
     }
     if (change !== 0) {
+      if (this.props.fetchOnPageChange) {
+        this.props.fetchOnPageChange(
+          currentPage + change || 1,
+          this.props.searchText,
+          null,
+          this.state.rowsPerPage.value
+        );
+      }
       this.setCurrentPage(currentPage + change || 1);
     }
   };
@@ -80,8 +96,7 @@ export default class PaginationProvider extends PureComponent {
     let pageRange = findPageRange({ ...this.state });
     data = findCurrentData(data, currentPage, rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage.value;
-    const rowCount = (this.props.data || []).length;
-
+    const rowCount = typeof this.props.count === 'number' ? this.props.count : (this.props.data || []).length;
     return (
       <>
         <div
