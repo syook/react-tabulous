@@ -84,6 +84,11 @@ export default class App extends React.Component {
   showIcon = row => {
     return <i>icon</i>;
   };
+
+  getbulkactionState = data => {
+    console.log(data);
+  };
+
   render() {
     return (
       <div>
@@ -92,9 +97,12 @@ export default class App extends React.Component {
           columnDefs={this.columnDefs}
           actionDefs={this.actionDefs}
           includeAction={true}
+          showBulkActions={true}
+          bulkActionDefs={[{ name: 'Delete', function: () => null }]}
           mandatoryFields={['Name']}
           name={'Table Name'}
           showIcon={this.showIcon}
+          getbulkactionState={this.getbulkactionState}
           enableIcon={true}
           isShowSerialNumber
           isAllowDeepSearch
