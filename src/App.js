@@ -1,15 +1,16 @@
 import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import ReactTabulous from './containers/table';
-import { Input } from 'semantic-ui-react';
+import { Input, Icon } from 'semantic-ui-react';
+
 export default class App extends React.Component {
   //you can manipulate this component for testing
   constructor(props) {
     super(props);
     this.state = {
       data: [
-        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'something', isDeleted: false },
-        { id: 2, name: 'Harsh Singh', description: '', isDeleted: true },
+        { id: 1, name: 'harsh', is_completed: true, description: 'something', isDeleted: false },
+        { id: 2, name: 'dh', description: 'dadss', isDeleted: true },
       ],
     };
   }
@@ -35,6 +36,7 @@ export default class App extends React.Component {
     });
     console.log({ rowObject, newValue });
   };
+
   columnDefs = [
     {
       headerName: 'Name',
@@ -84,6 +86,7 @@ export default class App extends React.Component {
   showIcon = row => {
     return <i>icon</i>;
   };
+
   render() {
     return (
       <div>
@@ -96,9 +99,9 @@ export default class App extends React.Component {
           name={'Table Name'}
           showIcon={this.showIcon}
           enableIcon={true}
+          // isShowSerialNumber
           isAllowDeepSearch
           emptyCellPlaceHolder="N/A"
-          defaultItemsToDisplay={50}
         />
       </div>
     );

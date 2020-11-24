@@ -8,7 +8,7 @@ export const createPropertyOption = property => option => {
 };
 
 export const findColumnOptions = (columns, attributeName) => {
-  const column = columns.find(c => c.field === attributeName);
+  const column = columns.find(c => c.headerName === attributeName);
   return column.options || [];
 };
 
@@ -21,7 +21,7 @@ export const getTableData = (columns, data, placeholder) => {
       dataObj[column.headerName] =
         column.field && typeof column.field === 'function'
           ? column.field(dataRecord)
-          : get(dataRecord, column.field) || placeholder;
+          : get(dataRecord, column.field) || '';
     });
     tableData.push(dataObj);
     return tableData;

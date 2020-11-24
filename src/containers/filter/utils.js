@@ -6,6 +6,8 @@ import isEmpty from 'lodash/isEmpty';
 import { isAfter, isBefore, startOfMinute, isEqual as isEqualDate } from 'date-fns';
 
 const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', query = '', placeholder }) => {
+  const attributeTypeIsDate = attributeType === 'date' || attributeType === 'DateTime';
+  if (!searchValue && !attributeTypeIsDate) return true;
   attributeType = (attributeType || '').toLowerCase();
   if (attributeType === 'string') {
     attrValue = (attrValue || '').toLowerCase();
@@ -13,7 +15,7 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
   }
 
   // date-fns
-  if (attributeType === 'date') {
+  if (attributeTypeIsDate) {
     attrValue = attrValue ? startOfMinute(new Date(attrValue)) : '';
     searchValue = searchValue ? startOfMinute(new Date(searchValue)) : '';
   }
@@ -24,7 +26,7 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
     case 'does not contains':
       return attrValue && !attrValue.toLowerCase().includes(searchValue.toLowerCase());
     case 'is':
-      if (attributeType === 'date') {
+      if (attributeTypeIsDate) {
         return attrValue && isEqualDate(attrValue, searchValue);
       }
       if (attributeType === 'singleselect') {
@@ -36,7 +38,7 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
       }
       return attrValue && isEqual(attrValue, searchValue);
     case 'is not':
-      if (attributeType === 'date') {
+      if (attributeTypeIsDate) {
         return attrValue && !isEqualDate(attrValue, searchValue);
       }
       if (attributeType === 'singleselect') {
@@ -45,10 +47,10 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
       }
       return attrValue && !isEqual(attrValue, searchValue);
     case 'is empty':
-      if (attributeType === 'date') return !attrValue;
+      if (attributeTypeIsDate) return !attrValue;
       return attrValue === 0 ? false : attrValue === placeholder || isEmpty(attrValue.toString());
     case 'is not empty':
-      if (attributeType === 'date') return !!attrValue;
+      if (attributeTypeIsDate) return !!attrValue;
       return attrValue === 0 ? true : attrValue !== placeholder && !isEmpty(attrValue.toString());
     // Date
     case 'is before':

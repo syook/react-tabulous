@@ -22,7 +22,7 @@ const TableFilter = props => {
         className="filter-popUp"
         trigger={
           <Button
-            size="small"
+            size="medium"
             disabled={props.disabled}
             style={{
               backgroundColor: selectedFilters ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
@@ -198,6 +198,7 @@ const InputCategories = props => {
           dateFormat="DD-MMM-YYYY"
           value={props.column.value}
           onChange={date => props.updateSelectedFilters('value', date, props.index)}
+          showTimeSelect
         />
       );
     case 'date':

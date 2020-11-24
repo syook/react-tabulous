@@ -139,7 +139,9 @@ class TableComponent extends Component {
                       return (
                         <>
                           {this.props.children ? (
-                            <div style={{ display: 'inline-block' }}>{this.props.children}</div>
+                            <div style={{ display: 'inline-block' }}>
+                              {this.props.children(filterProps.data, visibleColumns)}
+                            </div>
                           ) : null}
                           <SortProvider data={orderBy(filterProps.data, ['name'], ['asc'])}>
                             <SortContext.Consumer>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import debounce from 'lodash/debounce';
-import { Popup, Button, Icon } from 'semantic-ui-react';
 
 import SearchComponent from '../../components/search';
 
@@ -13,18 +11,17 @@ export const SearchContext = React.createContext();
 export default class SearchProvider extends Component {
   state = { searchText: '' };
 
-  componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.tableData, this.props.tableData)) {
-      this.search(this.state.searchText);
+  search = searchText => {
+    const { tableData, searchKeys } = this.props;
+    if (!searchText || isEmpty(searchKeys)) {
+      return tableData;
     }
-  }
+    return this.onSearch(searchText);
+  };
 
-  search = debounce(
+  onSearch = debounce(
     searchText => {
       const { tableData, searchKeys, isAllowDeepSearch } = this.props;
-      if (!searchText || isEmpty(searchKeys)) {
-        return tableData;
-      }
 
       const searchedObjects = getSearchTextFilteredData({
         data: tableData,
