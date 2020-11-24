@@ -42,9 +42,11 @@ const TableFilter = props => {
   const removeFilter = index => {
     if (index === 0) index = filters.length - 1;
 
-    filters.splice(index, 1);
-    setFilters([...filters]);
-    props.setSelectedFilters(filters);
+    const updatedFilters = [...filters];
+    updatedFilters.splice(index, 1);
+
+    setFilters([...updatedFilters]);
+    props.setSelectedFilters(updatedFilters);
   };
 
   const updateSelectedFilters = (attribute, value, index) => {
