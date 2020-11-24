@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 import { Popup, Button, Icon, Input, Checkbox } from 'semantic-ui-react';
 
@@ -13,16 +13,77 @@ import DateComponent from '../date';
 import { predicateOptions, filterOperators } from '../../constants';
 
 const TableFilter = props => {
-  const selectedFilters = (props.selectedFilters || []).length;
+  const [filters, setFilters] = useState([]);
+
+  const addFilter = () => {
+    const { columns } = props;
+
+    const firstFilterableAttribute = columns.find(d => d.isFilterable);
+    let newFilter = {};
+    let predicate = 'Where';
+    const filtersLength = filters.length;
+    if (filtersLength >= 2) {
+      predicate = filters[1].predicate;
+    } else if (filtersLength === 1) {
+      predicate = 'And';
+    }
+    newFilter.predicate = predicate;
+    newFilter.attribute = firstFilterableAttribute.headerName;
+    newFilter.label = firstFilterableAttribute.headerName;
+    const newQuery = ((filterOperators[firstFilterableAttribute.type] || [])[0] || {}).value;
+    newQuery ? (newFilter.query = newQuery) : (newFilter.query = 'contains');
+    newFilter.value = '';
+    newFilter.type = firstFilterableAttribute.type;
+    filters.push(newFilter);
+
+    setFilters([...filters]);
+  };
+
+  const removeFilter = index => {
+    if (index === 0) index = filters.length - 1;
+
+    filters.splice(index, 1);
+    setFilters([...filters]);
+    props.setSelectedFilters(filters);
+  };
+
+  const updateSelectedFilters = (attribute, value, index) => {
+    const { columns } = props;
+    let filterToBeUpdated = filters[index];
+    //to change the predicate of all filters to the first predicate to match the query
+    if (index === 1 && attribute === 'predicate') {
+      filters.slice(1).forEach(element => (element.predicate = value));
+    }
+
+    if (attribute === 'value') {
+      filterToBeUpdated[attribute] = value;
+    }
+    if (attribute === 'attribute') {
+      const currentColumn = columns.find(i => i.headerName === value) || {};
+      filterToBeUpdated['type'] = currentColumn.type || '';
+      filterToBeUpdated.label = currentColumn.headerName;
+      filterToBeUpdated.attribute = currentColumn.headerName;
+      filterToBeUpdated['value'] = undefined;
+      //picks the first query which matches this type
+      const newQuery = ((filterOperators[filterToBeUpdated.type] || [])[0] || {}).value;
+      if (newQuery) filterToBeUpdated.query = newQuery;
+    }
+
+    if (attribute === 'query') {
+      filterToBeUpdated.query = value;
+    }
+
+    setFilters([...filters]);
+  };
+  const selectedFilters = (filters || []).length;
   let buttonText = selectedFilters === 1 ? '1 filter' : selectedFilters >= 1 ? `${selectedFilters} filters` : 'Filter';
 
   return (
-    <>
+    <div style={{ display: 'flex', float: 'left' }}>
       <Popup
         className="filter-popUp"
         trigger={
           <Button
-            size="medium"
             disabled={props.disabled}
             style={{
               backgroundColor: selectedFilters ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
@@ -32,17 +93,27 @@ const TableFilter = props => {
             <Icon name="filter" /> {buttonText}
           </Button>
         }
-        content={<FilterDiv {...props} filtersSelected={!!selectedFilters} />}
+        content={
+          <FilterDiv
+            {...props}
+            filtersSelected={!!selectedFilters}
+            updateSelectedFilters={updateSelectedFilters}
+            filters={filters}
+            addFilter={addFilter}
+            removeFilter={removeFilter}
+            setSelectedFilters={props.setSelectedFilters}
+          />
+        }
         on="click"
         positionFixed
         position="bottom left"
       />
-    </>
+    </div>
   );
 };
 
 const FilterDiv = props => {
-  const selectedFilters = props.selectedFilters || [];
+  const selectedFilters = props.filters || [];
   const indexOnePredicate = selectedFilters.length > 1 ? selectedFilters[1].predicate : null;
   const secondarySelectionDisabled = selectedFilters.length > 1;
   return (
@@ -75,7 +146,7 @@ const FilterDiv = props => {
             positive
             className="filter_btn apply"
             size="small"
-            onClick={props.applyFilter}
+            onClick={() => props.setSelectedFilters(props.filters)}
             loading={props.filterDisabled}>
             Apply Filter
           </Button>
@@ -217,10 +288,7 @@ const InputCategories = props => {
 FilterDiv.propTypes = {
   filterableColumns: PropTypes.array.isRequired,
   selectedFilters: PropTypes.array.isRequired,
-  addFilter: PropTypes.func.isRequired,
-  removeFilter: PropTypes.func.isRequired,
   applyFilter: PropTypes.func.isRequired,
-  updateSelectedFilters: PropTypes.func.isRequired,
 };
 
 FilterDiv.defaultProps = {
