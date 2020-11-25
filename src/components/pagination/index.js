@@ -45,7 +45,6 @@ const Pagination = props => {
             onChange={props.onSelectRowsPerPage}
             isClearable={false}
             isSearchable={false}
-            menuPlacement="auto"
             menuPortalTarget={document.querySelector('#root')}
             menuPlacement="top"
           />

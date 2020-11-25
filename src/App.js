@@ -1,7 +1,7 @@
 import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import ReactTabulous from './containers/table';
-import { Input, Icon } from 'semantic-ui-react';
+import { Input } from 'semantic-ui-react';
 
 export default class App extends React.Component {
   //you can manipulate this component for testing
@@ -99,7 +99,7 @@ export default class App extends React.Component {
           name={'Table Name'}
           showIcon={this.showIcon}
           enableIcon={true}
-          // isShowSerialNumber
+          isShowSerialNumber
           isAllowDeepSearch
           emptyCellPlaceHolder="N/A"
         />

@@ -5,8 +5,6 @@ import Filter from '../../components/filter';
 
 import { loopFilters } from './utils';
 
-import { filterOperators } from '../../constants';
-
 export const FilterContext = React.createContext();
 
 export default class FilterProvider extends PureComponent {
