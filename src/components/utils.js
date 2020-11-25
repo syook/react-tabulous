@@ -37,7 +37,6 @@ export const getTableColumns = (columnDefs = []) => {
         }
         columnDef.isVisible = true;
         tableColumnDefs.columnDefs.push(columnDef);
-        return tableColumnDefs;
       }
       return tableColumnDefs;
     },
