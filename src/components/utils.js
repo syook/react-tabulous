@@ -39,6 +39,7 @@ export const getTableColumns = (columnDefs = []) => {
         tableColumnDefs.columnDefs.push(columnDef);
         return tableColumnDefs;
       }
+      return tableColumnDefs;
     },
 
     { columnDefs: [], searchKeys: {} }

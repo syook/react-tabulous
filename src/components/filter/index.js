@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Select from 'react-select';
 import { Popup, Button, Icon, Input, Checkbox } from 'semantic-ui-react';
 
@@ -15,12 +15,14 @@ import { predicateOptions, filterOperators } from '../../constants';
 const TableFilter = props => {
   const [filters, setFilters] = useState([]);
 
-  const resetFilters = () => {
-    if (!props.selectedFilters.length && props.shouldFilterReset) {
+  const { shouldFilterReset, setSelectedFilters, selectedFilters } = props;
+
+  const resetFilters = useCallback(() => {
+    if (!selectedFilters.length && shouldFilterReset) {
       setFilters([]);
-      props.setSelectedFilters([]);
+      setSelectedFilters([]);
     }
-  };
+  }, [shouldFilterReset, setSelectedFilters, selectedFilters]);
 
   useEffect(() => resetFilters(), [props.shouldFilterReset, resetFilters]);
 
@@ -86,8 +88,13 @@ const TableFilter = props => {
 
     setFilters([...filters]);
   };
-  const selectedFilters = (filters || []).length;
-  let buttonText = selectedFilters === 1 ? '1 filter' : selectedFilters >= 1 ? `${selectedFilters} filters` : 'Filter';
+  const selectedFiltersAvailable = (filters || []).length;
+  let buttonText =
+    selectedFiltersAvailable === 1
+      ? '1 filter'
+      : selectedFiltersAvailable >= 1
+      ? `${selectedFiltersAvailable} filters`
+      : 'Filter';
 
   return (
     <div style={{ display: 'flex', float: 'left' }}>
@@ -97,7 +104,7 @@ const TableFilter = props => {
           <Button
             disabled={props.disabled}
             style={{
-              backgroundColor: selectedFilters ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
+              backgroundColor: selectedFiltersAvailable ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
               color: '#fff',
               marginRight: '10px',
             }}>
@@ -107,7 +114,7 @@ const TableFilter = props => {
         content={
           <FilterDiv
             {...props}
-            filtersSelected={!!selectedFilters}
+            filtersSelected={!!selectedFiltersAvailable}
             updateSelectedFilters={updateSelectedFilters}
             filters={filters}
             addFilter={addFilter}
