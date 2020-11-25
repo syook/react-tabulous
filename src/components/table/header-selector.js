@@ -34,7 +34,7 @@ const HeaderSelector = props => {
       <Popup
         trigger={
           <Button
-            size="small"
+            size="medium"
             icon
             style={{
               background: hiddenColumnsCount ? '#3498DB' : 'rgb(109, 180, 226)',

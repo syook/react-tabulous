@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import debounce from 'lodash/debounce';
 
@@ -10,23 +9,27 @@ import { getSearchTextFilteredData } from './utils';
 export const SearchContext = React.createContext();
 
 export default class SearchProvider extends Component {
-  state = { searchText: '', data: [...(this.props.data || [])] };
+  state = { searchText: '' };
 
-  componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.data, this.props.data)) {
-      this.search(this.state.searchText);
+  search = searchText => {
+    const { tableData, searchKeys } = this.props;
+    if (!searchText || isEmpty(searchKeys)) {
+      return tableData;
     }
-  }
+    return this.onSearch(searchText);
+  };
 
-  search = debounce(
+  onSearch = debounce(
     searchText => {
-      const { data, searchKeys, isAllowDeepSearch } = this.props;
-      if (!searchText || isEmpty(searchKeys)) {
-        this.setState({ data: [...(data || [])] });
-      }
+      const { tableData, searchKeys, isAllowDeepSearch } = this.props;
 
-      const searchedObjects = getSearchTextFilteredData({ data, searchKeys, searchText, isAllowDeepSearch });
-      this.setState({ data: searchedObjects });
+      const searchedObjects = getSearchTextFilteredData({
+        data: tableData,
+        searchKeys,
+        searchText,
+        isAllowDeepSearch,
+      });
+      return searchedObjects;
     },
     300,
     { leading: true, trailing: true }
@@ -42,12 +45,12 @@ export default class SearchProvider extends Component {
   };
 
   render() {
-    const mainDataCount = (this.props.data || []).length;
-    const stateDataCount = (this.state.data || []).length;
-
+    const mainDataCount = (this.props.tableData || []).length;
+    const data = this.search(this.state.searchText);
+    const stateDataCount = (data || []).length;
     return (
       <div>
-        <SearchContext.Provider value={{ ...this.state }}>
+        <SearchContext.Provider value={{ ...this.state, data }}>
           <SearchComponent
             disabled={!mainDataCount}
             name={this.props.tableName}

@@ -2,14 +2,17 @@ import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import ReactTabulous from './containers/table';
 import { Input } from 'semantic-ui-react';
+
 export default class App extends React.Component {
   //you can manipulate this component for testing
   constructor(props) {
     super(props);
     this.state = {
       data: [
-        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'something', isDeleted: false },
-        { id: 2, name: 'Harsh Singh', description: '', isDeleted: true },
+        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'Dev', isDeleted: false },
+        { id: 2, name: 'Prakash Barik', description: 'QA', isDeleted: true },
+        { id: 3, name: 'Muhammad Anees', description: 'Dev', isDeleted: true },
+        { id: 4, name: 'Mayank Khajanchi', description: 'Dev', isDeleted: true },
       ],
     };
   }
@@ -33,8 +36,8 @@ export default class App extends React.Component {
         data: [...prev.data.filter(item => item.id !== rowObject.id), obj],
       };
     });
-    console.log({ rowObject, newValue });
   };
+
   columnDefs = [
     {
       headerName: 'Name',
@@ -46,6 +49,7 @@ export default class App extends React.Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
+      isResizable: true,
     },
     {
       headerName: 'Description',
@@ -84,6 +88,7 @@ export default class App extends React.Component {
   showIcon = row => {
     return <i>icon</i>;
   };
+
   render() {
     return (
       <div>
@@ -98,6 +103,7 @@ export default class App extends React.Component {
           enableIcon={true}
           isShowSerialNumber
           isAllowDeepSearch
+          emptyCellPlaceHolder="N/A"
         />
       </div>
     );
