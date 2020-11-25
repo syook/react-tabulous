@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { Popup, Button, Icon, Input, Checkbox } from 'semantic-ui-react';
 
@@ -14,6 +14,14 @@ import { predicateOptions, filterOperators } from '../../constants';
 
 const TableFilter = props => {
   const [filters, setFilters] = useState([]);
+
+  const resetFilters = () => {
+    if (!props.selectedFilters.length && props.shouldFilterReset) {
+      setFilters([]);
+    }
+  };
+
+  useEffect(() => resetFilters(), [props.shouldFilterReset, resetFilters]);
 
   const addFilter = () => {
     const { columns } = props;

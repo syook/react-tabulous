@@ -5,11 +5,14 @@ import Filter from '../../components/filter';
 
 import { loopFilters } from './utils';
 
+import { filterOperators } from '../../constants';
+
 export const FilterContext = React.createContext();
 
 export default class FilterProvider extends PureComponent {
   state = {
     selectedFilters: [],
+    shouldFilterReset: false,
     filterDisabled: false,
   };
 
@@ -22,12 +25,13 @@ export default class FilterProvider extends PureComponent {
     if (!isEqual(columnDefs, prevColumnDefs)) {
       this.setState({
         selectedFilters: [],
+        shouldFilterReset: true,
       });
     }
   }
 
   setSelectedFilters = selectedFilters => {
-    this.setState({ selectedFilters });
+    this.setState({ selectedFilters, shouldFilterReset: false });
   };
 
   applyFilter = filters => {
@@ -59,6 +63,7 @@ export default class FilterProvider extends PureComponent {
           columns={this.props.columns}
           selectedFilters={this.state.selectedFilters}
           setSelectedFilters={this.setSelectedFilters}
+          shouldFilterReset={this.state.shouldFilterReset}
         />
         {children}
 
