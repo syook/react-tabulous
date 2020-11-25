@@ -18,6 +18,7 @@ const TableFilter = props => {
   const resetFilters = () => {
     if (!props.selectedFilters.length && props.shouldFilterReset) {
       setFilters([]);
+      props.setSelectedFilters([]);
     }
   };
 
