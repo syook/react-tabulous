@@ -49,9 +49,6 @@ class TableComponent extends Component {
         data: getTableData(columns, this.props.data, this.props.emptyCellPlaceHolder),
       });
     }
-    if (!this.state.data.length && !!this.props.data.length && this.props.data.length !== prevProps.data.length) {
-      this.setState({ data: getTableData(columns, this.props.data, this.props.emptyCellPlaceHolder) });
-    }
   }
 
   enableBulkSelect = ({ checked }, data = []) => {
