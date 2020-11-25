@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import { isAfter, isBefore, startOfMinute, isEqual as isEqualDate } from 'date-fns';
 
 const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', query = '', placeholder }) => {
-  const attributeTypeIsDate = attributeType === 'date' || attributeType === 'DateTime';
+  const attributeTypeIsDate = attributeType === 'date' || attributeType === 'datetime';
   if (!searchValue && !attributeTypeIsDate) return true;
   attributeType = (attributeType || '').toLowerCase();
   if (attributeType === 'string') {
@@ -128,7 +128,7 @@ const filterData = ({ data, attribute, value, query, type, placeholder }) => {
       attrValue: findAttrValue(d, attribute),
       searchValue: findSearchValue(type, value),
       query,
-      attributeType: type || '',
+      attributeType: (type || '').toLowerCase(),
       placeholder,
     })
   );
