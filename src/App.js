@@ -9,8 +9,10 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       data: [
-        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'something', isDeleted: false },
-        { id: 2, name: 'Harsh Singh', description: '', isDeleted: true },
+        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'Dev', isDeleted: false },
+        { id: 2, name: 'Prakash Barik', description: 'QA', isDeleted: true },
+        { id: 3, name: 'Muhammad Anees', description: 'Dev', isDeleted: true },
+        { id: 4, name: 'Mayank Khajanchi', description: 'Dev', isDeleted: true },
       ],
     };
   }
