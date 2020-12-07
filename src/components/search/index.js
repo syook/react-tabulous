@@ -22,9 +22,9 @@ const SearchComponent = props => {
 
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
+          position: 'absolute',
+          right: '0px',
+          top: '-35px',
         }}>
         <Input
           disabled={props.disabled}

@@ -22,7 +22,6 @@ export default class FilterProvider extends PureComponent {
     const prevColumnDefs = (prevProps.filterableColumns || []).map(def => def.headerName);
     if (!isEqual(columnDefs, prevColumnDefs)) {
       this.setState({
-        selectedFilters: [],
         shouldFilterReset: true,
       });
     }

@@ -34,3 +34,7 @@ td {
 .ui.fitted.checkbox.bulkAction_check {
   align-self: flex-end;
 }
+
+.table-wrapper {
+  position: relative;
+}
