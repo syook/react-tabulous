@@ -24,7 +24,7 @@ const SearchComponent = props => {
         style={{
           position: 'absolute',
           right: '0px',
-          top: '-35px',
+          top: '-30px',
         }}>
         <Input
           disabled={props.disabled}
