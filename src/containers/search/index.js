@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import isEmpty from 'lodash/isEmpty';
-import debounce from 'lodash/debounce';
 
 import SearchComponent from '../../components/search';
 

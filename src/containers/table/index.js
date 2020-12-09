@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import orderBy from 'lodash/orderBy';
 import isEqual from 'lodash/isEqual';
-import cloneDeep from 'lodash/cloneDeep';
 import { Checkbox, Table } from 'semantic-ui-react';
 
 import { getTableData, getTableColumns } from '../../components/utils';
