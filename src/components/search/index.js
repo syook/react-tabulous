@@ -4,14 +4,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Icon, Input } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
 
-const SearchComponent = props => {
+const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) => {
   const isInitialMount = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
 
   const debounceSearch = useRef(
     debounce(
       searchTerm => {
-        props.onChangeSearchText(searchTerm);
+        onChangeSearchText(searchTerm);
       },
       300,
       { leading: true, trailing: true }
@@ -24,9 +24,9 @@ const SearchComponent = props => {
     } else if (searchTerm) {
       debounceSearch.current(searchTerm);
     } else {
-      props.onChangeSearchText(searchTerm);
+      onChangeSearchText(searchTerm);
     }
-  }, [searchTerm, props.onChangeSearchText]);
+  }, [searchTerm, onChangeSearchText]);
 
   const onInputChange = event => {
     setSearchTerm(event.target.value);
@@ -38,7 +38,7 @@ const SearchComponent = props => {
 
   return (
     <div>
-      {props.name && (
+      {name && (
         <div
           style={{
             color: 'rgb(102, 119, 151)',
@@ -48,7 +48,7 @@ const SearchComponent = props => {
             paddingTop: '5px',
             textAlign: 'left',
           }}>
-          {props.name}
+          {name}
         </div>
       )}
 
@@ -59,14 +59,14 @@ const SearchComponent = props => {
           top: '-30px',
         }}>
         <Input
-          disabled={props.disabled}
+          disabled={disabled}
           iconPosition="left"
           onChange={onInputChange}
-          placeholder={props.placeholder || 'Search...'}
+          placeholder={placeholder || 'Search...'}
           style={styles.searchInputDiv}>
           <Icon name="search" />
           <input className="searchInput" style={styles.searchInput} value={searchTerm} />
-          <Icon disabled={props.disabled} name="close" onClick={onClearSearchTerm} style={styles.closeIcon} />
+          <Icon disabled={disabled} name="close" onClick={onClearSearchTerm} style={styles.closeIcon} />
         </Input>
       </div>
     </div>
