@@ -31,16 +31,16 @@ export const getTableData = (columns, data, placeholder) => {
 export const getTableColumns = (columnDefs = []) => {
   return columnDefs.reduce(
     (tableColumnDefs, columnDef) => {
-      if (columnDef.omitInHideList !== true) {
-        if (columnDef.isSearchable && columnDef.headerName) {
+      let updatedColumnDef = { ...columnDef };
+      if (updatedColumnDef.omitInHideList !== true) {
+        if (updatedColumnDef.isSearchable && updatedColumnDef.headerName) {
           tableColumnDefs.searchKeys[columnDef.headerName] = true;
         }
-        columnDef.isVisible = true;
-        tableColumnDefs.columnDefs.push(columnDef);
+        updatedColumnDef.isVisible = true;
+        tableColumnDefs.columnDefs.push(updatedColumnDef);
       }
       return tableColumnDefs;
     },
-
     { columnDefs: [], searchKeys: {} }
   );
 };

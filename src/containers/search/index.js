@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import isEmpty from 'lodash/isEmpty';
-import debounce from 'lodash/debounce';
 
 import SearchComponent from '../../components/search';
 
@@ -16,32 +15,26 @@ export default class SearchProvider extends Component {
     if (!searchText || isEmpty(searchKeys)) {
       return tableData;
     }
-    return this.onSearch(searchText);
+    const searchedData = this.onSearch(searchText);
+    return searchedData;
   };
 
-  onSearch = debounce(
-    searchText => {
-      const { tableData, searchKeys, isAllowDeepSearch } = this.props;
+  onSearch = searchText => {
+    const { tableData, searchKeys } = this.props;
 
-      const searchedObjects = getSearchTextFilteredData({
-        data: tableData,
-        searchKeys,
-        searchText,
-        isAllowDeepSearch,
-      });
-      return searchedObjects;
-    },
-    300,
-    { leading: true, trailing: true }
-  );
+    const searchedObjects = getSearchTextFilteredData({
+      data: tableData,
+      searchKeys,
+      searchText,
+    });
+    return searchedObjects;
+  };
 
-  onChangeSearchText = e => {
-    const searchText = (e.target.value || '').trimStart().toLowerCase();
+  onChangeSearchText = value => {
+    const searchText = (value || '').trimStart().toLowerCase();
     const currentSearchText = this.state.searchText;
     if (searchText === currentSearchText) return;
-
     this.setState({ searchText });
-    this.search(searchText);
   };
 
   render() {

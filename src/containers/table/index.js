@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import orderBy from 'lodash/orderBy';
 import isEqual from 'lodash/isEqual';
-import cloneDeep from 'lodash/cloneDeep';
 import { Checkbox, Table } from 'semantic-ui-react';
 
 import { getTableData, getTableColumns } from '../../components/utils';
@@ -79,10 +78,10 @@ class TableComponent extends Component {
   };
 
   toggleColumns = (columnName, { checked }) => {
-    let columns = cloneDeep(this.state.columns || []);
+    let columns = [...this.state.columns];
     let updatableColumn = columns.find(c => c.headerName === columnName) || {};
     updatableColumn.isVisible = checked;
-    this.setState({ columns: [...columns] });
+    this.setState({ columns });
   };
 
   toggleAllColumns = checked => {
