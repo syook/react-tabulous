@@ -79,7 +79,7 @@ class TableComponent extends Component {
   };
 
   toggleColumns = (columnName, { checked }) => {
-    let columns = [...this.state.columns] || [];
+    let columns = [...this.state.columns];
     let updatableColumn = columns.find(c => c.headerName === columnName) || {};
     updatableColumn.isVisible = checked;
     this.setState({ columns });

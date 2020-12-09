@@ -9,36 +9,20 @@ import { getSearchTextFilteredData } from './utils';
 export const SearchContext = React.createContext();
 
 export default class SearchProvider extends Component {
-  state = { searchText: '', data: this.props.tableData };
-
-  comnponentDidMount() {
-    this.setState({ data: this.props.tableData });
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    const search = searchText => {
-      const { tableData, searchKeys } = props;
-      if (!searchText || isEmpty(searchKeys)) {
-        return tableData;
-      }
-      return getSearchTextFilteredData({ data: tableData, searchKeys, searchText: state.searchText });
-    };
-    return {
-      data: search(state.searchText),
-    };
-  }
+  state = { searchText: '' };
 
   search = searchText => {
     const { tableData, searchKeys } = this.props;
     if (!searchText || isEmpty(searchKeys)) {
-      this.setState({ data: tableData });
+      return tableData;
     }
     const searchedData = this.onSearch(searchText);
-    this.setState({ data: searchedData });
+    return searchedData;
   };
 
   onSearch = searchText => {
     const { tableData, searchKeys } = this.props;
+
     const searchedObjects = getSearchTextFilteredData({
       data: tableData,
       searchKeys,
@@ -51,22 +35,21 @@ export default class SearchProvider extends Component {
     const searchText = (value || '').trimStart().toLowerCase();
     const currentSearchText = this.state.searchText;
     if (searchText === currentSearchText) return;
-
     this.setState({ searchText });
   };
 
   render() {
     const mainDataCount = (this.props.tableData || []).length;
-    const stateDataCount = (this.state.data || []).length;
+    const data = this.search(this.state.searchText);
+    const stateDataCount = (data || []).length;
     return (
       <div>
-        <SearchContext.Provider value={{ ...this.state }}>
+        <SearchContext.Provider value={{ ...this.state, data }}>
           <SearchComponent
             disabled={!mainDataCount}
             name={this.props.tableName}
             onChangeSearchText={this.onChangeSearchText}
             searchText={this.state.searchText}
-            onSearch={this.search}
           />
           {this.props.children}
           {!stateDataCount && (

@@ -9,9 +9,13 @@ const SearchComponent = props => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const debounceSearch = useRef(
-    debounce(searchTerm => {
-      props.onSearch(searchTerm);
-    }, 300)
+    debounce(
+      searchTerm => {
+        props.onChangeSearchText(searchTerm);
+      },
+      300,
+      { leading: true, trailing: true }
+    )
   );
 
   useEffect(() => {
@@ -20,20 +24,15 @@ const SearchComponent = props => {
     } else if (searchTerm) {
       debounceSearch.current(searchTerm);
     } else {
-      props.onSearch(searchTerm);
+      props.onChangeSearchText(searchTerm);
     }
-  }, [searchTerm, props.onSearch]);
+  }, [searchTerm, props.onChangeSearchText]);
 
   const onInputChange = event => {
-    props.onChangeSearchText('');
-    setSearchTerm('');
-
-    props.onChangeSearchText(event.target.value);
     setSearchTerm(event.target.value);
   };
 
   const onClearSearchTerm = () => {
-    props.onChangeSearchText('');
     setSearchTerm('');
   };
 
