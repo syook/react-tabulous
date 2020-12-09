@@ -9,53 +9,64 @@ import { getSearchTextFilteredData } from './utils';
 export const SearchContext = React.createContext();
 
 export default class SearchProvider extends Component {
-  state = { searchText: '' };
+  state = { searchText: '', data: this.props.tableData };
+
+  comnponentDidMount() {
+    this.setState({ data: this.props.tableData });
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const search = searchText => {
+      const { tableData, searchKeys } = props;
+      if (!searchText || isEmpty(searchKeys)) {
+        return tableData;
+      }
+      return getSearchTextFilteredData({ data: tableData, searchKeys, searchText: state.searchText });
+    };
+    return {
+      data: search(state.searchText),
+    };
+  }
 
   search = searchText => {
     const { tableData, searchKeys } = this.props;
     if (!searchText || isEmpty(searchKeys)) {
-      return tableData;
+      this.setState({ data: tableData });
     }
-    return this.onSearch(searchText);
+    const searchedData = this.onSearch(searchText);
+    this.setState({ data: searchedData });
   };
 
-  onSearch = debounce(
-    searchText => {
-      const { tableData, searchKeys, isAllowDeepSearch } = this.props;
+  onSearch = searchText => {
+    const { tableData, searchKeys } = this.props;
+    const searchedObjects = getSearchTextFilteredData({
+      data: tableData,
+      searchKeys,
+      searchText,
+    });
+    return searchedObjects;
+  };
 
-      const searchedObjects = getSearchTextFilteredData({
-        data: tableData,
-        searchKeys,
-        searchText,
-        isAllowDeepSearch,
-      });
-      return searchedObjects;
-    },
-    300,
-    { leading: true, trailing: true }
-  );
-
-  onChangeSearchText = e => {
-    const searchText = (e.target.value || '').trimStart().toLowerCase();
+  onChangeSearchText = value => {
+    const searchText = (value || '').trimStart().toLowerCase();
     const currentSearchText = this.state.searchText;
     if (searchText === currentSearchText) return;
 
     this.setState({ searchText });
-    this.search(searchText);
   };
 
   render() {
     const mainDataCount = (this.props.tableData || []).length;
-    const data = this.search(this.state.searchText);
-    const stateDataCount = (data || []).length;
+    const stateDataCount = (this.state.data || []).length;
     return (
       <div>
-        <SearchContext.Provider value={{ ...this.state, data }}>
+        <SearchContext.Provider value={{ ...this.state }}>
           <SearchComponent
             disabled={!mainDataCount}
             name={this.props.tableName}
             onChangeSearchText={this.onChangeSearchText}
             searchText={this.state.searchText}
+            onSearch={this.search}
           />
           {this.props.children}
           {!stateDataCount && (

@@ -1,9 +1,42 @@
 import './search.css';
 
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Icon, Input } from 'semantic-ui-react';
+import debounce from 'lodash/debounce';
 
 const SearchComponent = props => {
+  const isInitialMount = useRef(true);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const debounceSearch = useRef(
+    debounce(searchTerm => {
+      props.onSearch(searchTerm);
+    }, 300)
+  );
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else if (searchTerm) {
+      debounceSearch.current(searchTerm);
+    } else {
+      props.onSearch(searchTerm);
+    }
+  }, [searchTerm, props.onSearch]);
+
+  const onInputChange = event => {
+    props.onChangeSearchText('');
+    setSearchTerm('');
+
+    props.onChangeSearchText(event.target.value);
+    setSearchTerm(event.target.value);
+  };
+
+  const onClearSearchTerm = () => {
+    props.onChangeSearchText('');
+    setSearchTerm('');
+  };
+
   return (
     <div>
       {props.name && (
@@ -29,17 +62,12 @@ const SearchComponent = props => {
         <Input
           disabled={props.disabled}
           iconPosition="left"
-          onChange={props.onChangeSearchText}
+          onChange={onInputChange}
           placeholder={props.placeholder || 'Search...'}
           style={styles.searchInputDiv}>
           <Icon name="search" />
-          <input className="searchInput" style={styles.searchInput} value={props.searchText} />
-          <Icon
-            disabled={props.disabled}
-            name="close"
-            onClick={() => props.onChangeSearchText({ target: { value: '' } })}
-            style={styles.closeIcon}
-          />
+          <input className="searchInput" style={styles.searchInput} value={searchTerm} />
+          <Icon disabled={props.disabled} name="close" onClick={onClearSearchTerm} style={styles.closeIcon} />
         </Input>
       </div>
     </div>
