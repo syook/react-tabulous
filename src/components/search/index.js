@@ -54,7 +54,7 @@ const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) =>
 
       <div
         style={{
-          position: 'absolute',
+          position: 'relative',
           right: '0px',
           top: '-30px',
         }}>
@@ -77,7 +77,7 @@ const styles = {
   searchInputDiv: {
     border: '1px solid rgb(214, 231, 243)',
     color: '#667797',
-    position: 'relative',
+    position: 'absolute',
     top: '35px',
     marginLeft: '10px',
     zIndex: 9,
