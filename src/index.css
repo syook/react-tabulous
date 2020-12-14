@@ -11,30 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.paginationFooter .ui.menu .item:before {
-  background: #d6e7f3 !important;
-}
-
-.paginationFooter .css-10nd86i {
-  min-width: 110px;
-}
-
-.paginationFooter .css-15k3avv {
-  top: auto;
-  bottom: 100%;
-}
-
-.paginationFooter .css-11unzgr > div {
-  padding: 5px 10px !important;
-}
-
 .ui.celled.table tr td {
   color: #26547c;
   border-bottom: 1px solid rgb(241, 245, 247) !important;
-}
-
-.paginationFooter .ui.ribbon.label {
-  left: 0px !important;
 }
 
 .tableStyle thead tr {
