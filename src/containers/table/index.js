@@ -144,7 +144,13 @@ class TableComponent extends Component {
                       {this.props.children ? (
                         <div style={{ display: 'inline-block' }}>{this.props.children}</div>
                       ) : null}
-                      <SortProvider data={orderBy(filterProps.data, ['name'], ['asc'])} count={filterProps.count}>
+                      <SortProvider
+                        data={orderBy(filterProps.data, ['name'], ['asc'])}
+                        fetchOnPageChange={props.fetchOnPageChange}
+                        count={filterProps.count}
+                        updateRowsSortParams={searchProps.updateRowsSortParams}
+                        rowsPerPageFromSearch={searchProps.rowsPerPageFromSearch}
+                        searchText={searchProps.searchText}>
                         <SortContext.Consumer>
                           {sortProps => (
                             <PaginationProvider
@@ -153,6 +159,9 @@ class TableComponent extends Component {
                               count={sortProps.count}
                               fetchOnPageChange={props.fetchOnPageChange}
                               searchText={searchProps.searchText}
+                              columnName={sortProps.columnName}
+                              direction={sortProps.direction}
+                              columnType={sortProps.columnType}
                               updateRowsPerPage={searchProps.updateRowsPerPage}
                               resetPagination={sortProps.resetPagination}
                               resetBulkSelection={this.resetBulkSelection}>

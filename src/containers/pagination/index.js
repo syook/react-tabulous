@@ -53,7 +53,11 @@ export default class PaginationProvider extends PureComponent {
     if (numberOfPages < currentPage) currentPage = numberOfPages;
     this.props.updateRowsPerPage(selectedRowsPerPage.value);
     if (this.props.fetchOnPageChange)
-      this.props.fetchOnPageChange(currentPage, this.props.searchText, null, selectedRowsPerPage.value);
+      this.props.fetchOnPageChange(currentPage, this.props.searchText, null, selectedRowsPerPage.value, {
+        columnName: this.props.columnName,
+        columnType: this.props.columnType,
+        direction: this.props.direction,
+      });
 
     this.setState({
       numberOfPages,
@@ -64,7 +68,11 @@ export default class PaginationProvider extends PureComponent {
 
   handlePageClick = (_e, data) => {
     if (this.props.fetchOnPageChange)
-      this.props.fetchOnPageChange(+data.page, this.props.searchText, null, this.state.rowsPerPage.value);
+      this.props.fetchOnPageChange(+data.page, this.props.searchText, null, this.state.rowsPerPage.value, {
+        columnName: this.props.columnName,
+        columnType: this.props.columnType,
+        direction: this.props.direction,
+      });
     this.setCurrentPage(+data.page || 1);
   };
 
@@ -83,7 +91,12 @@ export default class PaginationProvider extends PureComponent {
           currentPage + change || 1,
           this.props.searchText,
           null,
-          this.state.rowsPerPage.value
+          this.state.rowsPerPage.value,
+          {
+            columnName: this.props.columnName,
+            columnType: this.props.columnType,
+            direction: this.props.direction,
+          }
         );
       }
       this.setCurrentPage(currentPage + change || 1);

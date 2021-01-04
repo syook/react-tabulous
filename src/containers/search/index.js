@@ -10,7 +10,14 @@ import { getSearchTextFilteredData } from './utils';
 export const SearchContext = React.createContext();
 
 export default class SearchProvider extends Component {
-  state = { searchText: '', data: [...(this.props.data || [])], rowsPerPage: 10 };
+  state = {
+    searchText: '',
+    data: [...(this.props.data || [])],
+    rowsPerPage: 10,
+    columnName: null,
+    columnType: null,
+    direction: null,
+  };
 
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.data, this.props.data)) {
@@ -26,6 +33,10 @@ export default class SearchProvider extends Component {
     this.setState({ rowsPerPage: val });
   };
 
+  updateRowsSortParams = (columnName, columnType, direction) => {
+    this.setState({ columnName, columnType, direction });
+  };
+
   search = debounce(
     searchText => {
       const { data, searchKeys, isAllowDeepSearch } = this.props;
@@ -33,7 +44,11 @@ export default class SearchProvider extends Component {
         this.setState({ data: [...(data || [])] });
       }
       if (this.props.fetchOnPageChange) {
-        this.props.fetchOnPageChange(1, searchText, searchKeys, this.state.rowsPerPage);
+        this.props.fetchOnPageChange(1, searchText, searchKeys, this.state.rowsPerPage, {
+          columnName: this.state.columnName,
+          columnType: this.state.columnType,
+          direction: this.state.direction,
+        });
       } else {
         const searchedObjects = getSearchTextFilteredData({ data, searchKeys, searchText, isAllowDeepSearch });
         this.setState({ data: searchedObjects });
@@ -63,7 +78,9 @@ export default class SearchProvider extends Component {
             ...this.state,
             count: this.props.count,
             searchKeys: this.props.searchKeys,
+            rowsPerPageFromSearch: this.state.rowsPerPage,
             updateRowsPerPage: this.updateRowsPerPage,
+            updateRowsSortParams: this.updateRowsSortParams,
           }}>
           <SearchComponent
             disabled={!mainDataCount}
