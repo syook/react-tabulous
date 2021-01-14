@@ -43,6 +43,7 @@ class TableComponent extends Component {
   enableBulkSelect = ({ checked }, data = []) => {
     const selectedRows = checked ? data.map(i => i['_id'] || i['id']) : [];
     this.setState({ bulkSelect: checked, selectedRows, indeterminateSelect: false });
+    this.props.getbulkactionState(checked);
   };
 
   resetBulkSelection = () => {
@@ -80,6 +81,7 @@ class TableComponent extends Component {
       bulkSelect = true;
     }
     this.setState({ selectedRows, bulkSelect, indeterminateSelect });
+    if (this.props.getSelectedOrUnselectedId) this.props.getSelectedOrUnselectedId(checked, row_id);
   };
 
   toggleColumns = (columnName, { checked }) => {

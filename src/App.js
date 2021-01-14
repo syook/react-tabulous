@@ -1,4 +1,4 @@
-import 'semantic-ui-css/semantic.min.css';
+// import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import ReactTabulous from './containers/table';
 import { Input } from 'semantic-ui-react';
@@ -89,6 +89,11 @@ export default class App extends React.Component {
   showIcon = row => {
     return <i>icon</i>;
   };
+
+  getbulkactionState = data => {
+    console.log(data);
+  };
+
   render() {
     return (
       <div>
@@ -101,9 +106,15 @@ export default class App extends React.Component {
           columnDefs={this.columnDefs}
           actionDefs={this.actionDefs}
           includeAction={true}
+          showBulkActions={true}
+          bulkActionDefs={[{ name: 'Delete', function: () => null }]}
           mandatoryFields={['Name']}
           name={'Table Name'}
           showIcon={this.showIcon}
+          getbulkactionState={this.getbulkactionState}
+          getSelectedOrUnselectedId={(c, i) => {
+            console.log(c, i, 'hey');
+          }}
           enableIcon={true}
           isShowSerialNumber
           isAllowDeepSearch
