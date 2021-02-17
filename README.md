@@ -73,6 +73,7 @@ The files will be under `./lib` folder.
 | `isShowSerialNumber`   | to show serial number column                                    | false   | false    | boolean |
 | `isAllowDeepSearch`    | allow a deep search in the data for the searched keyword        | false   | false    | boolean |
 | `emptyCellPlaceHolder` | placeholder for empty cells                                     |         | false    | string  |
+| `accentColor`          | colors for top bar buttons                                      |         | false    | string  |
 
 ## Example
 

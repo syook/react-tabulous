@@ -10,8 +10,6 @@
 
 .tableStyle thead > tr th {
   /* border: none !important; */
-
-  color: #26547c !important;
   background: #f1f5f7 !important;
 }
 
@@ -21,6 +19,5 @@
 }
 
 .tableStyle tbody tr td {
-  color: #26547c;
   text-align: center !important;
 }

@@ -46,7 +46,7 @@ export default class FilterProvider extends PureComponent {
   };
 
   render() {
-    const { children, filterableColumns } = this.props;
+    const { children, filterableColumns, accentColor, columns } = this.props;
     const parentDataCount = (this.props.data || []).length;
     const data = this.applyFilter(this.state.selectedFilters);
     const stateDataCount = (data || []).length;
@@ -57,10 +57,11 @@ export default class FilterProvider extends PureComponent {
           disabled={!parentDataCount || !filterableColumns.length}
           filterDisabled={this.state.filterDisabled}
           filterableColumns={filterableColumns}
-          columns={this.props.columns}
+          columns={columns}
           selectedFilters={this.state.selectedFilters}
           setSelectedFilters={this.setSelectedFilters}
           shouldFilterReset={this.state.shouldFilterReset}
+          accentColor={accentColor}
         />
         {children}
 

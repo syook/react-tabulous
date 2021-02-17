@@ -120,6 +120,7 @@ class TableComponent extends Component {
                       hiddenColumnCount={hiddenColumnCount}
                       columns={hidableColumns}
                       toggleColumns={this.toggleColumns}
+                      accentColor={this.props.accentColor}
                       toggleAllColumns={this.toggleAllColumns}
                     />
                   ) : null}
@@ -131,6 +132,7 @@ class TableComponent extends Component {
                     data={searchProps.data || []}
                     filterableColumns={filterableColumns}
                     columns={this.state.columns}
+                    accentColor={this.props.accentColor}
                     emptyCellPlaceHolder={emptyCellPlaceHolder}>
                     <FilterContext.Consumer>
                       {filterProps => {
