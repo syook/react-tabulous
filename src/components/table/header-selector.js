@@ -36,7 +36,6 @@ const HeaderSelector = props => {
           <Button
             size="medium"
             icon
-            className={hiddenColumnsCount ? 'column-available' : 'column-unavailable'}
             style={{
               background: props.accentColor ? props.accentColor : hiddenColumnsCount ? '#3498DB' : 'rgb(109, 180, 226)',
               color: '#fff',
