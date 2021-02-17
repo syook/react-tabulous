@@ -272,6 +272,7 @@ class TableComponent extends Component {
                                                             actionOnHover={props.actionOnHover}
                                                             actions={props.actionDefs}
                                                             row={row}
+                                                            data={this.props.data}
                                                           />
                                                         </Table.Cell>
                                                       ) : null}

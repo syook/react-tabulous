@@ -16,7 +16,7 @@ const Pagination = props => {
   ).value;
   const pageOptions = rowsPerPageOptions.filter(obj => +obj.value <= +maxRowOptionAvailable);
   return (
-    <div className="paginationFooter">
+    <div className="tabulous pagination-footer">
       <div
         style={{
           display: 'flex',
