@@ -37,7 +37,13 @@ const HeaderSelector = props => {
             size="medium"
             icon
             style={{
-              background: props.accentColor ? props.accentColor : hiddenColumnsCount ? '#3498DB' : 'rgb(109, 180, 226)',
+              background: props.accentColor
+                ? hiddenColumnsCount
+                  ? props.accentColor
+                  : rgb(170, 170, 170)
+                : hiddenColumnsCount
+                ? '#3498DB'
+                : 'rgb(109, 180, 226)',
               color: '#fff',
               padding: hiddenColumnsCount ? '0.78em 0.6em 0.78em' : '',
               marginRight: '10px',
