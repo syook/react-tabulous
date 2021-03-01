@@ -40,7 +40,7 @@ const HeaderSelector = props => {
               background: props.accentColor
                 ? hiddenColumnsCount
                   ? props.accentColor
-                  : rgb(170, 170, 170)
+                  : 'rgb(170, 170, 170)'
                 : hiddenColumnsCount
                 ? '#3498DB'
                 : 'rgb(109, 180, 226)',

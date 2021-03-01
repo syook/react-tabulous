@@ -108,7 +108,7 @@ const TableFilter = props => {
               backgroundColor: props.accentColor
                 ? selectedFiltersAvailable
                   ? props.accentColor
-                  : rgb(170, 170, 170)
+                  : 'rgb(170, 170, 170)'
                 : selectedFiltersAvailable
                 ? '#FCB400'
                 : 'rgba(241, 196, 15, 0.8)',
