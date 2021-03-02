@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import isEqual from 'lodash/isEqual';
 
 import { fetchSortedData } from './utils';
 
@@ -9,93 +8,88 @@ export default class SortProvider extends PureComponent {
   state = {
     columnName: null,
     columnType: null,
-    data: [...(this.props.data || [])],
     direction: null,
     resetPagination: false,
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.props.data && !isEqual(this.props.data, prevProps.data)) {
-      const { columnName, columnType, direction } = this.state;
+  //  componentDidUpdate(prevProps) {
+  //    if (this.props.data && !isEqual(this.props.data, prevProps.data)) {
+  //      const { columnName, columnType, direction } = this.state;
 
-      if (columnName && columnType) {
-        if (this.props.fetchOnPageChange) {
-          this.setState({ data: [...(this.props.data || [])] });
-        } else {
-          const sortedData = fetchSortedData({ data: [...this.props.data], columnType, columnName, direction }) || [];
-          this.setState({ data: [...sortedData] });
-        }
-      } else {
-        this.setState({ data: [...(this.props.data || [])] });
-      }
-    }
-  }
+  //      if (columnName && columnType) {
+  //        if (this.props.fetchOnPageChange) {
+  //          this.setState({ data: [...(this.props.data || [])] });
+  //        } else {
+  //          const sortedData =
+  //            fetchSortedData({ data: [...this.props.data], columnType, columnName, direction }) || [];
+  //          this.setState({ data: [...sortedData] });
+  //        }
+  //      } else {
+  //        this.setState({ data: [...(this.props.data || [])] });
+  //      }
+  //    }
+  //  }
 
-  handleSort = ({ field: clickedColumn, type: columnType, direction }) => () => {
+  handleSort = ({ headerName: clickedColumn, type: columnType, direction, field }) => () => {
     direction = direction || 'ascending';
 
     if (!clickedColumn) return;
-    const { columnName, data } = this.state;
+    const { columnName } = this.state;
     if (columnName !== clickedColumn) {
       direction = 'ascending';
-      this.props.updateRowsSortParams(clickedColumn, columnType, direction);
+      this.props.updateRowsSortParams(field, columnType, direction);
       if (this.props.fetchOnPageChange) {
         this.props.fetchOnPageChange(1, this.props.searchText, null, this.props.rowsPerPageFromSearch, {
-          columnName: clickedColumn,
+          columnName: field,
           columnType,
           direction,
-        });
-        this.setState({
-          columnName: clickedColumn,
-          columnType,
-          direction,
-          resetPagination: !this.state.resetPagination,
-        });
-      } else {
-        const sortedData = fetchSortedData({
-          data,
-          columnType,
-          columnName: clickedColumn,
-          direction,
-        });
-        this.setState({
-          columnName: clickedColumn,
-          columnType,
-          data: sortedData,
-          direction,
-          resetPagination: !this.state.resetPagination,
         });
       }
+      this.setState({
+        columnName: clickedColumn,
+        columnType,
+        direction,
+        resetPagination: !this.state.resetPagination,
+      });
     } else {
-      this.props.updateRowsSortParams(clickedColumn, columnType, direction);
+      this.props.updateRowsSortParams(field, columnType, direction);
 
       if (this.props.fetchOnPageChange) {
         this.props.fetchOnPageChange(1, this.props.searchText, null, this.props.rowsPerPageFromSearch, {
-          columnName: clickedColumn,
+          columnName: field,
           columnType,
           direction,
         });
-        this.setState({
-          direction,
-          resetPagination: !this.state.resetPagination,
-        });
+      }
+      this.setState({
+        direction,
+        resetPagination: !this.state.resetPagination,
+      });
+    }
+  };
+
+  getSortedData = () => {
+    const { columnName, columnType, direction } = this.state;
+    if (columnName && columnType) {
+      if (this.props.fetchOnPageChange) {
+        return this.props.data;
       } else {
-        this.setState({
-          data: data.reverse(),
-          direction,
-          resetPagination: !this.state.resetPagination,
-        });
+        const sortedData = fetchSortedData({ data: [...this.props.data], columnType, columnName, direction }) || [];
+        return sortedData;
       }
     }
+    return this.props.data;
   };
 
   render() {
     const { children } = this.props;
+    const data = this.getSortedData();
     return (
       <SortContext.Provider
         value={{
           handleSort: this.handleSort,
           ...this.state,
+          data,
           count: this.props.count,
           direction: this.state.direction,
           columnName: this.state.columnName,

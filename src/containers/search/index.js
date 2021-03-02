@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import isEqual from 'lodash/isEqual';
+import { debounce, isEqual } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
-import debounce from 'lodash/debounce';
 
 import SearchComponent from '../../components/search';
 
@@ -12,17 +11,38 @@ export const SearchContext = React.createContext();
 export default class SearchProvider extends Component {
   state = {
     searchText: '',
-    data: [...(this.props.data || [])],
+    data: [...(this.props.tableData || [])],
     rowsPerPage: 10,
     columnName: null,
     columnType: null,
     direction: null,
   };
 
-  componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.data, this.props.data)) {
+  search = debounce(
+    searchText => {
+      const { tableData, searchKeys } = this.props;
+      if (!searchText || isEmpty(searchKeys)) {
+        return tableData;
+      }
       if (this.props.fetchOnPageChange) {
-        this.setState({ data: this.props.data });
+        this.props.fetchOnPageChange(1, searchText, searchKeys, this.state.rowsPerPage, {
+          columnName: this.state.columnName,
+          columnType: this.state.columnType,
+          direction: this.state.direction,
+        });
+      } else {
+        const searchedData = this.onSearch(searchText);
+        return searchedData;
+      }
+    },
+    this.props.fetchOnPageChange ? 1200 : 300,
+    { leading: true, trailing: true }
+  );
+
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps.tableData, this.props.tableData)) {
+      if (this.props.fetchOnPageChange) {
+        this.setState({ data: this.props.tableData });
       } else {
         this.search(this.state.searchText);
       }
@@ -37,53 +57,40 @@ export default class SearchProvider extends Component {
     this.setState({ columnName, columnType, direction });
   };
 
-  search = debounce(
-    searchText => {
-      const { data, searchKeys, isAllowDeepSearch } = this.props;
-      if (!searchText || isEmpty(searchKeys)) {
-        this.setState({ data: [...(data || [])] });
-      }
-      if (this.props.fetchOnPageChange) {
-        this.props.fetchOnPageChange(1, searchText, searchKeys, this.state.rowsPerPage, {
-          columnName: this.state.columnName,
-          columnType: this.state.columnType,
-          direction: this.state.direction,
-        });
-      } else {
-        const searchedObjects = getSearchTextFilteredData({ data, searchKeys, searchText, isAllowDeepSearch });
-        this.setState({ data: searchedObjects });
-      }
-    },
-    this.props.fetchOnPageChange ? 1200 : 300,
-    { leading: true, trailing: true }
-  );
+  onSearch = searchText => {
+    const { tableData, searchKeys } = this.props;
 
-  onChangeSearchText = e => {
-    const searchText = (e.target.value || '').trimStart().toLowerCase();
+    const searchedObjects = getSearchTextFilteredData({
+      data: tableData,
+      searchKeys,
+      searchText,
+    });
+    return searchedObjects;
+  };
+
+  onChangeSearchText = value => {
+    const searchText = (value || '').trimStart().toLowerCase();
     const currentSearchText = this.state.searchText;
     if (searchText === currentSearchText) return;
-
     this.setState({ searchText });
     this.search(searchText);
   };
 
   render() {
-    const mainDataCount = this.props.count || (this.props.data || []).length;
+    const mainDataCount = this.props.count || (this.props.tableData || []).length;
     const stateDataCount = (this.state.data || []).length;
-
     return (
       <div>
         <SearchContext.Provider
           value={{
             ...this.state,
             count: this.props.count,
-            searchKeys: this.props.searchKeys,
             rowsPerPageFromSearch: this.state.rowsPerPage,
             updateRowsPerPage: this.updateRowsPerPage,
             updateRowsSortParams: this.updateRowsSortParams,
           }}>
           <SearchComponent
-            disabled={!mainDataCount}
+            disabled={!mainDataCount && !this.state.searchText}
             name={this.props.tableName}
             onChangeSearchText={this.onChangeSearchText}
             searchText={this.state.searchText}

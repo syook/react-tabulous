@@ -12,7 +12,10 @@ export const PaginationContext = React.createContext();
 export default class PaginationProvider extends PureComponent {
   constructor(props) {
     super(props);
-    const rowsPerPage = { value: 10, label: '10 Items' };
+    const rowsPerPage = {
+      value: this.props.defaultItemsToDisplay || 10,
+      label: `${this.props.defaultItemsToDisplay || 10} Items`,
+    };
     const rowCount = typeof props.count === 'number' ? props.count : (props.data || []).length;
     this.state = {
       currentPage: 1,

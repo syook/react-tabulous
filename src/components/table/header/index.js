@@ -2,13 +2,12 @@ import React from 'react';
 import { Icon, Table } from 'semantic-ui-react';
 
 const TableHeader = ({ column, index, sortProps, defaultSort, disabled }) => {
-  const { isSortable, isResizable = false, headerName, headerMessage, headerMessageColor, field } = column;
-
+  const { isSortable, isResizable = false, headerName, headerMessage, headerMessageColor } = column;
   return (
     <Table.HeaderCell
       style={{ minWidth: 200, whiteSpace: 'normal' }}
       sorted={
-        (isSortable && !disabled && sortProps.columnName && sortProps.columnName === field) ||
+        (isSortable && !disabled && sortProps.columnName && sortProps.columnName === headerName) ||
         defaultSort === column.headerName
           ? sortProps.direction || 'ascending'
           : null
@@ -24,7 +23,7 @@ const TableHeader = ({ column, index, sortProps, defaultSort, disabled }) => {
           : undefined
       }>
       {headerName}
-      {isSortable && !disabled && sortProps.columnName !== field && defaultSort !== column.headerName && (
+      {isSortable && !disabled && sortProps.columnName !== headerName && defaultSort !== column.headerName && (
         <Icon name="sort" />
       )}{' '}
       <p style={{ color: headerMessageColor || 'blueviolet', display: 'inline-block' }}> {headerMessage} </p>

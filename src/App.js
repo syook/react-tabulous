@@ -1,7 +1,8 @@
-// import 'semantic-ui-css/semantic.min.css';
+import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import ReactTabulous from './containers/table';
 import { Input } from 'semantic-ui-react';
+
 export default class App extends React.Component {
   //you can manipulate this component for testing
   constructor(props) {
@@ -9,8 +10,10 @@ export default class App extends React.Component {
     this.state = {
       count: 10,
       data: [
-        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'something', isDeleted: false },
-        { id: 2, name: 'Harsh Singh', description: '', isDeleted: true },
+        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'Dev', isDeleted: false },
+        { id: 2, name: 'Prakash Barik', description: 'QA', isDeleted: true },
+        { id: 3, name: 'Muhammad Anees', description: 'Dev', isDeleted: true },
+        { id: 4, name: 'Mayank Khajanchi', description: 'Dev', isDeleted: true },
       ],
     };
   }
@@ -38,8 +41,8 @@ export default class App extends React.Component {
         data: [...prev.data.filter(item => item.id !== rowObject.id), obj],
       };
     });
-    console.log({ rowObject, newValue });
   };
+
   columnDefs = [
     {
       headerName: 'Name',
@@ -51,6 +54,7 @@ export default class App extends React.Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
+      isResizable: true,
     },
     {
       headerName: 'Description',
@@ -90,7 +94,7 @@ export default class App extends React.Component {
     return <i>icon</i>;
   };
 
-  getbulkactionState = data => {
+  getBulkActionState = data => {
     console.log(data);
   };
 
@@ -99,10 +103,6 @@ export default class App extends React.Component {
       <div>
         <ReactTabulous
           data={this.state.data}
-          count={this.state.count}
-          fetchOnPageChange={page => {
-            console.log(page);
-          }}
           columnDefs={this.columnDefs}
           actionDefs={this.actionDefs}
           includeAction={true}
@@ -110,14 +110,17 @@ export default class App extends React.Component {
           bulkActionDefs={[{ name: 'Delete', function: () => null }]}
           mandatoryFields={['Name']}
           name={'Table Name'}
+          count={20}
           showIcon={this.showIcon}
-          getbulkactionState={this.getbulkactionState}
+          getBulkActionState={this.getBulkActionState}
           getSelectedOrUnselectedId={(c, i) => {
             console.log(c, i, 'hey');
           }}
+          fetchOnPageChange={(a, b, c, d) => this.setState({ data: this.state.data })}
           enableIcon={true}
           isShowSerialNumber
           isAllowDeepSearch
+          emptyCellPlaceHolder="N/A"
         />
       </div>
     );

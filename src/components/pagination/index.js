@@ -16,7 +16,7 @@ const Pagination = props => {
   ).value;
   const pageOptions = rowsPerPageOptions.filter(obj => +obj.value <= +maxRowOptionAvailable);
   return (
-    <div className="paginationFooter">
+    <div className="tabulous pagination-footer">
       <div
         style={{
           display: 'flex',
@@ -28,45 +28,43 @@ const Pagination = props => {
         <Label ribbon>
           Total {props.tableFooterName} : {props.rowCount}
         </Label>
-        {props.rowCount > 5 && (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span
-              style={{
-                color: '#26547c',
-                fontSize: '13px',
-                fontWeight: 'normal',
-                margin: '0px 15px',
-              }}>
-              Show
-            </span>
-            <Select
-              className="pagination_select"
-              value={props.rowsPerPage}
-              options={pageOptions}
-              onChange={props.onSelectRowsPerPage}
-              isClearable={false}
-              isSearchable={false}
-              menuPlacement="auto"
-              menuPortalTarget={document.querySelector('#root')}
-            />
-            <Menu floated="right" pagination>
-              <MenuItem icon="angle double left" page={1} onClick={props.handlePageClick} />
-              <MenuItem data-direction="LEFT" onClick={props.handleDirectionClick} icon="angle left" />
-              {props.pageRange.map((pageIndex, index) => (
-                <MenuItem
-                  key={`table-footer-${index}`}
-                  content={`${pageIndex}`}
-                  page={pageIndex}
-                  onClick={props.handlePageClick}
-                  active={pageIndex === props.currentPage}
-                  as="a"
-                />
-              ))}
-              <MenuItem data-direction="RIGHT" onClick={props.handleDirectionClick} icon="angle right" />
-              <MenuItem icon="angle double right" page={props.numberOfPages} onClick={props.handlePageClick} />
-            </Menu>
-          </div>
-        )}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span
+            style={{
+              color: '#26547c',
+              fontSize: '13px',
+              fontWeight: 'normal',
+              margin: '0px 15px',
+            }}>
+            Show
+          </span>
+          <Select
+            className="pagination_select"
+            value={props.rowsPerPage}
+            options={pageOptions}
+            onChange={props.onSelectRowsPerPage}
+            isClearable={false}
+            isSearchable={false}
+            menuPortalTarget={document.querySelector('#root')}
+            menuPlacement="top"
+          />
+          <Menu floated="right" pagination>
+            <MenuItem icon="angle double left" page={1} onClick={props.handlePageClick} />
+            <MenuItem data-direction="LEFT" onClick={props.handleDirectionClick} icon="angle left" />
+            {props.pageRange.map((pageIndex, index) => (
+              <MenuItem
+                key={`table-footer-${index}`}
+                content={`${pageIndex}`}
+                page={pageIndex}
+                onClick={props.handlePageClick}
+                active={pageIndex === props.currentPage}
+                as="a"
+              />
+            ))}
+            <MenuItem data-direction="RIGHT" onClick={props.handleDirectionClick} icon="angle right" />
+            <MenuItem icon="angle double right" page={props.numberOfPages} onClick={props.handlePageClick} />
+          </Menu>
+        </div>
       </div>
     </div>
   );
