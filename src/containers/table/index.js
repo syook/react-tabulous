@@ -54,6 +54,7 @@ class TableComponent extends Component {
   enableBulkSelect = ({ checked }, data = []) => {
     const selectedRows = checked ? data.map(i => i['_id'] || i['id']) : [];
     this.setState({ bulkSelect: checked, selectedRows, indeterminateSelect: false });
+    this.props.getBulkActionState(checked);
   };
 
   resetBulkSelection = () => {
@@ -65,7 +66,6 @@ class TableComponent extends Component {
     const rowIndex = selectedRows.indexOf(row_id);
     if (rowIndex > -1 && !checked) selectedRows.splice(rowIndex, 1);
     if (rowIndex === -1) selectedRows.push(row_id);
-
     let bulkSelect = false;
     let indeterminateSelect = false;
     const selectedRowsLength = selectedRows.length;
@@ -75,6 +75,7 @@ class TableComponent extends Component {
       bulkSelect = true;
     }
     this.setState({ selectedRows, bulkSelect, indeterminateSelect });
+    if (this.props.getSelectedOrUnselectedId) this.props.getSelectedOrUnselectedId(checked, row_id);
   };
 
   toggleColumns = (columnName, { checked }) => {
@@ -104,6 +105,7 @@ class TableComponent extends Component {
     const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
+
     return (
       <div className="table-wrapper">
         <SearchProvider {...props} searchKeys={this.state.searchKeys} tableData={this.state.data}>
@@ -128,6 +130,7 @@ class TableComponent extends Component {
                   ) : null}
 
                   <FilterProvider
+                    count={searchProps.count}
                     data={searchProps.data || []}
                     filterableColumns={filterableColumns}
                     columns={this.state.columns}
@@ -141,13 +144,26 @@ class TableComponent extends Component {
                                 {this.props.children(filterProps.data, visibleColumns)}
                               </div>
                             ) : null}
-                            <SortProvider data={orderBy(filterProps.data, ['name'], ['asc'])}>
+                            <SortProvider
+                              data={orderBy(filterProps.data, ['name'], ['asc'])}
+                              fetchOnPageChange={props.fetchOnPageChange}
+                              count={filterProps.count}
+                              updateRowsSortParams={searchProps.updateRowsSortParams}
+                              rowsPerPageFromSearch={searchProps.rowsPerPageFromSearch}
+                              searchText={searchProps.searchText}>
                               <SortContext.Consumer>
                                 {sortProps => {
                                   return (
                                     <PaginationProvider
                                       {...props}
                                       data={sortProps.data || []}
+                                      count={sortProps.count}
+                                      fetchOnPageChange={props.fetchOnPageChange}
+                                      searchText={searchProps.searchText}
+                                      columnName={sortProps.columnName}
+                                      direction={sortProps.direction}
+                                      columnType={sortProps.columnType}
+                                      updateRowsPerPage={searchProps.updateRowsPerPage}
                                       resetPagination={sortProps.resetPagination}
                                       resetBulkSelection={this.resetBulkSelection}
                                       defaultItemsToDisplay={props.defaultItemsToDisplay}>
@@ -332,6 +348,8 @@ TableComponent.propTypes = {
     })
   ),
   data: PropTypes.array,
+  count: PropTypes.number,
+  fetchOnPageChange: PropTypes.func,
   includeAction: PropTypes.bool,
   mandatoryFields: PropTypes.arrayOf(PropTypes.string),
   tableFooterName: PropTypes.string,

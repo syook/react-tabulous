@@ -8,6 +8,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      count: 10,
       data: [
         { id: 1, name: 'Harsh Singh', is_completed: true, description: 'Dev', isDeleted: false },
         { id: 2, name: 'Prakash Barik', description: 'QA', isDeleted: true },
@@ -27,6 +28,10 @@ export default class App extends React.Component {
   onEdit = rowObject => {
     console.log('onEdit', rowObject);
   };
+
+  componentDidMount() {
+    this.setState({ count: 16 });
+  }
 
   onInputChange = ({ rowObject, value: newValue }) => {
     const obj = this.state.data.find(item => item.id === rowObject.id);
@@ -89,6 +94,10 @@ export default class App extends React.Component {
     return <i>icon</i>;
   };
 
+  getBulkActionState = data => {
+    console.log(data);
+  };
+
   render() {
     return (
       <div>
@@ -97,9 +106,17 @@ export default class App extends React.Component {
           columnDefs={this.columnDefs}
           actionDefs={this.actionDefs}
           includeAction={true}
+          showBulkActions={true}
+          bulkActionDefs={[{ name: 'Delete', function: () => null }]}
           mandatoryFields={['Name']}
           name={'Table Name'}
+          count={20}
           showIcon={this.showIcon}
+          getBulkActionState={this.getBulkActionState}
+          getSelectedOrUnselectedId={(c, i) => {
+            console.log(c, i, 'hey');
+          }}
+          fetchOnPageChange={(a, b, c, d) => this.setState({ data: this.state.data })}
           enableIcon={true}
           isShowSerialNumber
           isAllowDeepSearch
