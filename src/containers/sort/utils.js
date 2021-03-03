@@ -30,7 +30,9 @@ export const fetchSortedData = ({ data = [], columnType, columnName, direction }
         if (typeof firstValue === 'number' || typeof secondValue === 'number') {
           return isAscending ? +firstValue - +secondValue : +secondValue - +firstValue;
         }
-        return isAscending ? firstValue.localeCompare(secondValue) : secondValue.localeCompare(firstValue);
+        return isAscending
+          ? firstValue.toString().localeCompare(secondValue)
+          : secondValue.toString().localeCompare(firstValue);
       });
 
     default:
