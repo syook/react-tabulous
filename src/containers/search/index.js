@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { debounce, isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
 
 import SearchComponent from '../../components/search';
@@ -22,7 +23,7 @@ export default class SearchProvider extends Component {
     searchText => {
       const { tableData, searchKeys } = this.props;
       if (!searchText || isEmpty(searchKeys)) {
-        return tableData;
+        this.setState({ data: [...(tableData || [])] });
       }
       if (this.props.fetchOnPageChange) {
         this.props.fetchOnPageChange(1, searchText, searchKeys, this.state.rowsPerPage, {
@@ -32,7 +33,7 @@ export default class SearchProvider extends Component {
         });
       } else {
         const searchedData = this.onSearch(searchText);
-        return searchedData;
+        this.setState({ data: [...(searchedData || [])] });
       }
     },
     this.props.fetchOnPageChange ? 1200 : 300,
@@ -71,6 +72,7 @@ export default class SearchProvider extends Component {
   onChangeSearchText = value => {
     const searchText = (value || '').trimStart().toLowerCase();
     const currentSearchText = this.state.searchText;
+
     if (searchText === currentSearchText) return;
     this.setState({ searchText });
     this.search(searchText);

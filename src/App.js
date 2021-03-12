@@ -113,10 +113,13 @@ export default class App extends React.Component {
           count={20}
           showIcon={this.showIcon}
           getBulkActionState={this.getBulkActionState}
-          getSelectedOrUnselectedId={(c, i) => {
-            console.log(c, i, 'hey');
+          getSelectedOrUnselectedId={(check, id) => {
+            console.log(check, id, 'checked value for particular row for the bulkAction');
           }}
-          fetchOnPageChange={(a, b, c, d) => this.setState({ data: this.state.data })}
+          fetchOnPageChange={(pageNumber, search, searchKeys, rowsPerPage, sortParams) =>
+            //do something here , like fetch the data from backend.
+            this.setState({ data: this.state.data })
+          }
           enableIcon={true}
           isShowSerialNumber
           isAllowDeepSearch
