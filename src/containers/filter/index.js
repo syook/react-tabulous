@@ -51,7 +51,7 @@ export default class FilterProvider extends PureComponent {
     const data = this.applyFilter(this.state.selectedFilters);
     const stateDataCount = (data || []).length;
     return (
-      <FilterContext.Provider value={{ ...this.state, data }}>
+      <FilterContext.Provider value={{ ...this.state, data, count: this.props.count }}>
         <Filter
           applyFilter={this.applyFilter}
           disabled={!parentDataCount || !filterableColumns.length}

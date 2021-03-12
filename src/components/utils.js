@@ -16,6 +16,8 @@ export const getTableData = (columns, data, placeholder) => {
   const visibleColumns = columns.filter(d => d.isVisible);
   return data.reduce((tableData, dataRecord, index) => {
     const dataObj = {};
+    if ('_id' in dataRecord) dataObj['_id'] = dataRecord._id;
+    if ('id' in dataRecord) dataObj['id'] = dataRecord.id;
     visibleColumns.forEach(column => {
       dataObj['objIndex'] = index;
       dataObj[column.headerName] =

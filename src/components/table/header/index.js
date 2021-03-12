@@ -3,7 +3,6 @@ import { Icon, Table } from 'semantic-ui-react';
 
 const TableHeader = ({ column, index, sortProps, defaultSort, disabled }) => {
   const { isSortable, isResizable = false, headerName, headerMessage, headerMessageColor } = column;
-
   return (
     <Table.HeaderCell
       style={{ minWidth: 200, whiteSpace: 'normal' }}
