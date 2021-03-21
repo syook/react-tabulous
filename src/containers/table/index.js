@@ -225,7 +225,9 @@ class TableComponent extends Component {
                                               </Table.Header>
                                               <Table.Body>
                                                 {paginationProps.data.map((row, index1) => {
-                                                  const includeCheckbox = props.showCheckbox(row);
+                                                  const includeCheckbox = props.showCheckbox
+                                                    ? props.showCheckbox(row)
+                                                    : false;
                                                   return (
                                                     <Table.Row key={`column-${index1}`} className="main-table-row">
                                                       {hasBulkActions && includeCheckbox !== false ? (

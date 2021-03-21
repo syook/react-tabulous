@@ -28,7 +28,8 @@ export default class PaginationProvider extends PureComponent {
   componentDidUpdate(prevProps) {
     if (
       ((this.props.data || []) && !isEqual(this.props.data, prevProps.data)) ||
-      !isEqual(this.props.count, prevProps.count)
+      !isEqual(this.props.count, prevProps.count) ||
+      !isEqual(prevProps.rawData, this.props.rawData)
     ) {
       const rowCount = typeof this.props.count === 'number' ? this.props.count : this.props.data.length;
 
@@ -120,7 +121,14 @@ export default class PaginationProvider extends PureComponent {
           style={{ maxWidth: '100%', marginTop: '10px' }}>
           <Table sortable celled padded className="tableStyle left aligned table-fixed">
             <PaginationContext.Provider
-              value={{ ...this.state, data, startIndex, rowCount, resetToFirstPage: this.resetToFirstPage }}>
+              value={{
+                rawData: this.props.rawData,
+                ...this.state,
+                data,
+                startIndex,
+                rowCount,
+                resetToFirstPage: this.resetToFirstPage,
+              }}>
               {children}
             </PaginationContext.Provider>
           </Table>

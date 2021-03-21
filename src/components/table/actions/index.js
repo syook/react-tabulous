@@ -4,7 +4,7 @@ import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 
 const TableActions = ({ actions, row, actionOnHover, data }) => {
-  const currentItem = data[row.objIndex];
+  const currentItem = data[row.objIndex] || {};
   return (
     <div
       className={`table-actions ${actionOnHover ? 'onHoverActions' : ''}`}

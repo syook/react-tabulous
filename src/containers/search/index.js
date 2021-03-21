@@ -86,6 +86,7 @@ export default class SearchProvider extends Component {
         <SearchContext.Provider
           value={{
             ...this.state,
+
             count: this.props.count,
             rowsPerPageFromSearch: this.state.rowsPerPage,
             updateRowsPerPage: this.updateRowsPerPage,

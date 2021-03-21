@@ -15,16 +15,16 @@ export default class FilterProvider extends PureComponent {
   };
 
   componentDidUpdate(prevProps) {
-    if ((this.props.data || []) && !isEqual(this.props.data, prevProps.data)) {
-      this.applyFilter();
-    }
+    // if ((this.props.data || []) && !isEqual(this.props.data, prevProps.data)) {
+    //   this.applyFilter();
+    // }
     const columnDefs = (this.props.filterableColumns || []).map(def => def.headerName);
     const prevColumnDefs = (prevProps.filterableColumns || []).map(def => def.headerName);
-    if (!isEqual(columnDefs, prevColumnDefs)) {
-      this.setState({
-        shouldFilterReset: true,
-      });
-    }
+    // if (!isEqual(columnDefs, prevColumnDefs)) {
+    //   this.setState({
+    //     shouldFilterReset: true,
+    //   });
+    // }
   }
 
   setSelectedFilters = selectedFilters => {
@@ -51,7 +51,7 @@ export default class FilterProvider extends PureComponent {
     const data = this.applyFilter(this.state.selectedFilters);
     const stateDataCount = (data || []).length;
     return (
-      <FilterContext.Provider value={{ ...this.state, data, count: this.props.count }}>
+      <FilterContext.Provider value={{ rawData: this.props.rawData, ...this.state, data, count: this.props.count }}>
         <Filter
           applyFilter={this.applyFilter}
           disabled={!parentDataCount || !filterableColumns.length}

@@ -87,6 +87,7 @@ export default class SortProvider extends PureComponent {
     return (
       <SortContext.Provider
         value={{
+          rawData: this.props.rawData,
           handleSort: this.handleSort,
           ...this.state,
           data,
