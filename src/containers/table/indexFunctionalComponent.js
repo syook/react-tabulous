@@ -182,19 +182,17 @@ function IndexFunctionalComponent(props) {
                                                         }
                                                       />
                                                     </div>
+                                                    {props.isShowSerialNumber && (
+                                                      <div
+                                                        style={{
+                                                          textAlign: 'right',
+                                                          margin: '0 auto',
+                                                        }}>
+                                                        S.No
+                                                      </div>
+                                                    )}
                                                   </Table.HeaderCell>
                                                 ) : null}
-                                                {props.isShowSerialNumber && (
-                                                  <Table.HeaderCell>
-                                                    <div
-                                                      style={{
-                                                        textAlign: 'right',
-                                                        margin: '0 auto',
-                                                      }}>
-                                                      S.No
-                                                    </div>
-                                                  </Table.HeaderCell>
-                                                )}
 
                                                 {visibleColumns.map((column, index) =>
                                                   TableHeader({
