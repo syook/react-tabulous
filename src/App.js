@@ -29,18 +29,18 @@ export default class App extends React.Component {
     console.log('onEdit', rowObject);
   };
 
-  componentDidMount() {
-    this.setState({ count: 16 });
-  }
+  // componentDidMount() {
+  //   this.setState({ count: 16 });
+  // }
 
   onInputChange = ({ rowObject, value: newValue }) => {
     const obj = this.state.data.find(item => item.id === rowObject.id);
     obj.name = newValue;
-    this.setState(prev => {
-      return {
-        data: [...prev.data.filter(item => item.id !== rowObject.id), obj],
-      };
-    });
+    // this.setState(prev => {
+    //   return {
+    //     data: [...prev.data.filter(item => item.id !== rowObject.id), obj],
+    //   };
+    // });
   };
 
   columnDefs = [
@@ -122,9 +122,9 @@ export default class App extends React.Component {
           // count={20}
           showIcon={this.showIcon}
           getBulkActionState={this.getBulkActionState}
-          getSelectedOrUnselectedId={(check, id) => {
-            console.log(check, id, 'checked value for particular row for the bulkAction');
-          }}
+          // getSelectedOrUnselectedId={(check, id) => {
+          //   console.log(check, id, 'checked value for particular row for the bulkAction');
+          // }}
           // fetchOnPageChange={(pageNumber, search, searchKeys, rowsPerPage, sortParams) =>
           //   //do something here , like fetch the data from backend.
           //   this.setState({ data: this.state.data })

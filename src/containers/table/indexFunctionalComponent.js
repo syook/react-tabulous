@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import isEqual from 'lodash/isEqual';
@@ -11,7 +11,6 @@ import SearchProvider, { SearchContext } from '../search/indexFuntionalComponent
 import SortProvider, { SortContext } from '../sort';
 
 import BulkActionList from '../../components/table/bulk-action-dropdown';
-import useDeepCompareMemoize from 'use-deep-compare-effect';
 import HeaderSelector from '../../components/table/header-selector';
 import TableActions from '../../components/table/actions';
 import TableHeader from '../../components/table/header';
@@ -19,36 +18,60 @@ import TableCell from '../../components/table/cell';
 import StatusIcon from '../../components/status-icon/status-icon';
 import './index.css';
 
+function reducer(state, action) {
+  switch (action.type) {
+    case 'columns':
+      return { ...state, columns: [...(action.payload || [])] };
+    case 'bulkSelect':
+      return { ...state, bulkSelect: action.payload };
+    case 'indeterminateSelect':
+      return { ...state, indeterminateSelect: action.payload };
+    case 'selectedRows':
+      return { ...state, selectedRows: [...(action.payload || [])] };
+    case 'data':
+      return { ...state, data: [...(action.payload || [])] };
+    case 'rawData':
+      return { ...state, rawData: [...(action.payload || [])] };
+    default:
+      return state;
+  }
+}
+
 function IndexFunctionalComponent(props) {
   const columnAndKeys = getTableColumns(props.columnDefs);
-  const [state, setState] = useState({
+  const [state, dispatch] = useReducer(reducer, {
     columns: columnAndKeys.columnDefs,
-    columnDefs: [],
     bulkSelect: false,
     indeterminateSelect: false,
     selectedRows: [],
     searchKeys: columnAndKeys.searchKeys || [],
-    data: getTableData(columnAndKeys.columnDefs, props.data),
+    data: getTableData(columnAndKeys.columnDefs, [...props.data]),
     rawData: props.data,
   });
 
-  useDeepCompareMemoize(() => {
-    console.log('crazy');
-    const columnAndKeys = getTableColumns(props.columnDefs);
+  useEffect(() => {
+    const columnAndKeys = getTableColumns([...props.columnDefs]);
     const columns = columnAndKeys.columnDefs || [];
-    const data = getTableData(columns, props.data, props.emptyCellPlaceHolder);
-    const a = props;
-    setState({ ...state, rawData: props.data, data, columns, searchKeys: columnAndKeys.searchKeys || [] });
-  }, [props.data, props.columnDefs]);
+    const data = getTableData(columns, [...props.data], props.emptyCellPlaceHolder);
+
+    dispatch({ type: 'data', payload: data });
+    dispatch({ type: 'rawData', payload: props.data });
+    dispatch({ type: 'columns', payload: columns });
+    dispatch({ type: 'searchKeys', payload: columnAndKeys.searchKeys });
+  }, [props.data, props.columnDefs, props.emptyCellPlaceHolder]); //props.columnDefs
 
   const enableBulkSelect = ({ checked }, data = []) => {
     const selectedRows = checked ? data.map(i => i['_id'] || i['id']) : [];
-    setState({ ...state, bulkSelect: checked, selectedRows, indeterminateSelect: false });
+    dispatch({ type: 'bulkSelect', payload: checked });
+    dispatch({ type: 'selectedRows', payload: selectedRows });
+    dispatch({ type: 'indeterminateSelect', payload: false });
     props.getBulkActionState(checked);
   };
 
   const resetBulkSelection = () => {
-    setState({ ...state, bulkSelect: false, indeterminateSelect: false, selectedRows: [] });
+    dispatch({ type: 'bulkSelect', payload: false });
+    dispatch({ type: 'selectedRows', payload: [] });
+    dispatch({ type: 'indeterminateSelect', payload: false });
   };
 
   const updateSelectedRows = ({ checked }, row_id, rowCount) => {
@@ -64,7 +87,9 @@ function IndexFunctionalComponent(props) {
     } else if (selectedRowsLength === rowCount) {
       bulkSelect = true;
     }
-    setState({ ...state, selectedRows, bulkSelect, indeterminateSelect });
+    dispatch({ type: 'bulkSelect', payload: bulkSelect });
+    dispatch({ type: 'selectedRows', payload: selectedRows });
+    dispatch({ type: 'indeterminateSelect', payload: indeterminateSelect });
     if (props.getSelectedOrUnselectedId) props.getSelectedOrUnselectedId(checked, row_id);
   };
 
@@ -72,7 +97,7 @@ function IndexFunctionalComponent(props) {
     let columns = [...state.columns];
     let updatableColumn = columns.find(c => c.headerName === columnName) || {};
     updatableColumn.isVisible = checked;
-    setState({ ...state, columns });
+    dispatch({ type: 'columns', payload: columns });
   };
 
   const toggleAllColumns = checked => {
@@ -83,7 +108,7 @@ function IndexFunctionalComponent(props) {
       column.isVisible = checked;
       return column;
     });
-    setState({ ...state, columns: updatedColumns });
+    dispatch({ type: 'columns', payload: updatedColumns });
   };
 
   const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
@@ -93,10 +118,9 @@ function IndexFunctionalComponent(props) {
   const hidableColumns = state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
   const hiddenColumnCount = state.columns.length - visibleColumns.length;
-  console.log('table', state, props);
   return (
     <div className="table-wrapper">
-      <SearchProvider {...props} rawData={[...state.rawData]} searchKeys={state.searchKeys} tableData={[...state.data]}>
+      <SearchProvider {...props} rawData={state.rawData} searchKeys={state.searchKeys} tableData={state.data}>
         <SearchContext.Consumer>
           {searchProps => {
             return (

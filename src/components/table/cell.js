@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'semantic-ui-react';
 
 const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder }) => {
-  console.log(row, 'row', data, 'data');
+  //console.log(row, 'row', data, 'data');
   return (
     <Table.Cell key={`table-cell-${index2}`}>
       {column.cell

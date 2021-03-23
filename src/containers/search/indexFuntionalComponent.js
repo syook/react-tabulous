@@ -1,17 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useReducer, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
 import SearchComponent from '../../components/search';
 
 import { getSearchTextFilteredData } from './utils';
-import useDeepCompareMemoize from 'use-deep-compare-effect';
 
 export const SearchContext = React.createContext();
 
+function reducer(state, action) {
+  switch (action.type) {
+    case 'searchText':
+      return { ...state, searchText: action.payload };
+    case 'data':
+      return { ...state, data: [...(action.payload || [])] };
+    case 'rowsPerPage':
+      return { ...state, rowsPerPage: action.payload };
+    case 'columnName':
+      return { ...state, columnName: action.payload };
+    case 'columnType':
+      return { ...state, columnType: action.payload };
+    case 'direction':
+      return { ...state, direction: action.payload };
+    default:
+      return state;
+  }
+}
+
 function SearchProvider(props) {
-  const [state, setState] = useState({
+  const [state, dispatch] = useReducer(reducer, {
     searchText: '',
-    data: [...(props.tableData || [])],
+    data: [...props.tableData],
     rowsPerPage: 10,
     columnName: null,
     columnType: null,
@@ -19,10 +37,10 @@ function SearchProvider(props) {
   });
 
   const search = debounce(
-    searchText => {
+    (searchText, abc) => {
       const { tableData, searchKeys } = props;
       if (!searchText || isEmpty(searchKeys)) {
-        setState({ ...state, data: [...(tableData || [])] });
+        dispatch({ type: 'data', payload: tableData });
       }
       if (props.fetchOnPageChange) {
         props.fetchOnPageChange(1, searchText, searchKeys, state.rowsPerPage, {
@@ -32,29 +50,30 @@ function SearchProvider(props) {
         });
       } else {
         const searchedData = onSearch(searchText);
-        setState({ ...state, data: [...(searchedData || [])] });
+        dispatch({ type: 'data', payload: searchedData });
       }
     },
     props.fetchOnPageChange ? 1200 : 300,
     { leading: true, trailing: true }
   );
 
-  useDeepCompareMemoize(() => {
-    console.log('blast');
+  useEffect(() => {
     if (props.fetchOnPageChange) {
-      setState({ ...state, data: [...props.tableData] });
+      dispatch({ type: 'data', payload: props.tableData });
     } else {
-      search(state.searchText);
+      search(state.searchText, props);
     }
     const a = props;
   }, [props.tableData]);
 
   const updateRowsPerPage = val => {
-    setState({ ...state, rowsPerPage: val });
+    dispatch({ type: 'rowsPerPage', payload: val });
   };
 
   const updateRowsSortParams = (columnName, columnType, direction) => {
-    setState({ ...state, columnName, columnType, direction });
+    dispatch({ type: 'columnName', payload: columnName });
+    dispatch({ type: 'columnType', payload: columnType });
+    dispatch({ type: 'direction', payload: direction });
   };
 
   const onSearch = searchText => {
@@ -68,18 +87,21 @@ function SearchProvider(props) {
     return searchedObjects;
   };
 
-  const onChangeSearchText = value => {
-    const searchText = (value || '').trimStart().toLowerCase();
-    const currentSearchText = state.searchText;
+  const onChangeSearchText = useCallback(
+    value => {
+      const searchText = (value || '').trimStart().toLowerCase();
+      const currentSearchText = state.searchText;
 
-    if (searchText === currentSearchText) return;
-    setState({ ...state, searchText });
-    search(searchText);
-  };
+      if (searchText === currentSearchText) return;
+
+      dispatch({ type: 'searchText', payload: searchText });
+      search(searchText, props);
+    },
+    [state] //,props,
+  );
 
   const mainDataCount = props.count || (props.tableData || []).length;
   const stateDataCount = (state.data || []).length;
-  console.log('hey', props);
   return (
     <div>
       <SearchContext.Provider
@@ -95,7 +117,6 @@ function SearchProvider(props) {
           disabled={!mainDataCount && !state.searchText}
           name={props.tableName}
           onChangeSearchText={onChangeSearchText}
-          searchText={state.searchText}
         />
         {props.children}
         {!stateDataCount && (
