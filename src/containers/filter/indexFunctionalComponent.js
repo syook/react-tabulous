@@ -77,6 +77,7 @@ function FilterProvider(props) {
         selectedFilters={state.selectedFilters}
         setSelectedFilters={setSelectedFilters}
         shouldFilterReset={state.shouldFilterReset}
+        accentColor={props.accentColor}
       />
       {children}
 

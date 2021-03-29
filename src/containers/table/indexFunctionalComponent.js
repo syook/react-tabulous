@@ -146,6 +146,7 @@ function IndexFunctionalComponent(props) {
                     columns={hidableColumns}
                     toggleColumns={toggleColumns}
                     toggleAllColumns={toggleAllColumns}
+                    accentColor={props.accentColor}
                   />
                 ) : null}
                 {hasBulkActions && state.selectedRows.length ? (
@@ -158,6 +159,7 @@ function IndexFunctionalComponent(props) {
                   data={searchProps.data}
                   filterableColumns={filterableColumns}
                   columns={state.columns}
+                  accentColor={props.accentColor}
                   emptyCellPlaceHolder={emptyCellPlaceHolder}>
                   <FilterContext.Consumer>
                     {filterProps => {
