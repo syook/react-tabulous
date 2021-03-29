@@ -7,7 +7,7 @@ import { isAfter, isBefore, startOfMinute, isEqual as isEqualDate } from 'date-f
 
 const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', query = '', placeholder }) => {
   const attributeTypeIsDate = attributeType === 'date' || attributeType === 'datetime';
-  if (!searchValue && !attributeTypeIsDate) return true;
+  if (!searchValue && !attributeTypeIsDate && ['contains', 'does not contains', 'is'].includes(query)) return true;
   attributeType = (attributeType || '').toLowerCase();
   if (attributeType === 'string') {
     attrValue = (attrValue || '').toLowerCase();
@@ -19,7 +19,6 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
     attrValue = attrValue ? startOfMinute(new Date(attrValue)) : '';
     searchValue = searchValue ? startOfMinute(new Date(searchValue)) : '';
   }
-
   switch (query) {
     case 'contains':
       return attrValue && attrValue.toLowerCase().includes(searchValue.toLowerCase());

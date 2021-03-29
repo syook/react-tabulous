@@ -1,14 +1,14 @@
-import React, { useEffect, useReducer } from 'react';
+import './index.css';
+
+import React, { useEffect, useReducer, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import orderBy from 'lodash/orderBy';
-import isEqual from 'lodash/isEqual';
 import { Checkbox, Table } from 'semantic-ui-react';
 
 import { getTableData, getTableColumns } from '../../components/utils';
-import FilterProvider, { FilterContext } from '../filter';
-import PaginationProvider, { PaginationContext } from '../pagination';
+import FilterProvider, { FilterContext } from '../filter/indexFunctionalComponent';
+import PaginationProvider, { PaginationContext } from '../pagination/indexFunctioncalComponent';
 import SearchProvider, { SearchContext } from '../search/indexFuntionalComponent';
-import SortProvider, { SortContext } from '../sort';
+import SortProvider, { SortContext } from '../sort/indexFunctionalComponent';
 
 import BulkActionList from '../../components/table/bulk-action-dropdown';
 import HeaderSelector from '../../components/table/header-selector';
@@ -16,7 +16,6 @@ import TableActions from '../../components/table/actions';
 import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
 import StatusIcon from '../../components/status-icon/status-icon';
-import './index.css';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -60,56 +59,68 @@ function IndexFunctionalComponent(props) {
     dispatch({ type: 'searchKeys', payload: columnAndKeys.searchKeys });
   }, [props.data, props.columnDefs, props.emptyCellPlaceHolder]); //props.columnDefs
 
-  const enableBulkSelect = ({ checked }, data = []) => {
-    const selectedRows = checked ? data.map(i => i['_id'] || i['id']) : [];
-    dispatch({ type: 'bulkSelect', payload: checked });
-    dispatch({ type: 'selectedRows', payload: selectedRows });
-    dispatch({ type: 'indeterminateSelect', payload: false });
-    props.getBulkActionState(checked);
-  };
+  const enableBulkSelect = useCallback(
+    ({ checked }, data = []) => {
+      const selectedRows = checked ? data.map(i => i['_id'] || i['id']) : [];
+      dispatch({ type: 'bulkSelect', payload: checked });
+      dispatch({ type: 'selectedRows', payload: selectedRows });
+      dispatch({ type: 'indeterminateSelect', payload: false });
+      if (props.getBulkActionState) props.getBulkActionState(checked);
+    },
+    [props.getBulkActionState]
+  );
 
-  const resetBulkSelection = () => {
+  const resetBulkSelection = useCallback(() => {
     dispatch({ type: 'bulkSelect', payload: false });
     dispatch({ type: 'selectedRows', payload: [] });
     dispatch({ type: 'indeterminateSelect', payload: false });
-  };
+  }, []);
 
-  const updateSelectedRows = ({ checked }, row_id, rowCount) => {
-    let selectedRows = state.selectedRows;
-    const rowIndex = selectedRows.indexOf(row_id);
-    if (rowIndex > -1 && !checked) selectedRows.splice(rowIndex, 1);
-    if (rowIndex === -1) selectedRows.push(row_id);
-    let bulkSelect = false;
-    let indeterminateSelect = false;
-    const selectedRowsLength = selectedRows.length;
-    if (selectedRowsLength && selectedRowsLength !== rowCount) {
-      indeterminateSelect = true;
-    } else if (selectedRowsLength === rowCount) {
-      bulkSelect = true;
-    }
-    dispatch({ type: 'bulkSelect', payload: bulkSelect });
-    dispatch({ type: 'selectedRows', payload: selectedRows });
-    dispatch({ type: 'indeterminateSelect', payload: indeterminateSelect });
-    if (props.getSelectedOrUnselectedId) props.getSelectedOrUnselectedId(checked, row_id);
-  };
-
-  const toggleColumns = (columnName, { checked }) => {
-    let columns = [...state.columns];
-    let updatableColumn = columns.find(c => c.headerName === columnName) || {};
-    updatableColumn.isVisible = checked;
-    dispatch({ type: 'columns', payload: columns });
-  };
-
-  const toggleAllColumns = checked => {
-    const updatedColumns = state.columns.map(column => {
-      if (props.mandatoryFields.includes(column.headerName)) {
-        return column;
+  const updateSelectedRows = useCallback(
+    ({ checked }, row_id, rowCount) => {
+      let selectedRows = state.selectedRows;
+      const rowIndex = selectedRows.indexOf(row_id);
+      if (rowIndex > -1 && !checked) selectedRows.splice(rowIndex, 1);
+      if (rowIndex === -1) selectedRows.push(row_id);
+      let bulkSelect = false;
+      let indeterminateSelect = false;
+      const selectedRowsLength = selectedRows.length;
+      if (selectedRowsLength && selectedRowsLength !== rowCount) {
+        indeterminateSelect = true;
+      } else if (selectedRowsLength === rowCount) {
+        bulkSelect = true;
       }
-      column.isVisible = checked;
-      return column;
-    });
-    dispatch({ type: 'columns', payload: updatedColumns });
-  };
+      dispatch({ type: 'bulkSelect', payload: bulkSelect });
+      dispatch({ type: 'selectedRows', payload: selectedRows });
+      dispatch({ type: 'indeterminateSelect', payload: indeterminateSelect });
+      if (props.getSelectedOrUnselectedId) props.getSelectedOrUnselectedId(checked, row_id);
+    },
+    [state.selectedRows, props.getSelectedOrUnselectedId]
+  );
+
+  const toggleColumns = useCallback(
+    (columnName, { checked }) => {
+      let columns = [...state.columns];
+      let updatableColumn = columns.find(c => c.headerName === columnName) || {};
+      updatableColumn.isVisible = checked;
+      dispatch({ type: 'columns', payload: columns });
+    },
+    [state.columns]
+  );
+
+  const toggleAllColumns = useCallback(
+    checked => {
+      const updatedColumns = state.columns.map(column => {
+        if (props.mandatoryFields.includes(column.headerName)) {
+          return column;
+        }
+        column.isVisible = checked;
+        return column;
+      });
+      dispatch({ type: 'columns', payload: updatedColumns });
+    },
+    [state.columns, props.mandatoryFields]
+  );
 
   const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
   const visibleColumns = state.columns.filter(d => d.isVisible);
@@ -144,7 +155,7 @@ function IndexFunctionalComponent(props) {
                 <FilterProvider
                   rawData={searchProps.rawData}
                   count={searchProps.count}
-                  data={searchProps.data || []}
+                  data={searchProps.data}
                   filterableColumns={filterableColumns}
                   columns={state.columns}
                   emptyCellPlaceHolder={emptyCellPlaceHolder}>
@@ -158,7 +169,7 @@ function IndexFunctionalComponent(props) {
                             </div>
                           ) : null}
                           <SortProvider
-                            data={orderBy(filterProps.data, ['name'], ['asc'])}
+                            data={filterProps.data}
                             rawData={filterProps.rawData}
                             fetchOnPageChange={props.fetchOnPageChange}
                             count={filterProps.count}
@@ -171,7 +182,7 @@ function IndexFunctionalComponent(props) {
                                   <PaginationProvider
                                     {...props}
                                     rawData={filterProps.rawData}
-                                    data={sortProps.data || []}
+                                    data={sortProps.data}
                                     count={sortProps.count}
                                     fetchOnPageChange={props.fetchOnPageChange}
                                     searchText={searchProps.searchText}

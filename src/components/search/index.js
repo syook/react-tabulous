@@ -1,39 +1,13 @@
 import './search.css';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Icon, Input } from 'semantic-ui-react';
-import debounce from 'lodash/debounce';
-
-let set = new Set();
 
 const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) => {
-  // const isInitialMount = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // ! WTF is happening here?
-  // const debounceSearch = useRef(
-  //   debounce(
-  //     searchTerm => {
-  //       onChangeSearchText(searchTerm);
-  //     },
-  //     300,
-  //     { leading: true, trailing: true }
-  //   )
-  // );
-
-  set.add(onChangeSearchText);
-  console.log(set.size);
-
   useEffect(() => {
-    // ! WTF is happening here?
-    // if (isInitialMount.current) {
-    //   isInitialMount.current = false;
-    // } else if (searchTerm) {
-    //   debounceSearch.current(searchTerm);
-    // }
-    // else {
     onChangeSearchText(searchTerm);
-    // }
   }, [searchTerm]);
 
   const onInputChange = event => {

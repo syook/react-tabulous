@@ -36,25 +36,28 @@ function SearchProvider(props) {
     direction: null,
   });
 
-  const search = debounce(
-    (searchText, abc) => {
-      const { tableData, searchKeys } = props;
-      if (!searchText || isEmpty(searchKeys)) {
-        dispatch({ type: 'data', payload: tableData });
-      }
-      if (props.fetchOnPageChange) {
-        props.fetchOnPageChange(1, searchText, searchKeys, state.rowsPerPage, {
-          columnName: state.columnName,
-          columnType: state.columnType,
-          direction: state.direction,
-        });
-      } else {
-        const searchedData = onSearch(searchText);
-        dispatch({ type: 'data', payload: searchedData });
-      }
-    },
-    props.fetchOnPageChange ? 1200 : 300,
-    { leading: true, trailing: true }
+  const search = useCallback(
+    debounce(
+      (searchText, abc) => {
+        const { tableData, searchKeys } = props;
+        if (!searchText || isEmpty(searchKeys)) {
+          dispatch({ type: 'data', payload: tableData });
+        }
+        if (props.fetchOnPageChange) {
+          props.fetchOnPageChange(1, searchText, searchKeys, state.rowsPerPage, {
+            columnName: state.columnName,
+            columnType: state.columnType,
+            direction: state.direction,
+          });
+        } else {
+          const searchedData = onSearch(searchText);
+          dispatch({ type: 'data', payload: searchedData });
+        }
+      },
+      props.fetchOnPageChange ? 1200 : 300,
+      { leading: true, trailing: true }
+    ),
+    [props.tableData, props.searchKeys, props.fetchOnPageChange]
   );
 
   useEffect(() => {
@@ -66,26 +69,29 @@ function SearchProvider(props) {
     const a = props;
   }, [props.tableData]);
 
-  const updateRowsPerPage = val => {
+  const updateRowsPerPage = useCallback(val => {
     dispatch({ type: 'rowsPerPage', payload: val });
-  };
+  }, []);
 
-  const updateRowsSortParams = (columnName, columnType, direction) => {
+  const updateRowsSortParams = useCallback((columnName, columnType, direction) => {
     dispatch({ type: 'columnName', payload: columnName });
     dispatch({ type: 'columnType', payload: columnType });
     dispatch({ type: 'direction', payload: direction });
-  };
+  }, []);
 
-  const onSearch = searchText => {
-    const { tableData, searchKeys } = props;
+  const onSearch = useCallback(
+    searchText => {
+      const { tableData, searchKeys } = props;
 
-    const searchedObjects = getSearchTextFilteredData({
-      data: tableData,
-      searchKeys,
-      searchText,
-    });
-    return searchedObjects;
-  };
+      const searchedObjects = getSearchTextFilteredData({
+        data: tableData,
+        searchKeys,
+        searchText,
+      });
+      return searchedObjects;
+    },
+    [props.tableData, props.searchKeys]
+  );
 
   const onChangeSearchText = useCallback(
     value => {
