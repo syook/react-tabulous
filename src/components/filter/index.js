@@ -1,3 +1,5 @@
+import './filter.css';
+
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useCallback } from 'react';
 import Select from 'react-select';
@@ -5,7 +7,6 @@ import { Popup, Button, Icon, Input, Checkbox } from 'semantic-ui-react';
 
 import { createPropertyOption } from '../utils';
 import { findColumnOptions } from '../utils';
-import './filter.css';
 
 import DateTimeComponent from '../date-time';
 import DateComponent from '../date';
@@ -104,7 +105,13 @@ const TableFilter = props => {
           <Button
             disabled={props.disabled}
             style={{
-              backgroundColor: selectedFiltersAvailable ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
+              backgroundColor: props.accentColor
+                ? selectedFiltersAvailable
+                  ? props.accentColor
+                  : 'rgb(170, 170, 170)'
+                : selectedFiltersAvailable
+                ? '#FCB400'
+                : 'rgba(241, 196, 15, 0.8)',
               color: '#fff',
               marginRight: '10px',
             }}>

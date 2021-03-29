@@ -1,9 +1,20 @@
-.searchInput {
+.tabulous-searchInput {
   height: 33px;
+  background: #f5f5f6 !important;
+  border-radius: 2px !important;
+  font-weight: normal !important;
+}
+
+.tabulous-searchInput:focus {
+  background: white !important;
+  color: #696e79 !important;
+}
+
+.tabulous-searchInput::placeholder {
+  color: #757575 !important;
 }
 
 .searchInputDiv {
-  border: '1px solid rgb(214, 231, 243)';
   color: '#667797';
   position: 'relative';
 }
@@ -13,12 +24,6 @@
   left: 'unset';
   cursor: 'pointer';
   pointer-events: 'auto';
-}
-.searchInput {
-  background: '#d6e7f3';
-  border-radius: '0px';
-  font-weight: 'normal';
-  border: '1px solid rgb(214, 231, 243)';
 }
 
 .noRecordsDiv {

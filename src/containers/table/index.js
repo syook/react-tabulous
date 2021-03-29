@@ -4,7 +4,7 @@ import orderBy from 'lodash/orderBy';
 import isEqual from 'lodash/isEqual';
 import { Checkbox, Table } from 'semantic-ui-react';
 
-import { getTableData, getTableColumns } from '../../components/utils';
+import { getTableData, getTableColumns, getFilteredTableData } from '../../components/utils';
 import FilterProvider, { FilterContext } from '../filter';
 import PaginationProvider, { PaginationContext } from '../pagination';
 import SearchProvider, { SearchContext } from '../search';
@@ -122,6 +122,7 @@ class TableComponent extends Component {
                       hiddenColumnCount={hiddenColumnCount}
                       columns={hidableColumns}
                       toggleColumns={this.toggleColumns}
+                      accentColor={this.props.accentColor}
                       toggleAllColumns={this.toggleAllColumns}
                     />
                   ) : null}
@@ -134,14 +135,21 @@ class TableComponent extends Component {
                     data={searchProps.data || []}
                     filterableColumns={filterableColumns}
                     columns={this.state.columns}
+                    accentColor={this.props.accentColor}
                     emptyCellPlaceHolder={emptyCellPlaceHolder}>
                     <FilterContext.Consumer>
                       {filterProps => {
+                        const filteredTableData = getFilteredTableData(filterProps.data, this.props.data);
                         return (
                           <>
                             {this.props.children ? (
                               <div style={{ display: 'inline-block' }}>
-                                {this.props.children(filterProps.data, visibleColumns)}
+                                {this.props.children({
+                                  tableData: filterProps.data,
+                                  columns: visibleColumns,
+                                  searchText: searchProps.searchText,
+                                  filteredTableData,
+                                })}
                               </div>
                             ) : null}
                             <SortProvider

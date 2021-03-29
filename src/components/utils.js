@@ -30,6 +30,13 @@ export const getTableData = (columns, data, placeholder) => {
   }, []);
 };
 
+export const getFilteredTableData = (filteredData, data) => {
+  return filteredData.reduce((filteredOriginalData, rowObject) => {
+    filteredOriginalData.push(data[rowObject.objIndex]);
+    return filteredOriginalData;
+  }, []);
+};
+
 export const getTableColumns = (columnDefs = []) => {
   return columnDefs.reduce(
     (tableColumnDefs, columnDef) => {
