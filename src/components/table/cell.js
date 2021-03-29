@@ -2,7 +2,8 @@ import React from 'react';
 import { Table } from 'semantic-ui-react';
 
 const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder }) => {
-  return (
+  const currentItem = data[row.objIndex];
+  return currentItem ? (
     <Table.Cell key={`table-cell-${index2}`}>
       {column.cell
         ? column.cell(data[row.objIndex] || {}, row.objIndex)
@@ -10,7 +11,7 @@ const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder }) => {
         ? emptyCellPlaceHolder
         : row[column.headerName]}
     </Table.Cell>
-  );
+  ) : null;
 };
 
 export default TableCell;

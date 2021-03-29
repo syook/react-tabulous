@@ -32,22 +32,22 @@ The files will be under `./lib` folder.
 
 ### b. Action Config Options : actions will be shown in action column in table
 
-| Option               | Description                                                                                                               | Type     |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `isVisible`          | Function which returns if the action is visible or not                                                                    | Function |
-| `isDisabled`         | Function which returns if the action is disabled or not                                                                   | Function |
-| `function`           | Function to be executed on action event                                                                                   | Function |
-| `icon`               | Icon name to represent the action                                                                                         | Function |
-| `name`               | Name of action                                                                                                            | string   |
-| `color`              | color of action component                                                                                                 | string   |
-| `iconColor`          | color of icon                                                                                                             | string   |
-| `size`               | size of icon                                                                                                              | string   |
-| `inverted`           | to enable inverted behaviour of action element                                                                            | function |
-| `iconInverted`       | to enable inverted behaviour of icon                                                                                      | boolean  |
-| `className`          | any custom classname to be applied for action element                                                                     | string   |
-| `iconClassName`      | any custom classname to be applied for icon                                                                               | string   |
-| `hasCustomComponent` | if the action is any custom component other than button                                                                   | boolean  |
-| `customComponent`    | the component that needs to returned if the action has custom component (has access to filtered data and visible columns) | function |
+| Option               | Description                                                                                                                                                                                                           | Type     |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `isVisible`          | Function which returns if the action is visible or not                                                                                                                                                                | Function |
+| `isDisabled`         | Function which returns if the action is disabled or not                                                                                                                                                               | Function |
+| `function`           | Function to be executed on action event                                                                                                                                                                               | Function |
+| `icon`               | Icon name to represent the action                                                                                                                                                                                     | Function |
+| `name`               | Name of action                                                                                                                                                                                                        | string   |
+| `color`              | color of action component                                                                                                                                                                                             | string   |
+| `iconColor`          | color of icon                                                                                                                                                                                                         | string   |
+| `size`               | size of icon                                                                                                                                                                                                          | string   |
+| `inverted`           | to enable inverted behaviour of action element                                                                                                                                                                        | function |
+| `iconInverted`       | to enable inverted behaviour of icon                                                                                                                                                                                  | boolean  |
+| `className`          | any custom classname to be applied for action element                                                                                                                                                                 | string   |
+| `iconClassName`      | any custom classname to be applied for icon                                                                                                                                                                           | string   |
+| `hasCustomComponent` | if the action is any custom component other than button                                                                                                                                                               | boolean  |
+| `customComponent`    | custom component above the table along with filter button (has access to filtered data in table layout, visible columns, searchText and filtered original data ), {tableData, columns, searchText, filteredTableData} | function |
 
 ### c. Available Types
 
@@ -73,6 +73,7 @@ The files will be under `./lib` folder.
 | `isShowSerialNumber`   | to show serial number column                                    | false   | false    | boolean |
 | `isAllowDeepSearch`    | allow a deep search in the data for the searched keyword        | false   | false    | boolean |
 | `emptyCellPlaceHolder` | placeholder for empty cells                                     |         | false    | string  |
+| `accentColor`          | colors for top bar buttons                                      |         | false    | string  |
 
 ## Example
 

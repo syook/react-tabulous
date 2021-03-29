@@ -1,6 +1,6 @@
 import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
-import ReactTabulous from './containers/table';
+import ReactTabulous from './containers/table/indexFunctionalComponent';
 import { Input } from 'semantic-ui-react';
 
 export default class App extends React.Component {
@@ -29,18 +29,18 @@ export default class App extends React.Component {
     console.log('onEdit', rowObject);
   };
 
-  componentDidMount() {
-    this.setState({ count: 16 });
-  }
+  // componentDidMount() {
+  //   this.setState({ count: 16 });
+  // }
 
   onInputChange = ({ rowObject, value: newValue }) => {
     const obj = this.state.data.find(item => item.id === rowObject.id);
     obj.name = newValue;
-    this.setState(prev => {
-      return {
-        data: [...prev.data.filter(item => item.id !== rowObject.id), obj],
-      };
-    });
+    // this.setState(prev => {
+    //   return {
+    //     data: [...prev.data.filter(item => item.id !== rowObject.id), obj],
+    //   };
+    // });
   };
 
   columnDefs = [
@@ -98,6 +98,15 @@ export default class App extends React.Component {
     console.log(data);
   };
 
+  componentDidMount() {
+    this.setState({
+      data: [
+        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'Dev', isDeleted: false },
+        { id: 2, name: 'Prakash Barik', description: 'QA', isDeleted: true },
+      ],
+    });
+  }
+
   render() {
     return (
       <div>
@@ -110,13 +119,17 @@ export default class App extends React.Component {
           bulkActionDefs={[{ name: 'Delete', function: () => null }]}
           mandatoryFields={['Name']}
           name={'Table Name'}
-          count={20}
+          // count={20}
           showIcon={this.showIcon}
           getBulkActionState={this.getBulkActionState}
-          getSelectedOrUnselectedId={(c, i) => {
-            console.log(c, i, 'hey');
+          getSelectedOrUnselectedId={(check, id) => {
+            console.log(check, id, 'checked value for particular row for the bulkAction');
           }}
-          fetchOnPageChange={(a, b, c, d) => this.setState({ data: this.state.data })}
+          // fetchOnPageChange={(pageNumber, search, searchKeys, rowsPerPage, sortParams) => {
+          //   //do something here , like fetch the data from backend.
+          //   this.setState({ data: this.state.data });
+          //   console.log('heyy');
+          // }}
           enableIcon={true}
           isShowSerialNumber
           isAllowDeepSearch

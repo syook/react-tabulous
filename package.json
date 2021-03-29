@@ -1,6 +1,6 @@
 {
   "name": "@syook/react-tabulous",
-  "version": "2.5.4",
+  "version": "2.7.0",
   "description": "Terrifically fabulous React Table",
   "main": "lib/react-tabulous.min.js",
   "files": [
@@ -84,7 +84,8 @@
     "react-scripts": "^3.0.0",
     "react-select": "^2.4.3",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.86.0"
+    "semantic-ui-react": "^0.86.0",
+    "use-deep-compare-effect": "^1.6.1"
   },
   "husky": {
     "hooks": {

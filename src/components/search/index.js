@@ -1,32 +1,14 @@
 import './search.css';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Icon, Input } from 'semantic-ui-react';
-import debounce from 'lodash/debounce';
 
 const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) => {
-  const isInitialMount = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const debounceSearch = useRef(
-    debounce(
-      searchTerm => {
-        onChangeSearchText(searchTerm);
-      },
-      300,
-      { leading: true, trailing: true }
-    )
-  );
-
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-    } else if (searchTerm) {
-      debounceSearch.current(searchTerm);
-    } else {
-      onChangeSearchText(searchTerm);
-    }
-  }, [searchTerm, onChangeSearchText]);
+    onChangeSearchText(searchTerm);
+  }, [searchTerm]);
 
   const onInputChange = event => {
     setSearchTerm(event.target.value);
@@ -65,7 +47,7 @@ const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) =>
           placeholder={placeholder || 'Search...'}
           style={styles.searchInputDiv}>
           <Icon name="search" />
-          <input className="searchInput" style={styles.searchInput} value={searchTerm} />
+          <input className="tabulous-searchInput" value={searchTerm} />
           <Icon disabled={disabled} name="close" onClick={onClearSearchTerm} style={styles.closeIcon} />
         </Input>
       </div>
@@ -75,7 +57,6 @@ const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) =>
 
 const styles = {
   searchInputDiv: {
-    border: '1px solid rgb(214, 231, 243)',
     color: '#667797',
     position: 'absolute',
     top: '35px',
@@ -91,12 +72,6 @@ const styles = {
     left: 'unset',
     cursor: 'pointer',
     pointerEvents: 'auto',
-  },
-  searchInput: {
-    background: '#d6e7f3',
-    borderRadius: '2px',
-    fontWeight: 'normal',
-    border: '1px solid rgb(214, 231, 243)',
   },
 };
 
