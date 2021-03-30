@@ -17,33 +17,35 @@ import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
 import StatusIcon from '../../components/status-icon/status-icon';
 
+import { tableActions } from '../../constants';
+
 function reducer(state, action) {
   switch (action.type) {
-    case 'columns':
+    case tableActions.columns:
       return { ...state, columns: [...(action.payload || [])] };
-    case 'bulkSelect':
+    case tableActions.bulkSelect:
       return { ...state, bulkSelect: action.payload };
-    case 'indeterminateSelect':
+    case tableActions.indeterminateSelect:
       return { ...state, indeterminateSelect: action.payload };
-    case 'selectedRows':
+    case tableActions.selectedRows:
       return { ...state, selectedRows: [...(action.payload || [])] };
-    case 'data':
+    case tableActions.data:
       return { ...state, data: [...(action.payload || [])] };
-    case 'rawData':
+    case tableActions.rawData:
       return { ...state, rawData: [...(action.payload || [])] };
     default:
       return state;
   }
 }
 
-function IndexFunctionalComponent(props) {
+function TableComponent(props) {
   const columnAndKeys = getTableColumns(props.columnDefs);
   const [state, dispatch] = useReducer(reducer, {
     columns: columnAndKeys.columnDefs,
     bulkSelect: false,
     indeterminateSelect: false,
     selectedRows: [],
-    searchKeys: columnAndKeys.searchKeys || [],
+    searchKeys: columnAndKeys.searchKeys,
     data: getTableData(columnAndKeys.columnDefs, [...props.data]),
     rawData: props.data,
   });
@@ -53,27 +55,27 @@ function IndexFunctionalComponent(props) {
     const columns = columnAndKeys.columnDefs || [];
     const data = getTableData(columns, [...props.data], props.emptyCellPlaceHolder);
 
-    dispatch({ type: 'data', payload: data });
-    dispatch({ type: 'rawData', payload: props.data });
-    dispatch({ type: 'columns', payload: columns });
+    dispatch({ type: tableActions.data, payload: data });
+    dispatch({ type: tableActions.rawData, payload: props.data });
+    dispatch({ type: tableActions.columns, payload: columns });
     dispatch({ type: 'searchKeys', payload: columnAndKeys.searchKeys });
   }, [props.data, props.columnDefs, props.emptyCellPlaceHolder]); //props.columnDefs
 
   const enableBulkSelect = useCallback(
     ({ checked }, data = []) => {
       const selectedRows = checked ? data.map(i => i['_id'] || i['id']) : [];
-      dispatch({ type: 'bulkSelect', payload: checked });
-      dispatch({ type: 'selectedRows', payload: selectedRows });
-      dispatch({ type: 'indeterminateSelect', payload: false });
+      dispatch({ type: tableActions.bulkSelect, payload: checked });
+      dispatch({ type: tableActions.selectedRows, payload: selectedRows });
+      dispatch({ type: tableActions.indeterminateSelect, payload: false });
       if (props.getBulkActionState) props.getBulkActionState(checked);
     },
     [props.getBulkActionState]
   );
 
   const resetBulkSelection = useCallback(() => {
-    dispatch({ type: 'bulkSelect', payload: false });
-    dispatch({ type: 'selectedRows', payload: [] });
-    dispatch({ type: 'indeterminateSelect', payload: false });
+    dispatch({ type: tableActions.bulkSelect, payload: false });
+    dispatch({ type: tableActions.selectedRows, payload: [] });
+    dispatch({ type: tableActions.indeterminateSelect, payload: false });
   }, []);
 
   const updateSelectedRows = useCallback(
@@ -90,9 +92,9 @@ function IndexFunctionalComponent(props) {
       } else if (selectedRowsLength === rowCount) {
         bulkSelect = true;
       }
-      dispatch({ type: 'bulkSelect', payload: bulkSelect });
-      dispatch({ type: 'selectedRows', payload: selectedRows });
-      dispatch({ type: 'indeterminateSelect', payload: indeterminateSelect });
+      dispatch({ type: tableActions.bulkSelect, payload: bulkSelect });
+      dispatch({ type: tableActions.selectedRows, payload: selectedRows });
+      dispatch({ type: tableActions.indeterminateSelect, payload: indeterminateSelect });
       if (props.getSelectedOrUnselectedId) props.getSelectedOrUnselectedId(checked, row_id);
     },
     [state.selectedRows, props.getSelectedOrUnselectedId]
@@ -103,7 +105,7 @@ function IndexFunctionalComponent(props) {
       let columns = [...state.columns];
       let updatableColumn = columns.find(c => c.headerName === columnName) || {};
       updatableColumn.isVisible = checked;
-      dispatch({ type: 'columns', payload: columns });
+      dispatch({ type: tableActions.columns, payload: columns });
     },
     [state.columns]
   );
@@ -117,13 +119,13 @@ function IndexFunctionalComponent(props) {
         column.isVisible = checked;
         return column;
       });
-      dispatch({ type: 'columns', payload: updatedColumns });
+      dispatch({ type: tableActions.columns, payload: updatedColumns });
     },
     [state.columns, props.mandatoryFields]
   );
 
   const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
-  const visibleColumns = state.columns.filter(d => d.isVisible);
+  const visibleColumns = state.columns.filter(d => d.isVisible); //TODO: probably this only has visible columns only
   const filterableColumns = visibleColumns.filter(d => d.isFilterable);
   const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
   const hidableColumns = state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
@@ -341,4 +343,42 @@ function IndexFunctionalComponent(props) {
   );
 }
 
-export default IndexFunctionalComponent;
+TableComponent.propTypes = {
+  actionDefs: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      icon: PropTypes.string,
+      color: PropTypes.string,
+      isVisible: PropTypes.func,
+      isLoading: PropTypes.func,
+      isDisabled: PropTypes.func,
+      function: PropTypes.func,
+    })
+  ),
+  bulkActionDefs: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      function: PropTypes.func,
+    })
+  ),
+  columnDefs: PropTypes.arrayOf(
+    PropTypes.shape({
+      cell: PropTypes.func,
+      field: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+      headerName: PropTypes.string,
+      isFilterable: PropTypes.bool,
+      isSearchable: PropTypes.bool,
+      isSortable: PropTypes.bool,
+      type: PropTypes.string,
+    })
+  ),
+  data: PropTypes.array,
+  count: PropTypes.number,
+  fetchOnPageChange: PropTypes.func,
+  includeAction: PropTypes.bool,
+  mandatoryFields: PropTypes.arrayOf(PropTypes.string),
+  tableFooterName: PropTypes.string,
+  tableName: PropTypes.string,
+};
+
+export default TableComponent;

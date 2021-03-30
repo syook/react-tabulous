@@ -127,7 +127,7 @@ function PaginationProvider(props) {
 
     const data = findCurrentData(props.data, state.currentPage, state.rowsPerPage);
     dispatch({ type: 'data', payload: data });
-  }, [props.data, props.count]);
+  }, [props.data, props.count, state.currentPage]);
 
   useEffect(() => {
     resetToFirstPage();

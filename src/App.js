@@ -14,6 +14,8 @@ export default class App extends React.Component {
         { id: 2, name: 'Prakash Barik', description: 'QA', isDeleted: true },
         { id: 3, name: 'Muhammad Anees', description: 'Dev', isDeleted: true },
         { id: 4, name: 'Mayank Khajanchi', description: 'Dev', isDeleted: true },
+        { id: 5, name: 'Muhamamad Anees', description: 'Dev', isDeleted: true },
+        { id: 6, name: 'Mayanka Khajanchi', description: 'Dev', isDeleted: true },
       ],
     };
   }
@@ -46,11 +48,8 @@ export default class App extends React.Component {
   columnDefs = [
     {
       headerName: 'Name',
-      field: 'name',
+      field: rowData => rowData.name,
       type: 'String',
-      cell: rowObject => (
-        <Input value={rowObject.name} onChange={(_e, { value }) => this.onInputChange({ value, rowObject })} />
-      ),
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
@@ -98,14 +97,14 @@ export default class App extends React.Component {
     console.log(data);
   };
 
-  componentDidMount() {
-    this.setState({
-      data: [
-        { id: 1, name: 'Harsh Singh', is_completed: true, description: 'Dev', isDeleted: false },
-        { id: 2, name: 'Prakash Barik', description: 'QA', isDeleted: true },
-      ],
-    });
-  }
+  // componentDidMount() {
+  //   this.setState({
+  //     data: [
+  //       { id: 1, name: 'Harsh Singh', is_completed: true, description: 'Dev', isDeleted: false },
+  //       { id: 2, name: 'Prakash Barik', description: 'QA', isDeleted: true },
+  //     ],
+  //   });
+  // }
 
   render() {
     return (
@@ -118,7 +117,7 @@ export default class App extends React.Component {
           showBulkActions={true}
           bulkActionDefs={[{ name: 'Delete', function: () => null }]}
           mandatoryFields={['Name']}
-          name={'Table Name'}
+          name={'Table Name'} //TODO: check it if it is used
           // count={20}
           showIcon={this.showIcon}
           getBulkActionState={this.getBulkActionState}
@@ -132,7 +131,6 @@ export default class App extends React.Component {
           // }}
           enableIcon={true}
           isShowSerialNumber
-          isAllowDeepSearch
           emptyCellPlaceHolder="N/A"
         />
       </div>
