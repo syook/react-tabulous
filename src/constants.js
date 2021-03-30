@@ -9,6 +9,19 @@ const filterOperators = {
   MultiSelect: ['has any of', 'has none of', 'is empty', 'is not empty'],
   String: ['contains', 'does not contains', 'is', 'is not', 'is empty', 'is not empty'],
 };
+//TODO: add all actions here for particular container
+export const tableActions = {
+  data: 'data',
+  rawData: 'rawData',
+  selectedRows: 'selectedRows',
+  indeterminateSelect: 'indeterminateSelect',
+  bulkSelect: 'bulkSelect',
+  columns: 'columns',
+};
+
+export const searchActions = {
+  searchText: 'searchText',
+};
 
 for (const key in filterOperators) {
   filterOperators[key] = filterOperators[key].map(p => ({ value: p, label: p }));

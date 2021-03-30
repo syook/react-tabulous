@@ -6,7 +6,7 @@ const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder }) => {
   return currentItem ? (
     <Table.Cell key={`table-cell-${index2}`}>
       {column.cell
-        ? column.cell(data[row.objIndex] || {}, row.objIndex)
+        ? column.cell(currentItem, row.objIndex)
         : !row[column.headerName]
         ? emptyCellPlaceHolder
         : row[column.headerName]}
