@@ -167,7 +167,7 @@ function IndexFunctionalComponent(props) {
                         <>
                           {props.children ? (
                             <div style={{ display: 'inline-block' }}>
-                              {props.children(filterProps.data, visibleColumns)}
+                              {props.children(filterProps.data, searchProps.searchText, visibleColumns)}
                             </div>
                           ) : null}
                           <SortProvider
