@@ -129,8 +129,8 @@ function TableComponent(props) {
   const filterableColumns = visibleColumns.filter(d => d.isFilterable);
   const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
   const hidableColumns = state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
-
   const hiddenColumnCount = state.columns.length - visibleColumns.length;
+
   return (
     <div className="table-wrapper">
       <SearchProvider {...props} rawData={state.rawData} searchKeys={state.searchKeys} tableData={state.data}>
@@ -161,6 +161,7 @@ function TableComponent(props) {
                   data={searchProps.data}
                   filterableColumns={filterableColumns}
                   columns={state.columns}
+                  resetFilterOnDataChange={props.resetFilterOnDataChange}
                   accentColor={props.accentColor}
                   emptyCellPlaceHolder={emptyCellPlaceHolder}>
                   <FilterContext.Consumer>
@@ -375,10 +376,15 @@ TableComponent.propTypes = {
   data: PropTypes.array,
   count: PropTypes.number,
   fetchOnPageChange: PropTypes.func,
+  resetFilterOnDataChange: PropTypes.bool,
   includeAction: PropTypes.bool,
   mandatoryFields: PropTypes.arrayOf(PropTypes.string),
   tableFooterName: PropTypes.string,
   tableName: PropTypes.string,
+};
+
+TableComponent.defaultProps = {
+  resetFilterOnDataChange: true,
 };
 
 export default TableComponent;
