@@ -130,6 +130,7 @@ export default class App extends React.Component {
           //   console.log('heyy');
           // }}
           enableIcon={true}
+          // resetFilterOnDataChange={false}
           isShowSerialNumber
           emptyCellPlaceHolder="N/A"
         />

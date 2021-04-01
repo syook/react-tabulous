@@ -37,7 +37,8 @@ function FilterProvider(props) {
   );
 
   useEffect(() => {
-    if (!state.shouldFilterReset) dispatch({ type: 'shouldFilterReset', payload: true });
+    if (props.resetFilterOnDataChange && !state.shouldFilterReset)
+      dispatch({ type: 'shouldFilterReset', payload: true });
     applyFilter(state.selectedFilters);
   }, [props.data, props.columns]);
 
