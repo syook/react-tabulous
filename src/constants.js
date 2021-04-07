@@ -12,8 +12,10 @@ const filterOperators = {
 //TODO: add all actions here for particular container
 export const tableActions = {
   data: 'data',
+  hiddenColumns: 'hiddenColumns',
   rawData: 'rawData',
   selectedRows: 'selectedRows',
+  searchKeys: 'searchKeys',
   indeterminateSelect: 'indeterminateSelect',
   bulkSelect: 'bulkSelect',
   columns: 'columns',

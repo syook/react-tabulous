@@ -3,6 +3,7 @@ import './index.css';
 import React, { useEffect, useReducer, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, Table } from 'semantic-ui-react';
+import isEqual from 'lodash/isEqual';
 
 import { getTableData, getTableColumns } from '../../components/utils';
 import FilterProvider, { FilterContext } from '../filter/indexFunctionalComponent';
@@ -29,6 +30,10 @@ function reducer(state, action) {
       return { ...state, indeterminateSelect: action.payload };
     case tableActions.selectedRows:
       return { ...state, selectedRows: [...(action.payload || [])] };
+    case tableActions.searchKeys:
+      return { ...state, selectedRows: { ...(action.searchKeys || {}) } };
+    case tableActions.hiddenColumns:
+      return { ...state, hiddenColumns: [...(action.payload || [])] };
     case tableActions.data:
       return { ...state, data: [...(action.payload || [])] };
     case tableActions.rawData:
@@ -46,19 +51,26 @@ function TableComponent(props) {
     indeterminateSelect: false,
     selectedRows: [],
     searchKeys: columnAndKeys.searchKeys,
+    hiddenColumns: columnAndKeys.columnDefs.filter(c => !props.mandatoryFields.includes(c.headerName)),
     data: getTableData(columnAndKeys.columnDefs, [...props.data]),
     rawData: props.data,
   });
 
   useEffect(() => {
-    const columnAndKeys = getTableColumns([...props.columnDefs]);
-    const columns = columnAndKeys.columnDefs || [];
+    let columnAndKeys = { searchKeys: { ...(state.searchKeys || {}) }, columnDefs: [...(state.columns || [])] };
+    let columns = columnAndKeys.columnDefs || [];
+    const columnDefsHeaderNames = (props.columnDefs || []).map(def => def.headerName);
+    const stateColumnsHeaderNames = state.columns.map(c => c.headerName);
+    if (props.resetHideColumnsOnDataChange || !isEqual(columnDefsHeaderNames, stateColumnsHeaderNames)) {
+      columnAndKeys = getTableColumns([...props.columnDefs]);
+      columns = columnAndKeys.columnDefs || [];
+    }
     const data = getTableData(columns, [...props.data], props.emptyCellPlaceHolder);
 
     dispatch({ type: tableActions.data, payload: data });
     dispatch({ type: tableActions.rawData, payload: props.data });
     dispatch({ type: tableActions.columns, payload: columns });
-    dispatch({ type: 'searchKeys', payload: columnAndKeys.searchKeys });
+    dispatch({ type: tableActions.searchKeys, payload: columnAndKeys.searchKeys });
   }, [props.data, props.columnDefs, props.emptyCellPlaceHolder]); //props.columnDefs
 
   const enableBulkSelect = useCallback(
@@ -105,7 +117,9 @@ function TableComponent(props) {
       let columns = [...state.columns];
       let updatableColumn = columns.find(c => c.headerName === columnName) || {};
       updatableColumn.isVisible = checked;
+      const hiddenColumns = columns.filter(c => !props.mandatoryFields.includes(c.headerName));
       dispatch({ type: tableActions.columns, payload: columns });
+      dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
     },
     [state.columns]
   );
@@ -119,7 +133,10 @@ function TableComponent(props) {
         column.isVisible = checked;
         return column;
       });
+
+      const hiddenColumns = updatedColumns.filter(c => !props.mandatoryFields.includes(c.headerName));
       dispatch({ type: tableActions.columns, payload: updatedColumns });
+      dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
     },
     [state.columns, props.mandatoryFields]
   );
@@ -128,7 +145,6 @@ function TableComponent(props) {
   const visibleColumns = state.columns.filter(d => d.isVisible); //TODO: probably this only has visible columns only
   const filterableColumns = visibleColumns.filter(d => d.isFilterable);
   const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
-  const hidableColumns = state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
   const hiddenColumnCount = state.columns.length - visibleColumns.length;
 
   return (
@@ -142,10 +158,10 @@ function TableComponent(props) {
                 style={{
                   padding: '0 15px',
                 }}>
-                {hidableColumns.length ? (
+                {state.hiddenColumns.length ? (
                   <HeaderSelector
                     hiddenColumnCount={hiddenColumnCount}
-                    columns={hidableColumns}
+                    columns={state.hiddenColumns}
                     toggleColumns={toggleColumns}
                     toggleAllColumns={toggleAllColumns}
                     accentColor={props.accentColor}
@@ -222,18 +238,19 @@ function TableComponent(props) {
                                                         }
                                                       />
                                                     </div>
-                                                    {props.isShowSerialNumber && (
-                                                      <div
-                                                        style={{
-                                                          textAlign: 'right',
-                                                          margin: '0 auto',
-                                                        }}>
-                                                        S.No
-                                                      </div>
-                                                    )}
                                                   </Table.HeaderCell>
                                                 ) : null}
-
+                                                {props.isShowSerialNumber && (
+                                                  <Table.HeaderCell>
+                                                    <div
+                                                      style={{
+                                                        textAlign: 'right',
+                                                        margin: '0 auto',
+                                                      }}>
+                                                      S.No
+                                                    </div>
+                                                  </Table.HeaderCell>
+                                                )}
                                                 {visibleColumns.map((column, index) =>
                                                   TableHeader({
                                                     column,
@@ -385,6 +402,7 @@ TableComponent.propTypes = {
 
 TableComponent.defaultProps = {
   resetFilterOnDataChange: true,
+  resetHideColumnsOnDataChange: true,
 };
 
 export default TableComponent;
