@@ -131,6 +131,7 @@ export default class App extends React.Component {
           // }}
           enableIcon={true}
           // resetFilterOnDataChange={false}
+          // resetHideColumnsOnDataChange={false}
           isShowSerialNumber
           emptyCellPlaceHolder="N/A"
         />
