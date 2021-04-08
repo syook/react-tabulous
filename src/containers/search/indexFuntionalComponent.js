@@ -29,7 +29,7 @@ function reducer(state, action) {
 function SearchProvider(props) {
   const [state, dispatch] = useReducer(reducer, {
     searchText: '',
-    data: [...props.tableData],
+    data: props.dataTable ? [...props.tableData] : [],
     rowsPerPage: 10,
     columnName: null,
     columnType: null,

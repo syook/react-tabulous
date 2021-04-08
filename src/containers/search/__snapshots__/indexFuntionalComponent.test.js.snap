@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchProvider matches snapshot 1`] = `
+<div>
+  <ContextProvider
+    value={
+      Object {
+        "columnName": null,
+        "columnType": null,
+        "count": undefined,
+        "data": Array [],
+        "direction": null,
+        "rawData": undefined,
+        "rowsPerPage": 10,
+        "rowsPerPageFromSearch": 10,
+        "searchText": "",
+        "updateRowsPerPage": [Function],
+        "updateRowsSortParams": [Function],
+      }
+    }
+  >
+    <SearchComponent
+      disabled={true}
+      onChangeSearchText={[Function]}
+    />
+    <div
+      style={
+        Object {
+          "padding": "0 15px",
+        }
+      }
+    >
+      <div
+        className="noRecordsDiv"
+      >
+        No data to Display
+      </div>
+    </div>
+  </ContextProvider>
+</div>
+`;
+
+exports[`SearchProvider should matches snapshot if data is not empty 1`] = `
+<div>
+  <ContextProvider
+    value={
+      Object {
+        "columnName": null,
+        "columnType": null,
+        "count": undefined,
+        "data": Array [],
+        "direction": null,
+        "rawData": undefined,
+        "rowsPerPage": 10,
+        "rowsPerPageFromSearch": 10,
+        "searchText": "",
+        "updateRowsPerPage": [Function],
+        "updateRowsSortParams": [Function],
+      }
+    }
+  >
+    <SearchComponent
+      disabled={false}
+      onChangeSearchText={[Function]}
+    />
+    <div
+      style={
+        Object {
+          "padding": "0 15px",
+        }
+      }
+    >
+      <div
+        className="noRecordsDiv"
+      >
+        No Results Found
+      </div>
+    </div>
+  </ContextProvider>
+</div>
+`;
