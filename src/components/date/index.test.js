@@ -7,7 +7,6 @@ import DateComponent from '.';
 configure({ adapter: new Adapter() });
 
 const date = new Date();
-//TODO: DatePicker
 
 describe('Date Component', () => {
   it('should render without crashing', () => {
@@ -35,6 +34,16 @@ describe('Date Component', () => {
 
   it('should render Date Picker', () => {
     const wrapper = mount(<DateComponent value={date} />);
-    expect(wrapper.find('DatePicker').exists()).toBe(true);
+    expect(wrapper.find('#date-picker').exists()).toBe(true);
+  });
+
+  it('Date Picker should accept selected prop', () => {
+    const wrapper = shallow(<DateComponent value={date} />);
+    expect(wrapper.find('#date-picker').prop('selected')).toBe(date);
+  });
+
+  it('Date Picker should accept date format prop', () => {
+    const wrapper = shallow(<DateComponent value={date} />);
+    expect(wrapper.find('#date-picker').prop('dateFormat')).toBe('MMMM d, yyyy');
   });
 });
