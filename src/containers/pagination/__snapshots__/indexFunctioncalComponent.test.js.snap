@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SortProvider should match snapshot 1`] = `
+<Fragment>
+  <div
+    className="scrollable-table tableFixHead null"
+    style={
+      Object {
+        "marginTop": "10px",
+        "maxWidth": "100%",
+      }
+    }
+  >
+    <Table
+      as="table"
+      celled={true}
+      className="tableStyle left aligned table-fixed"
+      padded={true}
+      sortable={true}
+    >
+      <ContextProvider
+        value={
+          Object {
+            "currentPage": 1,
+            "data": Array [],
+            "numberOfColumns": 30,
+            "numberOfPages": 0,
+            "rawData": undefined,
+            "resetToFirstPage": [Function],
+            "rowCount": 0,
+            "rowsPerPage": Object {
+              "label": "10 Items",
+              "value": 10,
+            },
+            "startIndex": 0,
+          }
+        }
+      />
+    </Table>
+  </div>
+  <Pagination
+    currentPage={1}
+    data={Array []}
+    handleDirectionClick={[Function]}
+    handlePageClick={[Function]}
+    numberOfColumns={30}
+    numberOfPages={0}
+    onSelectRowsPerPage={[Function]}
+    pageRange={Array []}
+    rowCount={0}
+    rowsPerPage={
+      Object {
+        "label": "10 Items",
+        "value": 10,
+      }
+    }
+    setCurrentPage={[Function]}
+  />
+</Fragment>
+`;
