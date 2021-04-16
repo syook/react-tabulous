@@ -62,4 +62,29 @@ describe('SearchProvider', () => {
     const tree = shallow(<SearchProvider tableData={tableData} />);
     expect(toJson(tree)).toMatchSnapshot();
   });
+
+  it('should match snapshot if tableData is present', () => {
+    const wrapper = shallow(<SearchProvider tableData={tableData} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('should match snapshop if tableData is not empty', () => {
+    const wrapper = mount(<SearchProvider tableData={tableData} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('should match snapshop if tableData is empty', () => {
+    const wrapper = mount(<SearchProvider tableData={[]} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('should contain text "No data to Display" if tableData is empty', () => {
+    const wrapper = mount(<SearchProvider tableData={[]} />);
+    expect(wrapper.find('SearchProvider').contains('No data to Display')).toBe(true);
+  });
+
+  it('should contain text "No TableOne to Display" if tableData is empty and tableName is passed', () => {
+    const wrapper = mount(<SearchProvider tableData={[]} tableName={'TableOne'} />);
+    expect(wrapper.find('SearchProvider').contains('No TableOne to Display')).toBe(true);
+  });
 });
