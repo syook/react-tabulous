@@ -77,15 +77,7 @@ function PaginationProvider(props) {
         payload: currentPage || 1,
       });
     },
-    [
-      props.fetchOnPageChange,
-      state.numberOfPages,
-      state.currentPage,
-      props.searchText,
-      props.columnName,
-      props.columnType,
-      props.direction,
-    ]
+    [props.fetchOnPageChange, state.currentPage, props.searchText, props.columnName, props.columnType, props.direction]
   );
 
   const handlePageClick = useCallback(
