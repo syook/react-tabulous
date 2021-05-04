@@ -61,6 +61,9 @@ function PaginationProvider(props) {
           direction: props.direction,
         });
 
+      const data = findCurrentData(props.data, currentPage, selectedRowsPerPage);
+      dispatch({ type: 'data', payload: data });
+
       dispatch({
         type: 'numberOfPages',
         payload: numberOfPages,
@@ -74,7 +77,15 @@ function PaginationProvider(props) {
         payload: currentPage || 1,
       });
     },
-    [props.fetchOnPageChange, state.currentPage, props.searchText, props.columnName, props.columnType, props.direction]
+    [
+      props.fetchOnPageChange,
+      state.numberOfPages,
+      state.currentPage,
+      props.searchText,
+      props.columnName,
+      props.columnType,
+      props.direction,
+    ]
   );
 
   const handlePageClick = useCallback(
