@@ -146,7 +146,6 @@ function TableComponent(props) {
   const filterableColumns = visibleColumns.filter(d => d.isFilterable);
   const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
   const hiddenColumnCount = state.columns.length - visibleColumns.length;
-  console.log('STATE', state, 'PROPS', props);
 
   return (
     <div className="table-wrapper">
