@@ -1,7 +1,7 @@
 import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import ReactTabulous from './containers/table/indexFunctionalComponent';
-import { Input } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
 export default class App extends React.Component {
   //you can manipulate this component for testing
@@ -11,11 +11,10 @@ export default class App extends React.Component {
       count: 10,
       data: [
         { id: 1, name: 'Harsh Singh', is_completed: true, description: 'Dev', isDeleted: false },
-        { id: 2, name: 'Prakash Barik', description: 'QA', isDeleted: true },
-        { id: 3, name: 'Muhammad Anees', description: 'Dev', isDeleted: true },
-        { id: 4, name: 'Mayank Khajanchi', description: 'Dev', isDeleted: true },
-        { id: 5, name: 'Muhamamad Anees', description: 'Dev', isDeleted: true },
-        { id: 6, name: 'Mayanka Khajanchi', description: 'Dev', isDeleted: true },
+        { id: 2, name: 'Prakash Barik', is_completed: false, description: 'QA', isDeleted: true },
+        { id: 3, name: 'Muhammad Anees', is_completed: true, description: 'Dev', isDeleted: true },
+        { id: 4, name: 'Mayank Khajanchi', is_completed: false, description: 'Dev', isDeleted: true },
+        { id: 5, name: 'Deepak Jena', is_completed: true, description: 'Dev', isDeleted: true },
       ],
     };
   }
@@ -90,7 +89,7 @@ export default class App extends React.Component {
     },
   ];
   showIcon = row => {
-    return <i>icon</i>;
+    return <Icon name="angle right"></Icon>;
   };
 
   getBulkActionState = data => {
@@ -105,7 +104,9 @@ export default class App extends React.Component {
   //     ],
   //   });
   // }
-
+  showCheckbox = workOrder => {
+    return !workOrder.is_completed;
+  };
   render() {
     return (
       <div>
@@ -113,27 +114,34 @@ export default class App extends React.Component {
           data={this.state.data}
           columnDefs={this.columnDefs}
           actionDefs={this.actionDefs}
-          includeAction={true}
+          showCheckbox={row => this.showCheckbox(row)}
           showBulkActions={true}
-          bulkActionDefs={[{ name: 'Delete', function: () => null }]}
-          mandatoryFields={['Name']}
-          name={'Table Name'} //TODO: check it if it is used
+          bulkActionDefs={[
+            { name: 'Delete', function: selectedRows => console.log('bulkAction Single action', selectedRows) },
+          ]}
           // count={20}
-          showIcon={this.showIcon}
-          getBulkActionState={this.getBulkActionState}
-          getSelectedOrUnselectedId={(check, id) => {
-            console.log(check, id, 'checked value for particular row for the bulkAction');
-          }}
+          // showIcon={this.showIcon}
+          // key={props.workOrderableFilter + props.woType + props.workOrderCount}
+          includeAction
+          // count={props.name === 'showPageTable' ? null : props.count}
+          mandatoryFields={['Name']}
+          tableScroll={false}
+          tableName={''}
+          // enableIcon={true}
           // fetchOnPageChange={(pageNumber, search, searchKeys, rowsPerPage, sortParams) => {
           //   //do something here , like fetch the data from backend.
           //   this.setState({ data: this.state.data });
           //   console.log('heyy');
           // }}
-          enableIcon={true}
+          // showIcon={row => showIcon(row)}
+          // isShowSerialNumber
+          getSelectedOrUnselectedId={(check, id) => {
+            console.log(check, id, 'checked value for particular row for the bulkAction');
+          }}
+          getBulkActionState={this.getBulkActionState}
+          // emptyCellPlaceHolder="N/A"
           // resetFilterOnDataChange={false}
           // resetHideColumnsOnDataChange={false}
-          isShowSerialNumber
-          emptyCellPlaceHolder="N/A"
         />
       </div>
     );
