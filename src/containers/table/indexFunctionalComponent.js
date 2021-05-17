@@ -31,7 +31,7 @@ function reducer(state, action) {
     case tableActions.selectedRows:
       return { ...state, selectedRows: [...(action.payload || [])] };
     case tableActions.searchKeys:
-      return { ...state, selectedRows: [...(action.searchKeys || [])] };
+      return { ...state, searchKeys: { ...(action.payload || {}) } };
     case tableActions.hiddenColumns:
       return { ...state, hiddenColumns: [...(action.payload || [])] };
     case tableActions.data:
