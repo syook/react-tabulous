@@ -61,6 +61,9 @@ function PaginationProvider(props) {
           direction: props.direction,
         });
 
+      const data = findCurrentData(props.data, currentPage, selectedRowsPerPage);
+      dispatch({ type: 'data', payload: data });
+
       dispatch({
         type: 'numberOfPages',
         payload: numberOfPages,
