@@ -5,11 +5,13 @@ import SearchComponent from '../../components/search';
 
 import { getSearchTextFilteredData } from './utils';
 
+import { searchActions } from '../../constants';
+
 export const SearchContext = React.createContext();
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'searchText':
+    case searchActions.searchText:
       return { ...state, searchText: action.payload };
     case 'data':
       return { ...state, data: [...(action.payload || [])] };
@@ -100,7 +102,7 @@ function SearchProvider(props) {
 
       if (searchText === currentSearchText) return;
 
-      dispatch({ type: 'searchText', payload: searchText });
+      dispatch({ type: searchActions.searchText, payload: searchText });
       search(searchText, props);
     },
     [state] //,props,

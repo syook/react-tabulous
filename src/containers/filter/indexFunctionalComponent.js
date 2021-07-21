@@ -37,8 +37,9 @@ function FilterProvider(props) {
   );
 
   useEffect(() => {
+    if (props.resetFilterOnDataChange && !state.shouldFilterReset)
+      dispatch({ type: 'shouldFilterReset', payload: true });
     applyFilter(state.selectedFilters);
-    if (!state.shouldFilterReset) dispatch({ type: 'shouldFilterReset', payload: true });
   }, [props.data, props.columns]);
 
   useEffect(() => {
@@ -53,11 +54,11 @@ function FilterProvider(props) {
       if (!selectedFilters.length) {
         dispatch({ type: 'filterDisabled', payload: false });
         dispatch({ type: 'data', payload: searchedData });
+      } else {
+        const filteredData = loopFilters(searchedData, selectedFilters, props.emptyCellPlaceHolder);
+        dispatch({ type: 'filterDisabled', payload: false });
+        dispatch({ type: 'data', payload: filteredData });
       }
-
-      const filteredData = loopFilters(searchedData, selectedFilters, props.emptyCellPlaceHolder);
-      dispatch({ type: 'filterDisabled', payload: false });
-      dispatch({ type: 'data', payload: filteredData });
     },
     [state.selectedFilters, props.data, state.filterDisabled]
   );

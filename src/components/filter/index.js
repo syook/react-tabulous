@@ -46,9 +46,8 @@ const TableFilter = props => {
     newQuery ? (newFilter.query = newQuery) : (newFilter.query = 'contains');
     newFilter.value = '';
     newFilter.type = firstFilterableAttribute.type;
-    filters.push(newFilter);
 
-    setFilters([...filters]);
+    setFilters([...filters, newFilter]);
   };
 
   const removeFilter = index => {
