@@ -50,6 +50,8 @@ exports[`TableFilter matches snapshot if bulkActionDefs are present and showBulk
         },
       ]
     }
+    resetFilterOnDataChange={true}
+    resetHideColumnsOnDataChange={true}
     searchKeys={Object {}}
     showBulkActions={true}
     tableData={
@@ -77,6 +79,8 @@ exports[`TableFilter matches snapshot if data is empty 1`] = `
   <SearchProvider
     data={Array []}
     rawData={Array []}
+    resetFilterOnDataChange={true}
+    resetHideColumnsOnDataChange={true}
     searchKeys={Object {}}
     tableData={Array []}
   >
@@ -124,6 +128,8 @@ exports[`TableFilter matches snapshot if data is not empty 1`] = `
         },
       ]
     }
+    resetFilterOnDataChange={true}
+    resetHideColumnsOnDataChange={true}
     searchKeys={Object {}}
     tableData={
       Array [
@@ -195,6 +201,8 @@ exports[`TableFilter matches snapshot if includeAction is true 1`] = `
         },
       ]
     }
+    resetFilterOnDataChange={true}
+    resetHideColumnsOnDataChange={true}
     searchKeys={Object {}}
     showBulkActions={true}
     tableData={
@@ -266,6 +274,8 @@ exports[`TableFilter matches snapshot if isShowSerialNumber is false 1`] = `
         },
       ]
     }
+    resetFilterOnDataChange={true}
+    resetHideColumnsOnDataChange={true}
     searchKeys={Object {}}
     showBulkActions={true}
     tableData={
@@ -337,6 +347,8 @@ exports[`TableFilter matches snapshot if isShowSerialNumber is true 1`] = `
         },
       ]
     }
+    resetFilterOnDataChange={true}
+    resetHideColumnsOnDataChange={true}
     searchKeys={Object {}}
     showBulkActions={true}
     tableData={
@@ -399,6 +411,8 @@ exports[`TableFilter matches snapshot if mandatoryFields are not empty 1`] = `
         },
       ]
     }
+    resetFilterOnDataChange={true}
+    resetHideColumnsOnDataChange={true}
     searchKeys={Object {}}
     tableData={
       Array [
@@ -470,6 +484,8 @@ exports[`TableFilter matches snapshot if showStatusIcon is true 1`] = `
         },
       ]
     }
+    resetFilterOnDataChange={true}
+    resetHideColumnsOnDataChange={true}
     searchKeys={Object {}}
     showBulkActions={true}
     showStatusIcon={true}
