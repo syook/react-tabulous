@@ -43,7 +43,7 @@ const Pagination = props => {
             className="pagination_select"
             value={props.rowsPerPage}
             options={pageOptions}
-            onChange={() => console.log('onchsnge wsjbdefej') || props.onSelectRowsPerPage()}
+            onChange={() => props.onSelectRowsPerPage()}
             isClearable={false}
             isSearchable={false}
             menuPortalTarget={document.querySelector('#root')}
