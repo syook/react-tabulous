@@ -71,6 +71,8 @@ The files will be under `./lib` folder.
 | `name`                 | name of the table                                               |         | false    | string  |
 | `includeAction`        | to show actions column                                          | false   | false    | boolean |
 | `isShowSerialNumber`   | to show serial number column                                    | false   | false    | boolean |
+| `enableIcon`           | to show icon in serial number column                            | false   | false    | boolean |
+| `showIcon`             | function which returns JSX element(Icon) to render              | false   | false    | boolean |
 | `isAllowDeepSearch`    | allow a deep search in the data for the searched keyword        | false   | false    | boolean |
 | `emptyCellPlaceHolder` | placeholder for empty cells                                     |         | false    | string  |
 | `accentColor`          | colors for top bar buttons                                      |         | false    | string  |
