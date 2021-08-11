@@ -61,19 +61,21 @@ The files will be under `./lib` folder.
 
 ### d. Component Props
 
-| Prop                   | Description                                                     | Default | Required | Type    |
-| ---------------------- | --------------------------------------------------------------- | ------- | -------- | ------- |
-| `mandatoryFields`      | ''                                                              |         | true     |         |
-| `data`                 | data for the table                                              |         | true     |         |
-| `columnDefs`           | is, is not, is empty, is not empty,                             |         | true     |         |
-| `actionDefs`           | contains, does not contains, is, is not, is empty, is not empty |         | false    |         |
-| `bulkActionDefs`       | is, is not, is after, is before, is empty, is not empty         |         | false    |         |
-| `name`                 | name of the table                                               |         | false    | string  |
-| `includeAction`        | to show actions column                                          | false   | false    | boolean |
-| `isShowSerialNumber`   | to show serial number column                                    | false   | false    | boolean |
-| `isAllowDeepSearch`    | allow a deep search in the data for the searched keyword        | false   | false    | boolean |
-| `emptyCellPlaceHolder` | placeholder for empty cells                                     |         | false    | string  |
-| `accentColor`          | colors for top bar buttons                                      |         | false    | string  |
+| Prop                   | Description                                                     | Default | Required | Type     |
+| ---------------------- | --------------------------------------------------------------- | ------- | -------- | -------- |
+| `mandatoryFields`      | ''                                                              |         | true     |          |
+| `data`                 | data for the table                                              |         | true     |          |
+| `columnDefs`           | is, is not, is empty, is not empty,                             |         | true     |          |
+| `actionDefs`           | contains, does not contains, is, is not, is empty, is not empty |         | false    |          |
+| `bulkActionDefs`       | is, is not, is after, is before, is empty, is not empty         |         | false    |          |
+| `name`                 | name of the table                                               |         | false    | string   |
+| `includeAction`        | to show actions column                                          | false   | false    | boolean  |
+| `isShowSerialNumber`   | to show serial number column                                    | false   | false    | boolean  |
+| `enableIcon`           | to show icon in serial number column                            | false   | false    | boolean  |
+| `showIcon`             | function which returns JSX element(Icon) to render              |         | false    | function |
+| `isAllowDeepSearch`    | allow a deep search in the data for the searched keyword        | false   | false    | boolean  |
+| `emptyCellPlaceHolder` | placeholder for empty cells                                     |         | false    | string   |
+| `accentColor`          | colors for top bar buttons                                      |         | false    | string   |
 
 ## Example
 
