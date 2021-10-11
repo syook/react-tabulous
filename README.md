@@ -76,6 +76,7 @@ The files will be under `./lib` folder.
 | `isAllowDeepSearch`    | allow a deep search in the data for the searched keyword        | false   | false    | boolean  |
 | `emptyCellPlaceHolder` | placeholder for empty cells                                     |         | false    | string   |
 | `accentColor`          | colors for top bar buttons                                      |         | false    | string   |
+| `hideBulkCount`        | hide bulk select count for bulk actions                         | false   | false    | boolean  |
 
 ## Example
 
