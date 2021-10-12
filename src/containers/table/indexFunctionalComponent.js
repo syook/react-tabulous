@@ -168,7 +168,11 @@ function TableComponent(props) {
                   />
                 ) : null}
                 {hasBulkActions && state.selectedRows.length ? (
-                  <BulkActionList bulkActions={props.bulkActionDefs} selectedRows={state.selectedRows} />
+                  <BulkActionList
+                    bulkActions={props.bulkActionDefs}
+                    selectedRows={state.selectedRows}
+                    hideBulkCount={props.hideBulkCount}
+                  />
                 ) : null}
 
                 <FilterProvider
@@ -399,6 +403,7 @@ TableComponent.propTypes = {
   mandatoryFields: PropTypes.arrayOf(PropTypes.string),
   tableFooterName: PropTypes.string,
   tableName: PropTypes.string,
+  hideBulkCount: PropTypes.bool,
 };
 
 TableComponent.defaultProps = {
