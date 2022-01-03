@@ -195,6 +195,7 @@ function TableComponent(props) {
                           ) : null}
                           <SortProvider
                             data={filterProps.data}
+                            resetPagination={props.resetPagination}
                             rawData={filterProps.rawData}
                             fetchOnPageChange={props.fetchOnPageChange}
                             count={filterProps.count}
