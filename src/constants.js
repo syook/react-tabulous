@@ -19,6 +19,9 @@ export const tableActions = {
   indeterminateSelect: 'indeterminateSelect',
   bulkSelect: 'bulkSelect',
   columns: 'columns',
+  stylesForTable: 'stylesForTable',
+  eraseStyles: 'eraseStyles',
+  setResetTable: 'setResetTable',
 };
 
 export const searchActions = {

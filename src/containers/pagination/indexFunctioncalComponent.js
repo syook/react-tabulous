@@ -1,7 +1,4 @@
-import './table.css';
-
 import React, { useEffect, useReducer, useCallback } from 'react';
-import { Table } from 'semantic-ui-react';
 
 import Pagination from '../../components/pagination';
 
@@ -142,22 +139,6 @@ function PaginationProvider(props) {
 
   return (
     <>
-      <div
-        className={`scrollable-table tableFixHead ${props.tableScroll ? 'shouldSroll' : null}`}
-        style={{ maxWidth: '100%', marginTop: '10px' }}>
-        <Table sortable celled padded className="tableStyle left aligned table-fixed">
-          <PaginationContext.Provider
-            value={{
-              rawData: props.rawData,
-              ...state,
-              startIndex,
-              rowCount,
-              resetToFirstPage: resetToFirstPage,
-            }}>
-            {children}
-          </PaginationContext.Provider>
-        </Table>
-      </div>
       <Pagination
         {...props}
         {...state}
@@ -168,6 +149,16 @@ function PaginationProvider(props) {
         rowCount={rowCount}
         setCurrentPage={setCurrentPage}
       />
+      <PaginationContext.Provider
+        value={{
+          rawData: props.rawData,
+          ...state,
+          startIndex,
+          rowCount,
+          resetToFirstPage: resetToFirstPage,
+        }}>
+        {children}
+      </PaginationContext.Provider>
     </>
   );
 }
