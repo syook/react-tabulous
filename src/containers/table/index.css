@@ -15,7 +15,6 @@ th div,td div{
   overflow: hidden;
   text-overflow: ellipsis;
   margin: auto;
-  height: 20px;
 }
 
 .tableFixHead {
@@ -90,5 +89,11 @@ th div,td div{
 /* Below styling helps get rid of that default behavior */
 
 .ui.sortable.table thead th.sorted:after {
-  display: none;
+  display: none !important;
+}
+.ui.sortable.table thead th.descending:after {
+  display: none !important;
+}
+.ui.sortable.table thead th.ascending:after {
+  display: none !important;
 }

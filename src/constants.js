@@ -22,6 +22,7 @@ export const tableActions = {
   stylesForTable: 'stylesForTable',
   eraseStyles: 'eraseStyles',
   setResetTable: 'setResetTable',
+  eraseResetStyles: 'eraseResetStyles',
 };
 
 export const searchActions = {

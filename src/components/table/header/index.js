@@ -3,6 +3,7 @@ import { Icon, Table } from 'semantic-ui-react';
 
 const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, disabled, styleSetTo }) => {
   const { isSortable, isResizable = false, headerName, headerMessage, headerMessageColor } = column;
+  const headerNameTemp = headerName.replaceAll(' ', '_');
   let currentOrder = sortProps.direction === 'ascending' ? 'descending' : 'ascending';
   return (
     <Table.HeaderCell
@@ -23,7 +24,7 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
             })
           : undefined
       }>
-      <div style={{ width: '100%' }} className={`head${headerName}`}>
+      <div style={{ width: '100%' }} className={`head${headerNameTemp}`}>
         {headerName}
         {(isSortable && !disabled && sortProps.columnName !== headerName && defaultSort !== column.headerName && (
           <Icon name="sort" />
@@ -32,13 +33,13 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
             !disabled &&
             sortProps.columnName === headerName &&
             defaultSort !== column.headerName &&
-            (currentOrder === 'ascending' ? <Icon name="sort up" /> : <Icon name="sort down" />))}{' '}
+            (currentOrder === 'ascending' ? <Icon name="sort down" /> : <Icon name="sort up" />))}{' '}
         <p style={{ color: headerMessageColor || 'blueviolet', display: 'inline-block' }}> {headerMessage} </p>
         {isResizable && (
           <div
             style={{ height: '100%', position: 'absolute', cursor: 'col-resize', right: '0px', top: '0px' }}
             className="bar"
-            onMouseDown={resizeHandler.bind(this, headerName)}>
+            onMouseDown={resizeHandler.bind(this, headerName.replaceAll(' ', '_'))}>
             <span>|</span>
           </div>
         )}
