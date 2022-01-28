@@ -2,7 +2,7 @@ import './index.css';
 
 import React, { useEffect, useReducer, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Table, Ref } from 'semantic-ui-react';
+import { Checkbox, Table, Ref, Button, Icon } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
 
 import { getTableData, getTableColumns } from '../../components/utils';
@@ -44,6 +44,8 @@ function reducer(state, action) {
       return { ...state, stylesForTable: {} };
     case tableActions.setResetTable:
       return { ...state, resetStylesForTable: { ...state.resetStylesForTable, ...action.payload } };
+    case tableActions.eraseResetStyles:
+      return { ...state, resetStylesForTable: {} };
     default:
       return state;
   }
@@ -63,6 +65,7 @@ function TableComponent(props) {
     rawData: props.data,
     stylesForTable: {},
     resetStylesForTable: {},
+    showResetButton: props.showResetButton && columnAndKeys.columnDefs.some(c => c.isResizable),
   });
 
   useEffect(() => {
@@ -206,7 +209,7 @@ function TableComponent(props) {
 
   const getAllColumns = useCallback(
     () => {
-      let allColumns = state.columns.map(eachCol => eachCol.headerName);
+      let allColumns = state.columns.map(eachCol => eachCol.headerName.replaceAll(' ', '_'));
       if (props.isShowSerialNumber) {
         allColumns = ['SerialNo', ...allColumns];
       }
@@ -244,12 +247,13 @@ function TableComponent(props) {
     async () => {
       let allColumns = getAllColumns();
 
-      return Promise.all(
+      Promise.all(
         allColumns.map(async col => {
           const element = tableElement.current.querySelector(`.head${col}`);
           return resize(col, element);
         })
       );
+      tableElement.current.style.width = 'fit-content';
     },
     [state.columns] // eslint-disable-line react-hooks/exhaustive-deps
   );
@@ -262,23 +266,58 @@ function TableComponent(props) {
       }
       if (Object.keys(state.resetStylesForTable).length === totalCols) {
         await setInlineStyle();
-        tableElement.current.style.width = 'fit-content';
       }
     };
 
     setInlineStyleCaller();
   }, [state.resetStylesForTable]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // const resetHandler = () => {
-  //   tableElement.current.removeAttribute('style');
-  //   dispatch({ type: tableActions.eraseStyles });
-  // };
+  // useEffect(() => {
+  //   const changeTable = async () => {
+  //     let allColumns = getAllColumns();
+  //     let totalCols = allColumns.length;
+  //     if(Object.keys(state.resetStylesForTable).length !== totalCols){
+  //       tableElement.current.style.width = '100%';
+  //       await allColumns.map(async col => {
+  //         const element = tableElement.current.querySelector(`.head${col}`);
+  //         element.removeAttribute("style");
+  //       });
+  //       dispatch({ type: tableActions.eraseStyles });
+  //       dispatch({ type: tableActions.eraseResetStyles });
+  //       await setResetStylesForTable();
+  //       await setInlineStyle();
+
+  //     }
+  //   }
+  //   changeTable();
+
+  // }, [state.columns]);
+
+  const resetHandler = () => {
+    dispatch({ type: tableActions.eraseStyles });
+    setInlineStyle();
+  };
 
   const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
   const visibleColumns = state.columns.filter(d => d.isVisible); //TODO: probably this only has visible columns only
   const filterableColumns = visibleColumns.filter(d => d.isFilterable);
   const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
   const hiddenColumnCount = state.columns.length - visibleColumns.length;
+
+  const resetButton = () => {
+    return (
+      <Button
+        disabled={props.disabled}
+        style={{
+          backgroundColor: props.accentColor ? 'rgb(170, 170, 170)' : 'rgba(241, 196, 15, 0.8)',
+          color: '#fff',
+          marginRight: '10px',
+        }}
+        onClick={resetHandler}>
+        <Icon name="redo" /> {'Reset'}
+      </Button>
+    );
+  };
 
   return (
     <div className="table-wrapper">
@@ -322,6 +361,7 @@ function TableComponent(props) {
                     {filterProps => {
                       return (
                         <>
+                          {state.showResetButton && resetButton()}
                           {props.children ? (
                             <div style={{ display: 'inline-block' }}>
                               {props.children(filterProps.data, searchProps.searchText, visibleColumns)}
@@ -484,7 +524,9 @@ function TableComponent(props) {
                                                           )}
                                                           {visibleColumns.map((column, index2) => {
                                                             const styleSetTo =
-                                                              state.stylesForTable[`.column${column.headerName}`];
+                                                              state.stylesForTable[
+                                                                `.column${column.headerName.replaceAll(' ', '_')}`
+                                                              ];
                                                             return TableCell({
                                                               column,
                                                               index2,
@@ -572,6 +614,7 @@ TableComponent.propTypes = {
   tableFooterName: PropTypes.string,
   tableName: PropTypes.string,
   hideBulkCount: PropTypes.bool,
+  showResetButton: PropTypes.bool,
 };
 
 TableComponent.defaultProps = {
