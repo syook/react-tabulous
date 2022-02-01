@@ -209,12 +209,7 @@ function TableComponent(props) {
 
   const getAllColumns = useCallback(
     () => {
-      let allColumns = state.columns.map(eachCol =>
-        eachCol.headerName
-          .replaceAll('(', '')
-          .replaceAll(')', '')
-          .replaceAll(' ', '_')
-      );
+      let allColumns = state.columns.map(eachCol => eachCol.headerName.replace(/[^a-zA-Z0-9]/g, ''));
       if (props.isShowSerialNumber) {
         allColumns = ['SerialNo', ...allColumns];
       }
@@ -530,10 +525,10 @@ function TableComponent(props) {
                                                           {visibleColumns.map((column, index2) => {
                                                             const styleSetTo =
                                                               state.stylesForTable[
-                                                                `.column${column.headerName
-                                                                  .replaceAll('(', '')
-                                                                  .replaceAll(')', '')
-                                                                  .replaceAll(' ', '_')}`
+                                                                `.column${column.headerName.replace(
+                                                                  /[^a-zA-Z0-9]/g,
+                                                                  ''
+                                                                )}`
                                                               ];
                                                             return TableCell({
                                                               column,
