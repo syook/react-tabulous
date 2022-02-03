@@ -412,9 +412,6 @@ function TableComponent(props) {
                                                             className="headBulkAction"
                                                             style={{
                                                               width: '100%',
-                                                              // display: 'flex',
-                                                              // justifyContent: 'center',
-                                                              // alignItems: 'center',
                                                             }}>
                                                             <Checkbox
                                                               checked={state.bulkSelect}
@@ -433,8 +430,6 @@ function TableComponent(props) {
                                                             className="headSerialNo"
                                                             style={{
                                                               width: '100%',
-                                                              // textAlign: 'center',
-                                                              // margin: '0 auto',
                                                             }}>
                                                             S.No
                                                           </div>
