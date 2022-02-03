@@ -16,7 +16,7 @@ const Pagination = props => {
   ).value;
   const pageOptions = rowsPerPageOptions.filter(obj => +obj.value <= +maxRowOptionAvailable);
   return (
-    <div className="tabulous pagination-header">
+    <div className="tabulous pagination-footer">
       <div
         style={{
           display: 'flex',
@@ -53,7 +53,7 @@ const Pagination = props => {
             <MenuItem data-direction="LEFT" onClick={props.handleDirectionClick} icon="angle left" />
             {props.pageRange.map((pageIndex, index) => (
               <MenuItem
-                key={`table-header-${index}`}
+                key={`table-footer-${index}`}
                 content={`${pageIndex}`}
                 page={pageIndex}
                 onClick={props.handlePageClick}

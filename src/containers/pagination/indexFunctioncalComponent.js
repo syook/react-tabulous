@@ -139,16 +139,6 @@ function PaginationProvider(props) {
 
   return (
     <>
-      <Pagination
-        {...props}
-        {...state}
-        handleDirectionClick={handleDirectionClick}
-        handlePageClick={handlePageClick}
-        onSelectRowsPerPage={onSelectRowsPerPage}
-        pageRange={pageRange}
-        rowCount={rowCount}
-        setCurrentPage={setCurrentPage}
-      />
       <PaginationContext.Provider
         value={{
           rawData: props.rawData,
@@ -159,6 +149,16 @@ function PaginationProvider(props) {
         }}>
         {children}
       </PaginationContext.Provider>
+      <Pagination
+        {...props}
+        {...state}
+        handleDirectionClick={handleDirectionClick}
+        handlePageClick={handlePageClick}
+        onSelectRowsPerPage={onSelectRowsPerPage}
+        pageRange={pageRange}
+        rowCount={rowCount}
+        setCurrentPage={setCurrentPage}
+      />
     </>
   );
 }
