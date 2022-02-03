@@ -61,7 +61,6 @@ const styles = {
     position: 'absolute',
     top: '35px',
     marginLeft: '10px',
-    zIndex: 9,
     right: '15px',
     borderRadius: '3px',
     maxWidth: '300px',

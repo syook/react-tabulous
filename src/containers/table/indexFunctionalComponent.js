@@ -407,9 +407,7 @@ function TableComponent(props) {
                                                   <Table.Header style={{ textAlign: 'center' }}>
                                                     <Table.Row>
                                                       {hasBulkActions ? (
-                                                        <Table.HeaderCell
-                                                          className="bulkAction-check"
-                                                          style={{ zIndex: 5 }}>
+                                                        <Table.HeaderCell className="bulkAction-check">
                                                           <div
                                                             className="headBulkAction"
                                                             style={{
@@ -452,18 +450,16 @@ function TableComponent(props) {
                                                           disabled: !paginationProps.rowCount,
                                                         })
                                                       )}
-                                                      {!props.actionOnHover ? (
-                                                        props.includeAction ? (
-                                                          <Table.HeaderCell style={{ zIndex: 5 }}>
-                                                            <div
-                                                              className="headActions"
-                                                              style={{
-                                                                width: '100%',
-                                                              }}>
-                                                              Actions
-                                                            </div>
-                                                          </Table.HeaderCell>
-                                                        ) : null
+                                                      {!props.actionOnHover && props.includeAction ? (
+                                                        <Table.HeaderCell>
+                                                          <div
+                                                            className="headActions"
+                                                            style={{
+                                                              width: '100%',
+                                                            }}>
+                                                            Actions
+                                                          </div>
+                                                        </Table.HeaderCell>
                                                       ) : null}
                                                     </Table.Row>
                                                   </Table.Header>
