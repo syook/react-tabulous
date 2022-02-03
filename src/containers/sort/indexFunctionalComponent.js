@@ -27,7 +27,7 @@ function SortProvider(props) {
     columnType: null,
     direction: null,
     data: [...props.data],
-    resetPagination: false,
+    resetPagination: props.resetPagination||false,
   });
 
   const handleSort = useCallback(
@@ -88,6 +88,14 @@ function SortProvider(props) {
   useEffect(() => {
     getSortedData();
   }, [props.data, state.columnName, state.columnType, state.direction, state.resetPagination]);
+
+  useEffect(() => {
+    if (state.resetPagination !== props.resetPagination)
+      dispatch({
+        type: 'resetPagination',
+        payload: props.resetPagination,
+      });
+  }, [props.resetPagination]);
 
   const getSortedData = useCallback(() => {
     const { columnName, columnType, direction } = state;

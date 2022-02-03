@@ -133,12 +133,13 @@ export default class App extends React.Component {
           //   this.setState({ data: this.state.data });
           //   console.log('heyy');
           // }}
-          // showIcon={row => showIcon(row)}
-          // isShowSerialNumber
+          // showIcon={row => this.showIcon(row)}
+          isShowSerialNumber
           getSelectedOrUnselectedId={(check, id) => {
             console.log(check, id, 'checked value for particular row for the bulkAction');
           }}
           getBulkActionState={this.getBulkActionState}
+          hideBulkCount={true}
           // emptyCellPlaceHolder="N/A"
           // resetFilterOnDataChange={false}
           // resetHideColumnsOnDataChange={false}

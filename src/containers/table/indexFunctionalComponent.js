@@ -168,7 +168,11 @@ function TableComponent(props) {
                   />
                 ) : null}
                 {hasBulkActions && state.selectedRows.length ? (
-                  <BulkActionList bulkActions={props.bulkActionDefs} selectedRows={state.selectedRows} />
+                  <BulkActionList
+                    bulkActions={props.bulkActionDefs}
+                    selectedRows={state.selectedRows}
+                    hideBulkCount={props.hideBulkCount}
+                  />
                 ) : null}
 
                 <FilterProvider
@@ -191,6 +195,7 @@ function TableComponent(props) {
                           ) : null}
                           <SortProvider
                             data={filterProps.data}
+                            resetPagination={props.resetPagination}
                             rawData={filterProps.rawData}
                             fetchOnPageChange={props.fetchOnPageChange}
                             count={filterProps.count}
@@ -225,9 +230,8 @@ function TableComponent(props) {
                                                     <div
                                                       style={{
                                                         display: 'flex',
-                                                        justifyContent: 'space-between',
+                                                        justifyContent: 'center',
                                                         alignItems: 'center',
-                                                        minWidth: '70px',
                                                       }}>
                                                       <Checkbox
                                                         checked={state.bulkSelect}
@@ -244,7 +248,7 @@ function TableComponent(props) {
                                                   <Table.HeaderCell>
                                                     <div
                                                       style={{
-                                                        textAlign: 'right',
+                                                        textAlign: 'center',
                                                         margin: '0 auto',
                                                       }}>
                                                       S.No
@@ -279,9 +283,9 @@ function TableComponent(props) {
                                                         <div
                                                           style={{
                                                             display: 'flex',
-                                                            justifyContent: 'space-between',
+                                                            justifyContent: 'center',
                                                             flexDirection: props.showStatusIcon ? 'row-reverse' : null,
-                                                            alignItems: 'baseline',
+                                                            alignItems: 'center',
                                                           }}>
                                                           <Checkbox
                                                             className="bulkAction_check"
@@ -306,11 +310,13 @@ function TableComponent(props) {
                                                       <Table.Cell>
                                                         <div
                                                           style={{
-                                                            textAlign: 'right',
+                                                            textAlign: 'center',
                                                             margin: '0 auto',
                                                           }}>
                                                           {paginationProps.startIndex + index1 + 1}
-                                                          {props.enableIcon ? props.showIcon(row) : null}
+                                                          {props.enableIcon
+                                                            ? props.showIcon(paginationProps.rawData[row.objIndex])
+                                                            : null}
                                                         </div>
                                                       </Table.Cell>
                                                     )}
@@ -398,6 +404,7 @@ TableComponent.propTypes = {
   mandatoryFields: PropTypes.arrayOf(PropTypes.string),
   tableFooterName: PropTypes.string,
   tableName: PropTypes.string,
+  hideBulkCount: PropTypes.bool,
 };
 
 TableComponent.defaultProps = {
