@@ -14,7 +14,7 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
           ? sortProps.direction || 'ascending'
           : null
       }
-      className={`sort-table ${!disabled && isResizable ? ' resizable' : ''}`}
+      className={`sort-table ${!disabled && isResizable ? 'resizable' : ''}`}
       key={`table-header-cell-${index}`}
       onMouseDown={
         isSortable
@@ -24,7 +24,7 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
             })
           : undefined
       }>
-      <div style={{ width: '100%' }} className={`head${headerNameTemp}`}>
+      <div style={styleSetTo ? { styleSetTo } : { width: '100%' }} className={`head${headerNameTemp}`}>
         {headerName}
         {(isSortable && !disabled && sortProps.columnName !== headerName && defaultSort !== column.headerName && (
           <Icon name="sort" />
