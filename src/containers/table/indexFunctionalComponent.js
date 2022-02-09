@@ -124,20 +124,26 @@ function TableComponent(props) {
     [state.selectedRows, props.getSelectedOrUnselectedId] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
+  const resetHandler = () => {
+    dispatch({ type: tableActions.eraseStyles });
+    setInlineStyle();
+  };
+
   const toggleColumns = useCallback(
-    (columnName, { checked }) => {
+    async (columnName, { checked }) => {
       let columns = [...state.columns];
       let updatableColumn = columns.find(c => c.headerName === columnName) || {};
       updatableColumn.isVisible = checked;
       const hiddenColumns = columns.filter(c => !props.mandatoryFields.includes(c.headerName));
-      dispatch({ type: tableActions.columns, payload: columns });
-      dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
+      await dispatch({ type: tableActions.columns, payload: columns });
+      await dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
+      resetHandler();
     },
     [state.columns] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const toggleAllColumns = useCallback(
-    checked => {
+    async checked => {
       const updatedColumns = state.columns.map(column => {
         if (props.mandatoryFields.includes(column.headerName)) {
           return column;
@@ -147,10 +153,11 @@ function TableComponent(props) {
       });
 
       const hiddenColumns = updatedColumns.filter(c => !props.mandatoryFields.includes(c.headerName));
-      dispatch({ type: tableActions.columns, payload: updatedColumns });
-      dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
+      await dispatch({ type: tableActions.columns, payload: updatedColumns });
+      await dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
+      resetHandler();
     },
-    [state.columns, props.mandatoryFields]
+    [state.columns, props.mandatoryFields] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const getStyleObjectForColumn = (width, columnName) => {
@@ -162,8 +169,11 @@ function TableComponent(props) {
 
   const resize = useCallback(
     async (col, element, original_width = 20, original_mouse_x, e) => {
-      let width = 0;
+      if (!element) {
+        return;
+      }
 
+      let width = 0;
       if (!!e) {
         width = original_width + (e.pageX - original_mouse_x);
       } else {
@@ -308,12 +318,6 @@ function TableComponent(props) {
 
   // }, [state.columns]);
 
-  const resetHandler = () => {
-    dispatch({ type: tableActions.eraseStyles });
-    setInlineStyle();
-    dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
-  };
-
   const resetButton = () => {
     return (
       <Button
@@ -371,9 +375,6 @@ function TableComponent(props) {
       <SearchProvider {...props} rawData={state.rawData} searchKeys={state.searchKeys} tableData={state.data}>
         <SearchContext.Consumer>
           {searchProps => {
-            {
-              console.log(searchProps);
-            }
             return (
               <div
                 className="main-table_layout"
