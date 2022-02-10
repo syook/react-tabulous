@@ -127,6 +127,7 @@ function TableComponent(props) {
   const resetHandler = () => {
     dispatch({ type: tableActions.eraseStyles });
     setInlineStyle();
+    dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
   };
 
   const toggleColumns = useCallback(
@@ -169,11 +170,11 @@ function TableComponent(props) {
 
   const resize = useCallback(
     async (col, element, original_width = 20, original_mouse_x, e) => {
+      let width = 0;
       if (!element) {
         return;
       }
 
-      let width = 0;
       if (!!e) {
         width = original_width + (e.pageX - original_mouse_x);
       } else {
