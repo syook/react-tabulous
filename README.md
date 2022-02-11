@@ -30,6 +30,8 @@ The files will be under `./lib` folder.
 | `omitInHideList` | should the column be omitted in table and show/hide dropdown                        | Boolean            | false      |         |
 | `options`        | array of options if the type is MultiSelect or Single Select                        | Array              | false      | []      |
 | `isResizable`    | is column resizable                                                                 | Boolean            | false      | false   |
+| `fixed`          | String='left' or 'right', where to fix the column                                   | String             | false      | null    |
+| `defaultWidth`   | to fix column width to a value in pixels if width exceeding this threshold          | Number             | false      | null    |
 
 ### b. Action Config Options : actions will be shown in action column in table
 
@@ -170,6 +172,8 @@ columnDefs = [
     isSortable: true,
     isSearchable: false,
     isFilterable: true,
+    fixed: 'left',
+    defaultWidth: 100,
   },
   {
     headerName: 'Started at',
@@ -180,6 +184,7 @@ columnDefs = [
     isSearchable: false,
     isFilterable: true,
     isResizable: true,
+    defaultWidth: 200,
   },
 ];
 

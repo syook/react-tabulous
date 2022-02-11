@@ -334,7 +334,7 @@ function TableComponent(props) {
     );
   };
 
-  const SectionWrapper = useCallback(
+  const FixedSectionWrapper = useCallback(
     props => {
       const styleObject = {
         zIndex: props?.children[0]?.props.as === 'th' ? '3' : '',
@@ -358,10 +358,6 @@ function TableComponent(props) {
     },
     [useWrapper]
   );
-
-  const onScrollEventHandler = e => {
-    // console.log(e);
-  };
 
   const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
   const visibleColumnsToLeft = state.columns.filter(d => d.isVisible && d.fixed === 'left');
@@ -449,8 +445,7 @@ function TableComponent(props) {
                                       className={`scrollable-table tableFixHead ${
                                         props.tableScroll ? 'shouldSroll' : null
                                       }`}
-                                      style={{ maxWidth: '100%', marginTop: '10px' }}
-                                      onScroll={onScrollEventHandler}>
+                                      style={{ maxWidth: '100%', marginTop: '10px' }}>
                                       <Ref innerRef={tableElement}>
                                         <Table sortable celled padded className="tableStyle left aligned table-fixed">
                                           <PaginationContext.Consumer>
@@ -459,7 +454,7 @@ function TableComponent(props) {
                                                 <>
                                                   <Table.Header style={{ textAlign: 'center' }}>
                                                     <Table.Row>
-                                                      <SectionWrapper positionedTo={'left'}>
+                                                      <FixedSectionWrapper positionedTo={'left'}>
                                                         {visibleColumnsToLeft.map((column, index) =>
                                                           TableHeader({
                                                             resizeHandler,
@@ -470,7 +465,7 @@ function TableComponent(props) {
                                                             disabled: !paginationProps.rowCount,
                                                           })
                                                         )}
-                                                      </SectionWrapper>
+                                                      </FixedSectionWrapper>
                                                       {hasBulkActions ? (
                                                         <Table.HeaderCell className="bulkAction-check">
                                                           <div
@@ -521,7 +516,7 @@ function TableComponent(props) {
                                                           </div>
                                                         </Table.HeaderCell>
                                                       ) : null}
-                                                      <SectionWrapper positionedTo={'right'}>
+                                                      <FixedSectionWrapper positionedTo={'right'}>
                                                         {visibleColumnsToRight.map((column, index) =>
                                                           TableHeader({
                                                             resizeHandler,
@@ -532,7 +527,7 @@ function TableComponent(props) {
                                                             disabled: !paginationProps.rowCount,
                                                           })
                                                         )}
-                                                      </SectionWrapper>
+                                                      </FixedSectionWrapper>
                                                     </Table.Row>
                                                   </Table.Header>
                                                   <Table.Body>
@@ -542,7 +537,7 @@ function TableComponent(props) {
                                                         : false;
                                                       return (
                                                         <Table.Row key={`column-${index1}`} className="main-table-row">
-                                                          <SectionWrapper positionedTo={'left'}>
+                                                          <FixedSectionWrapper positionedTo={'left'}>
                                                             {visibleColumnsToLeft.map((column, index2) => {
                                                               const styleSetTo =
                                                                 state.stylesForTable[
@@ -560,7 +555,7 @@ function TableComponent(props) {
                                                                 styleSetTo,
                                                               });
                                                             })}
-                                                          </SectionWrapper>
+                                                          </FixedSectionWrapper>
                                                           {hasBulkActions && includeCheckbox !== false ? (
                                                             <Table.Cell>
                                                               <div
@@ -636,7 +631,7 @@ function TableComponent(props) {
                                                               />
                                                             </Table.Cell>
                                                           ) : null}
-                                                          <SectionWrapper positionedTo={'right'}>
+                                                          <FixedSectionWrapper positionedTo={'right'}>
                                                             {visibleColumnsToRight.map((column, index2) => {
                                                               const styleSetTo =
                                                                 state.stylesForTable[
@@ -654,7 +649,7 @@ function TableComponent(props) {
                                                                 styleSetTo,
                                                               });
                                                             })}
-                                                          </SectionWrapper>
+                                                          </FixedSectionWrapper>
                                                         </Table.Row>
                                                       );
                                                     })}
