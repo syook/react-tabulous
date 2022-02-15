@@ -20,101 +20,91 @@ import StatusIcon from '../../components/status-icon/status-icon';
 
 import { tableActions } from '../../constants';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { tabulousActions } from '../../store/tabulous-slice';
+function reducer(state, action) {
+  switch (action.type) {
+    case tableActions.columns:
+      return { ...state, columns: [...(action.payload || [])] };
+    case tableActions.bulkSelect:
+      return { ...state, bulkSelect: action.payload };
+    case tableActions.indeterminateSelect:
+      return { ...state, indeterminateSelect: action.payload };
+    case tableActions.selectedRows:
+      return { ...state, selectedRows: [...(action.payload || [])] };
+    case tableActions.searchKeys:
+      return { ...state, searchKeys: { ...(action.payload || {}) } };
+    case tableActions.hiddenColumns:
+      return { ...state, hiddenColumns: [...(action.payload || [])] };
+    case tableActions.data:
+      return { ...state, data: [...(action.payload || [])] };
+    case tableActions.rawData:
+      return { ...state, rawData: [...(action.payload || [])] };
+    case tableActions.stylesForTable:
+      return { ...state, stylesForTable: { ...state.stylesForTable, ...action.payload } };
+    case tableActions.eraseStyles:
+      return { ...state, stylesForTable: {} };
+    case tableActions.setResetTable:
+      return { ...state, resetStylesForTable: { ...state.resetStylesForTable, ...action.payload } };
+    case tableActions.eraseResetStyles:
+      return { ...state, resetStylesForTable: {} };
+    default:
+      return state;
+  }
+}
 
 function TableComponent(props) {
-  const dispatchRedux = useDispatch();
-  const tabulousState = useSelector(state => state.tabulous);
-
   const tableElement = useRef(null);
   const columnAndKeys = getTableColumns(props.columnDefs);
+  const [state, dispatch] = useReducer(reducer, {
+    columns: columnAndKeys.columnDefs, //The columns gets array of objects. field isnt proper for this. I am hence using headerName
+    bulkSelect: false,
+    indeterminateSelect: false,
+    selectedRows: [],
+    searchKeys: columnAndKeys.searchKeys,
+    hiddenColumns: columnAndKeys.columnDefs.filter(c => !props.mandatoryFields.includes(c.headerName)),
+    data: getTableData(columnAndKeys.columnDefs, [...props.data]),
+    rawData: props.data,
+    stylesForTable: {},
+    resetStylesForTable: {},
+    showResetButton: props.showResetButton && columnAndKeys.columnDefs.some(c => c.isResizable),
+  });
 
-  //My useEffect for above useEffect
   useEffect(() => {
-    let columnAndKeys = {
-      searchKeys: { ...(tabulousState.searchKeys || {}) },
-      columnDefs: [...(tabulousState.columns || [])],
-    }; //Recheck this
+    let columnAndKeys = { searchKeys: { ...(state.searchKeys || {}) }, columnDefs: [...(state.columns || [])] };
     let columns = columnAndKeys.columnDefs || [];
     const columnDefsHeaderNames = (props.columnDefs || []).map(def => def.headerName);
-    const stateColumnsHeaderNames = tabulousState.columns.map(c => c.headerName);
+    const stateColumnsHeaderNames = state.columns.map(c => c.headerName);
     if (props.resetHideColumnsOnDataChange || !isEqual(columnDefsHeaderNames, stateColumnsHeaderNames)) {
       columnAndKeys = getTableColumns([...props.columnDefs]);
       columns = columnAndKeys.columnDefs || [];
     }
     const data = getTableData(columns, [...props.data], props.emptyCellPlaceHolder);
 
-    dispatchRedux(
-      tabulousActions.updateData({
-        data: data,
-      })
-    );
-    dispatchRedux(
-      tabulousActions.updateColumns({
-        col: columns,
-      })
-    );
-    dispatchRedux(
-      tabulousActions.updateRawData({
-        rawData: props.data,
-      })
-    );
-    dispatchRedux(
-      tabulousActions.updateSearchKeys({
-        searchKeys: columnAndKeys.searchKeys,
-      })
-    );
-  }, [props.columnDefs]);
+    dispatch({ type: tableActions.data, payload: data });
+    dispatch({ type: tableActions.rawData, payload: props.data });
+    dispatch({ type: tableActions.columns, payload: columns });
+    dispatch({ type: tableActions.searchKeys, payload: columnAndKeys.searchKeys });
+  }, [props.data, props.columnDefs, props.emptyCellPlaceHolder]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // My enableBulkSelect function
-  const newEnableBulkSelect = useCallback(
+  const enableBulkSelect = useCallback(
     ({ checked }, data = []) => {
       const selectedRows = checked ? data.map(i => i['_id'] || i['id']) : [];
-      dispatchRedux(
-        tabulousActions.updateBulkSelect({
-          bulkSelect: checked,
-        })
-      );
-      dispatchRedux(
-        tabulousActions.updateSelectedRows({
-          selectedRows: selectedRows,
-        })
-      );
-      dispatchRedux(
-        tabulousActions.updateIndeterminateSelect({
-          indeterminateSelect: false,
-        })
-      );
-
+      dispatch({ type: tableActions.bulkSelect, payload: checked });
+      dispatch({ type: tableActions.selectedRows, payload: selectedRows });
+      dispatch({ type: tableActions.indeterminateSelect, payload: false });
       if (props.getBulkActionState) props.getBulkActionState(checked);
     },
     [props.getBulkActionState] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  // My resetBulkSelection function
-  const newResetBulkSelection = useCallback(() => {
-    dispatchRedux(
-      tabulousActions.updateBulkSelect({
-        bulkSelect: false,
-      })
-    );
-    dispatchRedux(
-      tabulousActions.updateSelectedRows({
-        selectedRows: [],
-      })
-    );
-    dispatchRedux(
-      tabulousActions.updateIndeterminateSelect({
-        indeterminateSelect: false,
-      })
-    );
+  const resetBulkSelection = useCallback(() => {
+    dispatch({ type: tableActions.bulkSelect, payload: false });
+    dispatch({ type: tableActions.selectedRows, payload: [] });
+    dispatch({ type: tableActions.indeterminateSelect, payload: false });
   }, []);
 
-  //My updateSelectedRows function
-  const newUpdateSelectedRows = useCallback(
+  const updateSelectedRows = useCallback(
     ({ checked }, row_id, rowCount) => {
-      let selectedRows = tabulousState.selectedRows;
+      let selectedRows = state.selectedRows;
       const rowIndex = selectedRows.indexOf(row_id);
       if (rowIndex > -1 && !checked) selectedRows.splice(rowIndex, 1);
       if (rowIndex === -1) selectedRows.push(row_id);
@@ -126,57 +116,36 @@ function TableComponent(props) {
       } else if (selectedRowsLength === rowCount) {
         bulkSelect = true;
       }
-      dispatchRedux(
-        tabulousActions.updateBulkSelect({
-          bulkSelect: bulkSelect,
-        })
-      );
-      dispatchRedux(
-        tabulousActions.updateSelectedRows({
-          selectedRows: selectedRows,
-        })
-      );
-      dispatchRedux(
-        tabulousActions.updateIndeterminateSelect({
-          indeterminateSelect: indeterminateSelect,
-        })
-      );
+      dispatch({ type: tableActions.bulkSelect, payload: bulkSelect });
+      dispatch({ type: tableActions.selectedRows, payload: selectedRows });
+      dispatch({ type: tableActions.indeterminateSelect, payload: indeterminateSelect });
       if (props.getSelectedOrUnselectedId) props.getSelectedOrUnselectedId(checked, row_id);
     },
-    [tabulousState.selectedRows, props.getSelectedOrUnselectedId] // eslint-disable-line react-hooks/exhaustive-deps
+    [state.selectedRows, props.getSelectedOrUnselectedId] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  //My resetHandler function
-  const newResetHandler = () => {
-    console.log(tabulousState);
-    return;
-    dispatchRedux(tabulousActions.eraseStylesForTable());
-    newSetInlineStyle();
-    dispatchRedux(tabulousActions.updateStylesForTable({ stylesForTable: tabulousState.resetStylesForTable }));
+  const resetHandler = () => {
+    dispatch({ type: tableActions.eraseStyles });
+    setInlineStyle();
+    dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
   };
 
-  // My toggleColumns function
-  const newToggleColumns = useCallback(
+  const toggleColumns = useCallback(
     async (columnName, { checked }) => {
-      let columns = [...tabulousState.columns];
+      let columns = [...state.columns];
       let updatableColumn = columns.find(c => c.headerName === columnName) || {};
       updatableColumn.isVisible = checked;
       const hiddenColumns = columns.filter(c => !props.mandatoryFields.includes(c.headerName));
-      await dispatchRedux(
-        tabulousActions.updateColumns({
-          col: columns,
-        })
-      );
-      await dispatchRedux(tabulousActions.updateHiddenColumns({ hiddenColumns: hiddenColumns }));
-      newResetHandler();
+      await dispatch({ type: tableActions.columns, payload: columns });
+      await dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
+      resetHandler();
     },
-    [tabulousState.columns] // eslint-disable-line react-hooks/exhaustive-deps
+    [state.columns] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  // My toggleAllColumns function
-  const newToggleAllColumns = useCallback(
+  const toggleAllColumns = useCallback(
     async checked => {
-      const updatedColumns = tabulousState.columns.map(column => {
+      const updatedColumns = state.columns.map(column => {
         if (props.mandatoryFields.includes(column.headerName)) {
           return column;
         }
@@ -185,15 +154,11 @@ function TableComponent(props) {
       });
 
       const hiddenColumns = updatedColumns.filter(c => !props.mandatoryFields.includes(c.headerName));
-      await dispatchRedux(
-        tabulousActions.updateColumns({
-          col: updatedColumns,
-        })
-      );
-      await dispatchRedux(tabulousActions.updateHiddenColumns({ hiddenColumns: hiddenColumns }));
-      newResetHandler();
+      await dispatch({ type: tableActions.columns, payload: updatedColumns });
+      await dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
+      resetHandler();
     },
-    [tabulousState.columns, props.mandatoryFields] // eslint-disable-line react-hooks/exhaustive-deps
+    [state.columns, props.mandatoryFields] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const getStyleObjectForColumn = (width, columnName) => {
@@ -203,8 +168,7 @@ function TableComponent(props) {
     return newStyleObj;
   };
 
-  // My resize function
-  const newResize = useCallback(
+  const resize = useCallback(
     async (col, element, original_width = 20, original_mouse_x, e) => {
       let width = 0;
       if (!element) {
@@ -218,18 +182,15 @@ function TableComponent(props) {
       }
       if (width >= 20) {
         if (!e) {
-          if (!tabulousState.resetStylesForTable[`.column${col}`]) {
-            return;
-          }
-          element.style.width = tabulousState.resetStylesForTable[`.column${col}`].width;
+          element.style.width = state.resetStylesForTable[`.column${col}`].width;
         } else {
           element.style.width = width + 'px';
           const newColumnStyleObj = getStyleObjectForColumn(width, col);
-          dispatchRedux(tabulousActions.updateStylesForTable({ stylesForTable: newColumnStyleObj }));
+          dispatch({ type: tableActions.stylesForTable, payload: newColumnStyleObj });
         }
       }
     },
-    [tabulousState.resetStylesForTable]
+    [state.resetStylesForTable]
   );
 
   const getOriginalPropertyOfElement = (element, property) => {
@@ -240,8 +201,7 @@ function TableComponent(props) {
     );
   };
 
-  // my resizeHandler function
-  const newResizeHandler = async (col, e) => {
+  const resizeHandler = async (col, e) => {
     e.stopPropagation();
     const element = tableElement.current.querySelector(`.head${col}`);
     e.preventDefault();
@@ -249,7 +209,7 @@ function TableComponent(props) {
     let original_mouse_x = e.pageX;
 
     const refFunc = async e => {
-      await newResize(col, element, original_width, original_mouse_x, e);
+      await resize(col, element, original_width, original_mouse_x, e);
     };
     window.addEventListener('mousemove', refFunc, true);
     window.addEventListener(
@@ -264,10 +224,10 @@ function TableComponent(props) {
   const [useWrapper, setUseWrapper] = useState(false);
 
   // The getAllColumns function helps us get all the columns including BulkActions, S.No. and Actions columns
-  // My getAllColumns function
-  const newGetAllColumns = useCallback(
+
+  const getAllColumns = useCallback(
     () => {
-      let allColumns = tabulousState.columns.map(eachCol => {
+      let allColumns = state.columns.map(eachCol => {
         return {
           colName: eachCol.headerName.replace(/[^a-zA-Z0-9]/g, ''),
           fixed: eachCol.fixed,
@@ -285,16 +245,14 @@ function TableComponent(props) {
       }
       return allColumns;
     },
-    [tabulousState.columns] // eslint-disable-line react-hooks/exhaustive-deps
+    [state.columns] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   // There is a Reducer state named "resetStylesForTable". This state on the first render needs to be updated to the width of each Column on the first render.
   // The setResetStylesForTable function helps us achieve this.
 
-  // My setResetStylesForTable Function
-  const newSetResetStylesForTable = useCallback(async () => {
-    let allColumns = newGetAllColumns();
-    console.log(allColumns);
+  const setResetStylesForTable = useCallback(async () => {
+    let allColumns = getAllColumns();
     await allColumns.map(async col => {
       const element = tableElement.current.querySelector(`.head${col.colName}`);
       let original_width = getOriginalPropertyOfElement(element, 'width');
@@ -305,48 +263,63 @@ function TableComponent(props) {
 
       const newColumnStyleObj = getStyleObjectForColumn(original_width, col.colName);
 
-      await dispatchRedux(tabulousActions.updateResetStylesForTable({ style: newColumnStyleObj }));
+      await dispatch({ type: tableActions.setResetTable, payload: newColumnStyleObj });
     });
-  }, [tabulousState.columns, newGetAllColumns]);
+  }, [state.columns]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // The below function sets the inline style for each column after we are done setting the state "resetStylesForTable"
-  // My setInlineStyle function
-  const newSetInlineStyle = useCallback(
+  const setInlineStyle = useCallback(
     async () => {
-      let allColumns = newGetAllColumns();
+      let allColumns = getAllColumns();
       Promise.all(
         allColumns.map(async col => {
           const element = tableElement.current.querySelector(`.head${col.colName}`);
-          return newResize(col.colName, element);
+          return resize(col.colName, element);
         })
       );
       tableElement.current.style.width = 'fit-content';
     },
-    [tabulousState.columns] // eslint-disable-line react-hooks/exhaustive-deps
+    [state.columns] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  // My useEffect for above
   useEffect(() => {
     const setInlineStyleCaller = async () => {
-      let totalCols = newGetAllColumns().length;
-      console.log(tabulousState.columns);
-      if (Object.keys(tabulousState.resetStylesForTable).length === 0) {
-        await newSetResetStylesForTable();
+      let totalCols = getAllColumns().length;
+      if (Object.keys(state.resetStylesForTable).length === 0) {
+        await setResetStylesForTable();
       }
-      if (Object.keys(tabulousState.resetStylesForTable).length === totalCols) {
+      if (Object.keys(state.resetStylesForTable).length === totalCols) {
         setUseWrapper(state => true);
-        await newSetInlineStyle();
-        await dispatchRedux(
-          tabulousActions.updateStylesForTable({ stylesForTable: tabulousState.resetStylesForTable })
-        );
+        await setInlineStyle();
+        await dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
       }
     };
 
     setInlineStyleCaller();
-  }, [tabulousState.columns, useWrapper]);
+  }, [state.resetStylesForTable, useWrapper]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // My resetButton function
-  const newResetButton = () => {
+  // useEffect(() => {
+  //   const changeTable = async () => {
+  //     let allColumns = getAllColumns();
+  //     let totalCols = allColumns.length;
+  //     if(Object.keys(state.resetStylesForTable).length !== totalCols){
+  //       tableElement.current.style.width = '100%';
+  //       await allColumns.map(async col => {
+  //         const element = tableElement.current.querySelector(`.head${col}`);
+  //         element.removeAttribute("style");
+  //       });
+  //       dispatch({ type: tableActions.eraseStyles });
+  //       dispatch({ type: tableActions.eraseResetStyles });
+  //       await setResetStylesForTable();
+  //       await setInlineStyle();
+
+  //     }
+  //   }
+  //   changeTable();
+
+  // }, [state.columns]);
+
+  const resetButton = () => {
     return (
       <Button
         disabled={props.disabled}
@@ -355,7 +328,7 @@ function TableComponent(props) {
           color: '#fff',
           marginRight: '10px',
         }}
-        onClick={newResetHandler}>
+        onClick={resetHandler}>
         <Icon name="redo" /> {'Reset'}
       </Button>
     );
@@ -387,20 +360,16 @@ function TableComponent(props) {
   );
 
   const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
-  const visibleColumnsToLeft = tabulousState.columns.filter(d => d.isVisible && d.fixed === 'left');
-  const visibleColumnsToRight = tabulousState.columns.filter(d => d.isVisible && d.fixed === 'right');
-  const visibleColumns = tabulousState.columns.filter(d => d.isVisible && d.fixed !== 'left' && d.fixed !== 'right'); //TODO: probably this only has visible columns only
+  const visibleColumnsToLeft = state.columns.filter(d => d.isVisible && d.fixed === 'left');
+  const visibleColumnsToRight = state.columns.filter(d => d.isVisible && d.fixed === 'right');
+  const visibleColumns = state.columns.filter(d => d.isVisible && d.fixed !== 'left' && d.fixed !== 'right'); //TODO: probably this only has visible columns only
   const filterableColumns = visibleColumns.filter(d => d.isFilterable);
   const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
-  const hiddenColumnCount = tabulousState.columns.length - visibleColumns.length;
+  const hiddenColumnCount = state.columns.length - visibleColumns.length;
 
   return (
     <div className="table-wrapper">
-      <SearchProvider
-        {...props}
-        rawData={tabulousState.rawData}
-        searchKeys={tabulousState.searchKeys}
-        tableData={tabulousState.data}>
+      <SearchProvider {...props} rawData={state.rawData} searchKeys={state.searchKeys} tableData={state.data}>
         <SearchContext.Consumer>
           {searchProps => {
             return (
@@ -410,19 +379,19 @@ function TableComponent(props) {
                   padding: '0 15px',
                   width: '100%',
                 }}>
-                {tabulousState.hiddenColumns.length ? (
+                {state.hiddenColumns.length ? (
                   <HeaderSelector
                     hiddenColumnCount={hiddenColumnCount}
-                    columns={tabulousState.hiddenColumns}
-                    toggleColumns={newToggleColumns}
-                    toggleAllColumns={newToggleAllColumns}
+                    columns={state.hiddenColumns}
+                    toggleColumns={toggleColumns}
+                    toggleAllColumns={toggleAllColumns}
                     accentColor={props.accentColor}
                   />
                 ) : null}
-                {hasBulkActions && tabulousState.selectedRows.length ? (
+                {hasBulkActions && state.selectedRows.length ? (
                   <BulkActionList
                     bulkActions={props.bulkActionDefs}
-                    selectedRows={tabulousState.selectedRows}
+                    selectedRows={state.selectedRows}
                     hideBulkCount={props.hideBulkCount}
                   />
                 ) : null}
@@ -432,7 +401,7 @@ function TableComponent(props) {
                   count={searchProps.count}
                   data={searchProps.data}
                   filterableColumns={filterableColumns}
-                  columns={tabulousState.columns}
+                  columns={state.columns}
                   resetFilterOnDataChange={props.resetFilterOnDataChange}
                   accentColor={props.accentColor}
                   emptyCellPlaceHolder={emptyCellPlaceHolder}>
@@ -440,7 +409,7 @@ function TableComponent(props) {
                     {filterProps => {
                       return (
                         <>
-                          {tabulousState.showResetButton && newResetButton()}
+                          {state.showResetButton && resetButton()}
                           {props.children ? (
                             <div style={{ display: 'inline-block' }}>
                               {props.children(filterProps.data, searchProps.searchText, visibleColumns)}
@@ -470,7 +439,7 @@ function TableComponent(props) {
                                     columnType={sortProps.columnType}
                                     updateRowsPerPage={searchProps.updateRowsPerPage}
                                     resetPagination={sortProps.resetPagination}
-                                    resetBulkSelection={newResetBulkSelection}
+                                    resetBulkSelection={resetBulkSelection}
                                     defaultItemsToDisplay={props.defaultItemsToDisplay}>
                                     <div
                                       className={`scrollable-table tableFixHead ${
@@ -488,7 +457,7 @@ function TableComponent(props) {
                                                       <FixedSectionWrapper positionedTo={'left'}>
                                                         {visibleColumnsToLeft.map((column, index) =>
                                                           TableHeader({
-                                                            resizeHandler: newResizeHandler,
+                                                            resizeHandler,
                                                             column,
                                                             index,
                                                             sortProps,
@@ -505,11 +474,11 @@ function TableComponent(props) {
                                                               width: '100%',
                                                             }}>
                                                             <Checkbox
-                                                              checked={tabulousState.bulkSelect}
+                                                              checked={state.bulkSelect}
                                                               disabled={!paginationProps.rowCount}
-                                                              indeterminate={tabulousState.indeterminateSelect}
+                                                              indeterminate={state.indeterminateSelect}
                                                               onChange={(e, { checked }) =>
-                                                                newEnableBulkSelect({ checked }, filterProps.data)
+                                                                enableBulkSelect({ checked }, filterProps.data)
                                                               }
                                                             />
                                                           </div>
@@ -528,7 +497,7 @@ function TableComponent(props) {
                                                       )}
                                                       {visibleColumns.map((column, index) =>
                                                         TableHeader({
-                                                          resizeHandler: newResizeHandler,
+                                                          resizeHandler,
                                                           column,
                                                           index,
                                                           sortProps,
@@ -550,7 +519,7 @@ function TableComponent(props) {
                                                       <FixedSectionWrapper positionedTo={'right'}>
                                                         {visibleColumnsToRight.map((column, index) =>
                                                           TableHeader({
-                                                            resizeHandler: newResizeHandler,
+                                                            resizeHandler,
                                                             column,
                                                             index,
                                                             sortProps,
@@ -572,7 +541,7 @@ function TableComponent(props) {
                                                           <FixedSectionWrapper positionedTo={'left'}>
                                                             {visibleColumnsToLeft.map((column, index2) => {
                                                               const styleSetTo =
-                                                                tabulousState.stylesForTable[
+                                                                state.stylesForTable[
                                                                   `.column${column.headerName.replace(
                                                                     /[^a-zA-Z0-9]/g,
                                                                     ''
@@ -601,11 +570,11 @@ function TableComponent(props) {
                                                                 }}>
                                                                 <Checkbox
                                                                   className="bulkAction_check"
-                                                                  checked={tabulousState.selectedRows.includes(
+                                                                  checked={state.selectedRows.includes(
                                                                     row['_id'] || row['id']
                                                                   )}
                                                                   onChange={(e, { checked }) =>
-                                                                    newUpdateSelectedRows(
+                                                                    updateSelectedRows(
                                                                       { checked },
                                                                       row['_id'] || row['id'],
                                                                       paginationProps.rowCount
@@ -638,7 +607,7 @@ function TableComponent(props) {
                                                           )}
                                                           {visibleColumns.map((column, index2) => {
                                                             const styleSetTo =
-                                                              tabulousState.stylesForTable[
+                                                              state.stylesForTable[
                                                                 `.column${column.headerName.replace(
                                                                   /[^a-zA-Z0-9]/g,
                                                                   ''
@@ -666,7 +635,7 @@ function TableComponent(props) {
                                                           <FixedSectionWrapper positionedTo={'right'}>
                                                             {visibleColumnsToRight.map((column, index2) => {
                                                               const styleSetTo =
-                                                                tabulousState.stylesForTable[
+                                                                state.stylesForTable[
                                                                   `.column${column.headerName.replace(
                                                                     /[^a-zA-Z0-9]/g,
                                                                     ''

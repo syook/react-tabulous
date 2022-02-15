@@ -2,6 +2,8 @@ import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import ReactTabulous from './containers/table/indexFunctionalComponent';
 import { Icon } from 'semantic-ui-react';
+import { Provider } from 'react-redux';
+import store from './store';
 
 export default class App extends React.Component {
   //you can manipulate this component for testing
@@ -301,40 +303,42 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <ReactTabulous
-          data={this.state.data}
-          columnDefs={this.columnDefs}
-          actionDefs={this.actionDefs}
-          showCheckbox={row => this.showCheckbox(row)}
-          showBulkActions={true}
-          bulkActionDefs={[
-            { name: 'Delete', function: selectedRows => console.log('bulkAction Single action', selectedRows) },
-          ]}
-          // count={20}
-          // showIcon={this.showIcon}
-          // key={props.workOrderableFilter + props.woType + props.workOrderCount}
-          includeAction
-          // count={props.name === 'showPageTable' ? null : props.count}
-          mandatoryFields={['Name']}
-          tableScroll={false}
-          tableName={''}
-          // enableIcon={true}
-          // fetchOnPageChange={(pageNumber, search, searchKeys, rowsPerPage, sortParams) => {
-          //   //do something here , like fetch the data from backend.
-          //   this.setState({ data: this.state.data });
-          //   console.log('heyy');
-          // }}
-          // showIcon={row => this.showIcon(row)}
-          isShowSerialNumber
-          getSelectedOrUnselectedId={(check, id) => {
-            console.log(check, id, 'checked value for particular row for the bulkAction');
-          }}
-          getBulkActionState={this.getBulkActionState}
-          hideBulkCount={true}
-          // emptyCellPlaceHolder="N/A"
-          // resetFilterOnDataChange={false}
-          // resetHideColumnsOnDataChange={false}
-        />
+        <Provider store={store}>
+          <ReactTabulous
+            data={this.state.data}
+            columnDefs={this.columnDefs}
+            actionDefs={this.actionDefs}
+            showCheckbox={row => this.showCheckbox(row)}
+            showBulkActions={true}
+            bulkActionDefs={[
+              { name: 'Delete', function: selectedRows => console.log('bulkAction Single action', selectedRows) },
+            ]}
+            // count={20}
+            // showIcon={this.showIcon}
+            // key={props.workOrderableFilter + props.woType + props.workOrderCount}
+            includeAction
+            // count={props.name === 'showPageTable' ? null : props.count}
+            mandatoryFields={['Name']}
+            tableScroll={false}
+            tableName={''}
+            // enableIcon={true}
+            // fetchOnPageChange={(pageNumber, search, searchKeys, rowsPerPage, sortParams) => {
+            //   //do something here , like fetch the data from backend.
+            //   this.setState({ data: this.state.data });
+            //   console.log('heyy');
+            // }}
+            // showIcon={row => this.showIcon(row)}
+            isShowSerialNumber
+            getSelectedOrUnselectedId={(check, id) => {
+              console.log(check, id, 'checked value for particular row for the bulkAction');
+            }}
+            getBulkActionState={this.getBulkActionState}
+            hideBulkCount={true}
+            // emptyCellPlaceHolder="N/A"
+            // resetFilterOnDataChange={false}
+            // resetHideColumnsOnDataChange={false}
+          />
+        </Provider>
       </div>
     );
   }
