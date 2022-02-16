@@ -1,6 +1,6 @@
 import './index.css';
 
-import React, { useEffect, useReducer, useCallback, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useCallback, useRef, useState, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, Table, Ref, Button, Icon } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
@@ -23,12 +23,31 @@ import { tableActions } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { tabulousActions } from '../../store/tabulous-slice';
 
+function reducer(state, action) {
+  switch (action.type) {
+    case tableActions.stylesForTable:
+      return { ...state, stylesForTable: { ...state.stylesForTable, ...action.payload } };
+    case tableActions.eraseStyles:
+      return { ...state, stylesForTable: {} };
+    case tableActions.setResetTable:
+      return { ...state, resetStylesForTable: { ...state.resetStylesForTable, ...action.payload } };
+    case tableActions.previousResetStyles:
+      return { ...state, previousResetStyles: [...state.previousResetStyles, action.payload] };
+    default:
+      return state;
+  }
+}
+
 function TableComponent(props) {
   const dispatchRedux = useDispatch();
   const tabulousState = useSelector(state => state.tabulous);
 
   const tableElement = useRef(null);
-  const columnAndKeys = getTableColumns(props.columnDefs);
+  const [state, dispatch] = useReducer(reducer, {
+    resetStylesForTable: {},
+    stylesForTable: {},
+    previousResetStyles: [],
+  });
 
   //My useEffect for above useEffect
   useEffect(() => {
@@ -46,6 +65,11 @@ function TableComponent(props) {
     const data = getTableData(columns, [...props.data], props.emptyCellPlaceHolder);
 
     dispatchRedux(
+      tabulousActions.updateRawData({
+        rawData: props.data,
+      })
+    );
+    dispatchRedux(
       tabulousActions.updateData({
         data: data,
       })
@@ -53,11 +77,6 @@ function TableComponent(props) {
     dispatchRedux(
       tabulousActions.updateColumns({
         col: columns,
-      })
-    );
-    dispatchRedux(
-      tabulousActions.updateRawData({
-        rawData: props.data,
       })
     );
     dispatchRedux(
@@ -148,11 +167,9 @@ function TableComponent(props) {
 
   //My resetHandler function
   const newResetHandler = () => {
-    console.log(tabulousState);
-    return;
-    dispatchRedux(tabulousActions.eraseStylesForTable());
+    dispatch({ type: tableActions.eraseStyles });
     newSetInlineStyle();
-    dispatchRedux(tabulousActions.updateStylesForTable({ stylesForTable: tabulousState.resetStylesForTable }));
+    dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
   };
 
   // My toggleColumns function
@@ -218,18 +235,20 @@ function TableComponent(props) {
       }
       if (width >= 20) {
         if (!e) {
-          if (!tabulousState.resetStylesForTable[`.column${col}`]) {
+          if (!state.resetStylesForTable[`.column${col}`]) {
+            console.log(col, state.resetStylesForTable);
             return;
           }
-          element.style.width = tabulousState.resetStylesForTable[`.column${col}`].width;
+          element.style.width = state.resetStylesForTable[`.column${col}`].width;
         } else {
           element.style.width = width + 'px';
           const newColumnStyleObj = getStyleObjectForColumn(width, col);
-          dispatchRedux(tabulousActions.updateStylesForTable({ stylesForTable: newColumnStyleObj }));
+          // dispatchRedux(tabulousActions.updateStylesForTable({ stylesForTable: newColumnStyleObj }));
+          dispatch({ type: tableActions.stylesForTable, payload: newColumnStyleObj });
         }
       }
     },
-    [tabulousState.resetStylesForTable]
+    [state.resetStylesForTable]
   );
 
   const getOriginalPropertyOfElement = (element, property) => {
@@ -290,11 +309,9 @@ function TableComponent(props) {
 
   // There is a Reducer state named "resetStylesForTable". This state on the first render needs to be updated to the width of each Column on the first render.
   // The setResetStylesForTable function helps us achieve this.
-
   // My setResetStylesForTable Function
   const newSetResetStylesForTable = useCallback(async () => {
     let allColumns = newGetAllColumns();
-    console.log(allColumns);
     await allColumns.map(async col => {
       const element = tableElement.current.querySelector(`.head${col.colName}`);
       let original_width = getOriginalPropertyOfElement(element, 'width');
@@ -305,9 +322,9 @@ function TableComponent(props) {
 
       const newColumnStyleObj = getStyleObjectForColumn(original_width, col.colName);
 
-      await dispatchRedux(tabulousActions.updateResetStylesForTable({ style: newColumnStyleObj }));
+      await dispatch({ type: tableActions.setResetTable, payload: newColumnStyleObj });
     });
-  }, [tabulousState.columns, newGetAllColumns]);
+  }, [tabulousState.columns]);
 
   // The below function sets the inline style for each column after we are done setting the state "resetStylesForTable"
   // My setInlineStyle function
@@ -322,28 +339,49 @@ function TableComponent(props) {
       );
       tableElement.current.style.width = 'fit-content';
     },
-    [tabulousState.columns] // eslint-disable-line react-hooks/exhaustive-deps
+    [tabulousState.columns, state.resetStylesForTable] // eslint-disable-line react-hooks/exhaustive-deps
   );
+
+  const [continueRun, setContinueRun] = useState(true);
 
   // My useEffect for above
   useEffect(() => {
     const setInlineStyleCaller = async () => {
       let totalCols = newGetAllColumns().length;
-      console.log(tabulousState.columns);
-      if (Object.keys(tabulousState.resetStylesForTable).length === 0) {
+      if (tabulousState.columns.length === 0) {
+        return;
+      }
+      // if (Object.keys(state.resetStylesForTable).length < totalCols) {
+      //   console.log(">>>");
+      //   await newSetResetStylesForTable();
+      // }
+      if (continueRun) {
         await newSetResetStylesForTable();
       }
-      if (Object.keys(tabulousState.resetStylesForTable).length === totalCols) {
+      // console.log(state.previousResetStyles);
+      // console.log(state.resetStylesForTable);
+      if (
+        isEqual(state.previousResetStyles.at(-1), state.resetStylesForTable) &&
+        Object.keys(state.resetStylesForTable).length !== 0
+      ) {
+        setContinueRun(state => false);
+      }
+      // console.log(state.previousResetStyles.at(-1));
+      // console.log(state.resetStylesForTable);
+      // };
+      await dispatch({ type: tableActions.previousResetStyles, payload: state.resetStylesForTable });
+      if (Object.keys(state.resetStylesForTable).length === totalCols && !continueRun) {
         setUseWrapper(state => true);
         await newSetInlineStyle();
-        await dispatchRedux(
-          tabulousActions.updateStylesForTable({ stylesForTable: tabulousState.resetStylesForTable })
-        );
+        // await dispatchRedux(
+        //   tabulousActions.updateStylesForTable({ stylesForTable: tabulousState.resetStylesForTable })
+        // );
+        await dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
       }
     };
 
     setInlineStyleCaller();
-  }, [tabulousState.columns, useWrapper]);
+  }, [tabulousState.columns, state.resetStylesForTable, useWrapper, continueRun]);
 
   // My resetButton function
   const newResetButton = () => {
@@ -572,7 +610,7 @@ function TableComponent(props) {
                                                           <FixedSectionWrapper positionedTo={'left'}>
                                                             {visibleColumnsToLeft.map((column, index2) => {
                                                               const styleSetTo =
-                                                                tabulousState.stylesForTable[
+                                                                state.stylesForTable[
                                                                   `.column${column.headerName.replace(
                                                                     /[^a-zA-Z0-9]/g,
                                                                     ''
@@ -638,7 +676,7 @@ function TableComponent(props) {
                                                           )}
                                                           {visibleColumns.map((column, index2) => {
                                                             const styleSetTo =
-                                                              tabulousState.stylesForTable[
+                                                              state.stylesForTable[
                                                                 `.column${column.headerName.replace(
                                                                   /[^a-zA-Z0-9]/g,
                                                                   ''
@@ -666,7 +704,7 @@ function TableComponent(props) {
                                                           <FixedSectionWrapper positionedTo={'right'}>
                                                             {visibleColumnsToRight.map((column, index2) => {
                                                               const styleSetTo =
-                                                                tabulousState.stylesForTable[
+                                                                state.stylesForTable[
                                                                   `.column${column.headerName.replace(
                                                                     /[^a-zA-Z0-9]/g,
                                                                     ''

@@ -23,6 +23,7 @@ export const tableActions = {
   eraseStyles: 'eraseStyles',
   setResetTable: 'setResetTable',
   eraseResetStyles: 'eraseResetStyles',
+  previousResetStyles: 'previousResetStyles',
 };
 
 export const searchActions = {

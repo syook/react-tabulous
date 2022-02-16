@@ -1,5 +1,6 @@
 // This file is going to help us create a slice for the data that the tabulous rendering component is supposed to store
 import { createSlice } from '@reduxjs/toolkit';
+import { getTableColumns } from '../components/utils';
 
 const tabulousSlice = createSlice({
   name: 'tabulous',
@@ -12,8 +13,6 @@ const tabulousSlice = createSlice({
     hiddenColumns: [], //columnAndKeys.columnDefs.filter(c => !props.mandatoryFields.includes(c.headerName)),
     data: [], //getTableData(columnAndKeys.columnDefs, [...props.data]),
     rawData: [], //props.data,
-    stylesForTable: {},
-    resetStylesForTable: {},
     showResetButton: true, //props.showResetButton && columnAndKeys.columnDefs.some(c => c.isResizable),
   },
   reducers: {
@@ -46,9 +45,6 @@ const tabulousSlice = createSlice({
     },
     updateHiddenColumns(state, action) {
       state.hiddenColumns = [...(action.payload.hiddenColumns || [])];
-    },
-    updateResetStylesForTable(state, action) {
-      state.resetStylesForTable = { ...state.resetStylesForTable, ...action.payload.style };
     },
   },
 });
