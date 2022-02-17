@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Checkbox, Table, Ref, Button, Icon } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
 
-import { getTableData, getTableColumns } from '../../components/utils';
+import { getTableData, getTableColumns, formatText } from '../../components/utils';
 import FilterProvider, { FilterContext } from '../filter/indexFunctionalComponent';
 import PaginationProvider, { PaginationContext } from '../pagination/indexFunctioncalComponent';
 import SearchProvider, { SearchContext } from '../search/indexFuntionalComponent';
@@ -54,6 +54,7 @@ function reducer(state, action) {
 function TableComponent(props) {
   const tableElement = useRef(null);
   const columnAndKeys = getTableColumns(props.columnDefs);
+  const [useWrapper, setUseWrapper] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
     columns: columnAndKeys.columnDefs, //The columns gets array of objects. field isnt proper for this. I am hence using headerName
     bulkSelect: false,
@@ -221,15 +222,13 @@ function TableComponent(props) {
     );
   };
 
-  const [useWrapper, setUseWrapper] = useState(false);
-
   // The getAllColumns function helps us get all the columns including BulkActions, S.No. and Actions columns
 
   const getAllColumns = useCallback(
     () => {
       let allColumns = state.columns.map(eachCol => {
         return {
-          colName: eachCol.headerName.replace(/[^a-zA-Z0-9]/g, ''),
+          colName: formatText(eachCol.headerName),
           fixed: eachCol.fixed,
           defaultWidth: eachCol.defaultWidth,
         };
@@ -263,13 +262,13 @@ function TableComponent(props) {
 
       const newColumnStyleObj = getStyleObjectForColumn(original_width, col.colName);
 
-      await dispatch({ type: tableActions.setResetTable, payload: newColumnStyleObj });
+      dispatch({ type: tableActions.setResetTable, payload: newColumnStyleObj });
     });
   }, [state.columns]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // The below function sets the inline style for each column after we are done setting the state "resetStylesForTable"
   const setInlineStyle = useCallback(
-    async () => {
+    () => {
       let allColumns = getAllColumns();
       Promise.all(
         allColumns.map(async col => {
@@ -289,9 +288,9 @@ function TableComponent(props) {
         await setResetStylesForTable();
       }
       if (Object.keys(state.resetStylesForTable).length === totalCols) {
-        setUseWrapper(state => true);
+        setUseWrapper(() => true);
         await setInlineStyle();
-        await dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
+        dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
       }
     };
 
@@ -541,10 +540,7 @@ function TableComponent(props) {
                                                             {visibleColumnsToLeft.map((column, index2) => {
                                                               const styleSetTo =
                                                                 state.stylesForTable[
-                                                                  `.column${column.headerName.replace(
-                                                                    /[^a-zA-Z0-9]/g,
-                                                                    ''
-                                                                  )}`
+                                                                  `.column${formatText(column.headerName)}`
                                                                 ];
                                                               return TableCell({
                                                                 column,
@@ -607,10 +603,7 @@ function TableComponent(props) {
                                                           {visibleColumns.map((column, index2) => {
                                                             const styleSetTo =
                                                               state.stylesForTable[
-                                                                `.column${column.headerName.replace(
-                                                                  /[^a-zA-Z0-9]/g,
-                                                                  ''
-                                                                )}`
+                                                                `.column${formatText(column.headerName)}`
                                                               ];
                                                             return TableCell({
                                                               column,
@@ -635,10 +628,7 @@ function TableComponent(props) {
                                                             {visibleColumnsToRight.map((column, index2) => {
                                                               const styleSetTo =
                                                                 state.stylesForTable[
-                                                                  `.column${column.headerName.replace(
-                                                                    /[^a-zA-Z0-9]/g,
-                                                                    ''
-                                                                  )}`
+                                                                  `.column${formatText(column.headerName)}`
                                                                 ];
                                                               return TableCell({
                                                                 column,
