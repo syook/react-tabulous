@@ -5,7 +5,7 @@ const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder, styleSetTo
   const currentItem = data[row.objIndex];
   return currentItem ? (
     <Table.Cell key={`table-cell-${index2}`}>
-      <div style={styleSetTo} className={`column${column.headerName} column_div`}>
+      <div style={styleSetTo} className={`column${column.headerName}`}>
         {column.cell
           ? column.cell(currentItem, row.objIndex)
           : !row[column.headerName]

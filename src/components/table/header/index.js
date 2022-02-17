@@ -1,9 +1,10 @@
 import React from 'react';
 import { Icon, Table } from 'semantic-ui-react';
+import { formatText } from '../../utils';
 
 const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, disabled, styleSetTo }) => {
   const { isSortable, isResizable = false, headerName, headerMessage, headerMessageColor } = column;
-  const headerNameTemp = headerName.replace(/[^a-zA-Z0-9]/g, '');
+  const headerNameFormatted = formatText(headerName);
   let currentOrder = sortProps.direction === 'ascending' ? 'descending' : 'ascending';
   return (
     <Table.HeaderCell
@@ -14,7 +15,7 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
           ? sortProps.direction || 'ascending'
           : null
       }
-      className={`sort-table ${!disabled && isResizable ? ' resizable' : ''}`}
+      className={`sort-table ${!disabled && isResizable ? 'resizable' : ''}`}
       key={`table-header-cell-${index}`}
       onMouseDown={
         isSortable
@@ -24,7 +25,7 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
             })
           : undefined
       }>
-      <div style={{ width: '100%' }} className={`head${headerNameTemp}`}>
+      <div style={styleSetTo ? { styleSetTo } : { width: '100%' }} className={`head${headerNameFormatted}`}>
         {headerName}
         {(isSortable && !disabled && sortProps.columnName !== headerName && defaultSort !== column.headerName && (
           <Icon name="sort" />
@@ -39,7 +40,7 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
           <div
             style={{ height: '100%', position: 'absolute', cursor: 'col-resize', right: '0px', top: '0px' }}
             className="bar"
-            onMouseDown={resizeHandler.bind(this, headerName.replace(/[^a-zA-Z0-9]/g, ''))}>
+            onMouseDown={resizeHandler.bind(this, headerNameFormatted)}>
             <span>|</span>
           </div>
         )}

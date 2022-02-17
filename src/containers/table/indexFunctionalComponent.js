@@ -1,11 +1,11 @@
 import './index.css';
 
-import React, { useEffect, useReducer, useCallback, useRef } from 'react';
+import React, { useEffect, useReducer, useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, Table, Ref, Button, Icon } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
 
-import { getTableData, getTableColumns } from '../../components/utils';
+import { getTableData, getTableColumns, formatText } from '../../components/utils';
 import FilterProvider, { FilterContext } from '../filter/indexFunctionalComponent';
 import PaginationProvider, { PaginationContext } from '../pagination/indexFunctioncalComponent';
 import SearchProvider, { SearchContext } from '../search/indexFuntionalComponent';
@@ -54,6 +54,7 @@ function reducer(state, action) {
 function TableComponent(props) {
   const tableElement = useRef(null);
   const columnAndKeys = getTableColumns(props.columnDefs);
+  const [useWrapper, setUseWrapper] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
     columns: columnAndKeys.columnDefs, //The columns gets array of objects. field isnt proper for this. I am hence using headerName
     bulkSelect: false,
@@ -127,6 +128,7 @@ function TableComponent(props) {
   const resetHandler = () => {
     dispatch({ type: tableActions.eraseStyles });
     setInlineStyle();
+    dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
   };
 
   const toggleColumns = useCallback(
@@ -157,16 +159,23 @@ function TableComponent(props) {
       await dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
       resetHandler();
     },
-    [state.columns, props.mandatoryFields]
+    [state.columns, props.mandatoryFields] // eslint-disable-line react-hooks/exhaustive-deps
   );
+
+  const getStyleObjectForColumn = (width, columnName) => {
+    const newStyleKey = `.column${columnName}`;
+    const newStyleObj = {};
+    newStyleObj[newStyleKey] = { width: `${width}px` };
+    return newStyleObj;
+  };
 
   const resize = useCallback(
     async (col, element, original_width = 20, original_mouse_x, e) => {
+      let width = 0;
       if (!element) {
         return;
       }
 
-      let width = 0;
       if (!!e) {
         width = original_width + (e.pageX - original_mouse_x);
       } else {
@@ -177,10 +186,8 @@ function TableComponent(props) {
           element.style.width = state.resetStylesForTable[`.column${col}`].width;
         } else {
           element.style.width = width + 'px';
-          const newStyleKey = `.column${col}`;
-          const newStyleObj = {};
-          newStyleObj[newStyleKey] = { width: `${width}px` };
-          dispatch({ type: tableActions.stylesForTable, payload: newStyleObj });
+          const newColumnStyleObj = getStyleObjectForColumn(width, col);
+          dispatch({ type: tableActions.stylesForTable, payload: newColumnStyleObj });
         }
       }
     },
@@ -219,15 +226,21 @@ function TableComponent(props) {
 
   const getAllColumns = useCallback(
     () => {
-      let allColumns = state.columns.map(eachCol => eachCol.headerName.replace(/[^a-zA-Z0-9]/g, ''));
+      let allColumns = state.columns.map(eachCol => {
+        return {
+          colName: formatText(eachCol.headerName),
+          fixed: eachCol.fixed,
+          defaultWidth: eachCol.defaultWidth,
+        };
+      });
       if (props.isShowSerialNumber) {
-        allColumns = ['SerialNo', ...allColumns];
+        allColumns = [{ colName: 'SerialNo' }, ...allColumns];
       }
       if (hasBulkActions) {
-        allColumns = ['BulkAction', ...allColumns];
+        allColumns = [{ colName: 'BulkAction' }, ...allColumns];
       }
       if (props.includeAction) {
-        allColumns = [...allColumns, 'Actions'];
+        allColumns = [...allColumns, { colName: 'Actions' }];
       }
       return allColumns;
     },
@@ -239,28 +252,28 @@ function TableComponent(props) {
 
   const setResetStylesForTable = useCallback(async () => {
     let allColumns = getAllColumns();
-
     await allColumns.map(async col => {
-      const element = tableElement.current.querySelector(`.head${col}`);
+      const element = tableElement.current.querySelector(`.head${col.colName}`);
       let original_width = getOriginalPropertyOfElement(element, 'width');
 
-      const newStyleKey = `.column${col}`;
-      const newStyleObj = {};
-      newStyleObj[newStyleKey] = { width: `${original_width}px` };
+      if (!!col.defaultWidth && original_width > col.defaultWidth) {
+        original_width = col.defaultWidth;
+      }
 
-      await dispatch({ type: tableActions.setResetTable, payload: newStyleObj });
+      const newColumnStyleObj = getStyleObjectForColumn(original_width, col.colName);
+
+      dispatch({ type: tableActions.setResetTable, payload: newColumnStyleObj });
     });
   }, [state.columns]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // The below function sets the inline style for each column after we are done setting the state "resetStylesForTable"
   const setInlineStyle = useCallback(
-    async () => {
+    () => {
       let allColumns = getAllColumns();
-
       Promise.all(
         allColumns.map(async col => {
-          const element = tableElement.current.querySelector(`.head${col}`);
-          return resize(col, element);
+          const element = tableElement.current.querySelector(`.head${col.colName}`);
+          return resize(col.colName, element);
         })
       );
       tableElement.current.style.width = 'fit-content';
@@ -275,12 +288,14 @@ function TableComponent(props) {
         await setResetStylesForTable();
       }
       if (Object.keys(state.resetStylesForTable).length === totalCols) {
+        setUseWrapper(() => true);
         await setInlineStyle();
+        dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
       }
     };
 
     setInlineStyleCaller();
-  }, [state.resetStylesForTable]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.resetStylesForTable, useWrapper]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // useEffect(() => {
   //   const changeTable = async () => {
@@ -303,12 +318,6 @@ function TableComponent(props) {
 
   // }, [state.columns]);
 
-  const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
-  const visibleColumns = state.columns.filter(d => d.isVisible); //TODO: probably this only has visible columns only
-  const filterableColumns = visibleColumns.filter(d => d.isFilterable);
-  const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
-  const hiddenColumnCount = state.columns.length - visibleColumns.length;
-
   const resetButton = () => {
     return (
       <Button
@@ -323,6 +332,39 @@ function TableComponent(props) {
       </Button>
     );
   };
+
+  const FixedSectionWrapper = useCallback(
+    props => {
+      const styleObject = {
+        zIndex: props?.children[0]?.props.as === 'th' ? '3' : '',
+        top: props?.children[0]?.props.as === 'th' ? '0px' : '',
+      };
+      if (
+        props.children.length !== 0 &&
+        useWrapper &&
+        (props.positionedTo === 'left' || props.positionedTo === 'right')
+      )
+        return (
+          <td className={`fixed-column-${props.positionedTo}`} style={styleObject}>
+            <table>
+              <tbody>
+                <tr>{props.children}</tr>
+              </tbody>
+            </table>
+          </td>
+        );
+      return props.children;
+    },
+    [useWrapper]
+  );
+
+  const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
+  const visibleColumnsToLeft = state.columns.filter(d => d.isVisible && d.fixed === 'left');
+  const visibleColumnsToRight = state.columns.filter(d => d.isVisible && d.fixed === 'right');
+  const visibleColumns = state.columns.filter(d => d.isVisible && d.fixed !== 'left' && d.fixed !== 'right'); //TODO: probably this only has visible columns only
+  const filterableColumns = visibleColumns.filter(d => d.isFilterable);
+  const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
+  const hiddenColumnCount = state.columns.length - visibleColumns.length;
 
   return (
     <div className="table-wrapper">
@@ -411,6 +453,18 @@ function TableComponent(props) {
                                                 <>
                                                   <Table.Header style={{ textAlign: 'center' }}>
                                                     <Table.Row>
+                                                      <FixedSectionWrapper positionedTo={'left'}>
+                                                        {visibleColumnsToLeft.map((column, index) =>
+                                                          TableHeader({
+                                                            resizeHandler,
+                                                            column,
+                                                            index,
+                                                            sortProps,
+                                                            defaultSort: props.defaultSort,
+                                                            disabled: !paginationProps.rowCount,
+                                                          })
+                                                        )}
+                                                      </FixedSectionWrapper>
                                                       {hasBulkActions ? (
                                                         <Table.HeaderCell className="bulkAction-check">
                                                           <div
@@ -461,6 +515,18 @@ function TableComponent(props) {
                                                           </div>
                                                         </Table.HeaderCell>
                                                       ) : null}
+                                                      <FixedSectionWrapper positionedTo={'right'}>
+                                                        {visibleColumnsToRight.map((column, index) =>
+                                                          TableHeader({
+                                                            resizeHandler,
+                                                            column,
+                                                            index,
+                                                            sortProps,
+                                                            defaultSort: props.defaultSort,
+                                                            disabled: !paginationProps.rowCount,
+                                                          })
+                                                        )}
+                                                      </FixedSectionWrapper>
                                                     </Table.Row>
                                                   </Table.Header>
                                                   <Table.Body>
@@ -470,6 +536,22 @@ function TableComponent(props) {
                                                         : false;
                                                       return (
                                                         <Table.Row key={`column-${index1}`} className="main-table-row">
+                                                          <FixedSectionWrapper positionedTo={'left'}>
+                                                            {visibleColumnsToLeft.map((column, index2) => {
+                                                              const styleSetTo =
+                                                                state.stylesForTable[
+                                                                  `.column${formatText(column.headerName)}`
+                                                                ];
+                                                              return TableCell({
+                                                                column,
+                                                                index2,
+                                                                data: paginationProps.rawData,
+                                                                row,
+                                                                emptyCellPlaceHolder,
+                                                                styleSetTo,
+                                                              });
+                                                            })}
+                                                          </FixedSectionWrapper>
                                                           {hasBulkActions && includeCheckbox !== false ? (
                                                             <Table.Cell>
                                                               <div
@@ -521,10 +603,7 @@ function TableComponent(props) {
                                                           {visibleColumns.map((column, index2) => {
                                                             const styleSetTo =
                                                               state.stylesForTable[
-                                                                `.column${column.headerName.replace(
-                                                                  /[^a-zA-Z0-9]/g,
-                                                                  ''
-                                                                )}`
+                                                                `.column${formatText(column.headerName)}`
                                                               ];
                                                             return TableCell({
                                                               column,
@@ -545,6 +624,22 @@ function TableComponent(props) {
                                                               />
                                                             </Table.Cell>
                                                           ) : null}
+                                                          <FixedSectionWrapper positionedTo={'right'}>
+                                                            {visibleColumnsToRight.map((column, index2) => {
+                                                              const styleSetTo =
+                                                                state.stylesForTable[
+                                                                  `.column${formatText(column.headerName)}`
+                                                                ];
+                                                              return TableCell({
+                                                                column,
+                                                                index2,
+                                                                data: paginationProps.rawData,
+                                                                row,
+                                                                emptyCellPlaceHolder,
+                                                                styleSetTo,
+                                                              });
+                                                            })}
+                                                          </FixedSectionWrapper>
                                                         </Table.Row>
                                                       );
                                                     })}
@@ -602,6 +697,9 @@ TableComponent.propTypes = {
       isSearchable: PropTypes.bool,
       isSortable: PropTypes.bool,
       type: PropTypes.string,
+      isResizable: PropTypes.bool,
+      fixed: PropTypes.string,
+      defaultWidth: PropTypes.number,
     })
   ),
   data: PropTypes.array,
