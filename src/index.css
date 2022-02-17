@@ -15,10 +15,6 @@ code {
   border-bottom: 1px solid rgb(241, 245, 247) !important;
 }
 
-.tableStyle thead tr {
-  z-index: 4;
-}
-
 .main-table-row {
   position: relative;
 }

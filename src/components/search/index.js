@@ -39,6 +39,7 @@ const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) =>
           position: 'relative',
           right: '0px',
           top: '-30px',
+          zIndex: '1',
         }}>
         <Input
           disabled={disabled}
@@ -61,7 +62,6 @@ const styles = {
     position: 'absolute',
     top: '35px',
     marginLeft: '10px',
-    zIndex: 9,
     right: '15px',
     borderRadius: '3px',
     maxWidth: '300px',

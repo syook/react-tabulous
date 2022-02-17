@@ -1,11 +1,13 @@
 import React from 'react';
 import { Icon, Table } from 'semantic-ui-react';
 
-const TableHeader = ({ column, index, sortProps, defaultSort, disabled }) => {
+const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, disabled, styleSetTo }) => {
   const { isSortable, isResizable = false, headerName, headerMessage, headerMessageColor } = column;
+  const headerNameTemp = headerName.replace(/[^a-zA-Z0-9]/g, '');
+  let currentOrder = sortProps.direction === 'ascending' ? 'descending' : 'ascending';
   return (
     <Table.HeaderCell
-      style={{ minWidth: 200, whiteSpace: 'normal' }}
+      style={{ whiteSpace: 'normal' }}
       sorted={
         (isSortable && !disabled && sortProps.columnName && sortProps.columnName === headerName) ||
         defaultSort === column.headerName
@@ -14,19 +16,34 @@ const TableHeader = ({ column, index, sortProps, defaultSort, disabled }) => {
       }
       className={`sort-table ${!disabled && isResizable ? ' resizable' : ''}`}
       key={`table-header-cell-${index}`}
-      onClick={
+      onMouseDown={
         isSortable
           ? sortProps.handleSort({
               ...column,
-              direction: sortProps.direction === 'ascending' ? 'descending' : 'ascending',
+              direction: currentOrder,
             })
           : undefined
       }>
-      {headerName}
-      {isSortable && !disabled && sortProps.columnName !== headerName && defaultSort !== column.headerName && (
-        <Icon name="sort" />
-      )}{' '}
-      <p style={{ color: headerMessageColor || 'blueviolet', display: 'inline-block' }}> {headerMessage} </p>
+      <div style={{ width: '100%' }} className={`head${headerNameTemp}`}>
+        {headerName}
+        {(isSortable && !disabled && sortProps.columnName !== headerName && defaultSort !== column.headerName && (
+          <Icon name="sort" />
+        )) ||
+          (isSortable &&
+            !disabled &&
+            sortProps.columnName === headerName &&
+            defaultSort !== column.headerName &&
+            (currentOrder === 'ascending' ? <Icon name="sort down" /> : <Icon name="sort up" />))}{' '}
+        <p style={{ color: headerMessageColor || 'blueviolet', display: 'inline-block' }}> {headerMessage} </p>
+        {isResizable && (
+          <div
+            style={{ height: '100%', position: 'absolute', cursor: 'col-resize', right: '0px', top: '0px' }}
+            className="bar"
+            onMouseDown={resizeHandler.bind(this, headerName.replace(/[^a-zA-Z0-9]/g, ''))}>
+            <span>|</span>
+          </div>
+        )}
+      </div>
     </Table.HeaderCell>
   );
 };

@@ -29,6 +29,7 @@ The files will be under `./lib` folder.
 | `isFilterable`   | is column filterable                                                                | Boolean            | false      |         |
 | `omitInHideList` | should the column be omitted in table and show/hide dropdown                        | Boolean            | false      |         |
 | `options`        | array of options if the type is MultiSelect or Single Select                        | Array              | false      | []      |
+| `isResizable`    | is column resizable                                                                 | Boolean            | false      | false   |
 
 ### b. Action Config Options : actions will be shown in action column in table
 
@@ -77,6 +78,7 @@ The files will be under `./lib` folder.
 | `emptyCellPlaceHolder` | placeholder for empty cells                                     |         | false    | string   |
 | `accentColor`          | colors for top bar buttons                                      |         | false    | string   |
 | `hideBulkCount`        | hide bulk select count for bulk actions                         | false   | false    | boolean  |
+| `showResetButton`      | display reset button                                            | true    | false    | boolean  |
 
 ## Example
 
@@ -226,7 +228,8 @@ customComponents = () => (
   name={'Table Name'}
   columnDefs={this.columnDefs}
   isShowSerialNumber={true}
-  isAllowDeepSearch={true}>
+  isAllowDeepSearch={true}
+  showResetButton={true}>
   {this.customComponents}
 </ReactTabulous>
 
