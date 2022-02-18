@@ -4,6 +4,7 @@ import React, { useEffect, useReducer, useCallback, useRef, useState, useLayoutE
 import PropTypes from 'prop-types';
 import { Checkbox, Table, Ref, Button, Icon } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
+import { cloneDeep } from 'lodash';
 
 import { getTableData, getTableColumns } from '../../components/utils';
 import FilterProvider, { FilterContext } from '../filter/indexFunctionalComponent';
@@ -48,21 +49,34 @@ function TableComponent(props) {
     stylesForTable: {},
     previousResetStyles: [],
   });
+  // showResetButton: true, //props.showResetButton && columnAndKeys.columnDefs.some(c => c.isResizable),
 
   //My useEffect for above useEffect
   useEffect(() => {
-    let columnAndKeys = {
-      searchKeys: { ...(tabulousState.searchKeys || {}) },
-      columnDefs: [...(tabulousState.columns || [])],
-    }; //Recheck this
+    // let columnAndKeys = {
+    //   searchKeys: { ...(tabulousState.searchKeys || {}) },
+    //   columnDefs: [...(tabulousState.columns || [])],
+    // };
+    // let columns = columnAndKeys.columnDefs || [];
+    // const columnDefsHeaderNames = (props.columnDefs || []).map(def => def.headerName);
+    // const stateColumnsHeaderNames = tabulousState.columns.map(c => c.headerName);
+    // if (props.resetHideColumnsOnDataChange || !isEqual(columnDefsHeaderNames, stateColumnsHeaderNames)) {
+    const columnAndKeys = getTableColumns([...props.columnDefs]);
     let columns = columnAndKeys.columnDefs || [];
-    const columnDefsHeaderNames = (props.columnDefs || []).map(def => def.headerName);
-    const stateColumnsHeaderNames = tabulousState.columns.map(c => c.headerName);
-    if (props.resetHideColumnsOnDataChange || !isEqual(columnDefsHeaderNames, stateColumnsHeaderNames)) {
-      columnAndKeys = getTableColumns([...props.columnDefs]);
-      columns = columnAndKeys.columnDefs || [];
-    }
+    // }
     const data = getTableData(columns, [...props.data], props.emptyCellPlaceHolder);
+
+    dispatchRedux(
+      tabulousActions.setShowResetButton({
+        bool: props.showResetButton && columnAndKeys.columnDefs.some(c => c.isResizable),
+      })
+    );
+
+    dispatchRedux(
+      tabulousActions.updateHiddenColumns({
+        hiddenColumns: columnAndKeys.columnDefs.filter(c => !props.mandatoryFields.includes(c.headerName)),
+      })
+    );
 
     dispatchRedux(
       tabulousActions.updateRawData({
@@ -133,7 +147,7 @@ function TableComponent(props) {
   //My updateSelectedRows function
   const newUpdateSelectedRows = useCallback(
     ({ checked }, row_id, rowCount) => {
-      let selectedRows = tabulousState.selectedRows;
+      let selectedRows = cloneDeep(tabulousState.selectedRows);
       const rowIndex = selectedRows.indexOf(row_id);
       if (rowIndex > -1 && !checked) selectedRows.splice(rowIndex, 1);
       if (rowIndex === -1) selectedRows.push(row_id);
@@ -167,15 +181,16 @@ function TableComponent(props) {
 
   //My resetHandler function
   const newResetHandler = () => {
-    dispatch({ type: tableActions.eraseStyles });
-    newSetInlineStyle();
-    dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
+    console.log(tabulousState.hiddenColumns);
+    // dispatch({ type: tableActions.eraseStyles });
+    // newSetInlineStyle();
+    // dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
   };
 
   // My toggleColumns function
   const newToggleColumns = useCallback(
     async (columnName, { checked }) => {
-      let columns = [...tabulousState.columns];
+      let columns = cloneDeep(tabulousState.columns);
       let updatableColumn = columns.find(c => c.headerName === columnName) || {};
       updatableColumn.isVisible = checked;
       const hiddenColumns = columns.filter(c => !props.mandatoryFields.includes(c.headerName));
@@ -376,7 +391,7 @@ function TableComponent(props) {
         // await dispatchRedux(
         //   tabulousActions.updateStylesForTable({ stylesForTable: tabulousState.resetStylesForTable })
         // );
-        await dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
+        dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
       }
     };
 
@@ -428,9 +443,14 @@ function TableComponent(props) {
   const visibleColumnsToLeft = tabulousState.columns.filter(d => d.isVisible && d.fixed === 'left');
   const visibleColumnsToRight = tabulousState.columns.filter(d => d.isVisible && d.fixed === 'right');
   const visibleColumns = tabulousState.columns.filter(d => d.isVisible && d.fixed !== 'left' && d.fixed !== 'right'); //TODO: probably this only has visible columns only
-  const filterableColumns = visibleColumns.filter(d => d.isFilterable);
+  const filterableColumns = [
+    ...visibleColumns.filter(d => d.isFilterable),
+    ...visibleColumnsToLeft.filter(d => d.isFilterable),
+    ...visibleColumnsToRight.filter(d => d.isFilterable),
+  ];
   const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
-  const hiddenColumnCount = tabulousState.columns.length - visibleColumns.length;
+  const hiddenColumnCount =
+    tabulousState.columns.length - visibleColumns.length - visibleColumnsToLeft.length - visibleColumnsToRight.length;
 
   return (
     <div className="table-wrapper">

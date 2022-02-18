@@ -1,6 +1,6 @@
 import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
-import ReactTabulous from './containers/table/indexFunctionalComponent';
+import ReactTabulous from './containers/table/index';
 import { Icon } from 'semantic-ui-react';
 import { Provider } from 'react-redux';
 import store from './store';
@@ -235,7 +235,7 @@ export default class App extends React.Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
-      isResizable: true,
+      isResizable: false,
     },
     {
       headerName: 'Gender',
@@ -245,7 +245,8 @@ export default class App extends React.Component {
       isSortable: false,
       isSearchable: true,
       isFilterable: true,
-      isResizable: true,
+      isResizable: false,
+      fixed: 'left',
     },
     {
       headerName: 'Age',
@@ -303,42 +304,40 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Provider store={store}>
-          <ReactTabulous
-            data={this.state.data}
-            columnDefs={this.columnDefs}
-            actionDefs={this.actionDefs}
-            showCheckbox={row => this.showCheckbox(row)}
-            showBulkActions={true}
-            bulkActionDefs={[
-              { name: 'Delete', function: selectedRows => console.log('bulkAction Single action', selectedRows) },
-            ]}
-            // count={20}
-            // showIcon={this.showIcon}
-            // key={props.workOrderableFilter + props.woType + props.workOrderCount}
-            includeAction
-            // count={props.name === 'showPageTable' ? null : props.count}
-            mandatoryFields={['Name']}
-            tableScroll={false}
-            tableName={''}
-            // enableIcon={true}
-            // fetchOnPageChange={(pageNumber, search, searchKeys, rowsPerPage, sortParams) => {
-            //   //do something here , like fetch the data from backend.
-            //   this.setState({ data: this.state.data });
-            //   console.log('heyy');
-            // }}
-            // showIcon={row => this.showIcon(row)}
-            isShowSerialNumber
-            getSelectedOrUnselectedId={(check, id) => {
-              console.log(check, id, 'checked value for particular row for the bulkAction');
-            }}
-            getBulkActionState={this.getBulkActionState}
-            hideBulkCount={true}
-            // emptyCellPlaceHolder="N/A"
-            // resetFilterOnDataChange={false}
-            // resetHideColumnsOnDataChange={false}
-          />
-        </Provider>
+        <ReactTabulous
+          data={this.state.data}
+          columnDefs={this.columnDefs}
+          actionDefs={this.actionDefs}
+          showCheckbox={row => this.showCheckbox(row)}
+          showBulkActions={true}
+          bulkActionDefs={[
+            { name: 'Delete', function: selectedRows => console.log('bulkAction Single action', selectedRows) },
+          ]}
+          // count={20}
+          // showIcon={this.showIcon}
+          // key={props.workOrderableFilter + props.woType + props.workOrderCount}
+          includeAction
+          // count={props.name === 'showPageTable' ? null : props.count}
+          mandatoryFields={['Name']}
+          tableScroll={false}
+          tableName={''}
+          // enableIcon={true}
+          // fetchOnPageChange={(pageNumber, search, searchKeys, rowsPerPage, sortParams) => {
+          //   //do something here , like fetch the data from backend.
+          //   this.setState({ data: this.state.data });
+          //   console.log('heyy');
+          // }}
+          // showIcon={row => this.showIcon(row)}
+          isShowSerialNumber
+          getSelectedOrUnselectedId={(check, id) => {
+            console.log(check, id, 'checked value for particular row for the bulkAction');
+          }}
+          getBulkActionState={this.getBulkActionState}
+          hideBulkCount={true}
+          // emptyCellPlaceHolder="N/A"
+          // resetFilterOnDataChange={false}
+          // resetHideColumnsOnDataChange={false}
+        />
       </div>
     );
   }

@@ -5,15 +5,15 @@ import { getTableColumns } from '../components/utils';
 const tabulousSlice = createSlice({
   name: 'tabulous',
   initialState: {
-    columns: [], //columnAndKeys.columnDefs
+    columns: [],
     bulkSelect: false,
     indeterminateSelect: false,
     selectedRows: [],
-    searchKeys: [], //columnAndKeys.searchKeys
-    hiddenColumns: [], //columnAndKeys.columnDefs.filter(c => !props.mandatoryFields.includes(c.headerName)),
-    data: [], //getTableData(columnAndKeys.columnDefs, [...props.data]),
-    rawData: [], //props.data,
-    showResetButton: true, //props.showResetButton && columnAndKeys.columnDefs.some(c => c.isResizable),
+    searchKeys: [],
+    hiddenColumns: [],
+    data: [],
+    rawData: [],
+    showResetButton: false,
   },
   reducers: {
     updateColumns(state, action) {
@@ -32,7 +32,7 @@ const tabulousSlice = createSlice({
       state.bulkSelect = action.payload.bulkSelect;
     },
     updateSelectedRows(state, action) {
-      state.selectedRows = [[...(action.payload.selectedRows || [])]];
+      state.selectedRows = [...(action.payload.selectedRows || [])];
     },
     updateIndeterminateSelect(state, action) {
       state.indeterminateSelect = action.payload.indeterminateSelect;
@@ -45,6 +45,9 @@ const tabulousSlice = createSlice({
     },
     updateHiddenColumns(state, action) {
       state.hiddenColumns = [...(action.payload.hiddenColumns || [])];
+    },
+    setShowResetButton(state, action) {
+      state.showResetButton = action.payload.bool;
     },
   },
 });
