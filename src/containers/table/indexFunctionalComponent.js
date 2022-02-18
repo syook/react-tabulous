@@ -182,10 +182,9 @@ function TableComponent(props) {
 
   //My resetHandler function
   const newResetHandler = () => {
-    console.log(tabulousState.hiddenColumns);
-    // dispatch({ type: tableActions.eraseStyles });
-    // newSetInlineStyle();
-    // dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
+    dispatch({ type: tableActions.eraseStyles });
+    newSetInlineStyle();
+    dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
   };
 
   // My toggleColumns function
