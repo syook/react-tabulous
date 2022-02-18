@@ -103,7 +103,6 @@ th div,td div{
   position:sticky !important;
   height: inherit;
   border-bottom: none !important;
-  /* top: 0px; */
   left: 0px;
   z-index: 2;
   border-right: 5px solid rgba(34,36,38,0.1);
@@ -114,7 +113,6 @@ th div,td div{
   position:sticky !important;
   height: inherit;
   border-bottom: none !important;
-  /* top: 0px; */
   right: 0px;
   z-index: 2;
   border-left: 5px solid rgba(34,36,38,0.1) !important;

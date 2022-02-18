@@ -1,12 +1,12 @@
 import './index.css';
 
-import React, { useEffect, useReducer, useCallback, useRef, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useReducer, useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, Table, Ref, Button, Icon } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
 import { cloneDeep } from 'lodash';
 
-import { getTableData, getTableColumns } from '../../components/utils';
+import { getTableData, getTableColumns, formatText } from '../../components/utils';
 import FilterProvider, { FilterContext } from '../filter/indexFunctionalComponent';
 import PaginationProvider, { PaginationContext } from '../pagination/indexFunctioncalComponent';
 import SearchProvider, { SearchContext } from '../search/indexFuntionalComponent';
@@ -44,6 +44,7 @@ function TableComponent(props) {
   const tabulousState = useSelector(state => state.tabulous);
 
   const tableElement = useRef(null);
+  const [useWrapper, setUseWrapper] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
     resetStylesForTable: {},
     stylesForTable: {},
@@ -295,15 +296,13 @@ function TableComponent(props) {
     );
   };
 
-  const [useWrapper, setUseWrapper] = useState(false);
-
   // The getAllColumns function helps us get all the columns including BulkActions, S.No. and Actions columns
   // My getAllColumns function
   const newGetAllColumns = useCallback(
     () => {
       let allColumns = tabulousState.columns.map(eachCol => {
         return {
-          colName: eachCol.headerName.replace(/[^a-zA-Z0-9]/g, ''),
+          colName: formatText(eachCol.headerName),
           fixed: eachCol.fixed,
           defaultWidth: eachCol.defaultWidth,
         };
@@ -337,7 +336,7 @@ function TableComponent(props) {
 
       const newColumnStyleObj = getStyleObjectForColumn(original_width, col.colName);
 
-      await dispatch({ type: tableActions.setResetTable, payload: newColumnStyleObj });
+      dispatch({ type: tableActions.setResetTable, payload: newColumnStyleObj });
     });
   }, [tabulousState.columns]);
 
@@ -379,7 +378,7 @@ function TableComponent(props) {
         isEqual(state.previousResetStyles.at(-1), state.resetStylesForTable) &&
         Object.keys(state.resetStylesForTable).length !== 0
       ) {
-        setContinueRun(state => false);
+        setContinueRun(() => false);
       }
       // console.log(state.previousResetStyles.at(-1));
       // console.log(state.resetStylesForTable);
@@ -631,10 +630,7 @@ function TableComponent(props) {
                                                             {visibleColumnsToLeft.map((column, index2) => {
                                                               const styleSetTo =
                                                                 state.stylesForTable[
-                                                                  `.column${column.headerName.replace(
-                                                                    /[^a-zA-Z0-9]/g,
-                                                                    ''
-                                                                  )}`
+                                                                  `.column${formatText(column.headerName)}`
                                                                 ];
                                                               return TableCell({
                                                                 column,
@@ -697,10 +693,7 @@ function TableComponent(props) {
                                                           {visibleColumns.map((column, index2) => {
                                                             const styleSetTo =
                                                               state.stylesForTable[
-                                                                `.column${column.headerName.replace(
-                                                                  /[^a-zA-Z0-9]/g,
-                                                                  ''
-                                                                )}`
+                                                                `.column${formatText(column.headerName)}`
                                                               ];
                                                             return TableCell({
                                                               column,
@@ -725,10 +718,7 @@ function TableComponent(props) {
                                                             {visibleColumnsToRight.map((column, index2) => {
                                                               const styleSetTo =
                                                                 state.stylesForTable[
-                                                                  `.column${column.headerName.replace(
-                                                                    /[^a-zA-Z0-9]/g,
-                                                                    ''
-                                                                  )}`
+                                                                  `.column${formatText(column.headerName)}`
                                                                 ];
                                                               return TableCell({
                                                                 column,

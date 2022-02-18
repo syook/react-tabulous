@@ -53,3 +53,7 @@ export const getTableColumns = (columnDefs = []) => {
     { columnDefs: [], searchKeys: {} }
   );
 };
+
+export const formatText = text => {
+  return text.replace(/[^a-zA-Z0-9]/g, '');
+};
