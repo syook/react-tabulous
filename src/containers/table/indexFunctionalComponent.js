@@ -362,9 +362,14 @@ function TableComponent(props) {
   const visibleColumnsToLeft = state.columns.filter(d => d.isVisible && d.fixed === 'left');
   const visibleColumnsToRight = state.columns.filter(d => d.isVisible && d.fixed === 'right');
   const visibleColumns = state.columns.filter(d => d.isVisible && d.fixed !== 'left' && d.fixed !== 'right'); //TODO: probably this only has visible columns only
-  const filterableColumns = visibleColumns.filter(d => d.isFilterable);
+  const filterableColumns = [
+    ...visibleColumns.filter(d => d.isFilterable),
+    ...visibleColumnsToLeft.filter(d => d.isFilterable),
+    ...visibleColumnsToRight.filter(d => d.isFilterable),
+  ];
   const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
-  const hiddenColumnCount = state.columns.length - visibleColumns.length;
+  const hiddenColumnCount =
+    state.columns.length - visibleColumns.length - visibleColumnsToLeft.length - visibleColumnsToRight.length;
 
   return (
     <div className="table-wrapper">
