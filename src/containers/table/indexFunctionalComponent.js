@@ -256,7 +256,7 @@ function TableComponent(props) {
       const element = tableElement.current.querySelector(`.head${col.colName}`);
       let original_width = getOriginalPropertyOfElement(element, 'width');
 
-      if (!!col.defaultWidth && original_width > col.defaultWidth) {
+      if (!!col.defaultWidth && original_width !== col.defaultWidth) {
         original_width = col.defaultWidth;
       }
 
@@ -296,27 +296,6 @@ function TableComponent(props) {
 
     setInlineStyleCaller();
   }, [state.resetStylesForTable, useWrapper]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // useEffect(() => {
-  //   const changeTable = async () => {
-  //     let allColumns = getAllColumns();
-  //     let totalCols = allColumns.length;
-  //     if(Object.keys(state.resetStylesForTable).length !== totalCols){
-  //       tableElement.current.style.width = '100%';
-  //       await allColumns.map(async col => {
-  //         const element = tableElement.current.querySelector(`.head${col}`);
-  //         element.removeAttribute("style");
-  //       });
-  //       dispatch({ type: tableActions.eraseStyles });
-  //       dispatch({ type: tableActions.eraseResetStyles });
-  //       await setResetStylesForTable();
-  //       await setInlineStyle();
-
-  //     }
-  //   }
-  //   changeTable();
-
-  // }, [state.columns]);
 
   const resetButton = () => {
     return (
@@ -416,7 +395,11 @@ function TableComponent(props) {
                           {state.showResetButton && resetButton()}
                           {props.children ? (
                             <div style={{ display: 'inline-block' }}>
-                              {props.children(filterProps.data, searchProps.searchText, visibleColumns)}
+                              {props.children(filterProps.data, searchProps.searchText, [
+                                ...visibleColumnsToLeft,
+                                ...visibleColumns,
+                                ...visibleColumnsToRight,
+                              ])}
                             </div>
                           ) : null}
                           <SortProvider

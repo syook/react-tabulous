@@ -64,7 +64,7 @@ const styles = {
     marginLeft: '10px',
     right: '15px',
     borderRadius: '3px',
-    maxWidth: '300px',
+    maxWidth: '250px',
   },
   closeIcon: {
     position: 'absolute',
