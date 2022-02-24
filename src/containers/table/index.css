@@ -5,12 +5,16 @@
 
 table {
   border-collapse: collapse;
-  width: 100%;
 }
 th,
 td {
   background: #fff;
   padding: 8px 16px;
+  overflow: hidden;
+}
+th div, td > div{
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tableFixHead {
@@ -25,7 +29,7 @@ td {
 .tableFixHead thead th {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 1;
 }
 
 .tableBody-scroll::-webkit-scrollbar {
@@ -37,4 +41,83 @@ td {
 
 .table-wrapper {
   position: relative;
+}
+
+/* There are some basic stylings required for the "table" element and div that wraps the table element */
+/* Below stylings were copied from the pagination component which was earlier providing the wrapper */
+
+.scrollable-table .tableStyle {
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+}
+.tableStyle .tbody {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.tableStyle thead > tr th {
+  background: #f1f5f7 !important;
+}
+
+.tableStyle .ui.ribbon.label {
+  background: #d6e7f3;
+  color: #26547c;
+}
+
+.tableStyle tbody tr td {
+  text-align: center !important;
+}
+
+/* The .bar selector represents the vertical line we use to resize column width */
+
+.resizable_bar{
+  font-size:20px;
+  color: violet;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  cursor: col-resize;
+  right: 0px;
+  top: 0;
+}
+.resizable_bar:hover{
+  color: black;
+}
+
+/* Semantic-UI has some default styling for the behavior of table-header when we Sort the respective column. */
+/* Below styling helps get rid of that default behavior */
+
+.ui.sortable.table thead th.sorted:after {
+  display: none !important;
+}
+.ui.sortable.table thead th.descending:after {
+  display: none !important;
+}
+.ui.sortable.table thead th.ascending:after {
+  display: none !important;
+}
+
+.fixed-column-left {
+  padding: 0px !important;
+  position:sticky !important;
+  height: inherit;
+  border-bottom: none !important;
+  left: 0px;
+  z-index: 2;
+  border-right: 5px solid rgba(34,36,38,0.1);
+}
+
+.fixed-column-right {
+  padding: 0px !important;
+  position:sticky !important;
+  height: inherit;
+  border-bottom: none !important;
+  right: 0px;
+  z-index: 2;
+  border-left: 5px solid rgba(34,36,38,0.1) !important;
+}
+
+.ui.celled.table tr .fixed-column-left {
+  border-bottom: none !important;
 }

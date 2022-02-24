@@ -1,11 +1,11 @@
 import './index.css';
 
-import React, { useEffect, useReducer, useCallback } from 'react';
+import React, { useEffect, useReducer, useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Table } from 'semantic-ui-react';
+import { Checkbox, Table, Ref, Button, Icon } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
 
-import { getTableData, getTableColumns } from '../../components/utils';
+import { getTableData, getTableColumns, formatText } from '../../components/utils';
 import FilterProvider, { FilterContext } from '../filter/indexFunctionalComponent';
 import PaginationProvider, { PaginationContext } from '../pagination/indexFunctioncalComponent';
 import SearchProvider, { SearchContext } from '../search/indexFuntionalComponent';
@@ -38,15 +38,25 @@ function reducer(state, action) {
       return { ...state, data: [...(action.payload || [])] };
     case tableActions.rawData:
       return { ...state, rawData: [...(action.payload || [])] };
+    case tableActions.stylesForTable:
+      return { ...state, stylesForTable: { ...state.stylesForTable, ...action.payload } };
+    case tableActions.eraseStyles:
+      return { ...state, stylesForTable: {} };
+    case tableActions.setResetTable:
+      return { ...state, resetStylesForTable: { ...state.resetStylesForTable, ...action.payload } };
+    case tableActions.eraseResetStyles:
+      return { ...state, resetStylesForTable: {} };
     default:
       return state;
   }
 }
 
 function TableComponent(props) {
+  const tableElement = useRef(null);
   const columnAndKeys = getTableColumns(props.columnDefs);
+  const [useWrapper, setUseWrapper] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
-    columns: columnAndKeys.columnDefs,
+    columns: columnAndKeys.columnDefs, //The columns gets array of objects. field isnt proper for this. I am hence using headerName
     bulkSelect: false,
     indeterminateSelect: false,
     selectedRows: [],
@@ -54,6 +64,9 @@ function TableComponent(props) {
     hiddenColumns: columnAndKeys.columnDefs.filter(c => !props.mandatoryFields.includes(c.headerName)),
     data: getTableData(columnAndKeys.columnDefs, [...props.data]),
     rawData: props.data,
+    stylesForTable: {},
+    resetStylesForTable: {},
+    showResetButton: props.showResetButton && columnAndKeys.columnDefs.some(c => c.isResizable),
   });
 
   useEffect(() => {
@@ -71,7 +84,7 @@ function TableComponent(props) {
     dispatch({ type: tableActions.rawData, payload: props.data });
     dispatch({ type: tableActions.columns, payload: columns });
     dispatch({ type: tableActions.searchKeys, payload: columnAndKeys.searchKeys });
-  }, [props.data, props.columnDefs, props.emptyCellPlaceHolder]); //props.columnDefs
+  }, [props.data, props.columnDefs, props.emptyCellPlaceHolder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const enableBulkSelect = useCallback(
     ({ checked }, data = []) => {
@@ -81,7 +94,7 @@ function TableComponent(props) {
       dispatch({ type: tableActions.indeterminateSelect, payload: false });
       if (props.getBulkActionState) props.getBulkActionState(checked);
     },
-    [props.getBulkActionState]
+    [props.getBulkActionState] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const resetBulkSelection = useCallback(() => {
@@ -109,23 +122,30 @@ function TableComponent(props) {
       dispatch({ type: tableActions.indeterminateSelect, payload: indeterminateSelect });
       if (props.getSelectedOrUnselectedId) props.getSelectedOrUnselectedId(checked, row_id);
     },
-    [state.selectedRows, props.getSelectedOrUnselectedId]
+    [state.selectedRows, props.getSelectedOrUnselectedId] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
+  const resetHandler = () => {
+    dispatch({ type: tableActions.eraseStyles });
+    setInlineStyle();
+    dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
+  };
+
   const toggleColumns = useCallback(
-    (columnName, { checked }) => {
+    async (columnName, { checked }) => {
       let columns = [...state.columns];
       let updatableColumn = columns.find(c => c.headerName === columnName) || {};
       updatableColumn.isVisible = checked;
       const hiddenColumns = columns.filter(c => !props.mandatoryFields.includes(c.headerName));
-      dispatch({ type: tableActions.columns, payload: columns });
-      dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
+      await dispatch({ type: tableActions.columns, payload: columns });
+      await dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
+      resetHandler();
     },
-    [state.columns]
+    [state.columns] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const toggleAllColumns = useCallback(
-    checked => {
+    async checked => {
       const updatedColumns = state.columns.map(column => {
         if (props.mandatoryFields.includes(column.headerName)) {
           return column;
@@ -135,17 +155,200 @@ function TableComponent(props) {
       });
 
       const hiddenColumns = updatedColumns.filter(c => !props.mandatoryFields.includes(c.headerName));
-      dispatch({ type: tableActions.columns, payload: updatedColumns });
-      dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
+      await dispatch({ type: tableActions.columns, payload: updatedColumns });
+      await dispatch({ type: tableActions.hiddenColumns, payload: hiddenColumns });
+      resetHandler();
     },
-    [state.columns, props.mandatoryFields]
+    [state.columns, props.mandatoryFields] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  const getStyleObjectForColumn = (width, columnName) => {
+    const newStyleKey = `.column${columnName}`;
+    const newStyleObj = {};
+    newStyleObj[newStyleKey] = { width: `${width}px` };
+    return newStyleObj;
+  };
+
+  const resize = useCallback(
+    async (col, element, original_width = 20, original_mouse_x, e) => {
+      let width = 0;
+      if (!element) {
+        return;
+      }
+
+      if (!!e) {
+        width = original_width + (e.pageX - original_mouse_x);
+      } else {
+        width = original_width;
+      }
+      if (width >= 20) {
+        if (!e) {
+          element.style.width = state.resetStylesForTable[`.column${col}`].width;
+        } else {
+          element.style.width = width + 'px';
+          const newColumnStyleObj = getStyleObjectForColumn(width, col);
+          dispatch({ type: tableActions.stylesForTable, payload: newColumnStyleObj });
+        }
+      }
+    },
+    [state.resetStylesForTable]
+  );
+
+  const getOriginalPropertyOfElement = (element, property) => {
+    return parseFloat(
+      getComputedStyle(element, null)
+        .getPropertyValue(property)
+        .replace('px', '')
+    );
+  };
+
+  const resizeHandler = async (col, e) => {
+    e.stopPropagation();
+    const element = tableElement.current.querySelector(`.head${col}`);
+    e.preventDefault();
+    let original_width = getOriginalPropertyOfElement(element, 'width');
+    let original_mouse_x = e.pageX;
+
+    const refFunc = async e => {
+      await resize(col, element, original_width, original_mouse_x, e);
+    };
+    window.addEventListener('mousemove', refFunc, true);
+    window.addEventListener(
+      'mouseup',
+      () => {
+        window.removeEventListener('mousemove', refFunc, true);
+      },
+      true
+    );
+  };
+
+  // The getAllColumns function helps us get all the columns including BulkActions, S.No. and Actions columns
+
+  const getAllColumns = useCallback(
+    () => {
+      let allColumns = state.columns.map(eachCol => {
+        return {
+          colName: formatText(eachCol.headerName),
+          fixed: eachCol.fixed,
+          defaultWidth: eachCol.defaultWidth,
+        };
+      });
+      if (props.isShowSerialNumber) {
+        allColumns = [{ colName: 'SerialNo' }, ...allColumns];
+      }
+      if (hasBulkActions) {
+        allColumns = [{ colName: 'BulkAction' }, ...allColumns];
+      }
+      if (props.includeAction) {
+        allColumns = [...allColumns, { colName: 'Actions' }];
+      }
+      return allColumns;
+    },
+    [state.columns] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  // There is a Reducer state named "resetStylesForTable". This state on the first render needs to be updated to the width of each Column on the first render.
+  // The setResetStylesForTable function helps us achieve this.
+
+  const setResetStylesForTable = useCallback(async () => {
+    let allColumns = getAllColumns();
+    await allColumns.map(async col => {
+      const element = tableElement.current.querySelector(`.head${col.colName}`);
+      let original_width = getOriginalPropertyOfElement(element, 'width');
+
+      if (!!col.defaultWidth && original_width !== col.defaultWidth) {
+        original_width = col.defaultWidth;
+      }
+
+      const newColumnStyleObj = getStyleObjectForColumn(original_width, col.colName);
+
+      dispatch({ type: tableActions.setResetTable, payload: newColumnStyleObj });
+    });
+  }, [state.columns]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // The below function sets the inline style for each column after we are done setting the state "resetStylesForTable"
+  const setInlineStyle = useCallback(
+    () => {
+      let allColumns = getAllColumns();
+      Promise.all(
+        allColumns.map(async col => {
+          const element = tableElement.current.querySelector(`.head${col.colName}`);
+          return resize(col.colName, element);
+        })
+      );
+      tableElement.current.style.width = 'fit-content';
+    },
+    [state.columns] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  useEffect(() => {
+    const setInlineStyleCaller = async () => {
+      let totalCols = getAllColumns().length;
+      if (Object.keys(state.resetStylesForTable).length === 0) {
+        await setResetStylesForTable();
+      }
+      if (Object.keys(state.resetStylesForTable).length === totalCols) {
+        setUseWrapper(() => true);
+        await setInlineStyle();
+        dispatch({ type: tableActions.stylesForTable, payload: state.resetStylesForTable });
+      }
+    };
+
+    setInlineStyleCaller();
+  }, [state.resetStylesForTable, useWrapper]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const resetButton = () => {
+    return (
+      <Button
+        disabled={props.disabled}
+        style={{
+          backgroundColor: props.accentColor ? 'rgb(170, 170, 170)' : 'rgba(241, 196, 15, 0.8)',
+          color: '#fff',
+          marginRight: '10px',
+        }}
+        onClick={resetHandler}>
+        <Icon name="redo" /> {'Reset'}
+      </Button>
+    );
+  };
+
+  const FixedSectionWrapper = useCallback(
+    props => {
+      const styleObject = {
+        zIndex: props?.children[0]?.props.as === 'th' ? '3' : '',
+        top: props?.children[0]?.props.as === 'th' ? '0px' : '',
+      };
+      if (
+        props.children.length !== 0 &&
+        useWrapper &&
+        (props.positionedTo === 'left' || props.positionedTo === 'right')
+      )
+        return (
+          <td className={`fixed-column-${props.positionedTo}`} style={styleObject}>
+            <table>
+              <tbody>
+                <tr>{props.children}</tr>
+              </tbody>
+            </table>
+          </td>
+        );
+      return props.children;
+    },
+    [useWrapper]
   );
 
   const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
-  const visibleColumns = state.columns.filter(d => d.isVisible); //TODO: probably this only has visible columns only
-  const filterableColumns = visibleColumns.filter(d => d.isFilterable);
+  const visibleColumnsToLeft = state.columns.filter(d => d.isVisible && d.fixed === 'left');
+  const visibleColumnsToRight = state.columns.filter(d => d.isVisible && d.fixed === 'right');
+  const visibleColumns = state.columns.filter(d => d.isVisible && d.fixed !== 'left' && d.fixed !== 'right'); //TODO: probably this only has visible columns only
+  const filterableColumns = [
+    ...visibleColumns.filter(d => d.isFilterable),
+    ...visibleColumnsToLeft.filter(d => d.isFilterable),
+    ...visibleColumnsToRight.filter(d => d.isFilterable),
+  ];
   const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
-  const hiddenColumnCount = state.columns.length - visibleColumns.length;
+  const hiddenColumnCount =
+    state.columns.length - visibleColumns.length - visibleColumnsToLeft.length - visibleColumnsToRight.length;
 
   return (
     <div className="table-wrapper">
@@ -157,6 +360,7 @@ function TableComponent(props) {
                 className="main-table_layout"
                 style={{
                   padding: '0 15px',
+                  width: '100%',
                 }}>
                 {state.hiddenColumns.length ? (
                   <HeaderSelector
@@ -188,9 +392,14 @@ function TableComponent(props) {
                     {filterProps => {
                       return (
                         <>
+                          {state.showResetButton && resetButton()}
                           {props.children ? (
                             <div style={{ display: 'inline-block' }}>
-                              {props.children(filterProps.data, searchProps.searchText, visibleColumns)}
+                              {props.children(filterProps.data, searchProps.searchText, [
+                                ...visibleColumnsToLeft,
+                                ...visibleColumns,
+                                ...visibleColumnsToRight,
+                              ])}
                             </div>
                           ) : null}
                           <SortProvider
@@ -219,135 +428,217 @@ function TableComponent(props) {
                                     resetPagination={sortProps.resetPagination}
                                     resetBulkSelection={resetBulkSelection}
                                     defaultItemsToDisplay={props.defaultItemsToDisplay}>
-                                    <PaginationContext.Consumer>
-                                      {paginationProps => {
-                                        return (
-                                          <>
-                                            <Table.Header style={{ textAlign: 'center' }}>
-                                              <Table.Row>
-                                                {hasBulkActions ? (
-                                                  <Table.HeaderCell className="bulkAction-check" style={{ zIndex: 5 }}>
-                                                    <div
-                                                      style={{
-                                                        display: 'flex',
-                                                        justifyContent: 'center',
-                                                        alignItems: 'center',
-                                                      }}>
-                                                      <Checkbox
-                                                        checked={state.bulkSelect}
-                                                        disabled={!paginationProps.rowCount}
-                                                        indeterminate={state.indeterminateSelect}
-                                                        onChange={(e, { checked }) =>
-                                                          enableBulkSelect({ checked }, filterProps.data)
-                                                        }
-                                                      />
-                                                    </div>
-                                                  </Table.HeaderCell>
-                                                ) : null}
-                                                {props.isShowSerialNumber && (
-                                                  <Table.HeaderCell>
-                                                    <div
-                                                      style={{
-                                                        textAlign: 'center',
-                                                        margin: '0 auto',
-                                                      }}>
-                                                      S.No
-                                                    </div>
-                                                  </Table.HeaderCell>
-                                                )}
-                                                {visibleColumns.map((column, index) =>
-                                                  TableHeader({
-                                                    column,
-                                                    index,
-                                                    sortProps,
-                                                    defaultSort: props.defaultSort,
-                                                    disabled: !paginationProps.rowCount,
-                                                  })
-                                                )}
-                                                {!props.actionOnHover ? (
-                                                  props.includeAction ? (
-                                                    <Table.HeaderCell style={{ zIndex: 5 }}>Actions</Table.HeaderCell>
-                                                  ) : null
-                                                ) : null}
-                                              </Table.Row>
-                                            </Table.Header>
-                                            <Table.Body>
-                                              {paginationProps.data.map((row, index1) => {
-                                                const includeCheckbox = props.showCheckbox
-                                                  ? props.showCheckbox(row)
-                                                  : false;
-                                                return (
-                                                  <Table.Row key={`column-${index1}`} className="main-table-row">
-                                                    {hasBulkActions && includeCheckbox !== false ? (
-                                                      <Table.Cell>
-                                                        <div
-                                                          style={{
-                                                            display: 'flex',
-                                                            justifyContent: 'center',
-                                                            flexDirection: props.showStatusIcon ? 'row-reverse' : null,
-                                                            alignItems: 'center',
-                                                          }}>
-                                                          <Checkbox
-                                                            className="bulkAction_check"
-                                                            checked={state.selectedRows.includes(
-                                                              row['_id'] || row['id']
-                                                            )}
-                                                            onChange={(e, { checked }) =>
-                                                              updateSelectedRows(
-                                                                { checked },
-                                                                row['_id'] || row['id'],
-                                                                paginationProps.rowCount
-                                                              )
-                                                            }
-                                                          />
-                                                          {props.showStatusIcon ? (
-                                                            <StatusIcon showStatusIcon={props.showStatusIcon(row)} />
+                                    <div
+                                      className={`scrollable-table tableFixHead ${
+                                        props.tableScroll ? 'shouldSroll' : null
+                                      }`}
+                                      style={{ maxWidth: '100%', marginTop: '10px' }}>
+                                      <Ref innerRef={tableElement}>
+                                        <Table sortable celled padded className="tableStyle left aligned table-fixed">
+                                          <PaginationContext.Consumer>
+                                            {paginationProps => {
+                                              return (
+                                                <>
+                                                  <Table.Header style={{ textAlign: 'center' }}>
+                                                    <Table.Row>
+                                                      <FixedSectionWrapper positionedTo={'left'}>
+                                                        {visibleColumnsToLeft.map((column, index) =>
+                                                          TableHeader({
+                                                            resizeHandler,
+                                                            column,
+                                                            index,
+                                                            sortProps,
+                                                            defaultSort: props.defaultSort,
+                                                            disabled: !paginationProps.rowCount,
+                                                          })
+                                                        )}
+                                                      </FixedSectionWrapper>
+                                                      {hasBulkActions ? (
+                                                        <Table.HeaderCell className="bulkAction-check">
+                                                          <div
+                                                            className="headBulkAction"
+                                                            style={{
+                                                              width: '100%',
+                                                            }}>
+                                                            <Checkbox
+                                                              checked={state.bulkSelect}
+                                                              disabled={!paginationProps.rowCount}
+                                                              indeterminate={state.indeterminateSelect}
+                                                              onChange={(e, { checked }) =>
+                                                                enableBulkSelect({ checked }, filterProps.data)
+                                                              }
+                                                            />
+                                                          </div>
+                                                        </Table.HeaderCell>
+                                                      ) : null}
+                                                      {props.isShowSerialNumber && (
+                                                        <Table.HeaderCell>
+                                                          <div
+                                                            className="headSerialNo"
+                                                            style={{
+                                                              width: '100%',
+                                                            }}>
+                                                            S.No
+                                                          </div>
+                                                        </Table.HeaderCell>
+                                                      )}
+                                                      {visibleColumns.map((column, index) =>
+                                                        TableHeader({
+                                                          resizeHandler,
+                                                          column,
+                                                          index,
+                                                          sortProps,
+                                                          defaultSort: props.defaultSort,
+                                                          disabled: !paginationProps.rowCount,
+                                                        })
+                                                      )}
+                                                      {!props.actionOnHover && props.includeAction ? (
+                                                        <Table.HeaderCell>
+                                                          <div
+                                                            className="headActions"
+                                                            style={{
+                                                              width: '100%',
+                                                            }}>
+                                                            Actions
+                                                          </div>
+                                                        </Table.HeaderCell>
+                                                      ) : null}
+                                                      <FixedSectionWrapper positionedTo={'right'}>
+                                                        {visibleColumnsToRight.map((column, index) =>
+                                                          TableHeader({
+                                                            resizeHandler,
+                                                            column,
+                                                            index,
+                                                            sortProps,
+                                                            defaultSort: props.defaultSort,
+                                                            disabled: !paginationProps.rowCount,
+                                                          })
+                                                        )}
+                                                      </FixedSectionWrapper>
+                                                    </Table.Row>
+                                                  </Table.Header>
+                                                  <Table.Body>
+                                                    {paginationProps.data.map((row, index1) => {
+                                                      const includeCheckbox = props.showCheckbox
+                                                        ? props.showCheckbox(row)
+                                                        : false;
+                                                      return (
+                                                        <Table.Row key={`column-${index1}`} className="main-table-row">
+                                                          <FixedSectionWrapper positionedTo={'left'}>
+                                                            {visibleColumnsToLeft.map((column, index2) => {
+                                                              const styleSetTo =
+                                                                state.stylesForTable[
+                                                                  `.column${formatText(column.headerName)}`
+                                                                ];
+                                                              return TableCell({
+                                                                column,
+                                                                index2,
+                                                                data: paginationProps.rawData,
+                                                                row,
+                                                                emptyCellPlaceHolder,
+                                                                styleSetTo,
+                                                              });
+                                                            })}
+                                                          </FixedSectionWrapper>
+                                                          {hasBulkActions && includeCheckbox !== false ? (
+                                                            <Table.Cell>
+                                                              <div
+                                                                style={{
+                                                                  display: 'flex',
+                                                                  justifyContent: 'center',
+                                                                  flexDirection: props.showStatusIcon
+                                                                    ? 'row-reverse'
+                                                                    : null,
+                                                                  alignItems: 'center',
+                                                                }}>
+                                                                <Checkbox
+                                                                  className="bulkAction_check"
+                                                                  checked={state.selectedRows.includes(
+                                                                    row['_id'] || row['id']
+                                                                  )}
+                                                                  onChange={(e, { checked }) =>
+                                                                    updateSelectedRows(
+                                                                      { checked },
+                                                                      row['_id'] || row['id'],
+                                                                      paginationProps.rowCount
+                                                                    )
+                                                                  }
+                                                                />
+                                                                {props.showStatusIcon ? (
+                                                                  <StatusIcon
+                                                                    showStatusIcon={props.showStatusIcon(row)}
+                                                                  />
+                                                                ) : null}
+                                                              </div>
+                                                            </Table.Cell>
                                                           ) : null}
-                                                        </div>
-                                                      </Table.Cell>
-                                                    ) : null}
-                                                    {props.isShowSerialNumber && (
-                                                      <Table.Cell>
-                                                        <div
-                                                          style={{
-                                                            textAlign: 'center',
-                                                            margin: '0 auto',
-                                                          }}>
-                                                          {paginationProps.startIndex + index1 + 1}
-                                                          {props.enableIcon
-                                                            ? props.showIcon(paginationProps.rawData[row.objIndex])
-                                                            : null}
-                                                        </div>
-                                                      </Table.Cell>
-                                                    )}
-
-                                                    {visibleColumns.map((column, index2) =>
-                                                      TableCell({
-                                                        column,
-                                                        index2,
-                                                        data: paginationProps.rawData,
-                                                        row,
-                                                        emptyCellPlaceHolder,
-                                                      })
-                                                    )}
-                                                    {props.includeAction ? (
-                                                      <Table.Cell className="table-action_buttons">
-                                                        <TableActions
-                                                          actionOnHover={props.actionOnHover}
-                                                          actions={props.actionDefs}
-                                                          row={row}
-                                                          data={paginationProps.rawData}
-                                                        />
-                                                      </Table.Cell>
-                                                    ) : null}
-                                                  </Table.Row>
-                                                );
-                                              })}
-                                            </Table.Body>
-                                          </>
-                                        );
-                                      }}
-                                    </PaginationContext.Consumer>
+                                                          {props.isShowSerialNumber && (
+                                                            <Table.Cell>
+                                                              <div
+                                                                style={{
+                                                                  textAlign: 'center',
+                                                                  margin: '0 auto',
+                                                                }}>
+                                                                {paginationProps.startIndex + index1 + 1}
+                                                                {props.enableIcon
+                                                                  ? props.showIcon(
+                                                                      paginationProps.rawData[row.objIndex]
+                                                                    )
+                                                                  : null}
+                                                              </div>
+                                                            </Table.Cell>
+                                                          )}
+                                                          {visibleColumns.map((column, index2) => {
+                                                            const styleSetTo =
+                                                              state.stylesForTable[
+                                                                `.column${formatText(column.headerName)}`
+                                                              ];
+                                                            return TableCell({
+                                                              column,
+                                                              index2,
+                                                              data: paginationProps.rawData,
+                                                              row,
+                                                              emptyCellPlaceHolder,
+                                                              styleSetTo,
+                                                            });
+                                                          })}
+                                                          {props.includeAction ? (
+                                                            <Table.Cell className="table-action_buttons">
+                                                              <TableActions
+                                                                actionOnHover={props.actionOnHover}
+                                                                actions={props.actionDefs}
+                                                                row={row}
+                                                                data={paginationProps.rawData}
+                                                              />
+                                                            </Table.Cell>
+                                                          ) : null}
+                                                          <FixedSectionWrapper positionedTo={'right'}>
+                                                            {visibleColumnsToRight.map((column, index2) => {
+                                                              const styleSetTo =
+                                                                state.stylesForTable[
+                                                                  `.column${formatText(column.headerName)}`
+                                                                ];
+                                                              return TableCell({
+                                                                column,
+                                                                index2,
+                                                                data: paginationProps.rawData,
+                                                                row,
+                                                                emptyCellPlaceHolder,
+                                                                styleSetTo,
+                                                              });
+                                                            })}
+                                                          </FixedSectionWrapper>
+                                                        </Table.Row>
+                                                      );
+                                                    })}
+                                                  </Table.Body>
+                                                </>
+                                              );
+                                            }}
+                                          </PaginationContext.Consumer>
+                                        </Table>
+                                      </Ref>
+                                    </div>
                                   </PaginationProvider>
                                 );
                               }}
@@ -394,6 +685,9 @@ TableComponent.propTypes = {
       isSearchable: PropTypes.bool,
       isSortable: PropTypes.bool,
       type: PropTypes.string,
+      isResizable: PropTypes.bool,
+      fixed: PropTypes.string,
+      defaultWidth: PropTypes.number,
     })
   ),
   data: PropTypes.array,
@@ -405,11 +699,13 @@ TableComponent.propTypes = {
   tableFooterName: PropTypes.string,
   tableName: PropTypes.string,
   hideBulkCount: PropTypes.bool,
+  showResetButton: PropTypes.bool,
 };
 
 TableComponent.defaultProps = {
   resetFilterOnDataChange: true,
   resetHideColumnsOnDataChange: true,
+  showResetButton: true,
 };
 
 export default TableComponent;

@@ -11,14 +11,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.ui.celled.table tr td {
-  border-bottom: 1px solid rgb(241, 245, 247) !important;
-}
-
-.tableStyle thead tr {
-  z-index: 4;
-}
-
 .main-table-row {
   position: relative;
 }
