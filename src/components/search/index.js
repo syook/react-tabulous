@@ -8,6 +8,7 @@ const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) =>
 
   useEffect(() => {
     onChangeSearchText(searchTerm);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
 
   const onInputChange = event => {

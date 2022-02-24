@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useReducer, useCallback } from 'react';
 
 import Pagination from '../../components/pagination';
