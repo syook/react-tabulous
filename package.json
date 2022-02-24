@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/syook/react-tabulous/issues"
   },
-  "homepage": "https://github.com/syook/react-tabulous#readme",
+  "homepage": "https://github.com/syook/react-tabulous",
   "scripts": {
     "start": "react-scripts start",
     "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js",
@@ -47,13 +47,15 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
+    "@babel/core": "^7.12.3",
     "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.4",
+    "@reduxjs/toolkit": "^1.7.2",
+    "babel-eslint": "^10.1.0",
     "css-loader": "^2.1.1",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^2.3.0",
@@ -62,7 +64,8 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "^3.0.0",
+    "react-redux": "^7.2.6",
+    "react-scripts": "^4.0.3",
     "style-loader": "^0.23.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.2"
