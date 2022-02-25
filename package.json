@@ -1,6 +1,6 @@
 {
   "name": "@syook/react-tabulous",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "description": "Terrifically fabulous React Table",
   "main": "lib/react-tabulous.min.js",
   "files": [
@@ -28,7 +28,8 @@
     "start": "react-scripts start",
     "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "npm-publish": "npm i && npm run build && npm publish"
   },
   "eslintConfig": {
     "extends": "react-app"
