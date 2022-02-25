@@ -69,7 +69,6 @@ function SearchProvider(props) {
     } else {
       search(state.searchText, props);
     }
-    const a = props;
   }, [props.tableData]);
 
   const updateRowsPerPage = useCallback(val => {

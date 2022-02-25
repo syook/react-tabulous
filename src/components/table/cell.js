@@ -1,5 +1,4 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react';
 import { formatText } from '../utils';
 
 const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder, styleSetTo }) => {
@@ -13,13 +12,13 @@ const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder, styleSetTo
       : row[column.headerName]
     : null;
   return currentItem ? (
-    <Table.Cell key={`table-cell-${index2}`}>
+    <td key={`table-cell-${index2}`}>
       <div
         style={{ ...styleSetTo, overflow: `${typeof cellData === 'object' ? 'visible' : ''}` }}
         className={`column${headerNameFormatted}`}>
         {cellData}
       </div>
-    </Table.Cell>
+    </td>
   ) : null;
 };
 

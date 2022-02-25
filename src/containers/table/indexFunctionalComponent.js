@@ -434,13 +434,13 @@ function TableComponent(props) {
                                       }`}
                                       style={{ maxWidth: '100%', marginTop: '10px' }}>
                                       <Ref innerRef={tableElement}>
-                                        <Table sortable celled padded className="tableStyle left aligned table-fixed">
+                                        <Table sortable celled className="tableStyle left aligned table-fixed">
                                           <PaginationContext.Consumer>
                                             {paginationProps => {
                                               return (
                                                 <>
                                                   <Table.Header style={{ textAlign: 'center' }}>
-                                                    <Table.Row>
+                                                    <tr>
                                                       <FixedSectionWrapper positionedTo={'left'}>
                                                         {visibleColumnsToLeft.map((column, index) =>
                                                           TableHeader({
@@ -454,7 +454,7 @@ function TableComponent(props) {
                                                         )}
                                                       </FixedSectionWrapper>
                                                       {hasBulkActions ? (
-                                                        <Table.HeaderCell className="bulkAction-check">
+                                                        <th className="bulkAction-check">
                                                           <div
                                                             className="headBulkAction"
                                                             style={{
@@ -469,10 +469,10 @@ function TableComponent(props) {
                                                               }
                                                             />
                                                           </div>
-                                                        </Table.HeaderCell>
+                                                        </th>
                                                       ) : null}
                                                       {props.isShowSerialNumber && (
-                                                        <Table.HeaderCell>
+                                                        <th>
                                                           <div
                                                             className="headSerialNo"
                                                             style={{
@@ -480,7 +480,7 @@ function TableComponent(props) {
                                                             }}>
                                                             S.No
                                                           </div>
-                                                        </Table.HeaderCell>
+                                                        </th>
                                                       )}
                                                       {visibleColumns.map((column, index) =>
                                                         TableHeader({
@@ -493,7 +493,7 @@ function TableComponent(props) {
                                                         })
                                                       )}
                                                       {!props.actionOnHover && props.includeAction ? (
-                                                        <Table.HeaderCell>
+                                                        <th>
                                                           <div
                                                             className="headActions"
                                                             style={{
@@ -501,7 +501,7 @@ function TableComponent(props) {
                                                             }}>
                                                             Actions
                                                           </div>
-                                                        </Table.HeaderCell>
+                                                        </th>
                                                       ) : null}
                                                       <FixedSectionWrapper positionedTo={'right'}>
                                                         {visibleColumnsToRight.map((column, index) =>
@@ -515,7 +515,7 @@ function TableComponent(props) {
                                                           })
                                                         )}
                                                       </FixedSectionWrapper>
-                                                    </Table.Row>
+                                                    </tr>
                                                   </Table.Header>
                                                   <Table.Body>
                                                     {paginationProps.data.map((row, index1) => {

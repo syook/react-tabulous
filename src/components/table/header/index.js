@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, Table } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
+import './tableHeader.css';
 import { formatText } from '../../utils';
 
 const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, disabled, styleSetTo }) => {
@@ -7,14 +8,8 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
   const headerNameFormatted = formatText(headerName);
   let currentOrder = sortProps.direction === 'ascending' ? 'descending' : 'ascending';
   return (
-    <Table.HeaderCell
+    <th
       style={{ whiteSpace: 'normal' }}
-      sorted={
-        (isSortable && !disabled && sortProps.columnName && sortProps.columnName === headerName) ||
-        defaultSort === column.headerName
-          ? sortProps.direction || 'ascending'
-          : null
-      }
       className={`sort-table ${!disabled && isResizable ? 'resizable' : ''}`}
       key={`table-header-cell-${index}`}
       onMouseDown={
@@ -28,13 +23,23 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
       <div style={styleSetTo ? { styleSetTo } : { width: '100%' }} className={`head${headerNameFormatted}`}>
         {headerName}
         {(isSortable && !disabled && sortProps.columnName !== headerName && defaultSort !== column.headerName && (
-          <Icon name="sort" />
+          <span className="__sortableIcon">
+            <Icon name="sort" />
+          </span>
         )) ||
           (isSortable &&
             !disabled &&
             sortProps.columnName === headerName &&
             defaultSort !== column.headerName &&
-            (currentOrder === 'ascending' ? <Icon name="sort down" /> : <Icon name="sort up" />))}{' '}
+            (currentOrder === 'ascending' ? (
+              <span className="__sortableIcon">
+                <Icon name="sort down" />
+              </span>
+            ) : (
+              <span className="__sortableIcon">
+                <Icon name="sort up" />
+              </span>
+            )))}{' '}
         <p style={{ color: headerMessageColor || 'blueviolet', display: 'inline-block' }}> {headerMessage} </p>
         {isResizable && (
           <div
@@ -45,7 +50,7 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
           </div>
         )}
       </div>
-    </Table.HeaderCell>
+    </th>
   );
 };
 
