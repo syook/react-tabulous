@@ -12,7 +12,8 @@ td {
   padding: 8px 16px;
   overflow: hidden;
 }
-th div, td > div{
+th div,
+td > div {
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -70,8 +71,8 @@ th div, td > div{
 
 /* The .bar selector represents the vertical line we use to resize column width */
 
-.resizable_bar{
-  font-size:20px;
+.resizable_bar {
+  font-size: 20px;
   color: violet;
   height: 100%;
   position: absolute;
@@ -81,7 +82,7 @@ th div, td > div{
   right: 0px;
   top: 0;
 }
-.resizable_bar:hover{
+.resizable_bar:hover {
   color: black;
 }
 
@@ -100,22 +101,22 @@ th div, td > div{
 
 .fixed-column-left {
   padding: 0px !important;
-  position:sticky !important;
+  position: sticky !important;
   height: inherit;
   border-bottom: none !important;
   left: 0px;
   z-index: 2;
-  border-right: 5px solid rgba(34,36,38,0.1);
+  border-right: 5px solid rgba(34, 36, 38, 0.1);
 }
 
 .fixed-column-right {
   padding: 0px !important;
-  position:sticky !important;
+  position: sticky !important;
   height: inherit;
   border-bottom: none !important;
   right: 0px;
   z-index: 2;
-  border-left: 5px solid rgba(34,36,38,0.1) !important;
+  border-left: 5px solid rgba(34, 36, 38, 0.1) !important;
 }
 
 .ui.celled.table tr .fixed-column-left {
