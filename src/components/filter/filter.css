@@ -1,139 +1,104 @@
-.filter-wrapper {
-  display: flex;
-  flex-flow: column;
-  width: 700px;
+.rt-filter {
+  display: inline-block;
 }
 
-.filter-wrapper .text-input .css-1pcexqc-container .css-16pqwjk-indicatorContainer {
-  padding: 2px;
-}
-.filter-wrapper .text-input .css-1pcexqc-container svg {
-  height: 15px;
-  width: 15px;
-}
-.filter-wrapper .text-input .ui.input {
-  width: 100%;
+.filter-popUp.popup {
+  width: 620px;
+  min-width: 620px;
 }
 
-.filter-wrapper .text-input .ui.input input {
-  min-width: 150px;
+.filter-popUp .filter-wrapper {
+  background-color: #fff;
 }
 
-.filter-btns .filter_btn {
+.filter-popUp .filter-wrapper .btn-add-wrapper::after {
+  content: ' ';
+  width: 506px;
+  height: 1px;
+  margin: -2px;
+  vertical-align: super;
+  background-color: #e5e5e5;
+  display: inline-block;
+}
+
+.filter-popUp .filter-wrapper .btn-add,
+.filter-popUp .filter-wrapper .btn-add:active,
+.filter-popUp .filter-wrapper .btn-add:focus,
+.filter-popUp .filter-wrapper .btn-add:hover {
+  color: #4724d8 !important;
+  box-shadow: 0 0 0 1px #4724d8 inset;
+  width: 80px;
+  padding: 6px 4px;
+  font-size: 12px;
+}
+
+.filter-popUp .filter-wrapper .filter-btn-apply,
+.filter-popUp .filter-wrapper .filter-btn-apply:hover,
+.filter-popUp .filter-wrapper .filter-btn-apply:focus {
+  background-color: #4724d8;
+  padding: 6px 14px;
+  font-size: 12px;
+}
+
+.filter-popUp .filter-wrapper .filter-btn-clear-all,
+.filter-popUp .filter-wrapper .filter-btn-clear-all:hover,
+.filter-popUp .filter-wrapper .filter-btn-clear-all:focus {
   background: none;
-  color: #5c5c5c;
-  margin: 0 5px;
-  font-weight: 500;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #ff5056;
 }
 
-.filter-btns .filter_btn.add {
+.filter-popUp .filter-wrapper .btn-icon-plus {
+  margin: 0;
+  width: auto;
+}
+
+.filter-popUp .filter-wrapper .rt_select {
+  width: 60px;
+  height: 30px;
+  font-size: 12px;
+}
+
+.filter-popUp .filter-wrapper.IndicatorsContainer {
+  width: 10px;
+}
+
+/* filter grid */
+.filter-grid {
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
 }
 
-.filter-btns .filter_btn:hover {
-  background: none;
-  color: #474747;
+.filter-grid .rt_select_group {
+  width: 78px;
+  margin-right: 16px;
 }
 
-.filter-btns .filter_btn:focus {
-  background: none;
-  color: #3785fa;
-}
-.filter-popUp::before {
-  display: none;
+.filter-grid .rt_select_field {
+  width: 150px;
+  margin-right: 16px;
 }
 
-.ui.button:disabled {
-  cursor: not-allowed !important;
-  pointer-events: all !important;
+.filter-grid .rt_select_filter_type {
+  width: 112px;
+  margin-right: 16px;
 }
 
-/* for single select */
-
-/* .singleSelect .css-16pqwjk-indicatorContainer, */
-.singleSelect .css-bgvzuu-indicatorSeparator {
-  display: none;
+.filter-grid .text-input {
+  width: 192px;
 }
 
-.singleSelect .css-bg1rzq-control {
-  border: none;
+.filter-grid .times.circle {
+  cursor: pointer;
+  color: red;
+  margin: 0 0 0 8px;
 }
 
-/* reducing the padding btn text and svg icon */
-
-.singleSelect .css-1hwfws3 {
-  padding-right: 0;
-  justify-content: center;
-}
-
-.singleSelect .css-16pqwjk-indicatorContainer {
-  padding-left: 0;
-}
-
-/* bgc on hover */
-
-.singleSelect .css-bg1rzq-control:hover {
-  background: #f2f2f2;
-}
-
-.singleSelect .css-1szy77t-control:hover,
-.singleSelect .css-1szy77t-control {
-  border-color: transparent;
-  box-shadow: none;
-}
-
-.singleSelect .css-bg1rzq-control {
-  padding: 0px;
-  min-height: 30px !important;
-}
-
-/* .css-1szy77t-control svg {
-  display: none !important;
-} */
-
-/* show only 2 values for multi-select */
-.filter-multi-select {
-  vertical-align: top;
-  min-width: 150px;
-  max-width: 150px;
-}
-
-.css-1pcexqc-container.filter-multi-select .css-1hwfws3 {
+/* filter wrapper */
+.filter-wrapper .filter-btns {
   display: flex;
-  flex-wrap: nowrap !important;
-}
-
-.css-es53b3-multiValue {
-  margin: 0 !important;
-}
-
-.css-es53b3-multiValue:nth-last-child(n + 3) {
-  width: 0px;
-  border: none;
-  background: transparent;
-  color: transparent;
-}
-
-.css-es53b3-multiValue:nth-last-child(n + 3) .css-12jo7m5 {
-  color: transparent;
-}
-
-.css-es53b3-multiValue:nth-last-child(n + 3) .css-1alnv5e {
-  display: none;
-}
-
-.css-es53b3-multiValue:nth-last-child(3) {
-  position: relative;
-  width: 15px;
-}
-
-.css-es53b3-multiValue:nth-last-child(3) ::before {
-  position: absolute;
-  content: '...';
-  color: rgb(38, 84, 124);
-  width: 10px;
-  font-size: 18px;
-  bottom: -3px;
-  left: 0px;
+  flex-direction: row-reverse;
+  align-items: center;
 }
