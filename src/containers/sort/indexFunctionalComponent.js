@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useReducer, useCallback } from 'react';
 
 import { fetchSortedData } from './utils';
@@ -27,7 +28,7 @@ function SortProvider(props) {
     columnType: null,
     direction: null,
     data: [...props.data],
-    resetPagination: props.resetPagination||false,
+    resetPagination: props.resetPagination || false,
   });
 
   const handleSort = useCallback(

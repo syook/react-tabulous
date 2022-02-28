@@ -10,11 +10,11 @@ th,
 td {
   background: #fff;
   padding: 8px 16px;
+  overflow: hidden;
 }
-th div,td div{
+th div, td > div{
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: auto;
 }
 
 .tableFixHead {
@@ -70,7 +70,7 @@ th div,td div{
 
 /* The .bar selector represents the vertical line we use to resize column width */
 
-.bar{
+.resizable_bar{
   font-size:20px;
   color: violet;
   height: 100%;
@@ -81,7 +81,7 @@ th div,td div{
   right: 0px;
   top: 0;
 }
-.bar:hover{
+.resizable_bar:hover{
   color: black;
 }
 

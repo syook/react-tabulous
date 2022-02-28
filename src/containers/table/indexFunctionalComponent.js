@@ -256,7 +256,7 @@ function TableComponent(props) {
       const element = tableElement.current.querySelector(`.head${col.colName}`);
       let original_width = getOriginalPropertyOfElement(element, 'width');
 
-      if (!!col.defaultWidth && original_width > col.defaultWidth) {
+      if (!!col.defaultWidth && original_width !== col.defaultWidth) {
         original_width = col.defaultWidth;
       }
 
@@ -296,27 +296,6 @@ function TableComponent(props) {
 
     setInlineStyleCaller();
   }, [state.resetStylesForTable, useWrapper]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // useEffect(() => {
-  //   const changeTable = async () => {
-  //     let allColumns = getAllColumns();
-  //     let totalCols = allColumns.length;
-  //     if(Object.keys(state.resetStylesForTable).length !== totalCols){
-  //       tableElement.current.style.width = '100%';
-  //       await allColumns.map(async col => {
-  //         const element = tableElement.current.querySelector(`.head${col}`);
-  //         element.removeAttribute("style");
-  //       });
-  //       dispatch({ type: tableActions.eraseStyles });
-  //       dispatch({ type: tableActions.eraseResetStyles });
-  //       await setResetStylesForTable();
-  //       await setInlineStyle();
-
-  //     }
-  //   }
-  //   changeTable();
-
-  // }, [state.columns]);
 
   const resetButton = () => {
     return (
@@ -362,9 +341,14 @@ function TableComponent(props) {
   const visibleColumnsToLeft = state.columns.filter(d => d.isVisible && d.fixed === 'left');
   const visibleColumnsToRight = state.columns.filter(d => d.isVisible && d.fixed === 'right');
   const visibleColumns = state.columns.filter(d => d.isVisible && d.fixed !== 'left' && d.fixed !== 'right'); //TODO: probably this only has visible columns only
-  const filterableColumns = visibleColumns.filter(d => d.isFilterable);
+  const filterableColumns = [
+    ...visibleColumns.filter(d => d.isFilterable),
+    ...visibleColumnsToLeft.filter(d => d.isFilterable),
+    ...visibleColumnsToRight.filter(d => d.isFilterable),
+  ];
   const emptyCellPlaceHolder = props.emptyCellPlaceHolder || '';
-  const hiddenColumnCount = state.columns.length - visibleColumns.length;
+  const hiddenColumnCount =
+    state.columns.length - visibleColumns.length - visibleColumnsToLeft.length - visibleColumnsToRight.length;
 
   return (
     <div className="table-wrapper">
@@ -411,7 +395,11 @@ function TableComponent(props) {
                           {state.showResetButton && resetButton()}
                           {props.children ? (
                             <div style={{ display: 'inline-block' }}>
-                              {props.children(filterProps.data, searchProps.searchText, visibleColumns)}
+                              {props.children(filterProps.data, searchProps.searchText, [
+                                ...visibleColumnsToLeft,
+                                ...visibleColumns,
+                                ...visibleColumnsToRight,
+                              ])}
                             </div>
                           ) : null}
                           <SortProvider

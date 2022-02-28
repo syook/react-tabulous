@@ -8,6 +8,7 @@ const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) =>
 
   useEffect(() => {
     onChangeSearchText(searchTerm);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
 
   const onInputChange = event => {
@@ -64,7 +65,7 @@ const styles = {
     marginLeft: '10px',
     right: '15px',
     borderRadius: '3px',
-    maxWidth: '300px',
+    maxWidth: '250px',
   },
   closeIcon: {
     position: 'absolute',

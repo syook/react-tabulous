@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useReducer, useCallback } from 'react';
 
 import Pagination from '../../components/pagination';
