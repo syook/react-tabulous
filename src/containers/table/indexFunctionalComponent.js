@@ -195,11 +195,7 @@ function TableComponent(props) {
   );
 
   const getOriginalPropertyOfElement = (element, property) => {
-    return parseFloat(
-      getComputedStyle(element, null)
-        .getPropertyValue(property)
-        .replace('px', '')
-    );
+    return parseFloat(getComputedStyle(element, null).getPropertyValue(property).replace('px', ''));
   };
 
   const resizeHandler = async (col, e) => {
@@ -306,7 +302,8 @@ function TableComponent(props) {
           color: '#fff',
           marginRight: '10px',
         }}
-        onClick={resetHandler}>
+        onClick={resetHandler}
+      >
         <Icon name="redo" /> {'Reset'}
       </Button>
     );
@@ -383,7 +380,8 @@ function TableComponent(props) {
                   columns={state.columns}
                   resetFilterOnDataChange={props.resetFilterOnDataChange}
                   accentColor={props.accentColor}
-                  emptyCellPlaceHolder={emptyCellPlaceHolder}>
+                  emptyCellPlaceHolder={emptyCellPlaceHolder}
+                >
                   <FilterContext.Consumer>
                     {filterProps => {
                       return (
@@ -406,7 +404,8 @@ function TableComponent(props) {
                             count={filterProps.count}
                             updateRowsSortParams={searchProps.updateRowsSortParams}
                             rowsPerPageFromSearch={searchProps.rowsPerPageFromSearch}
-                            searchText={searchProps.searchText}>
+                            searchText={searchProps.searchText}
+                          >
                             <SortContext.Consumer>
                               {sortProps => {
                                 return (
@@ -451,7 +450,8 @@ function TableComponent(props) {
                                                             className="headBulkAction"
                                                             style={{
                                                               width: '100%',
-                                                            }}>
+                                                            }}
+                                                          >
                                                             <Checkbox
                                                               checked={state.bulkSelect}
                                                               disabled={!paginationProps.rowCount}
@@ -469,7 +469,8 @@ function TableComponent(props) {
                                                             className="headSerialNo"
                                                             style={{
                                                               width: '100%',
-                                                            }}>
+                                                            }}
+                                                          >
                                                             S.No
                                                           </div>
                                                         </th>
@@ -490,7 +491,8 @@ function TableComponent(props) {
                                                             className="headActions"
                                                             style={{
                                                               width: '100%',
-                                                            }}>
+                                                            }}
+                                                          >
                                                             Actions
                                                           </div>
                                                         </th>
@@ -542,7 +544,8 @@ function TableComponent(props) {
                                                                     ? 'row-reverse'
                                                                     : null,
                                                                   alignItems: 'center',
-                                                                }}>
+                                                                }}
+                                                              >
                                                                 <Checkbox
                                                                   className="bulkAction_check"
                                                                   checked={state.selectedRows.includes(
@@ -570,7 +573,8 @@ function TableComponent(props) {
                                                                 style={{
                                                                   textAlign: 'center',
                                                                   margin: '0 auto',
-                                                                }}>
+                                                                }}
+                                                              >
                                                                 {paginationProps.startIndex + index1 + 1}
                                                                 {props.enableIcon
                                                                   ? props.showIcon(

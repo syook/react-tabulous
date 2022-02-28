@@ -120,7 +120,8 @@ function SearchProvider(props) {
           rowsPerPageFromSearch: state.rowsPerPage,
           updateRowsPerPage: updateRowsPerPage,
           updateRowsSortParams: updateRowsSortParams,
-        }}>
+        }}
+      >
         <SearchComponent
           disabled={!mainDataCount && !state.searchText}
           name={props.tableName}

@@ -32,57 +32,58 @@ function SortProvider(props) {
   });
 
   const handleSort = useCallback(
-    ({ headerName: clickedColumn, type: columnType, direction, field }) => () => {
-      direction = direction || 'ascending';
+    ({ headerName: clickedColumn, type: columnType, direction, field }) =>
+      () => {
+        direction = direction || 'ascending';
 
-      if (!clickedColumn) return;
-      const { columnName } = state;
-      if (columnName !== clickedColumn) {
-        direction = 'ascending';
-        props.updateRowsSortParams(field, columnType, direction);
-        if (props.fetchOnPageChange) {
-          props.fetchOnPageChange(1, props.searchText, null, props.rowsPerPageFromSearch, {
-            columnName: field,
-            columnType,
-            direction,
+        if (!clickedColumn) return;
+        const { columnName } = state;
+        if (columnName !== clickedColumn) {
+          direction = 'ascending';
+          props.updateRowsSortParams(field, columnType, direction);
+          if (props.fetchOnPageChange) {
+            props.fetchOnPageChange(1, props.searchText, null, props.rowsPerPageFromSearch, {
+              columnName: field,
+              columnType,
+              direction,
+            });
+          }
+          dispatch({
+            type: 'columnName',
+            payload: clickedColumn,
+          });
+          dispatch({
+            type: 'columnType',
+            payload: columnType,
+          });
+          dispatch({
+            type: 'direction',
+            payload: direction,
+          });
+          dispatch({
+            type: 'resetPagination',
+            payload: !state.resetPagination,
+          });
+        } else {
+          props.updateRowsSortParams(field, columnType, direction);
+
+          if (props.fetchOnPageChange) {
+            props.fetchOnPageChange(1, props.searchText, null, props.rowsPerPageFromSearch, {
+              columnName: field,
+              columnType,
+              direction,
+            });
+          }
+          dispatch({
+            type: 'direction',
+            payload: direction,
+          });
+          dispatch({
+            type: 'resetPagination',
+            payload: !state.resetPagination,
           });
         }
-        dispatch({
-          type: 'columnName',
-          payload: clickedColumn,
-        });
-        dispatch({
-          type: 'columnType',
-          payload: columnType,
-        });
-        dispatch({
-          type: 'direction',
-          payload: direction,
-        });
-        dispatch({
-          type: 'resetPagination',
-          payload: !state.resetPagination,
-        });
-      } else {
-        props.updateRowsSortParams(field, columnType, direction);
-
-        if (props.fetchOnPageChange) {
-          props.fetchOnPageChange(1, props.searchText, null, props.rowsPerPageFromSearch, {
-            columnName: field,
-            columnType,
-            direction,
-          });
-        }
-        dispatch({
-          type: 'direction',
-          payload: direction,
-        });
-        dispatch({
-          type: 'resetPagination',
-          payload: !state.resetPagination,
-        });
-      }
-    },
+      },
     [props.fetchOnPageChange, state.columnName, state.resetPagination, props.updateRowsSortParams]
   );
 
@@ -125,7 +126,8 @@ function SortProvider(props) {
         direction: state.direction,
         columnName: state.columnName,
         columnType: state.columnType,
-      }}>
+      }}
+    >
       {children}
     </SortContext.Provider>
   );

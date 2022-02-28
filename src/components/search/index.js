@@ -30,7 +30,8 @@ const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) =>
             paddingLeft: '15px',
             paddingTop: '5px',
             textAlign: 'left',
-          }}>
+          }}
+        >
           {name}
         </div>
       )}
@@ -41,13 +42,15 @@ const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) =>
           right: '0px',
           top: '-30px',
           zIndex: '1',
-        }}>
+        }}
+      >
         <Input
           disabled={disabled}
           iconPosition="left"
           onChange={onInputChange}
           placeholder={placeholder || 'Search...'}
-          style={styles.searchInputDiv}>
+          style={styles.searchInputDiv}
+        >
           <Icon name="search" />
           <input className="tabulous-searchInput" value={searchTerm} />
           <Icon disabled={disabled} name="close" onClick={onClearSearchTerm} style={styles.closeIcon} />

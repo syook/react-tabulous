@@ -47,7 +47,8 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
           <div
             style={{ height: '100%', position: 'absolute', cursor: 'col-resize', right: '0px', top: '0px' }}
             className="resizable_bar"
-            onMouseDown={resizeHandler.bind(this, headerNameFormatted)}>
+            onMouseDown={resizeHandler.bind(this, headerNameFormatted)}
+          >
             <span>|</span>
           </div>
         )}

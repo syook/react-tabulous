@@ -9,8 +9,10 @@ Commit convention is based on [Conventional Commits](http://conventionalcommits.
 Change log format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 ## [Unreleased]
-- 
-## [Released] 
+
+-
+
+## [Released]
 
 ## [2.7.7](https://github.com/syook/react-tabulous/releases/tag/2.7.7) - 2021-07-08
 

@@ -5,12 +5,7 @@ export const searchObj = (obj, query, searchKeys) => {
   let found = false;
   for (const key in searchKeys) {
     const value = get(obj, key) || '';
-    if (
-      value
-        .toString()
-        .toLowerCase()
-        .indexOf(query) !== -1
-    ) {
+    if (value.toString().toLowerCase().indexOf(query) !== -1) {
       found = true;
       return found;
     }

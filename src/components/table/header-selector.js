@@ -47,7 +47,8 @@ const HeaderSelector = props => {
               color: '#fff',
               padding: hiddenColumnsCount ? '0.78em 0.6em 0.78em' : '',
               marginRight: '10px',
-            }}>
+            }}
+          >
             <Icon name="eye slash outline" />{' '}
             {hiddenColumnsCount === 1
               ? '1 hidden column'
