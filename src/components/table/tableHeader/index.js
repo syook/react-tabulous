@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
-import './tableHeader.css';
+import './tabulousHeader.css';
 import { formatText } from '../../utils';
 
 const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, disabled, styleSetTo }) => {
@@ -10,7 +10,7 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
   return (
     <th
       style={{ whiteSpace: 'normal' }}
-      className={`sort-table ${!disabled && isResizable ? 'resizable' : ''}`}
+      className={`sort-table ${!disabled && isResizable ? 'resizable' : ''} __tabulousHeader`}
       key={`table-header-cell-${index}`}
       onMouseDown={
         isSortable
@@ -20,8 +20,10 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
             })
           : undefined
       }>
-      <div style={styleSetTo ? { styleSetTo } : { width: '100%' }} className={`head${headerNameFormatted}`}>
-        {headerName}
+      <div
+        style={styleSetTo ? { styleSetTo } : { width: '100%' }}
+        className={`head${headerNameFormatted} __tabulousHeader_Content`}>
+        <span className="__tabulousHeader_Content_Text">{headerName}</span>
         {(isSortable && !disabled && sortProps.columnName !== headerName && defaultSort !== column.headerName && (
           <span className="__sortableIcon">
             <Icon name="sort" />

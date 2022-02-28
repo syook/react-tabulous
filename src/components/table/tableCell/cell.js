@@ -1,5 +1,6 @@
 import React from 'react';
-import { formatText } from '../utils';
+import { formatText } from '../../utils';
+import './tabulousCell.css';
 
 const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder, styleSetTo }) => {
   const currentItem = data[row.objIndex];
@@ -12,10 +13,10 @@ const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder, styleSetTo
       : row[column.headerName]
     : null;
   return currentItem ? (
-    <td key={`table-cell-${index2}`}>
+    <td key={`table-cell-${index2}`} className="__tabulousCell">
       <div
         style={{ ...styleSetTo, overflow: `${typeof cellData === 'object' ? 'visible' : ''}` }}
-        className={`column${headerNameFormatted}`}>
+        className={`column${headerNameFormatted} __tabulousCell_Content`}>
         {cellData}
       </div>
     </td>

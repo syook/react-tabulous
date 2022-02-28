@@ -14,8 +14,8 @@ import SortProvider, { SortContext } from '../sort/indexFunctionalComponent';
 import BulkActionList from '../../components/table/bulk-action-dropdown';
 import HeaderSelector from '../../components/table/header-selector';
 import TableActions from '../../components/table/actions';
-import TableHeader from '../../components/table/header';
-import TableCell from '../../components/table/cell';
+import TableHeader from '../../components/table/tableHeader';
+import TableCell from '../../components/table/tableCell/cell';
 import StatusIcon from '../../components/status-icon/status-icon';
 
 import { tableActions } from '../../constants';
@@ -351,17 +351,13 @@ function TableComponent(props) {
     state.columns.length - visibleColumns.length - visibleColumnsToLeft.length - visibleColumnsToRight.length;
 
   return (
-    <div className="table-wrapper">
+    <div className="__tabulous-wrapper">
+      {/* style={{height: '500px', overflow: 'scroll' }} */}
       <SearchProvider {...props} rawData={state.rawData} searchKeys={state.searchKeys} tableData={state.data}>
         <SearchContext.Consumer>
           {searchProps => {
             return (
-              <div
-                className="main-table_layout"
-                style={{
-                  padding: '0 15px',
-                  width: '100%',
-                }}>
+              <>
                 {state.hiddenColumns.length ? (
                   <HeaderSelector
                     hiddenColumnCount={hiddenColumnCount}
@@ -428,13 +424,9 @@ function TableComponent(props) {
                                     resetPagination={sortProps.resetPagination}
                                     resetBulkSelection={resetBulkSelection}
                                     defaultItemsToDisplay={props.defaultItemsToDisplay}>
-                                    <div
-                                      className={`scrollable-table tableFixHead ${
-                                        props.tableScroll ? 'shouldSroll' : null
-                                      }`}
-                                      style={{ maxWidth: '100%', marginTop: '10px' }}>
+                                    <div className="__tabulous" style={{ maxWidth: '100%', marginTop: '10px' }}>
                                       <Ref innerRef={tableElement}>
-                                        <Table sortable celled className="tableStyle left aligned table-fixed">
+                                        <table sortable celled className="tableStyle left aligned table-fixed">
                                           <PaginationContext.Consumer>
                                             {paginationProps => {
                                               return (
@@ -636,7 +628,7 @@ function TableComponent(props) {
                                               );
                                             }}
                                           </PaginationContext.Consumer>
-                                        </Table>
+                                        </table>
                                       </Ref>
                                     </div>
                                   </PaginationProvider>
@@ -649,7 +641,7 @@ function TableComponent(props) {
                     }}
                   </FilterContext.Consumer>
                 </FilterProvider>
-              </div>
+              </>
             );
           }}
         </SearchContext.Consumer>
