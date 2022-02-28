@@ -36,7 +36,6 @@ const customStyles = {
     padding: '0px',
     margin: '0px',
   }),
-
 };
 
 const Select = ({ ...props }) => {
