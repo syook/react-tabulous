@@ -2,6 +2,16 @@
   display: inline-block;
 }
 
+.rt-filter .filter-button {
+  min-width: 100px;
+  padding: 8px 18px;
+  display: flex;
+}
+
+.rt-filter .filter-icon {
+  margin-right: 8px;
+}
+
 .filter-popUp.popup {
   width: 620px;
   min-width: 620px;
@@ -15,35 +25,26 @@
   content: ' ';
   width: 506px;
   height: 1px;
-  margin: -2px;
+  margin: -2px 0;
   vertical-align: super;
   background-color: #e5e5e5;
   display: inline-block;
 }
 
-.filter-popUp .filter-wrapper .btn-add,
-.filter-popUp .filter-wrapper .btn-add:active,
-.filter-popUp .filter-wrapper .btn-add:focus,
-.filter-popUp .filter-wrapper .btn-add:hover {
-  color: #4724d8 !important;
-  box-shadow: 0 0 0 1px #4724d8 inset;
+.filter-popUp .filter-wrapper .btn-add {
   width: 80px;
   padding: 6px 4px;
   font-size: 12px;
+  color: #4724d8;
 }
 
-.filter-popUp .filter-wrapper .filter-btn-apply,
-.filter-popUp .filter-wrapper .filter-btn-apply:hover,
-.filter-popUp .filter-wrapper .filter-btn-apply:focus {
+.filter-popUp .filter-wrapper .filter-btn-apply {
   background-color: #4724d8;
   padding: 6px 14px;
   font-size: 12px;
 }
 
-.filter-popUp .filter-wrapper .filter-btn-clear-all,
-.filter-popUp .filter-wrapper .filter-btn-clear-all:hover,
-.filter-popUp .filter-wrapper .filter-btn-clear-all:focus {
-  background: none;
+.filter-popUp .filter-wrapper .filter-btn-clear-all {
   padding: 6px 14px;
   font-size: 12px;
   color: #ff5056;

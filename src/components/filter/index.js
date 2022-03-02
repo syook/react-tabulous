@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect, useCallback } from 'react';
 import Select from '../select';
 import Input from '../input';
-import { Popup, Button, Icon, Checkbox } from 'semantic-ui-react';
+import Button from '../button';
+import Icons from '../icon';
+import { Popup, Icon, Checkbox } from 'semantic-ui-react';
 
 import { createPropertyOption } from '../utils';
 import { findColumnOptions } from '../utils';
@@ -109,20 +111,12 @@ const TableFilter = props => {
         className="filter-popUp"
         trigger={
           <Button
+            variant="outline"
+            className="filter-button"
             disabled={props.disabled}
-            style={{
-              backgroundColor: props.accentColor
-                ? selectedFiltersAvailable
-                  ? props.accentColor
-                  : 'rgb(170, 170, 170)'
-                : selectedFiltersAvailable
-                ? '#FCB400'
-                : 'rgba(241, 196, 15, 0.8)',
-              color: '#fff',
-              marginRight: '10px',
-            }}
+            backgroundColor={props.accentColor}
           >
-            <Icon name="filter" /> {buttonText}
+            <Icons name="filter" className="filter-icon" /> {buttonText}
           </Button>
         }
         content={
@@ -168,9 +162,9 @@ const FilterDiv = props => {
         <div style={{ opacity: 0.5, marginBottom: 10 }}>No filters applied</div>
       )}
       <div className="btn-add-wrapper">
-        <Button basic size="mini" onClick={props.addFilter} className="btn-add">
-          Add Filter &nbsp;
-          <Icon name="add" size="small" className="btn-icon-plus" />
+        <Button variant="outline" onClick={props.addFilter} className="btn-add">
+          Add Filter&nbsp;
+          <Icons width={10} height={10} name="plus" className="btn-icon-plus" />
         </Button>
       </div>
 
@@ -178,15 +172,14 @@ const FilterDiv = props => {
         {!props.filtersSelected || props.filterDisabled ? null : (
           <>
             <Button
-              positive
-              size="small"
+              variant="primary"
               className="filter-btn-apply"
               onClick={() => props.setSelectedFilters(props.filters)}
               loading={props.filterDisabled}
             >
               Apply Filter
             </Button>
-            <Button className="filter-btn-clear-all" onClick={() => props.clearAllFilter()}>
+            <Button variant="text" className="filter-btn-clear-all" onClick={() => props.clearAllFilter()}>
               Clear all
             </Button>
           </>
