@@ -111,7 +111,6 @@ function SearchProvider(props) {
   const mainDataCount = props.count || (props.tableData || []).length;
   const stateDataCount = (state.data || []).length;
   return (
-    <div>
       <SearchContext.Provider
         value={{
           rawData: props.rawData,
@@ -136,7 +135,6 @@ function SearchProvider(props) {
           </div>
         )}
       </SearchContext.Provider>
-    </div>
   );
 }
 

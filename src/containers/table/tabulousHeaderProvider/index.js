@@ -1,31 +1,28 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
-import './tabulousHeader.css';
-import { formatText } from '../../utils';
+import TabulousHeaderComponent from '../../../components/table/tableHeader/tabulousHeader';
+import './tabulousHeaderProvider.css';
+import { formatText } from '../../../components/utils';
 
-const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, disabled, styleSetTo }) => {
+const TableHeaderProvider = ({ resizeHandler, column, index, sortProps, defaultSort, disabled, styleSetTo }) => {
   const { isSortable, isResizable = false, headerName, headerMessage, headerMessageColor } = column;
   const headerNameFormatted = formatText(headerName);
   let currentOrder = sortProps.direction === 'ascending' ? 'descending' : 'ascending';
   return (
-    <th
-      style={{ whiteSpace: 'normal' }}
-      className={`sort-table ${!disabled && isResizable ? 'resizable' : ''} __tabulousHeader`}
-      key={`table-header-cell-${index}`}
-      onMouseDown={
-        isSortable
-          ? sortProps.handleSort({
-              ...column,
-              direction: currentOrder,
-            })
-          : undefined
-      }>
+    <TabulousHeaderComponent
+      index={index}
+      isSortable={isSortable}
+      handleSort={sortProps.handleSort}
+      column={column}
+      direction={currentOrder}
+    >
       <div
         style={styleSetTo ? { styleSetTo } : { width: '100%' }}
-        className={`head${headerNameFormatted} __tabulousHeader_Content`}>
-        <span className="__tabulousHeader_Content_Text">{headerName}</span>
+        className={`head${headerNameFormatted} tabulousHeader_Content`}
+      >
+        <span className="tabulousHeader_Content_Text">{headerName}</span>
         {(isSortable && !disabled && sortProps.columnName !== headerName && defaultSort !== column.headerName && (
-          <span className="__sortableIcon">
+          <span className="tabulousHeader_SortIcon">
             <Icon name="sort" />
           </span>
         )) ||
@@ -53,8 +50,8 @@ const TableHeader = ({ resizeHandler, column, index, sortProps, defaultSort, dis
           </div>
         )}
       </div>
-    </th>
+    </TabulousHeaderComponent>
   );
 };
 
-export default TableHeader;
+export default TableHeaderProvider;

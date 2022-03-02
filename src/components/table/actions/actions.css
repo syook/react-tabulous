@@ -8,7 +8,7 @@
   color: #fff;
 }
 
-.tableStyle.table-fixed tr td.table-action_buttons {
+.tabulousTable tr td.table-action_buttons {
   width: 0;
   position: relative;
   padding: 0 !important;
@@ -23,7 +23,7 @@
   background-color: #fff;
 }
 
-.tableStyle.table-fixed tbody tr:hover .table-actions {
+.tabulousTable tbody tr:hover .table-actions {
   cursor: pointer;
   display: flex !important;
 }

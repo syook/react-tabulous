@@ -1,14 +1,16 @@
-.__tabulousCell {
+.tabulousCell {
   font-size: 14px;
   line-height: 17px;
   background: #fff;
   padding: 14px 0px;
   overflow: hidden;
   box-sizing: border-box;
-  border-top: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
+  padding: 0px 4px 0px 16px;
 }
-.__tabulousCell_Content {
+.tabulousCell_Content {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+  white-space: nowrap;
 }

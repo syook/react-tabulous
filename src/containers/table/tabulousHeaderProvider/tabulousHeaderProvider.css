@@ -1,0 +1,15 @@
+.tabulousHeader_Content {
+  display: flex;
+  justify-content: center;
+}
+
+.tabulousHeader_Content_Text {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+}
+
+.tabulousHeader_SortIcon {
+  margin-left: 5px;
+}
