@@ -1,7 +1,7 @@
 import React from 'react';
 import './tabulousHeader.css';
 
-const TabulousHeaderComponent = ({children, index, isSortable, handleSort, column, direction}) => {
+const TabulousHeaderComponent = ({ children, index, isSortable, handleSort, column, direction }) => {
   return (
     <th
       className={`sort-table tabulousHeader`}
@@ -15,7 +15,7 @@ const TabulousHeaderComponent = ({children, index, isSortable, handleSort, colum
           : undefined
       }
     >
-        {children}
+      {children}
     </th>
   );
 };

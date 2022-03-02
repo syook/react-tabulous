@@ -111,30 +111,30 @@ function SearchProvider(props) {
   const mainDataCount = props.count || (props.tableData || []).length;
   const stateDataCount = (state.data || []).length;
   return (
-      <SearchContext.Provider
-        value={{
-          rawData: props.rawData,
-          ...state,
-          count: props.count,
-          rowsPerPageFromSearch: state.rowsPerPage,
-          updateRowsPerPage: updateRowsPerPage,
-          updateRowsSortParams: updateRowsSortParams,
-        }}
-      >
-        <SearchComponent
-          disabled={!mainDataCount && !state.searchText}
-          name={props.tableName}
-          onChangeSearchText={onChangeSearchText}
-        />
-        {props.children}
-        {!stateDataCount && (
-          <div style={{ padding: '0 15px' }}>
-            <div className="noRecordsDiv">
-              {!mainDataCount ? `No ${props.tableName || 'data'} to Display` : 'No Results Found'}
-            </div>
+    <SearchContext.Provider
+      value={{
+        rawData: props.rawData,
+        ...state,
+        count: props.count,
+        rowsPerPageFromSearch: state.rowsPerPage,
+        updateRowsPerPage: updateRowsPerPage,
+        updateRowsSortParams: updateRowsSortParams,
+      }}
+    >
+      <SearchComponent
+        disabled={!mainDataCount && !state.searchText}
+        name={props.tableName}
+        onChangeSearchText={onChangeSearchText}
+      />
+      {props.children}
+      {!stateDataCount && (
+        <div style={{ padding: '0 15px' }}>
+          <div className="noRecordsDiv">
+            {!mainDataCount ? `No ${props.tableName || 'data'} to Display` : 'No Results Found'}
           </div>
-        )}
-      </SearchContext.Provider>
+        </div>
+      )}
+    </SearchContext.Provider>
   );
 }
 

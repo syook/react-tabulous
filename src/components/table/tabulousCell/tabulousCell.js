@@ -1,7 +1,7 @@
 import React from 'react';
 import './tabulousCell.css';
 
-const TabulousCellComponent = ({children, styleSetTo, index, headerName}) => {
+const TabulousCellComponent = ({ children, styleSetTo, index, headerName }) => {
   return (
     <td key={`table-cell-${index}`} className="tabulousCell">
       <div
