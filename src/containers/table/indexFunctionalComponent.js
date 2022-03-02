@@ -21,6 +21,7 @@ import TabulousCellComponent from '../../components/table/tabulousCell/tabulousC
 import StatusIcon from '../../components/status-icon/status-icon';
 
 import { tableActions } from '../../constants';
+import Pagination from '../../components/paginationv2';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -387,6 +388,7 @@ function TableComponent(props) {
                     {filterProps => {
                       return (
                         <>
+                          <Pagination />
                           {state.showResetButton && resetButton()}
                           {props.children ? (
                             <div style={{ display: 'inline-block' }}>
