@@ -436,7 +436,10 @@ function TableComponent(props) {
                                                 <>
                                                   <thead>
                                                     <tr>
-                                                      <FixedSectionWrapper positionedTo={'left'} childElement={'header'}>
+                                                      <FixedSectionWrapper
+                                                        positionedTo={'left'}
+                                                        childElement={'header'}
+                                                      >
                                                         {visibleColumnsToLeft.map((column, index) =>
                                                           TableHeaderProvider({
                                                             resizeHandler,
@@ -501,7 +504,10 @@ function TableComponent(props) {
                                                           </div>
                                                         </TabulousHeaderComponent>
                                                       ) : null}
-                                                      <FixedSectionWrapper positionedTo={'right'} childElement={'header'}>
+                                                      <FixedSectionWrapper
+                                                        positionedTo={'right'}
+                                                        childElement={'header'}
+                                                      >
                                                         {visibleColumnsToRight.map((column, index) =>
                                                           TableHeaderProvider({
                                                             resizeHandler,

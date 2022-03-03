@@ -46,7 +46,11 @@ const Pagination = props => {
         on="click"
         positionFixed
         position="bottom left"
-        trigger={<Button variant="outline">{props.startIndexOfCurrentPage} - {props.endIndexOfCurrentPage} of {props.rowCount}</Button>}
+        trigger={
+          <Button variant="outline">
+            {props.startIndexOfCurrentPage} - {props.endIndexOfCurrentPage} of {props.rowCount}
+          </Button>
+        }
         open={isOpen}
         onOpen={onOpenHandler}
         onClose={onCloseHandler}
