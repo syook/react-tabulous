@@ -315,8 +315,8 @@ function TableComponent(props) {
   const FixedSectionWrapper = useCallback(
     props => {
       const styleObject = {
-        zIndex: props?.children[0]?.props.as === 'th' ? '3' : '',
-        top: props?.children[0]?.props.as === 'th' ? '0px' : '',
+        zIndex: props.childElement === 'header' ? '3' : '',
+        top: props.childElement === 'header' ? '0px' : '',
       };
       if (
         props.children.length !== 0 &&
@@ -388,7 +388,6 @@ function TableComponent(props) {
                     {filterProps => {
                       return (
                         <>
-                          <Pagination />
                           {state.showResetButton && resetButton()}
                           {props.children ? (
                             <div style={{ display: 'inline-block' }}>
@@ -426,6 +425,7 @@ function TableComponent(props) {
                                     resetPagination={sortProps.resetPagination}
                                     resetBulkSelection={resetBulkSelection}
                                     defaultItemsToDisplay={props.defaultItemsToDisplay}
+                                    // customPagination={Pagination}
                                   >
                                     <div className="tabulous">
                                       <Ref innerRef={tableElement}>
@@ -434,9 +434,9 @@ function TableComponent(props) {
                                             {paginationProps => {
                                               return (
                                                 <>
-                                                  <Table.Header style={{ textAlign: 'center' }}>
+                                                  <thead>
                                                     <tr>
-                                                      <FixedSectionWrapper positionedTo={'left'}>
+                                                      <FixedSectionWrapper positionedTo={'left'} childElement={'header'}>
                                                         {visibleColumnsToLeft.map((column, index) =>
                                                           TableHeaderProvider({
                                                             resizeHandler,
@@ -501,7 +501,7 @@ function TableComponent(props) {
                                                           </div>
                                                         </TabulousHeaderComponent>
                                                       ) : null}
-                                                      <FixedSectionWrapper positionedTo={'right'}>
+                                                      <FixedSectionWrapper positionedTo={'right'} childElement={'header'}>
                                                         {visibleColumnsToRight.map((column, index) =>
                                                           TableHeaderProvider({
                                                             resizeHandler,
@@ -514,7 +514,7 @@ function TableComponent(props) {
                                                         )}
                                                       </FixedSectionWrapper>
                                                     </tr>
-                                                  </Table.Header>
+                                                  </thead>
                                                   <Table.Body>
                                                     {paginationProps.data.map((row, index1) => {
                                                       const includeCheckbox = props.showCheckbox
@@ -578,14 +578,16 @@ function TableComponent(props) {
                                                             });
                                                           })}
                                                           {props.includeAction ? (
-                                                            <Table.Cell className="table-action_buttons">
-                                                              <TableActions
-                                                                actionOnHover={props.actionOnHover}
-                                                                actions={props.actionDefs}
-                                                                row={row}
-                                                                data={paginationProps.rawData}
-                                                              />
-                                                            </Table.Cell>
+                                                            <TabulousCellComponent>
+                                                              <Table.Cell className="table-action_buttons">
+                                                                <TableActions
+                                                                  actionOnHover={props.actionOnHover}
+                                                                  actions={props.actionDefs}
+                                                                  row={row}
+                                                                  data={paginationProps.rawData}
+                                                                />
+                                                              </Table.Cell>
+                                                            </TabulousCellComponent>
                                                           ) : null}
                                                           <FixedSectionWrapper positionedTo={'right'}>
                                                             {visibleColumnsToRight.map((column, index2) => {

@@ -7,6 +7,7 @@ const Input = ({ className, disabled, ...props }) => {
       disabled={disabled}
       className={`rt-input ${className ? className : ''} ${disabled ? 'disabled' : ''}`}
       {...props}
+      min="1"
     />
   );
 };
