@@ -1,45 +1,111 @@
 import './index.css';
-import React, { useState } from 'react';
+import React, { useState, useReducer, useEffect, useCallback } from 'react';
 import { Popup } from 'semantic-ui-react';
 import Button from '../button';
 import Select from '../select';
 import Input from '../input';
 import Icon from '../icon';
 
-// const rowsPerPageOptions = [5, 10, 20, 50].map(num => ({
-//   value: num,
-//   label: num,
-// }));
+const rowsPerPageOptions = [5, 10, 20, 50].map(num => ({
+  value: num,
+  label: num,
+}));
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'setCurrentPageTo':
+      return { ...state, setCurrentPageTo: action.payload };
+    case 'setRowsPerPageTo':
+      return { ...state, setRowsPerPageTo: action.payload };
+    case 'startIndexOfCurrentPage':
+      return { ...state, startIndexOfCurrentPage: action.payload };
+    case 'endIndexOfCurrentPage':
+      return { ...state, endIndexOfCurrentPage: action.payload };
+    case 'setNumberOfPages':
+      return { ...state, setNumberOfPages: action.payload };
+    case 'pageOptions':
+      return { ...state, pageOptions: action.payload };
+    default:
+      return state;
+  }
+}
 
 const Pagination = props => {
-  // if (!props.data.length) return null;
+  const [state, dispatch] = useReducer(reducer, {
+    setCurrentPageTo: 1,
+    setRowsPerPageTo: { value: 10, label: 10 },
+    startIndexOfCurrentPage: 1,
+    endIndexOfCurrentPage: props.rowCount,
+    setNumberOfPages: props.numberOfPages,
+    pageOptions: rowsPerPageOptions,
+  });
 
-  // const maxRowOptionAvailable = (
-  //   rowsPerPageOptions.find(obj => obj.value >= props.rowCount) || rowsPerPageOptions[rowsPerPageOptions.length - 1]
-  // ).value;
-  // const pageOptions = rowsPerPageOptions.filter(obj => +obj.value <= +maxRowOptionAvailable);
+  useEffect(() => {
+    const lowerLimitForCurrentPage = (props.currentPage - 1) * props.rowsPerPage.value + 1;
+    const upperLimitForCurrentPage = props.currentPage * props.rowsPerPage.value;
+    const startIndex = lowerLimitForCurrentPage > props.rowCount ? 1 : lowerLimitForCurrentPage;
+    const endIndex = upperLimitForCurrentPage > props.rowCount ? props.rowCount : upperLimitForCurrentPage;
+    const maxRowOptionAvailable = (
+      rowsPerPageOptions.find(obj => obj.value >= props.rowCount) || rowsPerPageOptions[rowsPerPageOptions.length - 1]
+    ).value;
+    const pageOptions = rowsPerPageOptions.filter(obj => +obj.value <= +maxRowOptionAvailable);
+    dispatch({ type: 'startIndexOfCurrentPage', payload: startIndex });
+    dispatch({ type: 'endIndexOfCurrentPage', payload: endIndex });
+    dispatch({ type: 'setNumberOfPages', payload: props.numberOfPages });
+    dispatch({ type: 'pageOptions', payload: pageOptions });
+  }, [props.currentPage, props.rowsPerPage, props.rowCount, props.numberOfPages]);
+
   const [isOpen, setIsOpen] = useState(false);
 
-  const onOpenHandler = () => {
-    setIsOpen(true);
-  };
+  const setRowsPerPageHandler = useCallback(
+    (selectedRowsPerPage = { value: 10, label: 10 }) => {
+      const numberOfPages = Math.ceil(props.rowCount / selectedRowsPerPage.value);
+      dispatch({ type: 'setRowsPerPageTo', payload: selectedRowsPerPage });
+      dispatch({ type: 'setNumberOfPages', payload: numberOfPages });
+    },
+    [props.rowCount]
+  );
+
+  const setCurrentPageToHandler = useCallback(e => {
+    dispatch({ type: 'setCurrentPageTo', payload: +e.target.value });
+  }, []);
+
+  const cancelPaginationChangesHandler = useCallback(() => {
+    dispatch({ type: 'setRowsPerPageTo', payload: props.rowsPerPage });
+    dispatch({ type: 'setCurrentPageTo', payload: props.currentPage });
+  }, [props.currentPage, props.rowsPerPage]);
 
   const onCloseHandler = () => {
-    props.cancelPaginationChangesHandler();
+    cancelPaginationChangesHandler();
     setIsOpen(false);
   };
 
   const onApplyHandler = () => {
-    props.applyPaginationChangesHandler();
+    props.onChange(
+      state.setCurrentPageTo > state.setNumberOfPages ? state.setNumberOfPages : state.setCurrentPageTo,
+      state.setRowsPerPageTo
+    );
     setIsOpen(false);
   };
 
+  const onPageChangeHandler = useCallback(
+    e => {
+      if (e.currentTarget.dataset['direction'] === 'RIGHT' && props.currentPage + 1 <= props.numberOfPages) {
+        props.onChange(props.currentPage + 1, state.setRowsPerPageTo);
+      }
+      if (e.currentTarget.dataset['direction'] === 'LEFT' && props.currentPage - 1 > 0) {
+        props.onChange(props.currentPage - 1, state.setRowsPerPageTo);
+      }
+    },
+    [props.currentPage, props.numberOfPages, state.setRowsPerPageTo]
+  );
+
   return (
     <div className="rt-pagination">
-      <Button data-direction="LEFT" onClick={props.handleDirectionClick} className="pagination-btn" variant="text">
+      <Button data-direction="LEFT" onClick={onPageChangeHandler} className="pagination-btn" variant="text">
         <Icon name="chevron-left" width={24} height={24} />
       </Button>
-      <Button data-direction="RIGHT" onClick={props.handleDirectionClick} className="pagination-btn" variant="text">
+      <Button data-direction="RIGHT" onClick={onPageChangeHandler} className="pagination-btn" variant="text">
         <Icon name="chevron-right" width={24} height={24} />
       </Button>
       <Popup
@@ -48,11 +114,13 @@ const Pagination = props => {
         position="bottom left"
         trigger={
           <Button variant="outline">
-            {props.startIndexOfCurrentPage} - {props.endIndexOfCurrentPage} of {props.rowCount}
+            {state.startIndexOfCurrentPage} - {state.endIndexOfCurrentPage} of {props.rowCount}
           </Button>
         }
         open={isOpen}
-        onOpen={onOpenHandler}
+        onOpen={() => {
+          setIsOpen(true);
+        }}
         onClose={onCloseHandler}
         content={
           <div className="rt-pagination-body">
@@ -62,13 +130,8 @@ const Pagination = props => {
                 <Select
                   className="body-input-field"
                   defaultValue={props.rowsPerPage}
-                  options={[
-                    { label: 5, value: 5 },
-                    { label: 10, value: 10 },
-                    { label: 20, value: 20 },
-                    { label: 50, value: 50 },
-                  ]}
-                  onChange={props.setRowsPerPageHandler}
+                  options={state.pageOptions}
+                  onChange={setRowsPerPageHandler}
                 />
                 <span>items</span>
               </div>
@@ -81,10 +144,11 @@ const Pagination = props => {
                   defaultValue={props.currentPage}
                   type="number"
                   page={'This is a test string'}
-                  max={props.numberOfPages}
-                  onChange={props.setCurrentPageToHandler}
+                  min={1}
+                  max={state.setNumberOfPages}
+                  onChange={setCurrentPageToHandler}
                 />{' '}
-                <span>of {props.numberOfPages}</span>
+                <span>of {state.setNumberOfPages}</span>
               </div>
             </div>
             <div className="rt-pagination-footer">
