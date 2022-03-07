@@ -195,11 +195,7 @@ function TableComponent(props) {
   );
 
   const getOriginalPropertyOfElement = (element, property) => {
-    return parseFloat(
-      getComputedStyle(element, null)
-        .getPropertyValue(property)
-        .replace('px', '')
-    );
+    return parseFloat(getComputedStyle(element, null).getPropertyValue(property).replace('px', ''));
   };
 
   const resizeHandler = async (col, e) => {
@@ -306,7 +302,8 @@ function TableComponent(props) {
           color: '#fff',
           marginRight: '10px',
         }}
-        onClick={resetHandler}>
+        onClick={resetHandler}
+      >
         <Icon name="redo" /> {'Reset'}
       </Button>
     );
@@ -361,7 +358,8 @@ function TableComponent(props) {
                 style={{
                   padding: '0 15px',
                   width: '100%',
-                }}>
+                }}
+              >
                 {state.hiddenColumns.length ? (
                   <HeaderSelector
                     hiddenColumnCount={hiddenColumnCount}
@@ -387,7 +385,8 @@ function TableComponent(props) {
                   columns={state.columns}
                   resetFilterOnDataChange={props.resetFilterOnDataChange}
                   accentColor={props.accentColor}
-                  emptyCellPlaceHolder={emptyCellPlaceHolder}>
+                  emptyCellPlaceHolder={emptyCellPlaceHolder}
+                >
                   <FilterContext.Consumer>
                     {filterProps => {
                       return (
@@ -410,7 +409,8 @@ function TableComponent(props) {
                             count={filterProps.count}
                             updateRowsSortParams={searchProps.updateRowsSortParams}
                             rowsPerPageFromSearch={searchProps.rowsPerPageFromSearch}
-                            searchText={searchProps.searchText}>
+                            searchText={searchProps.searchText}
+                          >
                             <SortContext.Consumer>
                               {sortProps => {
                                 return (
@@ -427,12 +427,14 @@ function TableComponent(props) {
                                     updateRowsPerPage={searchProps.updateRowsPerPage}
                                     resetPagination={sortProps.resetPagination}
                                     resetBulkSelection={resetBulkSelection}
-                                    defaultItemsToDisplay={props.defaultItemsToDisplay}>
+                                    defaultItemsToDisplay={props.defaultItemsToDisplay}
+                                  >
                                     <div
                                       className={`scrollable-table tableFixHead ${
                                         props.tableScroll ? 'shouldSroll' : null
                                       }`}
-                                      style={{ maxWidth: '100%', marginTop: '10px' }}>
+                                      style={{ maxWidth: '100%', marginTop: '10px' }}
+                                    >
                                       <Ref innerRef={tableElement}>
                                         <Table sortable celled padded className="tableStyle left aligned table-fixed">
                                           <PaginationContext.Consumer>
@@ -459,7 +461,8 @@ function TableComponent(props) {
                                                             className="headBulkAction"
                                                             style={{
                                                               width: '100%',
-                                                            }}>
+                                                            }}
+                                                          >
                                                             <Checkbox
                                                               checked={state.bulkSelect}
                                                               disabled={!paginationProps.rowCount}
@@ -477,7 +480,8 @@ function TableComponent(props) {
                                                             className="headSerialNo"
                                                             style={{
                                                               width: '100%',
-                                                            }}>
+                                                            }}
+                                                          >
                                                             S.No
                                                           </div>
                                                         </Table.HeaderCell>
@@ -498,7 +502,8 @@ function TableComponent(props) {
                                                             className="headActions"
                                                             style={{
                                                               width: '100%',
-                                                            }}>
+                                                            }}
+                                                          >
                                                             Actions
                                                           </div>
                                                         </Table.HeaderCell>
@@ -550,7 +555,8 @@ function TableComponent(props) {
                                                                     ? 'row-reverse'
                                                                     : null,
                                                                   alignItems: 'center',
-                                                                }}>
+                                                                }}
+                                                              >
                                                                 <Checkbox
                                                                   className="bulkAction_check"
                                                                   checked={state.selectedRows.includes(
@@ -578,7 +584,8 @@ function TableComponent(props) {
                                                                 style={{
                                                                   textAlign: 'center',
                                                                   margin: '0 auto',
-                                                                }}>
+                                                                }}
+                                                              >
                                                                 {paginationProps.startIndex + index1 + 1}
                                                                 {props.enableIcon
                                                                   ? props.showIcon(

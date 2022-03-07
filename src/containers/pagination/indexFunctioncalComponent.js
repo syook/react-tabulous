@@ -39,9 +39,10 @@ function PaginationProvider(props) {
     rowsPerPage,
   });
 
-  const setCurrentPage = useCallback(currentPage => dispatch({ type: 'currentPage', payload: currentPage }), [
-    state.currentPage,
-  ]);
+  const setCurrentPage = useCallback(
+    currentPage => dispatch({ type: 'currentPage', payload: currentPage }),
+    [state.currentPage]
+  );
   const resetToFirstPage = useCallback(() => setCurrentPage(1), [setCurrentPage]);
 
   const onSelectRowsPerPage = useCallback(
@@ -147,7 +148,8 @@ function PaginationProvider(props) {
           startIndex,
           rowCount,
           resetToFirstPage: resetToFirstPage,
-        }}>
+        }}
+      >
         {children}
       </PaginationContext.Provider>
       <Pagination

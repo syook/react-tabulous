@@ -69,7 +69,6 @@ function SearchProvider(props) {
     } else {
       search(state.searchText, props);
     }
-    const a = props;
   }, [props.tableData]);
 
   const updateRowsPerPage = useCallback(val => {
@@ -121,7 +120,8 @@ function SearchProvider(props) {
           rowsPerPageFromSearch: state.rowsPerPage,
           updateRowsPerPage: updateRowsPerPage,
           updateRowsSortParams: updateRowsSortParams,
-        }}>
+        }}
+      >
         <SearchComponent
           disabled={!mainDataCount && !state.searchText}
           name={props.tableName}

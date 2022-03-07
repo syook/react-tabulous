@@ -8,7 +8,8 @@ const BulkActionList = props => {
     <Dropdown
       text={props.hideBulkCount ? 'Bulk Action' : `Bulk Action (${(props.selectedRows || []).length} selected)`}
       button
-      className="icon bulk-action right labeled">
+      className="icon bulk-action right labeled"
+    >
       <Dropdown.Menu>
         {(props.bulkActions || [])
           .filter(a => a.isVisible !== false)

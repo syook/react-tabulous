@@ -113,7 +113,8 @@ const TableFilter = props => {
                 : 'rgba(241, 196, 15, 0.8)',
               color: '#fff',
               marginRight: '10px',
-            }}>
+            }}
+          >
             <Icon name="filter" /> {buttonText}
           </Button>
         }
@@ -171,7 +172,8 @@ const FilterDiv = props => {
             className="filter_btn apply"
             size="small"
             onClick={() => props.setSelectedFilters(props.filters)}
-            loading={props.filterDisabled}>
+            loading={props.filterDisabled}
+          >
             Apply Filter
           </Button>
         )}

@@ -24,7 +24,8 @@ const Pagination = props => {
           alignItems: 'center',
           padding: '10px 0',
           width: '100%',
-        }}>
+        }}
+      >
         <Label ribbon>
           Total {props.tableFooterName} : {props.rowCount}
         </Label>
@@ -35,7 +36,8 @@ const Pagination = props => {
               fontSize: '13px',
               fontWeight: 'normal',
               margin: '0px 15px',
-            }}>
+            }}
+          >
             Show
           </span>
           <Select

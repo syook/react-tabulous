@@ -13,7 +13,8 @@ const TableActions = ({ actions, row, actionOnHover, data }) => {
         alignItems: 'center',
         justifyContent: 'center',
         whiteSpace: 'nowrap',
-      }}>
+      }}
+    >
       {(actions || []).map((action, index) => {
         if (typeof action.isVisible === 'function' && !action.isVisible(currentItem)) {
           return null;

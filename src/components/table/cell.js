@@ -16,7 +16,8 @@ const TableCell = ({ column, index2, data, row, emptyCellPlaceHolder, styleSetTo
     <Table.Cell key={`table-cell-${index2}`}>
       <div
         style={{ ...styleSetTo, overflow: `${typeof cellData === 'object' ? 'visible' : ''}` }}
-        className={`column${headerNameFormatted}`}>
+        className={`column${headerNameFormatted}`}
+      >
         {cellData}
       </div>
     </Table.Cell>
