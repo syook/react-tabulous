@@ -1,0 +1,48 @@
+.rt-pagination {
+  display: flex;
+}
+
+.rt-pagination .pagination-btn {
+  padding: 1px;
+  margin-right: 4px;
+}
+
+.rt-pagination-body .body-row {
+  display: flex;
+  font-size: 14px;
+  margin-bottom: 8px;
+  align-items: center;
+  font-weight: 500;
+}
+
+.rt-pagination-body .body-row .body-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.rt-pagination-body .body-row .body-input-field {
+  width: 67px;
+  margin-right: 10px;
+}
+
+.rt-pagination-body .body-row .row-title {
+  width: 92px;
+}
+
+.rt-pagination-body .rt-pagination-footer {
+  display: flex;
+  margin-top: 8px;
+  border-top: 1px solid #e5e5e5;
+  padding-top: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rt-pagination-body .rt-pagination-btn-cancel {
+  padding: 8px 0;
+  color: #4724d8;
+}
+
+.rt-pagination-body .rt-pagination-btn-apply {
+  padding: 8px 18px;
+}

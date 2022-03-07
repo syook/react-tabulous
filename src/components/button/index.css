@@ -1,0 +1,35 @@
+.rt-button {
+  cursor: pointer;
+  border: none;
+  padding: 0.78571429em 1.5em 0.78571429em;
+  display: inline-block;
+  font-size: 14px;
+  box-sizing: border-box;
+  font-weight: 500;
+  border-radius: 4px;
+  line-height: 1em;
+  vertical-align: baseline;
+  text-align: center;
+}
+
+.rt-button.btn-primary {
+  background-color: #4724d8;
+  color: #fff;
+}
+
+.rt-button.btn-outline {
+  background: #ffffff;
+  box-shadow: 0 0 0 1px #4724d8 inset, 0 0 0 0 #4724d8 inset;
+}
+
+.rt-button.btn-text {
+  background: #ffffff;
+  border: 1px solid #fff;
+}
+
+.rt-button:focus-visible,
+.rt-button:focus,
+.rt-button:active,
+.rt-button:hover {
+  outline-color: #5da1cd;
+}

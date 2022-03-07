@@ -1,0 +1,20 @@
+.rt-input {
+  background: #ffffff;
+  border: 1px solid hsl(0, 0%, 80%);
+  box-sizing: border-box;
+  border-radius: 5px;
+  height: 30px;
+  font-size: 14px;
+  padding: 6px;
+}
+
+.rt-input.disabled {
+  user-select: none;
+  cursor: default;
+  background-color: #f3f4f5;
+  border: none;
+}
+
+.rt-input:focus-visible {
+  outline-color: #5da1cd;
+}
