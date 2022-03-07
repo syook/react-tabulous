@@ -11,6 +11,7 @@ body {
 }
 
 .tabulous {
+  width: 100%;
   position: relative;
   overflow: auto;
   margin-top: 10px;
@@ -39,6 +40,8 @@ table {
   position: relative;
   height: inherit;
   overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 .tabulousTable {
   width: 100%;

@@ -2,6 +2,7 @@ import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import ReactTabulous from './containers/table/indexFunctionalComponent';
 import { Icon } from 'semantic-ui-react';
+import Pagination from './components/paginationv2';
 
 export default class App extends React.Component {
   //you can manipulate this component for testing
@@ -331,9 +332,13 @@ export default class App extends React.Component {
           }}
           getBulkActionState={this.getBulkActionState}
           hideBulkCount={true}
+          // defaultItemsToDisplay={16}
           // emptyCellPlaceHolder="N/A"
           // resetFilterOnDataChange={false}
           // resetHideColumnsOnDataChange={false}
+          customPagination={Pagination}
+          paginationPositionTop={true}
+          showSearch={false}
         />
       </div>
     );

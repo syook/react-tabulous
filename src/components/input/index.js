@@ -1,15 +1,16 @@
 import './index.css';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 const Input = ({ className, disabled, ...props }) => {
   const inputEl = useRef(null);
+  const firstUpdate = useRef(true);
   useEffect(() => {
-    if (inputEl) {
-      if (inputEl.current.value > props.max) {
-        inputEl.current.value = props.max;
-      }
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
     }
-  }, [inputEl, props.max]);
+    inputEl.current.value = 1;
+  }, [inputEl, props.max, firstUpdate]);
 
   return (
     <input

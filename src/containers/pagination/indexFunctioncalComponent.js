@@ -12,12 +12,10 @@ function reducer(state, action) {
   switch (action.type) {
     case 'currentPage':
       return { ...state, currentPage: action.payload };
-    case 'numberOfColumns':
-      return { ...state, numberOfColumns: action.payload };
     case 'data':
       return { ...state, data: [...(action.payload || [])] };
-    case 'numberOfPages':
-      return { ...state, numberOfPages: action.payload };
+    case 'rowCount':
+      return { ...state, rowCount: action.payload };
     case 'rowsPerPage':
       return { ...state, rowsPerPage: action.payload };
     default:
@@ -34,14 +32,13 @@ function PaginationProvider(props) {
 
   const [state, dispatch] = useReducer(reducer, {
     currentPage: 1,
-    data: [...props.data],
-    numberOfColumns: 30,
-    numberOfPages: Math.ceil(rowCount / rowsPerPage.value),
+    data: [...props.data], //TODO:
     rowCount: rowCount,
     rowsPerPage,
+    // currentPage, totalItems, itemsPerPage, //currentPage, rowCount, rowsPerPage
   });
 
-  const portalDiv = document.querySelector('#tabulousDivForPagination');
+  // const portalDiv = document.querySelector('#tabulousDivForPagination');
 
   const setCurrentPage = useCallback(
     currentPage => {
@@ -68,11 +65,6 @@ function PaginationProvider(props) {
 
       const data = findCurrentData(props.data, currentPage, selectedRowsPerPage);
       dispatch({ type: 'data', payload: data });
-
-      dispatch({
-        type: 'numberOfPages',
-        payload: numberOfPages,
-      });
       dispatch({
         type: 'rowsPerPage',
         payload: selectedRowsPerPage,
@@ -103,9 +95,10 @@ function PaginationProvider(props) {
       const { currentPage } = state;
       const direction = e.currentTarget.dataset['direction'];
       let change = 0;
+      const numberOfPages = Math.ceil(rowCount / rowsPerPage.value);
       if (direction === 'LEFT' && currentPage > 1) {
         change = -1;
-      } else if (direction === 'RIGHT' && currentPage < state.numberOfPages) {
+      } else if (direction === 'RIGHT' && currentPage < numberOfPages) {
         change = 1;
       }
       if (change !== 0) {
@@ -130,7 +123,6 @@ function PaginationProvider(props) {
     if (numberOfPages < currentPage) currentPage = numberOfPages;
 
     props.resetBulkSelection();
-    dispatch({ type: 'numberOfPages', payload: numberOfPages });
     dispatch({ type: 'currentPage', payload: currentPage || 1 });
 
     const data = findCurrentData(props.data, state.currentPage, state.rowsPerPage);
@@ -140,6 +132,10 @@ function PaginationProvider(props) {
   useEffect(() => {
     resetToFirstPage();
   }, [props.resetPagination]);
+
+  useEffect(() => {
+    dispatch({ type: 'rowCount', payload: rowCount });
+  }, [rowCount]);
 
   let { children } = props;
   let pageRange = findPageRange({ ...state });
@@ -151,8 +147,25 @@ function PaginationProvider(props) {
     handlePageClick(null, data);
   }, []);
 
+  const DisplayPaginationComponent = () => {
+    return props.customPagination ? (
+      <props.customPagination {...state} onChange={applyPaginationChangesHandler} />
+    ) : (
+      <Pagination
+        {...props}
+        {...state}
+        handleDirectionClick={handleDirectionClick}
+        handlePageClick={handlePageClick}
+        onSelectRowsPerPage={onSelectRowsPerPage}
+        pageRange={pageRange}
+        setCurrentPage={setCurrentPage}
+      />
+    );
+  };
+
   return (
     <>
+      {props.paginationPositionTop && DisplayPaginationComponent()}
       <PaginationContext.Provider
         value={{
           rawData: props.rawData,
@@ -163,20 +176,7 @@ function PaginationProvider(props) {
       >
         {children}
       </PaginationContext.Provider>
-      {props.customPagination ? (
-        portalDiv &&
-        ReactDOM.createPortal(<props.customPagination {...state} onChange={applyPaginationChangesHandler} />, portalDiv)
-      ) : (
-        <Pagination
-          {...props}
-          {...state}
-          handleDirectionClick={handleDirectionClick}
-          handlePageClick={handlePageClick}
-          onSelectRowsPerPage={onSelectRowsPerPage}
-          pageRange={pageRange}
-          setCurrentPage={setCurrentPage}
-        />
-      )}
+      {!props.paginationPositionTop && DisplayPaginationComponent()}
     </>
   );
 }

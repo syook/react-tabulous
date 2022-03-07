@@ -19,9 +19,9 @@ import TableCellProvider from './tabulousCellProvider';
 import TabulousHeaderComponent from '../../components/table/tableHeader/tabulousHeader';
 import TabulousCellComponent from '../../components/table/tabulousCell/tabulousCell';
 import StatusIcon from '../../components/status-icon/status-icon';
+import KebabDropdown from '../../components/kebabDropdown';
 
 import { tableActions } from '../../constants';
-import Pagination from '../../components/paginationv2';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -357,23 +357,6 @@ function TableComponent(props) {
           {searchProps => {
             return (
               <>
-                {state.hiddenColumns.length ? (
-                  <HeaderSelector
-                    hiddenColumnCount={hiddenColumnCount}
-                    columns={state.hiddenColumns}
-                    toggleColumns={toggleColumns}
-                    toggleAllColumns={toggleAllColumns}
-                    accentColor={props.accentColor}
-                  />
-                ) : null}
-                {hasBulkActions && state.selectedRows.length ? (
-                  <BulkActionList
-                    bulkActions={props.bulkActionDefs}
-                    selectedRows={state.selectedRows}
-                    hideBulkCount={props.hideBulkCount}
-                  />
-                ) : null}
-
                 <FilterProvider
                   rawData={searchProps.rawData}
                   count={searchProps.count}
@@ -388,7 +371,28 @@ function TableComponent(props) {
                     {filterProps => {
                       return (
                         <>
-                          {state.showResetButton && resetButton()}
+                          <KebabDropdown
+                            options={[
+                              state.hiddenColumns.length ? (
+                                <HeaderSelector
+                                  hiddenColumnCount={hiddenColumnCount}
+                                  columns={state.hiddenColumns}
+                                  toggleColumns={toggleColumns}
+                                  toggleAllColumns={toggleAllColumns}
+                                  accentColor={props.accentColor}
+                                />
+                              ) : null,
+                              hasBulkActions && state.selectedRows.length ? (
+                                <BulkActionList
+                                  bulkActions={props.bulkActionDefs}
+                                  selectedRows={state.selectedRows}
+                                  hideBulkCount={props.hideBulkCount}
+                                />
+                              ) : null,
+                              state.showResetButton && resetButton(),
+                            ]}
+                            accentColor={props.accentColor}
+                          />
                           {props.children ? (
                             <div style={{ display: 'inline-block' }}>
                               {props.children(filterProps.data, searchProps.searchText, [
@@ -425,7 +429,8 @@ function TableComponent(props) {
                                     resetPagination={sortProps.resetPagination}
                                     resetBulkSelection={resetBulkSelection}
                                     defaultItemsToDisplay={props.defaultItemsToDisplay}
-                                    // customPagination={Pagination}
+                                    customPagination={props.customPagination}
+                                    paginationPositionTop={props.paginationPositionTop}
                                   >
                                     <div className="tabulous">
                                       <Ref innerRef={tableElement}>

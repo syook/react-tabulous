@@ -1,10 +1,11 @@
 .rt-filter {
   display: inline-block;
+  margin-right: 10px;
 }
 
 .rt-filter .filter-button {
   min-width: 100px;
-  padding: 8px 18px;
+  padding: 10px 18px;
   display: flex;
 }
 

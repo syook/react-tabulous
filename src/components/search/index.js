@@ -20,7 +20,7 @@ const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) =>
   };
 
   return (
-    <div>
+    <>
       {name && (
         <div
           style={{
@@ -35,28 +35,18 @@ const SearchComponent = ({ onChangeSearchText, name, disabled, placeholder }) =>
           {name}
         </div>
       )}
-
-      <div
-        style={{
-          position: 'relative',
-          right: '0px',
-          top: '-30px',
-          zIndex: '1',
-        }}
+      <Input
+        disabled={disabled}
+        iconPosition="left"
+        onChange={onInputChange}
+        placeholder={placeholder || 'Search...'}
+        style={styles.searchInputDiv}
       >
-        <Input
-          disabled={disabled}
-          iconPosition="left"
-          onChange={onInputChange}
-          placeholder={placeholder || 'Search...'}
-          style={styles.searchInputDiv}
-        >
-          <Icon name="search" />
-          <input className="tabulous-searchInput" value={searchTerm} />
-          <Icon disabled={disabled} name="close" onClick={onClearSearchTerm} style={styles.closeIcon} />
-        </Input>
-      </div>
-    </div>
+        <Icon name="search" />
+        <input className="tabulous-searchInput" value={searchTerm} />
+        <Icon disabled={disabled} name="close" onClick={onClearSearchTerm} style={styles.closeIcon} />
+      </Input>
+    </>
   );
 };
 
@@ -64,7 +54,6 @@ const styles = {
   searchInputDiv: {
     color: '#667797',
     position: 'absolute',
-    top: '35px',
     marginLeft: '10px',
     right: '15px',
     borderRadius: '3px',

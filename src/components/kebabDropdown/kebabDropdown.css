@@ -1,0 +1,25 @@
+.selectColumns-btn .list .item .content {
+  display: flex !important;
+}
+
+.kebab-button {
+    height: 100%;
+    display: flex;
+}
+
+.kebab {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  top: -10px;
+  height: 14px;
+  font-size: large;
+  font-weight: bolder;
+}
+
+.kebab span {
+  width: 3px;
+  height: 3px;
+}

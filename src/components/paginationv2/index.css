@@ -1,4 +1,6 @@
 .rt-pagination {
+  position: absolute;
+  right: 0;
   display: flex;
 }
 

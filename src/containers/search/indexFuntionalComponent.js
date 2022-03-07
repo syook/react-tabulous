@@ -31,6 +31,7 @@ function reducer(state, action) {
 
 function SearchProvider(props) {
   const [state, dispatch] = useReducer(reducer, {
+    showSearch:  props.showSearch,
     searchText: '',
     data: [...props.tableData],
     rowsPerPage: 10,
@@ -121,14 +122,14 @@ function SearchProvider(props) {
         updateRowsSortParams: updateRowsSortParams,
       }}
     >
-      <SearchComponent
+      {state.showSearch && <SearchComponent
         disabled={!mainDataCount && !state.searchText}
         name={props.tableName}
         onChangeSearchText={onChangeSearchText}
-      />
+      />}
       {props.children}
       {!stateDataCount && (
-        <div style={{ padding: '0 15px' }}>
+        <div style={{ padding: '0 15px', width: '100%' }}>
           <div className="noRecordsDiv">
             {!mainDataCount ? `No ${props.tableName || 'data'} to Display` : 'No Results Found'}
           </div>

@@ -9,6 +9,7 @@ const rowsPerPageOptions = [5, 10, 20, 50].map(num => ({
 }));
 
 const Pagination = props => {
+  const numberOfPages = Math.ceil(props.rowCount / props.rowsPerPage.value);
   if (!props.data.length) return null;
 
   const maxRowOptionAvailable = (
@@ -64,7 +65,7 @@ const Pagination = props => {
               />
             ))}
             <MenuItem data-direction="RIGHT" onClick={props.handleDirectionClick} icon="angle right" />
-            <MenuItem icon="angle double right" page={props.numberOfPages} onClick={props.handlePageClick} />
+            <MenuItem icon="angle double right" page={numberOfPages} onClick={props.handlePageClick} />
           </Menu>
         </div>
       </div>
