@@ -9,7 +9,7 @@ import Icon from '../icon';
 
 const rowsPerPageOptions = [5, 10, 20, 50].map(num => ({
   value: num,
-  label: num
+  label: num,
 }));
 
 function reducer(state, action) {
@@ -25,14 +25,14 @@ function reducer(state, action) {
         ...state,
         setCurrentPageTo: action.payload.currentPage,
         setNumberOfPages: action.payload.numberOfPages,
-        pageOptions: action.payload.pageOptions
+        pageOptions: action.payload.pageOptions,
       };
     case 'updateDropDownStates':
       return {
         ...state,
         setCurrentPageTo: action.payload.currentPage,
         setNumberOfPages: action.payload.numberOfPages,
-        setRowsPerPageTo: action.payload.rowsPerPage
+        setRowsPerPageTo: action.payload.rowsPerPage,
       };
     default:
       return state;
@@ -50,7 +50,7 @@ const Pagination = props => {
     setRowsPerPageTo: { value: 10, label: 10 },
     setNumberOfPages: Math.ceil(props.rowCount / props.rowsPerPage.value),
     pageOptions: rowsPerPageOptions,
-    isOpen: false
+    isOpen: false,
   });
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const Pagination = props => {
     const numberOfPages = Math.ceil(props.rowCount / props.rowsPerPage.value);
     dispatch({
       type: 'updateStateToProps',
-      payload: { currentPage: props.currentPage, numberOfPages: numberOfPages, pageOptions: pageOptions }
+      payload: { currentPage: props.currentPage, numberOfPages: numberOfPages, pageOptions: pageOptions },
     });
   }, [props.currentPage, props.rowsPerPage, props.rowCount, props.numberOfPages]);
 
@@ -70,7 +70,7 @@ const Pagination = props => {
       const numberOfPages = Math.ceil(props.rowCount / selectedRowsPerPage.value);
       dispatch({
         type: 'updateDropDownStates',
-        payload: { currentPage: 1, numberOfPages: numberOfPages, rowsPerPage: selectedRowsPerPage }
+        payload: { currentPage: 1, numberOfPages: numberOfPages, rowsPerPage: selectedRowsPerPage },
       });
     },
     [props.rowCount]
@@ -84,7 +84,7 @@ const Pagination = props => {
     const numberOfPages = Math.ceil(props.rowCount / props.rowsPerPage.value);
     dispatch({
       type: 'updateDropDownStates',
-      payload: { currentPage: props.currentPage, numberOfPages: numberOfPages, rowsPerPage: props.rowsPerPage }
+      payload: { currentPage: props.currentPage, numberOfPages: numberOfPages, rowsPerPage: props.rowsPerPage },
     });
   }, [props.currentPage, props.rowsPerPage, props.rowCount]);
 

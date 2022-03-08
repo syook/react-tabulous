@@ -2,7 +2,6 @@ import './index.css';
 import React from 'react';
 
 const Input = ({ className, disabled, ...props }) => {
-
   return (
     <input
       disabled={disabled}
