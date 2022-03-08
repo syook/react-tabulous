@@ -393,7 +393,7 @@ function TableComponent(props) {
                             ]}
                             accentColor={props.accentColor}
                           />
-                          {props.children ? (
+                          {!props.customPagination && props.children ? (
                             <div style={{ display: 'inline-block' }}>
                               {props.children(filterProps.data, searchProps.searchText, [
                                 ...visibleColumnsToLeft,
@@ -431,6 +431,15 @@ function TableComponent(props) {
                                     defaultItemsToDisplay={props.defaultItemsToDisplay}
                                     customPagination={props.customPagination}
                                     paginationPositionTop={props.paginationPositionTop}
+                                    additionalButtons={
+                                      props.children
+                                        ? props.children(filterProps.data, searchProps.searchText, [
+                                            ...visibleColumnsToLeft,
+                                            ...visibleColumns,
+                                            ...visibleColumnsToRight,
+                                          ])
+                                        : null
+                                    }
                                   >
                                     <div className="tabulous">
                                       <Ref innerRef={tableElement}>
@@ -688,12 +697,16 @@ TableComponent.propTypes = {
   tableName: PropTypes.string,
   hideBulkCount: PropTypes.bool,
   showResetButton: PropTypes.bool,
+  customPagination: PropTypes.func,
+  paginationPositionTop: PropTypes.bool,
+  showSearch: PropTypes.bool,
 };
 
 TableComponent.defaultProps = {
   resetFilterOnDataChange: true,
   resetHideColumnsOnDataChange: true,
   showResetButton: true,
+  showSearch: true,
 };
 
 export default TableComponent;

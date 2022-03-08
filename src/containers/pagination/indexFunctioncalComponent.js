@@ -149,7 +149,11 @@ function PaginationProvider(props) {
 
   const DisplayPaginationComponent = () => {
     return props.customPagination ? (
-      <props.customPagination {...state} onChange={applyPaginationChangesHandler} />
+      <props.customPagination
+        {...state}
+        onChange={applyPaginationChangesHandler}
+        additionalButtons={props.additionalButtons}
+      />
     ) : (
       <Pagination
         {...props}
