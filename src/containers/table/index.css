@@ -59,7 +59,7 @@ table {
 /* The .bar selector represents the vertical line we use to resize column width */
 .resizable_bar {
   font-size: 20px;
-  color: violet;
+  color: #E0E3E7;
   height: 100%;
   position: absolute;
   display: flex;
