@@ -302,7 +302,7 @@ const InputCategories = props => {
           showTimeSelect
         />
       );
-    case 'date':
+    case 'Date':
       return (
         <DateComponent
           dateFormat="DD-MMM-YYYY"
