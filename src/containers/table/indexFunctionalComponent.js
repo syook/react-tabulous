@@ -12,7 +12,7 @@ import SearchProvider, { SearchContext } from '../search/indexFuntionalComponent
 import SortProvider, { SortContext } from '../sort/indexFunctionalComponent';
 
 import BulkActionList from '../../components/table/bulk-action-dropdown';
-import HeaderSelector from '../../components/table/header-selector';
+import HeaderSelector from '../../components/table/headerSelectorV2/header-selector';
 import TableActions from '../../components/table/actions';
 import TableHeaderProvider from './tabulousHeaderProvider';
 import TableCellProvider from './tabulousCellProvider';
@@ -69,7 +69,6 @@ function TableComponent(props) {
     rawData: props.data,
     stylesForTable: {},
     resetStylesForTable: {},
-    showResetButton: props.showResetButton && columnAndKeys.columnDefs.some(c => c.isResizable),
   });
 
   useEffect(() => {
@@ -296,22 +295,6 @@ function TableComponent(props) {
     setInlineStyleCaller();
   }, [state.resetStylesForTable, useWrapper]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const resetButton = () => {
-    return (
-      <Button
-        disabled={props.disabled}
-        style={{
-          backgroundColor: props.accentColor ? 'rgb(170, 170, 170)' : 'rgba(241, 196, 15, 0.8)',
-          color: '#fff',
-          marginRight: '10px',
-        }}
-        onClick={resetHandler}
-      >
-        <Icon name="redo" /> {'Reset'}
-      </Button>
-    );
-  };
-
   const FixedSectionWrapper = useCallback(
     props => {
       const styleObject = {
@@ -389,7 +372,6 @@ function TableComponent(props) {
                                   hideBulkCount={props.hideBulkCount}
                                 />
                               ) : null,
-                              state.showResetButton && resetButton(),
                             ]}
                             accentColor={props.accentColor}
                           />
@@ -696,7 +678,6 @@ TableComponent.propTypes = {
   tableFooterName: PropTypes.string,
   tableName: PropTypes.string,
   hideBulkCount: PropTypes.bool,
-  showResetButton: PropTypes.bool,
   customPagination: PropTypes.func,
   paginationPositionTop: PropTypes.bool,
   showSearch: PropTypes.bool,
@@ -705,7 +686,6 @@ TableComponent.propTypes = {
 TableComponent.defaultProps = {
   resetFilterOnDataChange: true,
   resetHideColumnsOnDataChange: true,
-  showResetButton: true,
   showSearch: true,
 };
 

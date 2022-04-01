@@ -35,7 +35,7 @@ const KebabDropdown = props => {
         content={<ColumnList options={props.options || []} />}
         on="click"
         positionFixed
-        position="bottom center"
+        position="bottom right"
         className="selectColumns-btn"
       />
     </div>
