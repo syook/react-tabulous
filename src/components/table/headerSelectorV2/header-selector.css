@@ -50,8 +50,8 @@
   padding-left: 30px;
 }
 
-.hideColumnsContainer__searchInput::placeholder{
-  color: #C4C4C4;
+.hideColumnsContainer__searchInput::placeholder {
+  color: #c4c4c4;
 }
 
 .hideColumnsContainer__searchInput:focus {
