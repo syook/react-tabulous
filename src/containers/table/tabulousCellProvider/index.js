@@ -13,7 +13,7 @@ const TableCellProvider = ({ column, index2, data, row, emptyCellPlaceHolder, st
       : row[column.headerName]
     : null;
   return currentItem ? (
-    <TabulousCellComponent styleSetTo={styleSetTo} index={index2} headerName={headerNameFormatted}>
+    <TabulousCellComponent key={index2} styleSetTo={styleSetTo} index={index2} headerName={headerNameFormatted}>
       {cellData}
     </TabulousCellComponent>
   ) : null;

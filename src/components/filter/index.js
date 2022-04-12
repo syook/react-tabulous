@@ -110,12 +110,7 @@ const TableFilter = props => {
       <Popup
         className="filter-popUp"
         trigger={
-          <Button
-            variant="outline"
-            className="filter-button"
-            disabled={props.disabled}
-            backgroundColor={props.accentColor}
-          >
+          <Button variant="outline" className="filter-button" disabled={props.disabled}>
             <Icons name="filter" className="filter-icon" /> {buttonText}
           </Button>
         }

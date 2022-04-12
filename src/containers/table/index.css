@@ -37,7 +37,6 @@ table {
   position: relative;
   overflow: auto;
   margin-top: 10px;
-  max-height: calc(100vh - 250px) !important;
   border: 1px solid #e9e9e9;
 }
 .tabulousTable {
@@ -58,18 +57,19 @@ table {
 }
 /* The .bar selector represents the vertical line we use to resize column width */
 .resizable_bar {
-  font-size: 20px;
-  color: #e0e3e7;
-  height: 100%;
-  position: absolute;
   display: flex;
   align-items: center;
+  position: absolute;
+  right: 2px;
+  width: 3px;
+  background-color: #e0e3e7;
+  border-radius: 4px;
   cursor: col-resize;
-  right: 0px;
-  top: 0;
 }
+
 .resizable_bar:hover {
-  color: black;
+  background-color: #898c91;
+  /* //rgba(0, 0, 0, 0.87); */
 }
 
 .fixed-column-left {

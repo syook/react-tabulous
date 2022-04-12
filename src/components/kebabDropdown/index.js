@@ -25,7 +25,7 @@ const KebabDropdown = props => {
             disabled={props.disabled}
             backgroundColor={props.accentColor}
           >
-            <div class="kebab">
+            <div className="kebab">
               <span>.</span>
               <span>.</span>
               <span>.</span>

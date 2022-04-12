@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import ReactDOM from 'react-dom';
 import React, { useEffect, useReducer, useCallback } from 'react';
 
 import Pagination from '../../components/pagination';
@@ -44,6 +42,8 @@ function PaginationProvider(props) {
     currentPage => {
       dispatch({ type: 'currentPage', payload: currentPage });
     },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [state.currentPage]
   );
   const resetToFirstPage = useCallback(() => setCurrentPage(1), [setCurrentPage]);
@@ -74,6 +74,7 @@ function PaginationProvider(props) {
         payload: currentPage || 1,
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.fetchOnPageChange, state.currentPage, props.searchText, props.columnName, props.columnType, props.direction]
   );
 
@@ -87,6 +88,7 @@ function PaginationProvider(props) {
         });
       setCurrentPage(+data.page || 1);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.fetchOnPageChange, state.rowsPerPage, props.searchText, props.columnName, props.columnType, props.direction]
   );
 
@@ -112,6 +114,7 @@ function PaginationProvider(props) {
         setCurrentPage(currentPage + change || 1);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [state, props.fetchOnPageChange]
   );
 
@@ -127,10 +130,12 @@ function PaginationProvider(props) {
 
     const data = findCurrentData(props.data, state.currentPage, state.rowsPerPage);
     dispatch({ type: 'data', payload: data });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data, props.count, state.currentPage]);
 
   useEffect(() => {
     resetToFirstPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.resetPagination]);
 
   useEffect(() => {
@@ -145,6 +150,7 @@ function PaginationProvider(props) {
     const data = { page: currentPage };
     onSelectRowsPerPage(rowsPerPage);
     handlePageClick(null, data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const DisplayPaginationComponent = () => {

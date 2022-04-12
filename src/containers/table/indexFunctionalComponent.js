@@ -2,7 +2,7 @@ import './index.css';
 
 import React, { useEffect, useReducer, useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Table, Ref, Button, Icon } from 'semantic-ui-react';
+import { Checkbox, Table, Ref } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
 
 import { getTableData, getTableColumns, formatText } from '../../components/utils';
@@ -18,7 +18,6 @@ import TableHeaderProvider from './tabulousHeaderProvider';
 import TableCellProvider from './tabulousCellProvider';
 import TabulousHeaderComponent from '../../components/table/tableHeader/tabulousHeader';
 import TabulousCellComponent from '../../components/table/tabulousCell/tabulousCell';
-import StatusIcon from '../../components/status-icon/status-icon';
 import KebabDropdown from '../../components/kebabDropdown';
 
 import { tableActions } from '../../constants';
@@ -425,7 +424,7 @@ function TableComponent(props) {
                                   >
                                     <div className="tabulous">
                                       <Ref innerRef={tableElement}>
-                                        <table sortable celled className="tabulousTable">
+                                        <table className="tabulousTable">
                                           <PaginationContext.Consumer>
                                             {paginationProps => {
                                               return (
@@ -581,14 +580,14 @@ function TableComponent(props) {
                                                           })}
                                                           {props.includeAction ? (
                                                             <TabulousCellComponent>
-                                                              <Table.Cell className="table-action_buttons">
+                                                              <div className="table-action_buttons">
                                                                 <TableActions
                                                                   actionOnHover={props.actionOnHover}
                                                                   actions={props.actionDefs}
                                                                   row={row}
                                                                   data={paginationProps.rawData}
                                                                 />
-                                                              </Table.Cell>
+                                                              </div>
                                                             </TabulousCellComponent>
                                                           ) : null}
                                                           <FixedSectionWrapper positionedTo={'right'}>

@@ -10,6 +10,7 @@ const TableHeaderProvider = ({ resizeHandler, column, index, sortProps, defaultS
   let currentOrder = sortProps.direction === 'ascending' ? 'descending' : 'ascending';
   return (
     <TabulousHeaderComponent
+      key={index}
       index={index}
       isSortable={isSortable}
       handleSort={sortProps.handleSort}
@@ -31,22 +32,18 @@ const TableHeaderProvider = ({ resizeHandler, column, index, sortProps, defaultS
             sortProps.columnName === headerName &&
             defaultSort !== column.headerName &&
             (currentOrder === 'ascending' ? (
-              <span className="__sortableIcon">
+              <span className="tabulousHeader_SortIcon">
                 <Icon name="sort down" />
               </span>
             ) : (
-              <span className="__sortableIcon">
+              <span className="tabulousHeader_SortIcon">
                 <Icon name="sort up" />
               </span>
-            )))}{' '}
+            )))}
         <p style={{ color: headerMessageColor || 'blueviolet', display: 'inline-block' }}> {headerMessage} </p>
         {isResizable && (
-          <div
-            style={{ height: '100%', position: 'absolute', cursor: 'col-resize', right: '0px', top: '0px' }}
-            className="resizable_bar"
-            onMouseDown={resizeHandler.bind(this, headerNameFormatted)}
-          >
-            <span>|</span>
+          <div className="resizable_bar" onMouseDown={resizeHandler.bind(this, headerNameFormatted)}>
+            <span style={{ color: 'transparent' }}>|</span>
           </div>
         )}
       </div>
