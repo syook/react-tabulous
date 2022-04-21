@@ -13,6 +13,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 10px 12px 12px;
+  cursor: pointer;
 }
 
 .hideColumnsContainer__button__toggle__buttons {

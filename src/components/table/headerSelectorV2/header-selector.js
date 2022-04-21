@@ -55,7 +55,7 @@ const HeaderSelector = props => {
   return (
     <>
       <div style={!isOpen ? dropDownStyle : {}} className="hideColumnsContainer">
-        <button
+        <div
           className="hideColumnsContainer__button"
           onClick={() => {
             setIsOpen(!isOpen);
@@ -65,7 +65,7 @@ const HeaderSelector = props => {
           {isOpen && (
             <div className="hideColumnsContainer__button__toggle__buttons">
               <button
-                disabled={props.columns.length === hiddenColumnsCount ? 'true' : ''}
+                disabled={props.columns.length === hiddenColumnsCount}
                 onClick={e => {
                   e.stopPropagation();
                   props.toggleAllColumns(false);
@@ -74,7 +74,7 @@ const HeaderSelector = props => {
                 Hide all
               </button>
               <button
-                disabled={hiddenColumnsCount === 0 ? 'true' : ''}
+                disabled={hiddenColumnsCount === 0}
                 onClick={e => {
                   e.stopPropagation();
                   props.toggleAllColumns(true);
@@ -93,7 +93,7 @@ const HeaderSelector = props => {
               <path d="M0.5 10.5L5.5 5.5L0.5 0.5L0.5 10.5Z" fill="#333333" />
             </svg>
           )}
-        </button>
+        </div>
         {isOpen && (
           <>
             <form style={{ position: 'relative' }}>

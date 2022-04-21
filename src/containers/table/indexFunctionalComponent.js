@@ -171,14 +171,18 @@ function TableComponent(props) {
   };
 
   const resize = useCallback(
-    async (col, element, original_width = 20, original_mouse_x, e) => {
+    async (col, element, original_width = 20, original_mouse_x, inverted, e) => {
       let width = 0;
       if (!element) {
         return;
       }
 
-      if (!!e) {
-        width = original_width + (e.pageX - original_mouse_x);
+      if (e) {
+        if (inverted) {
+          width = original_width - (e.pageX - original_mouse_x);
+        } else {
+          width = original_width + (e.pageX - original_mouse_x);
+        }
       } else {
         width = original_width;
       }
@@ -199,15 +203,15 @@ function TableComponent(props) {
     return parseFloat(getComputedStyle(element, null).getPropertyValue(property).replace('px', ''));
   };
 
-  const resizeHandler = async (col, e) => {
+  const resizeHandler = async (col, inverted = false, e) => {
     e.stopPropagation();
-    const element = tableElement.current.querySelector(`.head${col}`);
     e.preventDefault();
+    const element = tableElement.current.querySelector(`.head${col}`);
     let original_width = getOriginalPropertyOfElement(element, 'width');
     let original_mouse_x = e.pageX;
 
     const refFunc = async e => {
-      await resize(col, element, original_width, original_mouse_x, e);
+      await resize(col, element, original_width, original_mouse_x, inverted, e);
     };
     window.addEventListener('mousemove', refFunc, true);
     window.addEventListener(

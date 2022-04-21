@@ -55,22 +55,6 @@ table {
   background: #d6e7f3;
   color: #26547c;
 }
-/* The .bar selector represents the vertical line we use to resize column width */
-.resizable_bar {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  right: 2px;
-  width: 3px;
-  background-color: #e0e3e7;
-  border-radius: 4px;
-  cursor: col-resize;
-}
-
-.resizable_bar:hover {
-  background-color: #898c91;
-  /* //rgba(0, 0, 0, 0.87); */
-}
 
 .fixed-column-left {
   position: sticky;

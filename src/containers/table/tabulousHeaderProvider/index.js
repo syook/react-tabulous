@@ -1,11 +1,12 @@
+import './tabulousHeaderProvider.css';
+
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
 import TabulousHeaderComponent from '../../../components/table/tableHeader/tabulousHeader';
-import './tabulousHeaderProvider.css';
 import { formatText } from '../../../components/utils';
 
 const TableHeaderProvider = ({ resizeHandler, column, index, sortProps, defaultSort, disabled, styleSetTo }) => {
-  const { isSortable, isResizable = false, headerName, headerMessage, headerMessageColor } = column;
+  const { isSortable, isResizable = false, headerName, headerMessage, headerMessageColor, fixed } = column;
   const headerNameFormatted = formatText(headerName);
   let currentOrder = sortProps.direction === 'ascending' ? 'descending' : 'ascending';
   return (
@@ -42,9 +43,10 @@ const TableHeaderProvider = ({ resizeHandler, column, index, sortProps, defaultS
             )))}
         <p style={{ color: headerMessageColor || 'blueviolet', display: 'inline-block' }}> {headerMessage} </p>
         {isResizable && (
-          <div className="resizable_bar" onMouseDown={resizeHandler.bind(this, headerNameFormatted)}>
-            <span style={{ color: 'transparent' }}>|</span>
-          </div>
+          <div
+            className={`tabulousHeader_resizableBar ${fixed === 'right' ? 'rightFixedResizableBar' : ''}`}
+            onMouseDown={resizeHandler.bind(this, headerNameFormatted, fixed === 'right')}
+          />
         )}
       </div>
     </TabulousHeaderComponent>
