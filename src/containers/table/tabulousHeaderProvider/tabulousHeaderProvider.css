@@ -1,6 +1,7 @@
 .tabulousHeader_Content {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .tabulousHeader_Content_Text {
@@ -12,4 +13,28 @@
 
 .tabulousHeader_SortIcon {
   margin-left: 5px;
+}
+
+/* The .bar selector represents the vertical line we use to resize column width */
+.tabulousHeader_resizableBar {
+  display: none;
+  position: absolute;
+  right: 2px;
+  width: 3px;
+  background-color: #e0e3e7;
+  cursor: col-resize;
+  height: 22px;
+}
+
+.tabulousHeader:hover .tabulousHeader_resizableBar {
+  display: flex;
+}
+
+.tabulousHeader_resizableBar:hover {
+  background-color: #898c91;
+  /* //rgba(0, 0, 0, 0.87); */
+}
+
+.rightFixedResizableBar {
+  left: 2px;
 }
