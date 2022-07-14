@@ -1,25 +1,9 @@
-.selectColumns-btn .list .item .content {
-  display: flex !important;
+.rt-KebabDropdown {
+  margin-right: 10px;
+  text-align: 'left';
+  display: 'inline-block';
 }
 
-.kebab-button {
-  height: 100%;
-  display: flex;
-}
-
-.kebab {
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  top: -10px;
-  height: 14px;
-  font-size: large;
-  font-weight: bolder;
-}
-
-.kebab span {
-  width: 3px;
-  height: 3px;
+.kebab-filter-button {
+  padding: 5px 6px;
 }

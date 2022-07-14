@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useReducer, useCallback } from 'react';
+import NoRecords from '../../assets/noRecords';
 
-import Filter from '../../components/filter';
+import FilterV2 from '../../components/filterV2';
 
 import { loopFilters } from './utils';
 
@@ -70,7 +71,7 @@ function FilterProvider(props) {
 
   return (
     <FilterContext.Provider value={{ rawData: props.rawData, ...state, count: props.count }}>
-      <Filter
+      <FilterV2
         applyFilter={applyFilter}
         disabled={!parentDataCount || !filterableColumns.length}
         filterDisabled={state.filterDisabled}
@@ -83,7 +84,12 @@ function FilterProvider(props) {
       />
       {children}
 
-      {parentDataCount && !stateDataCount ? <div className="noRecordsDiv">{'No Results Found'}</div> : null}
+      {parentDataCount && !stateDataCount ? (
+        <div className="noRecordsDiv">
+          <NoRecords />
+          <p>No Results Found</p>
+        </div>
+      ) : null}
     </FilterContext.Provider>
   );
 }

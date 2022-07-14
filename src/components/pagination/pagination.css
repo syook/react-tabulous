@@ -1,13 +1,19 @@
-.tabulous.pagination-footer {
+.rt-pagination-footer {
+  width: 100%;
+  position: relative;
+  margin-top: 10px;
   border: 1px solid rgba(34, 36, 38, 0.1) !important;
-  padding: 0px 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.tabulous.pagination-footer .ui.menu .item:before {
+.rt-pagination-footer .ui.menu .item:before {
   background: #d6e7f3 !important;
 }
 
-.tabulous.pagination-footer .ui.ribbon.label {
+.rt-pagination-footer .ui.ribbon.label {
   left: 0px !important;
 }
 

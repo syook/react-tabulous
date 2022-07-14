@@ -27,6 +27,7 @@
 }
 
 .noRecordsDiv {
+  width: 100%;
   font-size: 1.1em;
   letter-spacing: 0.5px;
   font-weight: 500;

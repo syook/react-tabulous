@@ -14,7 +14,7 @@ const Button = ({ children, variant, className, backgroundColor, ...props }) => 
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
-  variant: PropTypes.string.isRequired,
+  variant: PropTypes.string,
   className: PropTypes.string,
 };
 

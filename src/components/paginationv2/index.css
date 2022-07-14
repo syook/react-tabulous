@@ -34,8 +34,9 @@
 .rt-pagination-body .rt-pagination-footer {
   display: flex;
   margin-top: 8px;
-  border-top: 1px solid #e5e5e5;
-  padding-top: 8px;
+  border: none !important;
+  border-top: 1px solid #e5e5e5 !important;
+  padding: 8px 0 0 0;
   align-items: center;
   justify-content: space-between;
 }

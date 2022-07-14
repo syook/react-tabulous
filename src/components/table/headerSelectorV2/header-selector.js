@@ -1,50 +1,49 @@
 import './header-selector.css';
 import React, { useRef, useState } from 'react';
+import Button from '../../button';
 
-const ColumnList = ({ columns, toggleColumns, searchedFor }) => {
+const ColumnList = ({ columns = [], toggleColumns, searchedFor }) => {
   return (
-    <div className="columnListContainer">
-      <ul className="columnListContainer__list">
-        {(columns || []).map((column, index) => {
-          if (!column.headerName.toLowerCase().includes(searchedFor.toLowerCase())) {
-            return null;
-          }
-          return (
-            <li key={`hide-selector-list-item-${index}`} className="columnListContainer__list__listItem">
-              <label className="columnListContainer__list__listItem__label">
-                {column.isVisible ? (
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="9" cy="9" r="8.5" fill="#4724D8" stroke="white" />
-                    <path d="M4.90924 9.27268L8.05609 11.4545L13.0911 6.54541" stroke="white" />
-                  </svg>
-                ) : (
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="9" cy="9" r="8.5" stroke="#C4C4C4" />
-                  </svg>
-                )}
-                <span>{column.headerName}</span>
-                <input
-                  type={'checkbox'}
-                  checked={column.isVisible}
-                  onChange={_e => toggleColumns(column.headerName, { checked: _e.target.checked })}
-                  style={{ display: 'none' }}
-                />
-              </label>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <ul className="columnListContainer">
+      {[...columns, ...columns, ...columns, ...columns].map((column, index) => {
+        if (!column.headerName.toLowerCase().includes(searchedFor.toLowerCase())) {
+          return null;
+        }
+        return (
+          <li key={`hide-selector-list-item-${index}`} className="columnListContainer__list__listItem">
+            <label className="columnListContainer__list__listItem__label">
+              {column.isVisible ? (
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="9" cy="9" r="8.5" fill="#4724D8" stroke="white" />
+                  <path d="M4.90924 9.27268L8.05609 11.4545L13.0911 6.54541" stroke="white" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="9" cy="9" r="8.5" stroke="#C4C4C4" />
+                </svg>
+              )}
+              <span>{column.headerName}</span>
+              <input
+                type={'checkbox'}
+                checked={column.isVisible}
+                onChange={_e => toggleColumns(column.headerName, { checked: _e.target.checked })}
+                style={{ display: 'none' }}
+              />
+            </label>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 
-const HeaderSelector = props => {
+const HeaderSelector = ({ columns = [], hiddenColumnCount, toggleColumns, toggleAllColumns }) => {
   const dropDownStyle = { backgroundColor: '#F9F9F9' };
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
 
-  const hiddenColumnsCount = props.hiddenColumnCount;
+  const hiddenColumnsCount = hiddenColumnCount;
 
   const searchEl = useRef(null);
 
@@ -64,24 +63,24 @@ const HeaderSelector = props => {
           <span>Hide Columns</span>
           {isOpen && (
             <div className="hideColumnsContainer__button__toggle__buttons">
-              <button
-                disabled={props.columns.length === hiddenColumnsCount}
+              <Button
+                disabled={columns.length === hiddenColumnsCount}
                 onClick={e => {
                   e.stopPropagation();
-                  props.toggleAllColumns(false);
+                  toggleAllColumns(false);
                 }}
               >
                 Hide all
-              </button>
-              <button
+              </Button>
+              <Button
                 disabled={hiddenColumnsCount === 0}
                 onClick={e => {
                   e.stopPropagation();
-                  props.toggleAllColumns(true);
+                  toggleAllColumns(true);
                 }}
               >
                 Show all
-              </button>
+              </Button>
             </div>
           )}
           {isOpen ? (
@@ -113,9 +112,7 @@ const HeaderSelector = props => {
                 </svg>
               </div>
             </form>
-            <div>
-              <ColumnList columns={props.columns || []} toggleColumns={props.toggleColumns} searchedFor={searchText} />
-            </div>
+            <ColumnList columns={columns} toggleColumns={toggleColumns} searchedFor={searchText} />
           </>
         )}
       </div>

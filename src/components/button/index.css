@@ -10,6 +10,7 @@
   line-height: 1em;
   vertical-align: baseline;
   text-align: center;
+  font-family: var(--font-family);
 }
 
 .rt-button.btn-primary {

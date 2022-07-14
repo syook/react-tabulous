@@ -1,11 +1,10 @@
-/* @font-face {
-  font-family: 'SF-Pro-Display';
-  src: url('fonts/SF-Pro-Display-Semibold.otf');
-  font-weight:bold;
-  font-style: normal;
-} */
+:root {
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
 body {
-  /* font-family: 'SF-Pro-Display'; */
+  font-family: var(--font-family);
   font-style: normal;
   font-weight: 500;
 }

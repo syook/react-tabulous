@@ -1,9 +1,12 @@
-import './index.css';
+import './filter.css';
 
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useCallback } from 'react';
-import Select from 'react-select';
-import { Popup, Button, Icon, Input, Checkbox } from 'semantic-ui-react';
+import Select from '../select';
+import Input from '../input';
+import Button from '../button';
+import Icons from '../icon';
+import { Popup, Icon, Checkbox } from 'semantic-ui-react';
 
 import { createPropertyOption } from '../utils';
 import { findColumnOptions } from '../utils';
@@ -13,7 +16,7 @@ import DateComponent from '../date';
 
 import { predicateOptions, filterOperators } from '../../constants';
 
-const Filter = props => {
+const FilterV2 = props => {
   const [filters, setFilters] = useState([]);
 
   const { shouldFilterReset, setSelectedFilters, selectedFilters } = props;
@@ -60,6 +63,11 @@ const Filter = props => {
     props.setSelectedFilters(updatedFilters);
   };
 
+  const clearAllFilter = () => {
+    setFilters([]);
+    props.setSelectedFilters([]);
+  };
+
   const updateSelectedFilters = (attribute, value, index) => {
     const { columns } = props;
     let filterToBeUpdated = filters[index];
@@ -88,6 +96,7 @@ const Filter = props => {
 
     setFilters([...filters]);
   };
+
   const selectedFiltersAvailable = (filters || []).length;
   let buttonText =
     selectedFiltersAvailable === 1
@@ -97,25 +106,15 @@ const Filter = props => {
       : 'Filter';
 
   return (
-    <div style={{ display: 'flex', float: 'left' }}>
+    <div className="rt-filter">
       <Popup
+        on="click"
+        positionFixed
+        position="bottom left"
         className="filter-popUp"
         trigger={
-          <Button
-            disabled={props.disabled}
-            style={{
-              backgroundColor: props.accentColor
-                ? selectedFiltersAvailable
-                  ? props.accentColor
-                  : 'rgb(170, 170, 170)'
-                : selectedFiltersAvailable
-                ? '#FCB400'
-                : 'rgba(241, 196, 15, 0.8)',
-              color: '#fff',
-              marginRight: '10px',
-            }}
-          >
-            <Icon name="filter" /> {buttonText}
+          <Button variant="outline" className="filter-button" disabled={props.disabled}>
+            <Icons name="filter" className="filter-icon" /> {buttonText}
           </Button>
         }
         content={
@@ -127,11 +126,9 @@ const Filter = props => {
             addFilter={addFilter}
             removeFilter={removeFilter}
             setSelectedFilters={props.setSelectedFilters}
+            clearAllFilter={clearAllFilter}
           />
         }
-        on="click"
-        positionFixed
-        position="bottom left"
       />
     </div>
   );
@@ -144,38 +141,43 @@ const FilterDiv = props => {
   return (
     <div className="filter-wrapper">
       {selectedFilters.length ? (
-        <div>
-          {selectedFilters.map((column, index) => (
-            <div key={index} style={{ margin: '8px 0' }}>
-              <FilterGrid
-                index={index}
-                column={column}
-                removeFilter={props.removeFilter}
-                updateSelectedFilters={props.updateSelectedFilters}
-                indexOnePredicate={indexOnePredicate}
-                filterableColumns={props.filterableColumns}
-                secondarySelectionDisabled={secondarySelectionDisabled}
-              />
-            </div>
-          ))}
-        </div>
+        selectedFilters.map((column, index) => (
+          <FilterGrid
+            key={index}
+            index={index}
+            column={column}
+            removeFilter={props.removeFilter}
+            updateSelectedFilters={props.updateSelectedFilters}
+            indexOnePredicate={indexOnePredicate}
+            filterableColumns={props.filterableColumns}
+            secondarySelectionDisabled={secondarySelectionDisabled}
+          />
+        ))
       ) : (
         <div style={{ opacity: 0.5, marginBottom: 10 }}>No filters applied</div>
       )}
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }} className="filter-btns">
-        <Button size="small" onClick={props.addFilter} className="filter_btn add">
-          <Icon name="add" size="small" /> Add Filter{' '}
+      <div className="btn-add-wrapper">
+        <Button variant="outline" onClick={props.addFilter} className="btn-add">
+          Add Filter&nbsp;
+          <Icons width={10} height={10} name="plus" className="btn-icon-plus" />
         </Button>
+      </div>
+
+      <div className="filter-btns">
         {!props.filtersSelected || props.filterDisabled ? null : (
-          <Button
-            positive
-            className="filter_btn apply"
-            size="small"
-            onClick={() => props.setSelectedFilters(props.filters)}
-            loading={props.filterDisabled}
-          >
-            Apply Filter
-          </Button>
+          <>
+            <Button
+              variant="primary"
+              className="filter-btn-apply"
+              onClick={() => props.setSelectedFilters(props.filters)}
+              loading={props.filterDisabled}
+            >
+              Apply Filter
+            </Button>
+            <Button variant="text" className="filter-btn-clear-all" onClick={() => props.clearAllFilter()}>
+              Clear all
+            </Button>
+          </>
         )}
       </div>
     </div>
@@ -194,51 +196,47 @@ const FilterGrid = props => {
   const queryOperatorOptions = filterOperators[props.column.type] || [];
 
   return (
-    <div style={{ display: 'flex', flexFlow: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div style={{ maxWidth: '40px', paddingTop: 'inherit', flex: '1 0 auto' }}>
-        <Icon name="remove" onClick={() => props.removeFilter(props.index)} />
-      </div>
-      <div style={{ flex: '1 0 auto', minWidth: '100px', marginLeft: 10 }}>
-        <Select
-          className="singleSelect"
-          isSearchable={false}
-          isDisabled={props.column.predicate === 'Where' || (props.secondarySelectionDisabled && props.index > 1)}
-          options={predicateOptionConditions}
-          value={{ value: props.column.predicate, label: props.column.predicate }}
-          onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
+    <div
+      className="filter-grid"
+      // style={{ display: 'flex', flexFlow: 'row', justifyContent: 'space-between', alignItems: 'center' }}
+    >
+      <Select
+        className="rt_select_group"
+        isSearchable={false}
+        isDisabled={props.column.predicate === 'Where' || (props.secondarySelectionDisabled && props.index > 1)}
+        options={predicateOptionConditions}
+        value={{ value: props.column.predicate, label: props.column.predicate }}
+        onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
+        menuPlacement="auto"
+      />
+      <Select
+        className="rt_select_field"
+        options={props.filterableColumns.map(createPropertyOption('headerName'))}
+        value={{ value: props.column.label, label: props.column.label }}
+        onChange={value => props.updateSelectedFilters('attribute', value.value, props.index)}
+        menuPlacement="auto"
+      />
+      <Select
+        className="rt_select_filter_type"
+        options={queryOperatorOptions}
+        isDisabled={queryOperatorOptions.length <= 1}
+        value={{ value: props.column.query, label: props.column.query }}
+        onChange={value => props.updateSelectedFilters('query', value.value, props.index)}
+        menuPlacement="auto"
+      />
+      {['is empty', 'is not empty'].includes(props.column.query) ? (
+        <Input disabled className="text-input" />
+      ) : (
+        <InputCategories
+          className="text-input"
+          column={props.column}
+          updateSelectedFilters={props.updateSelectedFilters}
+          index={props.index}
+          filterableColumns={props.filterableColumns}
           menuPlacement="auto"
         />
-      </div>
-      <div style={{ flex: '2 0 auto', minWidth: '100px', marginLeft: 10 }}>
-        <Select
-          className="singleSelect"
-          options={props.filterableColumns.map(createPropertyOption('headerName'))}
-          value={{ value: props.column.label, label: props.column.label }}
-          onChange={value => props.updateSelectedFilters('attribute', value.value, props.index)}
-          menuPlacement="auto"
-        />
-      </div>
-      <div style={{ flex: '2 0 auto', minWidth: '100px', marginLeft: 10 }}>
-        <Select
-          className="singleSelect"
-          options={queryOperatorOptions}
-          isDisabled={queryOperatorOptions.length <= 1}
-          value={{ value: props.column.query, label: props.column.query }}
-          onChange={value => props.updateSelectedFilters('query', value.value, props.index)}
-          menuPlacement="auto"
-        />
-      </div>
-      {['is empty', 'is not empty'].includes(props.column.query) ? null : (
-        <div className="text-input" style={{ flex: '1 0 auto', minWidth: '100px', marginLeft: 10 }}>
-          <InputCategories
-            column={props.column}
-            updateSelectedFilters={props.updateSelectedFilters}
-            index={props.index}
-            filterableColumns={props.filterableColumns}
-            menuPlacement="auto"
-          />
-        </div>
       )}
+      <Icon name="times circle outline" onClick={() => props.removeFilter(props.index)} />
     </div>
   );
 };
@@ -249,6 +247,7 @@ const InputCategories = props => {
     case 'Number':
       return (
         <Input
+          className={props.className}
           type={props.column.type === 'Number' ? 'number' : 'text'}
           value={props.column.value || ''}
           onChange={e => props.updateSelectedFilters('value', e.target.value, props.index)}
@@ -299,7 +298,6 @@ const InputCategories = props => {
         />
       );
     case 'Date':
-    case 'date':
       return (
         <DateComponent
           dateFormat="DD-MMM-YYYY"
@@ -316,6 +314,7 @@ FilterDiv.propTypes = {
   filterableColumns: PropTypes.array.isRequired,
   selectedFilters: PropTypes.array.isRequired,
   applyFilter: PropTypes.func.isRequired,
+  clearAllFilter: PropTypes.func.isRequired,
 };
 
 FilterDiv.defaultProps = {
@@ -323,4 +322,4 @@ FilterDiv.defaultProps = {
   selectedFilters: [],
 };
 
-export default Filter;
+export default FilterV2;

@@ -1,5 +1,5 @@
-import React from 'react';
 import './tabulousCell.css';
+import React from 'react';
 
 const TabulousCellComponent = ({ children, styleSetTo, index, headerName }) => {
   return (

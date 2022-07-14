@@ -23,19 +23,17 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 100px;
 }
 
 .hideColumnsContainer__button__toggle__buttons button {
   font-weight: 600;
-  font-size: 10px;
+  font-size: 12px;
   border: none;
-  width: 41px;
-  height: 8px;
   background-color: inherit;
   padding: 0px;
   cursor: pointer;
   color: #4724d8;
+  margin-left: 8px;
 }
 
 .hideColumnsContainer__button__toggle__buttons button:disabled {
@@ -71,9 +69,6 @@
 .columnListContainer {
   border-bottom-left-radius: inherit;
   border-bottom-right-radius: inherit;
-}
-
-.columnListContainer__list {
   list-style: none;
   margin: 0;
   margin-block-start: 0em;
@@ -98,6 +93,7 @@
 .columnListContainer__list__listItem__label {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .columnListContainer__list__listItem__label > span {
