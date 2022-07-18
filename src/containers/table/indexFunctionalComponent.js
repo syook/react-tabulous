@@ -12,7 +12,7 @@ import SearchProvider, { SearchContext } from '../search/indexFuntionalComponent
 import SortProvider, { SortContext } from '../sort/indexFunctionalComponent';
 
 import BulkActionList from '../../components/table/bulk-action-dropdown';
-import HeaderSelector from '../../components/table/headerSelectorV2/header-selector';
+import HeaderSelector from '../../components/table/headerSelectorV2/headerSelector';
 import TableActions from '../../components/table/actions';
 import TableHeaderProvider from './tabulousHeaderProvider';
 import TableCellProvider from './tabulousCellProvider';

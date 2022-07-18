@@ -1,11 +1,11 @@
-import './header-selector.css';
+import './headerSelector.css';
 import React, { useRef, useState } from 'react';
 import Button from '../../button';
 
 const ColumnList = ({ columns = [], toggleColumns, searchedFor }) => {
   return (
     <ul className="columnListContainer">
-      {[...columns, ...columns, ...columns, ...columns].map((column, index) => {
+      {columns.map((column, index) => {
         if (!column.headerName.toLowerCase().includes(searchedFor.toLowerCase())) {
           return null;
         }
