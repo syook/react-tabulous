@@ -60,10 +60,15 @@
 
 .hideColumnsContainer__searchInput__icon {
   position: absolute;
-  left: 14px;
-  top: 8px;
+  left: 0;
+  top: 0;
   background-color: inherit;
   border: none;
+  height: 100%;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .columnListContainer {

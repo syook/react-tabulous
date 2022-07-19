@@ -1,12 +1,13 @@
 import './filter.css';
 
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { Popup, Icon, Checkbox } from 'semantic-ui-react';
+
 import Select from '../select';
 import Input from '../input';
 import Button from '../button';
 import Icons from '../icon';
-import { Popup, Icon, Checkbox } from 'semantic-ui-react';
 
 import { createPropertyOption } from '../utils';
 import { findColumnOptions } from '../utils';
@@ -114,7 +115,7 @@ const FilterV2 = props => {
         className="filter-popUp"
         trigger={
           <Button variant="outline" className="filter-button" disabled={props.disabled}>
-            <Icons name="filter" className="filter-icon" /> {buttonText}
+            <Icons name="filter" size={16} className="filter-icon" /> {buttonText}
           </Button>
         }
         content={
@@ -159,7 +160,7 @@ const FilterDiv = props => {
       <div className="btn-add-wrapper">
         <Button variant="outline" onClick={props.addFilter} className="btn-add">
           Add Filter&nbsp;
-          <Icons width={10} height={10} name="plus" className="btn-icon-plus" />
+          <Icons size={12} name="plus" />
         </Button>
       </div>
 
