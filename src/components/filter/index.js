@@ -1,4 +1,4 @@
-import './filter.css';
+import './index.css';
 
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useCallback } from 'react';
@@ -13,7 +13,7 @@ import DateComponent from '../date';
 
 import { predicateOptions, filterOperators } from '../../constants';
 
-const TableFilter = props => {
+const Filter = props => {
   const [filters, setFilters] = useState([]);
 
   const { shouldFilterReset, setSelectedFilters, selectedFilters } = props;
@@ -113,7 +113,8 @@ const TableFilter = props => {
                 : 'rgba(241, 196, 15, 0.8)',
               color: '#fff',
               marginRight: '10px',
-            }}>
+            }}
+          >
             <Icon name="filter" /> {buttonText}
           </Button>
         }
@@ -171,7 +172,8 @@ const FilterDiv = props => {
             className="filter_btn apply"
             size="small"
             onClick={() => props.setSelectedFilters(props.filters)}
-            loading={props.filterDisabled}>
+            loading={props.filterDisabled}
+          >
             Apply Filter
           </Button>
         )}
@@ -296,6 +298,7 @@ const InputCategories = props => {
           showTimeSelect
         />
       );
+    case 'Date':
     case 'date':
       return (
         <DateComponent
@@ -319,4 +322,5 @@ FilterDiv.defaultProps = {
   filterableColumns: [],
   selectedFilters: [],
 };
-export default TableFilter;
+
+export default Filter;

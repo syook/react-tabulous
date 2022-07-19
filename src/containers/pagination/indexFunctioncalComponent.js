@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useReducer, useCallback } from 'react';
 
 import Pagination from '../../components/pagination';
@@ -11,12 +10,10 @@ function reducer(state, action) {
   switch (action.type) {
     case 'currentPage':
       return { ...state, currentPage: action.payload };
-    case 'numberOfColumns':
-      return { ...state, numberOfColumns: action.payload };
     case 'data':
       return { ...state, data: [...(action.payload || [])] };
-    case 'numberOfPages':
-      return { ...state, numberOfPages: action.payload };
+    case 'rowCount':
+      return { ...state, rowCount: action.payload };
     case 'rowsPerPage':
       return { ...state, rowsPerPage: action.payload };
     default:
@@ -27,25 +24,32 @@ function reducer(state, action) {
 function PaginationProvider(props) {
   const rowsPerPage = {
     value: props.defaultItemsToDisplay || 10,
-    label: `${props.defaultItemsToDisplay || 10} Items`,
+    label: props.customPagination ? props.defaultItemsToDisplay || 10 : `${props.defaultItemsToDisplay || 10} Items`,
   };
   const rowCount = typeof props.count === 'number' ? props.count : (props.data || []).length;
 
   const [state, dispatch] = useReducer(reducer, {
     currentPage: 1,
-    data: [...props.data],
-    numberOfColumns: 30,
-    numberOfPages: Math.ceil(rowCount / rowsPerPage.value),
+    data: [...props.data], //TODO:
+    rowCount: rowCount,
     rowsPerPage,
+    // currentPage, totalItems, itemsPerPage, //currentPage, rowCount, rowsPerPage
   });
 
-  const setCurrentPage = useCallback(currentPage => dispatch({ type: 'currentPage', payload: currentPage }), [
-    state.currentPage,
-  ]);
+  // const portalDiv = document.querySelector('#tabulousDivForPagination');
+
+  const setCurrentPage = useCallback(
+    currentPage => {
+      dispatch({ type: 'currentPage', payload: currentPage });
+    },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.currentPage]
+  );
   const resetToFirstPage = useCallback(() => setCurrentPage(1), [setCurrentPage]);
 
   const onSelectRowsPerPage = useCallback(
-    (selectedRowsPerPage = { value: 10, label: '10 Items' }) => {
+    (selectedRowsPerPage = { value: 10, label: 10 }) => {
       let { currentPage } = state;
       const rowCount = typeof props.count === 'number' ? props.count : (props.data || []).length;
 
@@ -61,11 +65,6 @@ function PaginationProvider(props) {
 
       const data = findCurrentData(props.data, currentPage, selectedRowsPerPage);
       dispatch({ type: 'data', payload: data });
-
-      dispatch({
-        type: 'numberOfPages',
-        payload: numberOfPages,
-      });
       dispatch({
         type: 'rowsPerPage',
         payload: selectedRowsPerPage,
@@ -75,11 +74,12 @@ function PaginationProvider(props) {
         payload: currentPage || 1,
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.fetchOnPageChange, state.currentPage, props.searchText, props.columnName, props.columnType, props.direction]
   );
 
   const handlePageClick = useCallback(
-    (_e, data) => {
+    (_, data) => {
       if (props.fetchOnPageChange)
         props.fetchOnPageChange(+data.page, props.searchText, null, state.rowsPerPage.value, {
           columnName: props.columnName,
@@ -88,6 +88,7 @@ function PaginationProvider(props) {
         });
       setCurrentPage(+data.page || 1);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.fetchOnPageChange, state.rowsPerPage, props.searchText, props.columnName, props.columnType, props.direction]
   );
 
@@ -96,9 +97,10 @@ function PaginationProvider(props) {
       const { currentPage } = state;
       const direction = e.currentTarget.dataset['direction'];
       let change = 0;
+      const numberOfPages = Math.ceil(rowCount / rowsPerPage.value);
       if (direction === 'LEFT' && currentPage > 1) {
         change = -1;
-      } else if (direction === 'RIGHT' && currentPage < state.numberOfPages) {
+      } else if (direction === 'RIGHT' && currentPage < numberOfPages) {
         change = 1;
       }
       if (change !== 0) {
@@ -112,6 +114,7 @@ function PaginationProvider(props) {
         setCurrentPage(currentPage + change || 1);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [state, props.fetchOnPageChange]
   );
 
@@ -123,33 +126,41 @@ function PaginationProvider(props) {
     if (numberOfPages < currentPage) currentPage = numberOfPages;
 
     props.resetBulkSelection();
-    dispatch({ type: 'numberOfPages', payload: numberOfPages });
     dispatch({ type: 'currentPage', payload: currentPage || 1 });
 
     const data = findCurrentData(props.data, state.currentPage, state.rowsPerPage);
     dispatch({ type: 'data', payload: data });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data, props.count, state.currentPage]);
 
   useEffect(() => {
     resetToFirstPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.resetPagination]);
+
+  useEffect(() => {
+    dispatch({ type: 'rowCount', payload: rowCount });
+  }, [rowCount]);
 
   let { children } = props;
   let pageRange = findPageRange({ ...state });
   const startIndex = (state.currentPage - 1) * state.rowsPerPage.value;
 
-  return (
-    <>
-      <PaginationContext.Provider
-        value={{
-          rawData: props.rawData,
-          ...state,
-          startIndex,
-          rowCount,
-          resetToFirstPage: resetToFirstPage,
-        }}>
-        {children}
-      </PaginationContext.Provider>
+  const applyPaginationChangesHandler = useCallback((currentPage, rowsPerPage) => {
+    const data = { page: currentPage };
+    onSelectRowsPerPage(rowsPerPage);
+    handlePageClick(null, data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const DisplayPaginationComponent = () => {
+    return props.customPagination ? (
+      <props.customPagination
+        {...state}
+        onChange={applyPaginationChangesHandler}
+        additionalButtons={props.additionalButtons}
+      />
+    ) : (
       <Pagination
         {...props}
         {...state}
@@ -157,9 +168,25 @@ function PaginationProvider(props) {
         handlePageClick={handlePageClick}
         onSelectRowsPerPage={onSelectRowsPerPage}
         pageRange={pageRange}
-        rowCount={rowCount}
         setCurrentPage={setCurrentPage}
       />
+    );
+  };
+
+  return (
+    <>
+      {props.paginationPositionTop && DisplayPaginationComponent()}
+      <PaginationContext.Provider
+        value={{
+          rawData: props.rawData,
+          ...state,
+          startIndex,
+          resetToFirstPage: resetToFirstPage,
+        }}
+      >
+        {children}
+      </PaginationContext.Provider>
+      {!props.paginationPositionTop && DisplayPaginationComponent()}
     </>
   );
 }

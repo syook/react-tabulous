@@ -2,7 +2,7 @@ import './index.css';
 
 import React, { useEffect, useReducer, useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Table, Ref, Button, Icon } from 'semantic-ui-react';
+import { Checkbox, Table, Ref } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
 
 import { getTableData, getTableColumns, formatText } from '../../components/utils';
@@ -12,11 +12,13 @@ import SearchProvider, { SearchContext } from '../search/indexFuntionalComponent
 import SortProvider, { SortContext } from '../sort/indexFunctionalComponent';
 
 import BulkActionList from '../../components/table/bulk-action-dropdown';
-import HeaderSelector from '../../components/table/header-selector';
+import HeaderSelector from '../../components/table/headerSelectorV2/headerSelector';
 import TableActions from '../../components/table/actions';
-import TableHeader from '../../components/table/header';
-import TableCell from '../../components/table/cell';
-import StatusIcon from '../../components/status-icon/status-icon';
+import TableHeaderProvider from './tabulousHeaderProvider';
+import TableCellProvider from './tabulousCellProvider';
+import TabulousHeaderComponent from '../../components/table/tableHeader/tabulousHeader';
+import TabulousCellComponent from '../../components/table/tabulousCell/tabulousCell';
+import KebabDropdown from '../../components/kebabDropdown';
 
 import { tableActions } from '../../constants';
 
@@ -66,7 +68,6 @@ function TableComponent(props) {
     rawData: props.data,
     stylesForTable: {},
     resetStylesForTable: {},
-    showResetButton: props.showResetButton && columnAndKeys.columnDefs.some(c => c.isResizable),
   });
 
   useEffect(() => {
@@ -170,14 +171,18 @@ function TableComponent(props) {
   };
 
   const resize = useCallback(
-    async (col, element, original_width = 20, original_mouse_x, e) => {
+    async (col, element, original_width = 20, original_mouse_x, inverted, e) => {
       let width = 0;
       if (!element) {
         return;
       }
 
-      if (!!e) {
-        width = original_width + (e.pageX - original_mouse_x);
+      if (e) {
+        if (inverted) {
+          width = original_width - (e.pageX - original_mouse_x);
+        } else {
+          width = original_width + (e.pageX - original_mouse_x);
+        }
       } else {
         width = original_width;
       }
@@ -195,22 +200,18 @@ function TableComponent(props) {
   );
 
   const getOriginalPropertyOfElement = (element, property) => {
-    return parseFloat(
-      getComputedStyle(element, null)
-        .getPropertyValue(property)
-        .replace('px', '')
-    );
+    return parseFloat(getComputedStyle(element, null).getPropertyValue(property).replace('px', ''));
   };
 
-  const resizeHandler = async (col, e) => {
+  const resizeHandler = async (col, inverted = false, e) => {
     e.stopPropagation();
-    const element = tableElement.current.querySelector(`.head${col}`);
     e.preventDefault();
+    const element = tableElement.current.querySelector(`.head${col}`);
     let original_width = getOriginalPropertyOfElement(element, 'width');
     let original_mouse_x = e.pageX;
 
     const refFunc = async e => {
-      await resize(col, element, original_width, original_mouse_x, e);
+      await resize(col, element, original_width, original_mouse_x, inverted, e);
     };
     window.addEventListener('mousemove', refFunc, true);
     window.addEventListener(
@@ -297,26 +298,11 @@ function TableComponent(props) {
     setInlineStyleCaller();
   }, [state.resetStylesForTable, useWrapper]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const resetButton = () => {
-    return (
-      <Button
-        disabled={props.disabled}
-        style={{
-          backgroundColor: props.accentColor ? 'rgb(170, 170, 170)' : 'rgba(241, 196, 15, 0.8)',
-          color: '#fff',
-          marginRight: '10px',
-        }}
-        onClick={resetHandler}>
-        <Icon name="redo" /> {'Reset'}
-      </Button>
-    );
-  };
-
   const FixedSectionWrapper = useCallback(
     props => {
       const styleObject = {
-        zIndex: props?.children[0]?.props.as === 'th' ? '3' : '',
-        top: props?.children[0]?.props.as === 'th' ? '0px' : '',
+        zIndex: props.childElement === 'header' ? '3' : '',
+        top: props.childElement === 'header' ? '0px' : '',
       };
       if (
         props.children.length !== 0 &&
@@ -351,34 +337,12 @@ function TableComponent(props) {
     state.columns.length - visibleColumns.length - visibleColumnsToLeft.length - visibleColumnsToRight.length;
 
   return (
-    <div className="table-wrapper">
+    <div className="tabulousWrapper">
       <SearchProvider {...props} rawData={state.rawData} searchKeys={state.searchKeys} tableData={state.data}>
         <SearchContext.Consumer>
           {searchProps => {
             return (
-              <div
-                className="main-table_layout"
-                style={{
-                  padding: '0 15px',
-                  width: '100%',
-                }}>
-                {state.hiddenColumns.length ? (
-                  <HeaderSelector
-                    hiddenColumnCount={hiddenColumnCount}
-                    columns={state.hiddenColumns}
-                    toggleColumns={toggleColumns}
-                    toggleAllColumns={toggleAllColumns}
-                    accentColor={props.accentColor}
-                  />
-                ) : null}
-                {hasBulkActions && state.selectedRows.length ? (
-                  <BulkActionList
-                    bulkActions={props.bulkActionDefs}
-                    selectedRows={state.selectedRows}
-                    hideBulkCount={props.hideBulkCount}
-                  />
-                ) : null}
-
+              <>
                 <FilterProvider
                   rawData={searchProps.rawData}
                   count={searchProps.count}
@@ -387,13 +351,34 @@ function TableComponent(props) {
                   columns={state.columns}
                   resetFilterOnDataChange={props.resetFilterOnDataChange}
                   accentColor={props.accentColor}
-                  emptyCellPlaceHolder={emptyCellPlaceHolder}>
+                  emptyCellPlaceHolder={emptyCellPlaceHolder}
+                >
                   <FilterContext.Consumer>
                     {filterProps => {
                       return (
                         <>
-                          {state.showResetButton && resetButton()}
-                          {props.children ? (
+                          <KebabDropdown
+                            options={[
+                              state.hiddenColumns.length ? (
+                                <HeaderSelector
+                                  hiddenColumnCount={hiddenColumnCount}
+                                  columns={state.hiddenColumns}
+                                  toggleColumns={toggleColumns}
+                                  toggleAllColumns={toggleAllColumns}
+                                  accentColor={props.accentColor}
+                                />
+                              ) : null,
+                              hasBulkActions && state.selectedRows.length ? (
+                                <BulkActionList
+                                  bulkActions={props.bulkActionDefs}
+                                  selectedRows={state.selectedRows}
+                                  hideBulkCount={props.hideBulkCount}
+                                />
+                              ) : null,
+                            ]}
+                            accentColor={props.accentColor}
+                          />
+                          {!props.customPagination && props.children ? (
                             <div style={{ display: 'inline-block' }}>
                               {props.children(filterProps.data, searchProps.searchText, [
                                 ...visibleColumnsToLeft,
@@ -410,7 +395,8 @@ function TableComponent(props) {
                             count={filterProps.count}
                             updateRowsSortParams={searchProps.updateRowsSortParams}
                             rowsPerPageFromSearch={searchProps.rowsPerPageFromSearch}
-                            searchText={searchProps.searchText}>
+                            searchText={searchProps.searchText}
+                          >
                             <SortContext.Consumer>
                               {sortProps => {
                                 return (
@@ -427,23 +413,34 @@ function TableComponent(props) {
                                     updateRowsPerPage={searchProps.updateRowsPerPage}
                                     resetPagination={sortProps.resetPagination}
                                     resetBulkSelection={resetBulkSelection}
-                                    defaultItemsToDisplay={props.defaultItemsToDisplay}>
-                                    <div
-                                      className={`scrollable-table tableFixHead ${
-                                        props.tableScroll ? 'shouldSroll' : null
-                                      }`}
-                                      style={{ maxWidth: '100%', marginTop: '10px' }}>
+                                    defaultItemsToDisplay={props.defaultItemsToDisplay}
+                                    customPagination={props.customPagination}
+                                    paginationPositionTop={props.paginationPositionTop}
+                                    additionalButtons={
+                                      props.children
+                                        ? props.children(filterProps.data, searchProps.searchText, [
+                                            ...visibleColumnsToLeft,
+                                            ...visibleColumns,
+                                            ...visibleColumnsToRight,
+                                          ])
+                                        : null
+                                    }
+                                  >
+                                    <div className="tabulous">
                                       <Ref innerRef={tableElement}>
-                                        <Table sortable celled padded className="tableStyle left aligned table-fixed">
+                                        <table className="tabulousTable">
                                           <PaginationContext.Consumer>
                                             {paginationProps => {
                                               return (
                                                 <>
-                                                  <Table.Header style={{ textAlign: 'center' }}>
-                                                    <Table.Row>
-                                                      <FixedSectionWrapper positionedTo={'left'}>
+                                                  <thead>
+                                                    <tr>
+                                                      <FixedSectionWrapper
+                                                        positionedTo={'left'}
+                                                        childElement={'header'}
+                                                      >
                                                         {visibleColumnsToLeft.map((column, index) =>
-                                                          TableHeader({
+                                                          TableHeaderProvider({
                                                             resizeHandler,
                                                             column,
                                                             index,
@@ -454,12 +451,13 @@ function TableComponent(props) {
                                                         )}
                                                       </FixedSectionWrapper>
                                                       {hasBulkActions ? (
-                                                        <Table.HeaderCell className="bulkAction-check">
+                                                        <TabulousHeaderComponent>
                                                           <div
                                                             className="headBulkAction"
                                                             style={{
                                                               width: '100%',
-                                                            }}>
+                                                            }}
+                                                          >
                                                             <Checkbox
                                                               checked={state.bulkSelect}
                                                               disabled={!paginationProps.rowCount}
@@ -469,21 +467,22 @@ function TableComponent(props) {
                                                               }
                                                             />
                                                           </div>
-                                                        </Table.HeaderCell>
+                                                        </TabulousHeaderComponent>
                                                       ) : null}
                                                       {props.isShowSerialNumber && (
-                                                        <Table.HeaderCell>
+                                                        <TabulousHeaderComponent>
                                                           <div
                                                             className="headSerialNo"
                                                             style={{
                                                               width: '100%',
-                                                            }}>
+                                                            }}
+                                                          >
                                                             S.No
                                                           </div>
-                                                        </Table.HeaderCell>
+                                                        </TabulousHeaderComponent>
                                                       )}
                                                       {visibleColumns.map((column, index) =>
-                                                        TableHeader({
+                                                        TableHeaderProvider({
                                                           resizeHandler,
                                                           column,
                                                           index,
@@ -493,19 +492,23 @@ function TableComponent(props) {
                                                         })
                                                       )}
                                                       {!props.actionOnHover && props.includeAction ? (
-                                                        <Table.HeaderCell>
+                                                        <TabulousHeaderComponent>
                                                           <div
                                                             className="headActions"
                                                             style={{
                                                               width: '100%',
-                                                            }}>
+                                                            }}
+                                                          >
                                                             Actions
                                                           </div>
-                                                        </Table.HeaderCell>
+                                                        </TabulousHeaderComponent>
                                                       ) : null}
-                                                      <FixedSectionWrapper positionedTo={'right'}>
+                                                      <FixedSectionWrapper
+                                                        positionedTo={'right'}
+                                                        childElement={'header'}
+                                                      >
                                                         {visibleColumnsToRight.map((column, index) =>
-                                                          TableHeader({
+                                                          TableHeaderProvider({
                                                             resizeHandler,
                                                             column,
                                                             index,
@@ -515,8 +518,8 @@ function TableComponent(props) {
                                                           })
                                                         )}
                                                       </FixedSectionWrapper>
-                                                    </Table.Row>
-                                                  </Table.Header>
+                                                    </tr>
+                                                  </thead>
                                                   <Table.Body>
                                                     {paginationProps.data.map((row, index1) => {
                                                       const includeCheckbox = props.showCheckbox
@@ -530,7 +533,7 @@ function TableComponent(props) {
                                                                 state.stylesForTable[
                                                                   `.column${formatText(column.headerName)}`
                                                                 ];
-                                                              return TableCell({
+                                                              return TableCellProvider({
                                                                 column,
                                                                 index2,
                                                                 data: paginationProps.rawData,
@@ -541,59 +544,36 @@ function TableComponent(props) {
                                                             })}
                                                           </FixedSectionWrapper>
                                                           {hasBulkActions && includeCheckbox !== false ? (
-                                                            <Table.Cell>
-                                                              <div
-                                                                style={{
-                                                                  display: 'flex',
-                                                                  justifyContent: 'center',
-                                                                  flexDirection: props.showStatusIcon
-                                                                    ? 'row-reverse'
-                                                                    : null,
-                                                                  alignItems: 'center',
-                                                                }}>
-                                                                <Checkbox
-                                                                  className="bulkAction_check"
-                                                                  checked={state.selectedRows.includes(
-                                                                    row['_id'] || row['id']
-                                                                  )}
-                                                                  onChange={(e, { checked }) =>
-                                                                    updateSelectedRows(
-                                                                      { checked },
-                                                                      row['_id'] || row['id'],
-                                                                      paginationProps.rowCount
-                                                                    )
-                                                                  }
-                                                                />
-                                                                {props.showStatusIcon ? (
-                                                                  <StatusIcon
-                                                                    showStatusIcon={props.showStatusIcon(row)}
-                                                                  />
-                                                                ) : null}
-                                                              </div>
-                                                            </Table.Cell>
+                                                            <TabulousCellComponent>
+                                                              <Checkbox
+                                                                className="bulkAction_check"
+                                                                checked={state.selectedRows.includes(
+                                                                  row['_id'] || row['id']
+                                                                )}
+                                                                onChange={(e, { checked }) =>
+                                                                  updateSelectedRows(
+                                                                    { checked },
+                                                                    row['_id'] || row['id'],
+                                                                    paginationProps.rowCount
+                                                                  )
+                                                                }
+                                                              />
+                                                            </TabulousCellComponent>
                                                           ) : null}
                                                           {props.isShowSerialNumber && (
-                                                            <Table.Cell>
-                                                              <div
-                                                                style={{
-                                                                  textAlign: 'center',
-                                                                  margin: '0 auto',
-                                                                }}>
-                                                                {paginationProps.startIndex + index1 + 1}
-                                                                {props.enableIcon
-                                                                  ? props.showIcon(
-                                                                      paginationProps.rawData[row.objIndex]
-                                                                    )
-                                                                  : null}
-                                                              </div>
-                                                            </Table.Cell>
+                                                            <TabulousCellComponent>
+                                                              {paginationProps.startIndex + index1 + 1}
+                                                              {props.enableIcon
+                                                                ? props.showIcon(paginationProps.rawData[row.objIndex])
+                                                                : null}
+                                                            </TabulousCellComponent>
                                                           )}
                                                           {visibleColumns.map((column, index2) => {
                                                             const styleSetTo =
                                                               state.stylesForTable[
                                                                 `.column${formatText(column.headerName)}`
                                                               ];
-                                                            return TableCell({
+                                                            return TableCellProvider({
                                                               column,
                                                               index2,
                                                               data: paginationProps.rawData,
@@ -603,14 +583,16 @@ function TableComponent(props) {
                                                             });
                                                           })}
                                                           {props.includeAction ? (
-                                                            <Table.Cell className="table-action_buttons">
-                                                              <TableActions
-                                                                actionOnHover={props.actionOnHover}
-                                                                actions={props.actionDefs}
-                                                                row={row}
-                                                                data={paginationProps.rawData}
-                                                              />
-                                                            </Table.Cell>
+                                                            <TabulousCellComponent>
+                                                              <div className="table-action_buttons">
+                                                                <TableActions
+                                                                  actionOnHover={props.actionOnHover}
+                                                                  actions={props.actionDefs}
+                                                                  row={row}
+                                                                  data={paginationProps.rawData}
+                                                                />
+                                                              </div>
+                                                            </TabulousCellComponent>
                                                           ) : null}
                                                           <FixedSectionWrapper positionedTo={'right'}>
                                                             {visibleColumnsToRight.map((column, index2) => {
@@ -618,7 +600,7 @@ function TableComponent(props) {
                                                                 state.stylesForTable[
                                                                   `.column${formatText(column.headerName)}`
                                                                 ];
-                                                              return TableCell({
+                                                              return TableCellProvider({
                                                                 column,
                                                                 index2,
                                                                 data: paginationProps.rawData,
@@ -636,7 +618,7 @@ function TableComponent(props) {
                                               );
                                             }}
                                           </PaginationContext.Consumer>
-                                        </Table>
+                                        </table>
                                       </Ref>
                                     </div>
                                   </PaginationProvider>
@@ -649,7 +631,7 @@ function TableComponent(props) {
                     }}
                   </FilterContext.Consumer>
                 </FilterProvider>
-              </div>
+              </>
             );
           }}
         </SearchContext.Consumer>
@@ -699,13 +681,15 @@ TableComponent.propTypes = {
   tableFooterName: PropTypes.string,
   tableName: PropTypes.string,
   hideBulkCount: PropTypes.bool,
-  showResetButton: PropTypes.bool,
+  customPagination: PropTypes.func,
+  paginationPositionTop: PropTypes.bool,
+  showSearch: PropTypes.bool,
 };
 
 TableComponent.defaultProps = {
   resetFilterOnDataChange: true,
   resetHideColumnsOnDataChange: true,
-  showResetButton: true,
+  showSearch: true,
 };
 
 export default TableComponent;

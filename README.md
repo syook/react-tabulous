@@ -81,6 +81,7 @@ The files will be under `./lib` folder.
 | `accentColor`          | colors for top bar buttons                                      |         | false    | string   |
 | `hideBulkCount`        | hide bulk select count for bulk actions                         | false   | false    | boolean  |
 | `showResetButton`      | display reset button                                            | true    | false    | boolean  |
+| `hidePagination`       | hide pagination                                                 | false   | false    | boolean  |
 
 ## Example
 

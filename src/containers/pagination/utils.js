@@ -10,7 +10,8 @@ const findStartPage = (numberOfPages, currentPage) => {
   return startPage;
 };
 
-export const findPageRange = ({ numberOfPages, currentPage }) => {
+export const findPageRange = ({ rowCount, rowsPerPage, currentPage }) => {
+  const numberOfPages = Math.ceil(rowCount / rowsPerPage.value);
   const startPage = findStartPage(numberOfPages, currentPage);
   return Array.from(new Array(Math.min(3, numberOfPages)), (x, i) => i + startPage);
 };

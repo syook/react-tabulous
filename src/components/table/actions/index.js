@@ -13,7 +13,8 @@ const TableActions = ({ actions, row, actionOnHover, data }) => {
         alignItems: 'center',
         justifyContent: 'center',
         whiteSpace: 'nowrap',
-      }}>
+      }}
+    >
       {(actions || []).map((action, index) => {
         if (typeof action.isVisible === 'function' && !action.isVisible(currentItem)) {
           return null;
@@ -28,7 +29,8 @@ const TableActions = ({ actions, row, actionOnHover, data }) => {
             inverted={typeof action.inverted === 'function' && action.inverted(currentItem)}
             key={`TableActions-${index}`}
             onClick={() => typeof action.function === 'function' && action.function(currentItem)}
-            color={action.color || null}
+            // color={action.color || null}
+            style={{ color: action?.color ?? '' }}
             disabled={typeof action.isDisabled === 'function' && action.isDisabled(currentItem)}
             loading={typeof action.isLoading === 'function' && action.isLoading(currentItem)}
             // style={{ action.color && action.color[0] === "#" ? background: action.color || '#5DA1CD': {} }}
@@ -36,10 +38,12 @@ const TableActions = ({ actions, row, actionOnHover, data }) => {
             <Icon
               className={action.iconClassName || ''}
               name={action.icon}
-              color={typeof action.iconColor === 'function' && action.iconColor(currentItem)}
+              style={{
+                color: typeof action.iconColor === 'function' ? action.iconColor(currentItem) : '',
+              }}
               inverted={action.iconInverted || false}
-            />{' '}
-            {action.name}
+            />
+            <span style={{ marginLeft: 4 }}>{action.name}</span>
           </Button>
         );
       })}

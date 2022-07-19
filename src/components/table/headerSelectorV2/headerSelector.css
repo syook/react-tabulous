@@ -1,0 +1,106 @@
+.hideColumnsContainer {
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0px 0px 0px 1px #e9e9e9 inset;
+}
+.hideColumnsContainer__button {
+  font-weight: 600;
+  border: none;
+  width: 315px;
+  height: 36px;
+  background-color: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 10px 12px 12px;
+  cursor: pointer;
+}
+
+.hideColumnsContainer__button__toggle__buttons {
+  height: 100%;
+  position: relative;
+  left: 35px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.hideColumnsContainer__button__toggle__buttons button {
+  font-weight: 600;
+  font-size: 12px;
+  border: none;
+  background-color: inherit;
+  padding: 0px;
+  cursor: pointer;
+  color: #4724d8;
+  margin-left: 8px;
+}
+
+.hideColumnsContainer__button__toggle__buttons button:disabled {
+  color: #c4c4c4;
+  cursor: not-allowed;
+}
+
+.hideColumnsContainer__searchInput {
+  width: 100%;
+  height: 30px;
+  border: none;
+  box-shadow: 0px 0px 0px 1px #e9e9e9 inset;
+  padding-left: 30px;
+}
+
+.hideColumnsContainer__searchInput::placeholder {
+  color: #c4c4c4;
+}
+
+.hideColumnsContainer__searchInput:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 1px #4724d8 inset;
+}
+
+.hideColumnsContainer__searchInput__icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: inherit;
+  border: none;
+  height: 100%;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.columnListContainer {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  list-style: none;
+  margin: 0;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 12px;
+}
+
+.columnListContainer__list__listItem {
+  margin-bottom: 15px;
+}
+
+.columnListContainer__list__listItem:first-child {
+  margin-top: 11px;
+}
+
+.columnListContainer__list__listItem:last-child {
+  margin-bottom: 11px;
+}
+
+.columnListContainer__list__listItem__label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.columnListContainer__list__listItem__label > span {
+  margin-left: 16px;
+}

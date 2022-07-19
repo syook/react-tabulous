@@ -1,7 +1,7 @@
 .filter-wrapper {
   display: flex;
   flex-flow: column;
-  width: 700px;
+  width: auto;
 }
 
 .filter-wrapper .text-input .css-1pcexqc-container .css-16pqwjk-indicatorContainer {
@@ -89,8 +89,8 @@
 }
 
 /* .css-1szy77t-control svg {
-  display: none !important;
-} */
+    display: none !important;
+  } */
 
 /* show only 2 values for multi-select */
 .filter-multi-select {

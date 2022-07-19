@@ -7,6 +7,7 @@ import SearchComponent from '../../components/search';
 import { getSearchTextFilteredData } from './utils';
 
 import { searchActions } from '../../constants';
+import NoRecords from '../../assets/noRecords';
 
 export const SearchContext = React.createContext();
 
@@ -31,6 +32,7 @@ function reducer(state, action) {
 
 function SearchProvider(props) {
   const [state, dispatch] = useReducer(reducer, {
+    showSearch: props.showSearch,
     searchText: '',
     data: [...props.tableData],
     rowsPerPage: 10,
@@ -69,7 +71,6 @@ function SearchProvider(props) {
     } else {
       search(state.searchText, props);
     }
-    const a = props;
   }, [props.tableData]);
 
   const updateRowsPerPage = useCallback(val => {
@@ -112,31 +113,33 @@ function SearchProvider(props) {
   const mainDataCount = props.count || (props.tableData || []).length;
   const stateDataCount = (state.data || []).length;
   return (
-    <div>
-      <SearchContext.Provider
-        value={{
-          rawData: props.rawData,
-          ...state,
-          count: props.count,
-          rowsPerPageFromSearch: state.rowsPerPage,
-          updateRowsPerPage: updateRowsPerPage,
-          updateRowsSortParams: updateRowsSortParams,
-        }}>
+    <SearchContext.Provider
+      value={{
+        rawData: props.rawData,
+        ...state,
+        count: props.count,
+        rowsPerPageFromSearch: state.rowsPerPage,
+        updateRowsPerPage: updateRowsPerPage,
+        updateRowsSortParams: updateRowsSortParams,
+      }}
+    >
+      {state.showSearch && (
         <SearchComponent
           disabled={!mainDataCount && !state.searchText}
           name={props.tableName}
           onChangeSearchText={onChangeSearchText}
         />
-        {props.children}
-        {!stateDataCount && (
-          <div style={{ padding: '0 15px' }}>
-            <div className="noRecordsDiv">
-              {!mainDataCount ? `No ${props.tableName || 'data'} to Display` : 'No Results Found'}
-            </div>
+      )}
+      {props.children}
+      {!stateDataCount && (
+        <div style={{ width: '100%' }}>
+          <div className="noRecordsDiv">
+            <NoRecords />
+            <p>{!mainDataCount ? `No ${props.tableName || 'data'} to Display` : 'No Results Found'}</p>
           </div>
-        )}
-      </SearchContext.Provider>
-    </div>
+        </div>
+      )}
+    </SearchContext.Provider>
   );
 }
 

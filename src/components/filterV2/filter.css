@@ -1,0 +1,113 @@
+.rt-filter {
+  display: inline-block;
+  margin: 0px 10px;
+}
+
+.rt-filter .filter-button {
+  min-width: 100px;
+  padding: 10px 18px;
+  display: flex;
+  font-family: var(--font-family);
+}
+
+.rt-filter .filter-icon {
+  margin-right: 8px;
+}
+
+.ui.popup.filter-popUp.popup {
+  width: 620px;
+  min-width: 620px;
+}
+
+.filter-popUp .filter-wrapper {
+  background-color: #fff;
+}
+
+.filter-popUp .filter-wrapper .btn-add-wrapper {
+  position: relative;
+}
+
+.filter-popUp .filter-wrapper .btn-add-wrapper::before {
+  content: ' ';
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  vertical-align: super;
+  background-color: #e5e5e5;
+  display: inline-block;
+  position: absolute;
+  z-index: 0;
+  top: 11px;
+}
+
+.filter-popUp .filter-wrapper .btn-add {
+  width: 80px;
+  padding: 6px 4px;
+  font-size: 12px;
+  color: #4724d8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.filter-popUp .filter-wrapper .filter-btn-apply {
+  background-color: #4724d8;
+  padding: 6px 14px;
+  font-size: 12px;
+}
+
+.filter-popUp .filter-wrapper .filter-btn-clear-all {
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #ff5056;
+}
+
+.filter-popUp .filter-wrapper .rt_select {
+  width: 60px;
+  height: 30px;
+  font-size: 12px;
+}
+
+.filter-popUp .filter-wrapper.IndicatorsContainer {
+  width: 10px;
+}
+
+/* filter grid */
+.filter-grid {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.filter-grid .rt_select_group {
+  width: 80px;
+  margin-right: 16px;
+}
+
+.filter-grid .rt_select_field {
+  width: 150px;
+  margin-right: 16px;
+}
+
+.filter-grid .rt_select_filter_type {
+  width: 112px;
+  margin-right: 16px;
+}
+
+.filter-grid .text-input {
+  width: 192px;
+}
+
+.filter-grid .times.circle {
+  cursor: pointer;
+  color: red;
+  margin: 0 0 0 8px;
+}
+
+/* filter wrapper */
+.filter-wrapper .filter-btns {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
