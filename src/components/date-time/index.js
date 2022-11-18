@@ -5,6 +5,7 @@ import React from 'react';
 const DateTimeComponent = props => {
   return (
     <DatePicker
+      className="rt-input"
       selected={props.value}
       onChange={date => props.onChange(date)}
       showTimeSelect

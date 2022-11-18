@@ -21,6 +21,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T01:49:01.920Z',
+          joinDate: 'Fri, 01 Nov 2022',
         },
         {
           id: 2,
@@ -32,6 +34,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T02:49:02.920Z',
+          joinDate: 'Fri, 02 Nov 2022',
         },
         {
           id: 3,
@@ -43,6 +47,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T03:03:03.920Z',
+          joinDate: 'Fri, 03 Nov 2022',
         },
         {
           id: 4,
@@ -54,6 +60,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-04T04:04:04.920Z',
+          joinDate: 'Fri, 04 Nov 2022',
         },
         {
           id: 5,
@@ -65,6 +73,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T05:05:05.920Z',
+          joinDate: 'Fri, 05 Nov 2022',
         },
         {
           id: 6,
@@ -76,6 +86,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T06:06:06.920Z',
+          joinDate: 'Fri, 06 Nov 2022',
         },
         {
           id: 7,
@@ -87,6 +99,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T07:07:07.920Z',
+          joinDate: 'Fri, 07 Nov 2022',
         },
         {
           id: 8,
@@ -98,6 +112,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T08:08:08.920Z',
+          joinDate: 'Fri, 08 Nov 2022',
         },
         {
           id: 9,
@@ -109,6 +125,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T09:09:09.920Z',
+          joinDate: 'Fri, 09 Nov 2022',
         },
         {
           id: 10,
@@ -120,6 +138,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T10:10:10.920Z',
+          joinDate: 'Fri, 10 Nov 2022',
         },
         {
           id: 11,
@@ -131,6 +151,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T12:12:12.920Z',
+          joinDate: 'Fri, 11 Nov 2022',
         },
         {
           id: 12,
@@ -142,6 +164,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T15:15:15.920Z',
+          joinDate: 'Fri, 12 Nov 2022',
         },
         {
           id: 13,
@@ -153,6 +177,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T18:18:18.920Z',
+          joinDate: 'Fri, 13 Nov 2022',
         },
         {
           id: 14,
@@ -164,6 +190,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T25:25:25.920Z',
+          joinDate: 'Fri, 14 Nov 2022',
         },
         {
           id: 15,
@@ -175,6 +203,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T28:28:28.920Z',
+          joinDate: 'Fri, 15 Nov 2022',
         },
         {
           id: 16,
@@ -186,6 +216,8 @@ export default class App extends React.Component {
           gender: 'male',
           origin: 'IN',
           passport: 'Yes',
+          timestamp: '2022-11-17T32:32:30.920Z',
+          joinDate: 'Fri, 16 Nov 2022',
         },
       ],
     };
@@ -241,6 +273,26 @@ export default class App extends React.Component {
       field: 'gender',
       type: 'String',
       cell: rowObject => rowObject.gender,
+      isSortable: false,
+      isSearchable: true,
+      isFilterable: true,
+      isResizable: true,
+    },
+    {
+      headerName: 'Joining Date',
+      field: 'joinDate',
+      type: 'Date',
+      cell: rowObject => rowObject.joinDate,
+      isSortable: false,
+      isSearchable: true,
+      isFilterable: true,
+      isResizable: true,
+    },
+    {
+      headerName: 'Login Time',
+      field: 'timestamp',
+      type: 'DateTime',
+      cell: rowObject => rowObject.timestamp,
       isSortable: false,
       isSearchable: true,
       isFilterable: true,

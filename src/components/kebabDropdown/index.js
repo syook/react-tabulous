@@ -23,6 +23,7 @@ const KebabDropdown = props => {
   return (
     <div className="rt-KebabDropdown">
       <Popup
+        basic
         on="click"
         positionFixed
         position="bottom left"
