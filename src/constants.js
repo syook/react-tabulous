@@ -2,7 +2,7 @@ const filterPredicates = ['And', 'Or'];
 
 const filterOperators = {
   Boolean: ['is'],
-  date: ['is', 'is not', 'is before', 'is after', 'is empty', 'is not empty'], //, 'is on or before', 'is on or after'
+  Date: ['is', 'is not', 'is before', 'is after', 'is empty', 'is not empty'], //, 'is on or before', 'is on or after'
   DateTime: ['is', 'is not', 'is before', 'is after', 'is empty', 'is not empty'],
   Number: ['=', '≠', '<', '>', '≤', '≥', 'is empty', 'is not empty'],
   SingleSelect: ['is', 'is not', 'is any of', 'is none of', 'is empty', 'is not empty'],

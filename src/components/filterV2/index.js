@@ -109,6 +109,7 @@ const FilterV2 = props => {
   return (
     <div className="rt-filter">
       <Popup
+        basic
         on="click"
         positionFixed
         position="bottom left"
@@ -140,48 +141,54 @@ const FilterDiv = props => {
   const indexOnePredicate = selectedFilters.length > 1 ? selectedFilters[1].predicate : null;
   const secondarySelectionDisabled = selectedFilters.length > 1;
   return (
-    <div className="filter-wrapper">
-      {selectedFilters.length ? (
-        selectedFilters.map((column, index) => (
-          <FilterGrid
-            key={index}
-            index={index}
-            column={column}
-            removeFilter={props.removeFilter}
-            updateSelectedFilters={props.updateSelectedFilters}
-            indexOnePredicate={indexOnePredicate}
-            filterableColumns={props.filterableColumns}
-            secondarySelectionDisabled={secondarySelectionDisabled}
-          />
-        ))
-      ) : (
-        <div style={{ opacity: 0.5, marginBottom: 10 }}>No filters applied</div>
-      )}
-      <div className="btn-add-wrapper">
-        <Button variant="outline" onClick={props.addFilter} className="btn-add">
-          Add Filter&nbsp;
-          <Icons size={12} name="plus" />
-        </Button>
-      </div>
-
-      <div className="filter-btns">
-        {!props.filtersSelected || props.filterDisabled ? null : (
-          <>
-            <Button
-              variant="primary"
-              className="filter-btn-apply"
-              onClick={() => props.setSelectedFilters(props.filters)}
-              loading={props.filterDisabled}
-            >
-              Apply Filter
-            </Button>
-            <Button variant="text" className="filter-btn-clear-all" onClick={() => props.clearAllFilter()}>
-              Clear all
-            </Button>
-          </>
+    <>
+      <div className="filter-content">
+        {selectedFilters.length ? (
+          selectedFilters.map((column, index) => (
+            <FilterGrid
+              key={index}
+              index={index}
+              column={column}
+              removeFilter={props.removeFilter}
+              updateSelectedFilters={props.updateSelectedFilters}
+              indexOnePredicate={indexOnePredicate}
+              filterableColumns={props.filterableColumns}
+              secondarySelectionDisabled={secondarySelectionDisabled}
+            />
+          ))
+        ) : (
+          <div className="filter-grid" style={{ color: '#5f6368' }}>
+            No filters applied
+          </div>
         )}
       </div>
-    </div>
+      <div className="filter-footer">
+        <div className="btn-add-wrapper">
+          <Button variant="outline" onClick={props.addFilter} className="btn-add">
+            Add Filter&nbsp;
+            <Icons size={12} name="plus" />
+          </Button>
+        </div>
+
+        <div className="filter-btns">
+          {!props.filtersSelected || props.filterDisabled ? null : (
+            <>
+              <Button
+                variant="primary"
+                className="filter-btn-apply"
+                onClick={() => props.setSelectedFilters(props.filters)}
+                loading={props.filterDisabled}
+              >
+                Apply Filter
+              </Button>
+              <Button variant="text" className="filter-btn-clear-all" onClick={() => props.clearAllFilter()}>
+                Clear all
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

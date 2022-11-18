@@ -36,10 +36,27 @@ const customStyles = {
     padding: '0px',
     margin: '0px',
   }),
+  menuPortal: (provided, state) => ({
+    ...provided,
+    left: 'auto',
+    top: 'auto',
+    position: 'fixed',
+    zIndex: 9999,
+  }),
+  select: base => ({
+    ...base,
+    position: 'relative',
+  }),
 };
 
 const Select = ({ ...props }) => {
-  return <ReactSelect styles={customStyles} {...props} />;
+  const refSelectContainer = React.useRef(null);
+
+  return (
+    <div ref={refSelectContainer} style={{ position: 'relative' }}>
+      <ReactSelect styles={customStyles} menuPortalTarget={refSelectContainer.current} {...props} />
+    </div>
+  );
 };
 
 export default Select;
