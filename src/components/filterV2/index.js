@@ -55,10 +55,11 @@ const FilterV2 = props => {
   };
 
   const removeFilter = index => {
-    const updatedFilters = [...filters];
+    let updatedFilters = [...filters];
     updatedFilters.splice(index, 1);
 
-    if (updatedFilters.length === 1) updatedFilters[0].predicate = 'Where';
+    if (updatedFilters.length > 0) updatedFilters[0].predicate = 'Where';
+
 
     setFilters([...updatedFilters]);
     props.setSelectedFilters(updatedFilters);
@@ -211,7 +212,7 @@ const FilterGrid = props => {
       <Select
         className="rt_select_group"
         isSearchable={false}
-        isDisabled={props.column.predicate === 'Where' || (props.secondarySelectionDisabled && props.index > 1)}
+        isDisabled={props.column.predicate === 'Where'}
         options={predicateOptionConditions}
         value={{ value: props.column.predicate, label: props.column.predicate }}
         onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
