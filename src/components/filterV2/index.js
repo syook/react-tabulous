@@ -58,7 +58,7 @@ const FilterV2 = props => {
     const updatedFilters = [...filters];
     updatedFilters.splice(index, 1);
 
-    if (updatedFilters.length > 1) updatedFilters[0].predicate = 'Where';
+    if (updatedFilters.length === 1) updatedFilters[0].predicate = 'Where';
 
     setFilters([...updatedFilters]);
     props.setSelectedFilters(updatedFilters);
@@ -244,7 +244,7 @@ const FilterGrid = props => {
           menuPlacement="auto"
         />
       )}
-      <Icon name="times circle outline" onClick={() => props.removeFilter(props.index)} />
+      <Icon name="times circle outline" onClick={() => props.removeFilter(props.index)} style={{border: '1px solid'}} />
     </div>
   );
 };
