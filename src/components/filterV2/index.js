@@ -60,7 +60,6 @@ const FilterV2 = props => {
 
     if (updatedFilters.length > 0) updatedFilters[0].predicate = 'Where';
 
-
     setFilters([...updatedFilters]);
     props.setSelectedFilters(updatedFilters);
   };
