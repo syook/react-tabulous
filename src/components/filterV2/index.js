@@ -55,10 +55,10 @@ const FilterV2 = props => {
   };
 
   const removeFilter = index => {
-    if (index === 0) index = filters.length - 1;
-
-    const updatedFilters = [...filters];
+    let updatedFilters = [...filters];
     updatedFilters.splice(index, 1);
+
+    if (updatedFilters.length > 0) updatedFilters[0].predicate = 'Where';
 
     setFilters([...updatedFilters]);
     props.setSelectedFilters(updatedFilters);
