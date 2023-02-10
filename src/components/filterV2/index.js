@@ -212,7 +212,7 @@ const FilterGrid = props => {
       <Select
         className="rt_select_group"
         isSearchable={false}
-        isDisabled={props.column.predicate === 'Where'}
+        isDisabled={props.column.predicate === 'Where' || (props.secondarySelectionDisabled && props.index > 1)}
         options={predicateOptionConditions}
         value={{ value: props.column.predicate, label: props.column.predicate }}
         onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
