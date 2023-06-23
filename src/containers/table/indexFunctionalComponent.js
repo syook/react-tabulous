@@ -368,16 +368,16 @@ function TableComponent(props) {
                                   accentColor={props.accentColor}
                                 />
                               ) : null,
-                              hasBulkActions && state.selectedRows.length ? (
-                                <BulkActionList
-                                  bulkActions={props.bulkActionDefs}
-                                  selectedRows={state.selectedRows}
-                                  hideBulkCount={props.hideBulkCount}
-                                />
-                              ) : null,
                             ]}
                             accentColor={props.accentColor}
                           />
+                          {hasBulkActions && !!state.selectedRows.length && (
+                            <BulkActionList
+                              bulkActions={props.bulkActionDefs}
+                              selectedRows={state.selectedRows}
+                              hideBulkCount={props.hideBulkCount}
+                            />
+                          )}
                           {!props.customPagination && props.children ? (
                             <div style={{ display: 'inline-block' }}>
                               {props.children(filterProps.data, searchProps.searchText, [
