@@ -373,6 +373,7 @@ function TableComponent(props) {
                           />
                           {hasBulkActions && !!state.selectedRows.length && (
                             <BulkActionList
+                              accentColor={props.accentColor}
                               bulkActions={props.bulkActionDefs}
                               selectedRows={state.selectedRows}
                               hideBulkCount={props.hideBulkCount}

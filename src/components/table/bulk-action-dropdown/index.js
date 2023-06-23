@@ -6,6 +6,7 @@ import { Dropdown } from 'semantic-ui-react';
 const BulkActionList = props => {
   return (
     <Dropdown
+      style={{ backgroundColor: props.accentColor }}
       text={props.hideBulkCount ? 'Bulk Action' : `Bulk Action (${(props.selectedRows || []).length} selected)`}
       button
       className="icon bulk-action right labeled"
