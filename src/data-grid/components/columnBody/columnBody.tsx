@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import { Checkbox, Loader, Typography } from '../widgets';
 import ColumnCell from '../cell/columnCell';
+import { OverlayWrapper } from '../overlayWrapper/overlayWrapper';
 
 import { toCamelCase } from '../../helpers/toCamelCase';
 import { densityMapping } from '../../constant';
@@ -16,27 +17,6 @@ const ColumnRowStyle = styled.div((props: any) => ({
 	maxHeight: props.height,
 	borderBottom: '1px solid var(--grey-300, #e5e5e5)'
 }));
-
-const OverlayWrapperInner = styled.div({
-	width: '100%',
-	height: '-webkit-fill-available',
-	// position: 'absolute',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	backgroundColor: 'rgba(0,0,0,.02)',
-	'.overlayWrapperLoader': {
-		width: 40,
-		height: 40,
-		display: 'inline-block',
-		color: 'var(--primary-400, #115bb2)',
-		animation: 'spin 1s linear infinite',
-		'@keyframes spin': {
-			'0%': { transform: 'rotate(0deg)' },
-			'100%': { transform: 'rotate(360deg)' }
-		}
-	}
-});
 
 export const ColumnBody: React.FC = () => {
 	const {
@@ -66,19 +46,19 @@ export const ColumnBody: React.FC = () => {
 
 	if (loading) {
 		return (
-			<OverlayWrapperInner>
+			<OverlayWrapper>
 				<div className="overlayWrapperLoader">
 					<Loader />
 				</div>
-			</OverlayWrapperInner>
+			</OverlayWrapper>
 		);
 	}
 
 	if (data.length === 0) {
 		return (
-			<OverlayWrapperInner>
+			<OverlayWrapper>
 				{typeof noRowsOverlay === 'string' ? <Typography>{noRowsOverlay}</Typography> : noRowsOverlay}
-			</OverlayWrapperInner>
+			</OverlayWrapper>
 		);
 	}
 
