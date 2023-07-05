@@ -36,7 +36,7 @@ export const DataGridStyle = styled.div(() => ({
 		background: 'var(--grey-100, #fafafa)'
 	},
 	'.gridBodyContainer': {
-		display: "flex",
+		display: 'flex',
 		flex: 1,
 		overflow: 'auto',
 		'.gridBody': {

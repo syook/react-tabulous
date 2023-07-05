@@ -24,22 +24,18 @@ const OverlayWrapperInner = styled.div(
 );
 
 interface OverlayWrapperProps {
-    children: React.ReactNode;
-};
+	children: React.ReactNode;
+}
 
 export const OverlayWrapper: React.FC<OverlayWrapperProps> = ({ children }) => {
-    const gridBodyElement = document.querySelector('.gridBody');
-		let extraProps = {};
-		if (gridBodyElement) {
-			extraProps = {
-				width: gridBodyElement.clientWidth,
-				height: gridBodyElement.clientHeight - 44
-			};
-		}
+	const gridBodyElement = document.querySelector('.gridBody');
+	let extraProps = {};
+	if (gridBodyElement) {
+		extraProps = {
+			width: gridBodyElement.clientWidth,
+			height: gridBodyElement.clientHeight - 44
+		};
+	}
 
-    return (
-        <OverlayWrapperInner {...extraProps}>
-            {children}
-        </OverlayWrapperInner>
-    );
+	return <OverlayWrapperInner {...extraProps}>{children}</OverlayWrapperInner>;
 };
