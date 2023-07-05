@@ -1,4 +1,4 @@
-import { Button, IconButton, Select } from '../data-grid/components/widgets';
+import { Button, IconButton, Select } from '../reactTabulous/components/widgets';
 
 const DATA_SET_COUNT = 100000;
 

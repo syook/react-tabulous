@@ -233,7 +233,7 @@ const customComponent = React.useCallback(
 
 ...
 
-<DataGrid
+<ReactTabulous
 	data={data}
 	columns={columns}
 	emptyPlaceholder="N/A"
@@ -246,7 +246,7 @@ const customComponent = React.useCallback(
 	}}
 >
 	{customComponent}
-</DataGrid>
+</ReactTabulous>
 
 ...
 ```

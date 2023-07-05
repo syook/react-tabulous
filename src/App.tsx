@@ -10,9 +10,8 @@ import {
 	dataSet2Columns
 	// getDataSetBasedOnCountPassed,
 } from './data';
-import { DataGrid } from './data-grid';
-// import { DataGrid, GridSortDirection } from './data-grid';
-import { Button } from './data-grid/components/widgets';
+import { ReactTabulous } from './reactTabulous';
+import { Button } from './reactTabulous/components/widgets';
 
 const App: React.FC = () => {
 	// const [isLoading, setIsLoading] = React.useState(false);
@@ -61,7 +60,7 @@ const App: React.FC = () => {
 
 	return (
 		<div className="AppContainer">
-			<DataGrid
+			<ReactTabulous
 				data={dataSet2}
 				columns={dataSet2Columns}
 				// data={NfcData}
@@ -70,7 +69,7 @@ const App: React.FC = () => {
 				// columns={dataSet1Columns}
 				emptyPlaceholder="N/A"
 				checkboxSelection
-				// loading={isLoading}
+				// loading
 				noRowsOverlay={<NoRowsOverlay />}
 				// hidePagination
 				// hideFooterRowCount
@@ -108,7 +107,7 @@ const App: React.FC = () => {
 				// customExport={customExport}
 			>
 				{customComponent}
-			</DataGrid>
+			</ReactTabulous>
 		</div>
 	);
 };

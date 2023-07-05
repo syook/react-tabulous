@@ -1,6 +1,6 @@
-# react-data-grid
+# syook-react-tabulous
 
-A React DataGrid.
+A React Tabulous.
 
 # Available Scripts
 
@@ -12,10 +12,10 @@ A React DataGrid.
 
 This script create the production minified files under the lib directory. and it also create a .tgz file which can use in another project.
 
-### To install the `react-data-grid-<version>.tgz` into another project
+### To install the `syook-react-tabulous-<version>.tgz` into another project
 
 ```js
-    npm i react-data-grid-0.1.0.tgz
+    npm i syook-react-tabulous-0.1.0.tgz
 ```
 
 You can run the above script if you copied the .tgz in to the root directory
@@ -23,14 +23,14 @@ You can run the above script if you copied the .tgz in to the root directory
 also you can run
 
 ```js
-    npm i <path-to-directory>/react-data-grid-0.1.0.tgz
+    npm i <path-to-directory>/syook-react-tabulous-0.1.0.tgz
 
 
-    npm i ../react-data-grid/react-data-grid-0.1.0.tgz
+    npm i ../syook-react-tabulous/syook-react-tabulous-0.1.0.tgz
 
-    npm uninstall react-data-grid && npm i ../react-data-grid/react-data-grid-0.1.0.tgz
+    npm uninstall syook-react-tabulous && npm i ../syook-react-tabulous/syook-react-tabulous-0.1.0.tgz
 
-    yarn remove react-data-grid && yarn add ../react-data-grid/react-data-grid-0.1.0.tgz
+    yarn remove syook-react-tabulous && yarn add ../syook-react-tabulous/syook-react-tabulous-0.1.0.tgz
 
 ```
 

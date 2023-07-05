@@ -11,7 +11,7 @@ import packageJson from './package.json' assert { type: 'json' };
 
 const rollupConfig = [
 	{
-		input: 'src/data-grid/index.ts',
+		input: 'src/reactTabulous/index.ts',
 		output: [
 			{
 				file: packageJson.main,
