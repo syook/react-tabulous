@@ -27,12 +27,27 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
 	useEffect(() => {
 		setValues((prev: any) => ({
 			...prev,
+			filteredAndSortedData: props.data,
 			data: props.data.slice(
 				(values.page - 1) * values.defaultPageSize,
 				values.page * values.defaultPageSize
 			)
 		}));
 	}, [props.data, values.page, values.defaultPageSize]);
+
+	useEffect(() => {
+		setValues((prev: any) => ({
+			...prev,
+			loading: props.loading
+		}));
+	}, [props.loading]);
+
+	useEffect(() => {
+		setValues((prev: any) => ({
+			...prev,
+			...getColumnsAndSearchKeys(props.columns)
+		}));
+	}, [props.columns]);
 
 	const updateValues = (newValues: any): any => {
 		setValues({ ...values, ...newValues });
