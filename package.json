@@ -47,7 +47,7 @@
 		"prettier:fix": "prettier . -c --config .prettierrc --write",
 		"rollup": "rm -rf lib && rollup -c",
 		"build:dev": "npm run rollup && npm pack",
-		"npm-publish": "yarn i && npm run build:dev && npm publish"
+		"npm-publish": "yarn install && npm run build:dev && npm publish"
 	},
 	"dependencies": {
 		"@popperjs/core": "2.11.7"
