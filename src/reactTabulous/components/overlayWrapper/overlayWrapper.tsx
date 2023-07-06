@@ -28,7 +28,7 @@ interface OverlayWrapperProps {
 }
 
 export const OverlayWrapper: React.FC<OverlayWrapperProps> = ({ children }) => {
-	const gridBodyElement = document.querySelector('.gridBody');
+	const gridBodyElement = document.querySelector('.gridBodyContainer');
 	let extraProps = {};
 	if (gridBodyElement) {
 		extraProps = {
