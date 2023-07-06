@@ -39,7 +39,7 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
 		setValues((prev: any) => ({
 			...prev,
 			loading: props.loading,
-			customExport: props.customExport ?? null,
+			customExport: props.customExport ?? null
 		}));
 	}, [props.loading, props.customExport]);
 
