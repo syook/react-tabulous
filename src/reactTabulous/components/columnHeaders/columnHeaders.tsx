@@ -68,13 +68,8 @@ export const ColumnHeaders: React.FC = () => {
 					{leftPinnedColumns.map((obj: any, index: number) => {
 						return (
 							<ColumnHeaderItem
-								disabledMoveLeft={
-									columns.findIndex((column: GridColDef) => column.field === obj.field) === 0
-								}
-								disabledMoveRight={
-									columns.findIndex((column: GridColDef) => column.field === obj.field) ===
-									columns.length - 1
-								}
+								disabledMoveLeft
+								disabledMoveRight
 								columnObj={obj}
 								type={obj.type}
 								key={`${obj.headerName}-${index}`}
@@ -113,7 +108,8 @@ export const ColumnHeaders: React.FC = () => {
 					<ColumnHeaderItem
 						disabledMoveLeft={columns.findIndex((column: GridColDef) => column.field === obj.field) === 0}
 						disabledMoveRight={
-							columns.findIndex((column: GridColDef) => column.field === obj.field) === columns.length - 1
+							(columns.findIndex((column: GridColDef) => column.field === obj.field) === columns.length - 1) || 
+							(columns.some((column: GridColDef) => column.pinned === "right") && index === columns.length - 2)
 						}
 						columnObj={obj}
 						type={obj.type}
@@ -151,13 +147,8 @@ export const ColumnHeaders: React.FC = () => {
 					{rightPinnedColumns.map((obj: any, index: number) => {
 						return (
 							<ColumnHeaderItem
-								disabledMoveLeft={
-									columns.findIndex((column: GridColDef) => column.field === obj.field) === 0
-								}
-								disabledMoveRight={
-									columns.findIndex((column: GridColDef) => column.field === obj.field) ===
-									columns.length - 1
-								}
+								disabledMoveLeft
+								disabledMoveRight
 								columnObj={obj}
 								type={obj.type}
 								key={`${obj.headerName}-${index}`}
