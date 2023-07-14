@@ -37,14 +37,13 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
 			customExport: props.customExport ?? null,
 			onBulkActionClick: props.onBulkActionClick ?? null,
 			rowsCount: props.rowsCount ?? null
-
 		}));
 	}, [props, values.page, values.defaultPageSize]);
 
 	useEffect(() => {
 		setValues((prev: any) => ({
 			...prev,
-			selectedRows: props.selectedRows ?? [],
+			selectedRows: props.selectedRows ?? []
 		}));
 	}, [props.selectedRows]);
 
