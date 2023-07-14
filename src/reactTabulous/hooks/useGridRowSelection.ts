@@ -49,7 +49,7 @@ export const useGridRowSelection = (): any => {
 			updateState({ selectedRows: [] });
 			setCheckedState(false);
 		} else {
-			const rowIds = filteredAndSortedData.map((row: any) => row.id);
+			const rowIds = filteredAndSortedData.map((row: any) => row.id ?? row._id);
 			// if not all rows are selected, select all rows
 			updateState({ selectedRows: rowIds });
 			setCheckedState(true);
