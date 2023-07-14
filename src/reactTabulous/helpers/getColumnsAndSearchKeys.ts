@@ -2,7 +2,7 @@ import { type GridColDef, type GridBaseColDef, GridPinnedPosition } from '../mod
 
 export const getColumnsAndSearchKeys = (
 	columns: GridBaseColDef[]
-): { columns: GridColDef[]; searchKeys: string[], filters: any, searchText: string } => {
+): { columns: GridColDef[]; searchKeys: string[], filters: any, searchText: string, page: number } => {
 	const searchKeys: string[] = [];
 	const newColumns: GridColDef[] = columns.map((column: GridColDef) => {
 		if (column.isSearchable && column.headerName) {
@@ -22,6 +22,7 @@ export const getColumnsAndSearchKeys = (
 		columns: newColumns,
 		searchKeys,
 		filters: [],
-		searchText: ''
+		searchText: '',
+		page: 1
 	};
 };

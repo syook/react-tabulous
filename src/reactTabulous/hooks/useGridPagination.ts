@@ -49,6 +49,10 @@ export const useGridPagination = (): any => {
 			let updatedPageSize = {};
 			if (!fetchOnPageChange) {
 				newData = filteredAndSortedData.slice(0, pageSize);
+				const pages = Math.ceil(filteredAndSortedData.length / pageSize);
+				if (page > pages) {
+					updatedPageSize = { page: pages };
+				}
 			} else {
 				fetchOnPageChange(page, pageSize, searchText, sortField, sortBy);
 				updatedPageSize = { page: 1 };
