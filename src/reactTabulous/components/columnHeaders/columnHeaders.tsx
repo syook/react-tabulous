@@ -108,8 +108,10 @@ export const ColumnHeaders: React.FC = () => {
 					<ColumnHeaderItem
 						disabledMoveLeft={columns.findIndex((column: GridColDef) => column.field === obj.field) === 0}
 						disabledMoveRight={
-							(columns.findIndex((column: GridColDef) => column.field === obj.field) === columns.length - 1) || 
-							(columns.some((column: GridColDef) => column.pinned === "right") && index === columns.length - 2)
+							columns.findIndex((column: GridColDef) => column.field === obj.field) ===
+								columns.length - 1 ||
+							(columns.some((column: GridColDef) => column.pinned === 'right') &&
+								index === columns.length - 2)
 						}
 						columnObj={obj}
 						type={obj.type}

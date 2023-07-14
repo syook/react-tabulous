@@ -10,7 +10,7 @@ export const GridToolbarQuickFilter: React.FC = () => {
 	const [searchKey, setSearchKey] = React.useState<string>(searchText);
 
 	React.useEffect(() => {
-		if(searchTextRef.current !== searchText){
+		if (searchTextRef.current !== searchText) {
 			setSearchKey(searchText);
 			searchTextRef.current = searchText;
 		}
