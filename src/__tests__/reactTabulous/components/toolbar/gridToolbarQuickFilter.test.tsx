@@ -4,20 +4,20 @@ import { customRender, screen } from '../../../../reactTabulous/context/test-uti
 import { GridToolbarQuickFilter } from '../../../../reactTabulous/components/toolbar';
 
 describe('GridToolbarQuickFilter', () => {
-	test('should render correctly', () => {
-		customRender(<GridToolbarQuickFilter />);
+  test('should render correctly', () => {
+    customRender(<GridToolbarQuickFilter />);
 
-		const searchInput = screen.getByRole('searchbox');
-		expect(searchInput).toBeInTheDocument();
-	});
+    const searchInput = screen.getByRole('searchbox');
+    expect(searchInput).toBeInTheDocument();
+  });
 
-	test('should render correctly and update search text', async () => {
-		user.setup();
-		customRender(<GridToolbarQuickFilter />);
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-		const searchInput = screen.getByRole('searchbox') as HTMLInputElement;
+  test('should render correctly and update search text', async () => {
+    user.setup();
+    customRender(<GridToolbarQuickFilter />);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    const searchInput = screen.getByRole('searchbox') as HTMLInputElement;
 
-		await user.type(searchInput, 'test');
-		expect(searchInput.value).toBe('test');
-	});
+    await user.type(searchInput, 'test');
+    expect(searchInput.value).toBe('test');
+  });
 });

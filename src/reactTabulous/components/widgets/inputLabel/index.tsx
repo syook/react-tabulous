@@ -5,18 +5,18 @@ import { Typography, type variantsMapping } from '../typography';
 import cx from '../../../helpers/classnames';
 
 const InputLabelWrapper = styled.div<{ inline?: boolean }>`
-	color: var(--grey-500, #5f6368);
-	height: 32px;
-	display: inline-flex;
-	position: relative;
-	font-size: 14px;
-	max-width: 100%;
-	align-items: center;
+  color: var(--grey-500, #5f6368);
+  height: 32px;
+  display: inline-flex;
+  position: relative;
+  font-size: 14px;
+  max-width: 100%;
+  align-items: center;
 
-	&.form_input_inline {
-		min-width: 160px;
-		width: 160px;
-	}
+  &.form_input_inline {
+    min-width: 160px;
+    width: 160px;
+  }
 `;
 
 // const InputLabelIcon = styled(Icon)`
@@ -29,33 +29,33 @@ const InputLabelWrapper = styled.div<{ inline?: boolean }>`
 // `;
 
 const InputLabel: React.FC<{
-	label?: string;
-	htmlFor?: string;
-	infoText?: string;
-	className?: string;
-	labelClass?: string;
-	inline?: boolean;
-	required?: boolean;
-	variant?: keyof typeof variantsMapping;
+  label?: string;
+  htmlFor?: string;
+  infoText?: string;
+  className?: string;
+  labelClass?: string;
+  inline?: boolean;
+  required?: boolean;
+  variant?: keyof typeof variantsMapping;
 }> = ({
-	label = '',
-	required = false,
-	className = '',
-	variant = 'subheading2',
-	labelClass,
-	infoText = '',
-	inline = false,
-	htmlFor,
-	...rest
+  label = '',
+  required = false,
+  className = '',
+  variant = 'subheading2',
+  labelClass,
+  infoText = '',
+  inline = false,
+  htmlFor,
+  ...rest
 }) => {
-	if (!label) return null;
+  if (!label) return null;
 
-	return (
-		<InputLabelWrapper className={cx({ form_input_inline: inline }, className)}>
-			<Typography variant={variant} htmlFor={htmlFor} className={labelClass} {...rest}>
-				{`${label}${required ? '*' : ''}`}
-			</Typography>
-			{/* {infoText != null && (
+  return (
+    <InputLabelWrapper className={cx({ form_input_inline: inline }, className)}>
+      <Typography variant={variant} htmlFor={htmlFor} className={labelClass} {...rest}>
+        {`${label}${required ? '*' : ''}`}
+      </Typography>
+      {/* {infoText != null && (
 				<InputLabelPopup
 					// inverted
 					// trigger={<InputLabelIcon name="info circle" />}
@@ -64,8 +64,8 @@ const InputLabel: React.FC<{
 					// className="inputLabelPopup"
 				/>
 			)} */}
-		</InputLabelWrapper>
-	);
+    </InputLabelWrapper>
+  );
 };
 
 export default InputLabel;

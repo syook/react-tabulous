@@ -4,15 +4,15 @@ import { debounce } from '../../../reactTabulous/helpers/debounce';
 jest.useFakeTimers();
 
 describe('debounce', () => {
-	test('should debounce', () => {
-		const callback = jest.fn();
-		const debounced = debounce(callback, 1000);
-		debounced();
+  test('should debounce', () => {
+    const callback = jest.fn();
+    const debounced = debounce(callback, 1000);
+    debounced();
 
-		expect(callback).toHaveBeenCalledTimes(0);
+    expect(callback).toHaveBeenCalledTimes(0);
 
-		// Fast-forward time
-		jest.runAllTimers();
-		expect(callback).toHaveBeenCalledTimes(1);
-	});
+    // Fast-forward time
+    jest.runAllTimers();
+    expect(callback).toHaveBeenCalledTimes(1);
+  });
 });

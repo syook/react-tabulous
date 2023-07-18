@@ -4,13 +4,13 @@ import { Pagination } from '../pagination';
 import { useGridRootProps } from '../../hooks/useGridRootProps';
 
 export const GridFooterPlaceholder: React.FC = () => {
-	const {
-		rootState: { hideFooter }
-	} = useGridRootProps();
+  const {
+    rootState: { hideFooter }
+  } = useGridRootProps();
 
-	if (hideFooter) {
-		return null;
-	}
+  if (hideFooter) {
+    return null;
+  }
 
-	return <Pagination />;
+  return <Pagination />;
 };

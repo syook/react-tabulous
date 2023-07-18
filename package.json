@@ -1,109 +1,109 @@
 {
-	"name": "@syook/react-tabulous",
-	"version": "4.0.0-beta-0.3",
-	"description": "Terrifically fabulous React Table",
-	"main": "lib/index.js",
-	"module": "lib/index.esm.js",
-	"types": "lib/index.d.ts",
-	"files": [
-		"README.md",
-		"lib"
-	],
-	"keywords": [
-		"syook",
-		"table",
-		"react"
-	],
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/syook/react-tabulous.git"
-	},
-	"publishConfig": {
-		"access": "public"
-	},
-	"author": "Syook",
-	"bugs": {
-		"url": "https://github.com/syook/react-tabulous/issues"
-	},
-	"lint-staged": {
-		"*.{js,jsx,json,css}": [
-			"npm run prettier:fix"
-		],
-		"*.{js, jsx, ts, tsx}": [
-			"npm run lint:fix"
-		]
-	},
-	"scripts": {
-		"prepare": "husky install",
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"coverage": "npm test -- --coverage --watchAll --collectCoverageFrom='!src/data/**/*.{ts,tsx}'",
-		"eject": "react-scripts eject",
-		"lint": "eslint --ignore-path .eslintignore ./src",
-		"lint:fix": "npm run lint --fix",
-		"prettier": "prettier . -c --config .prettierrc",
-		"prettier:fix": "prettier . -c --config .prettierrc --write",
-		"rollup": "rm -rf lib && rollup -c",
-		"build:dev": "npm run rollup && npm pack",
-		"npm-publish": "yarn install && npm run build:dev && npm publish"
-	},
-	"dependencies": {
-		"@popperjs/core": "2.11.7"
-	},
-	"devDependencies": {
-		"@emotion/react": "11.11.0",
-		"@emotion/styled": "11.11.0",
-		"@rollup/plugin-babel": "6.0.3",
-		"@rollup/plugin-commonjs": "^25.0.0",
-		"@rollup/plugin-image": "3.0.2",
-		"@rollup/plugin-node-resolve": "^15.0.2",
-		"@rollup/plugin-terser": "0.4.3",
-		"@rollup/plugin-typescript": "11.1.1",
-		"@testing-library/jest-dom": "^5.16.5",
-		"@testing-library/react": "^14.0.0",
-		"@testing-library/user-event": "^14.4.3",
-		"@types/jest": "^29.5.1",
-		"@types/node": "^20.2.1",
-		"@types/react": "^18.2.6",
-		"@types/react-dom": "^18.2.4",
-		"@typescript-eslint/eslint-plugin": "^5.59.6",
-		"eslint": "^8.40.0",
-		"eslint-config-prettier": "8.8.0",
-		"eslint-config-standard-with-typescript": "^34.0.1",
-		"eslint-plugin-import": "^2.27.5",
-		"eslint-plugin-n": "^16.0.0",
-		"eslint-plugin-prettier": "^4.2.1",
-		"eslint-plugin-promise": "^6.1.1",
-		"eslint-plugin-react": "^7.32.2",
-		"eslint-plugin-react-hooks": "4.6.0",
-		"husky": "^8.0.3",
-		"prettier": "2.8.8",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"react-scripts": "5.0.1",
-		"rollup": "^3.22.0",
-		"rollup-plugin-dts": "5.3.0",
-		"rollup-plugin-peer-deps-external": "^2.2.4",
-		"rollup-plugin-postcss": "^4.0.2",
-		"rollup-plugin-react-svg": "3.0.3",
-		"typescript": "^5.0.4",
-		"web-vitals": "^3.3.1"
-	},
-	"peerDependencies": {
-		"react": "^version",
-		"react-dom": "^version"
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	}
+  "name": "@syook/react-tabulous",
+  "version": "4.0.0-beta-0.3",
+  "description": "Terrifically fabulous React Table",
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "README.md",
+    "lib"
+  ],
+  "keywords": [
+    "syook",
+    "table",
+    "react"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syook/react-tabulous.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Syook",
+  "bugs": {
+    "url": "https://github.com/syook/react-tabulous/issues"
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,css}": [
+      "npm run prettier:fix"
+    ],
+    "*.{js, jsx, ts, tsx}": [
+      "npm run lint:fix"
+    ]
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "coverage": "npm test -- --coverage --watchAll --collectCoverageFrom='!src/data/**/*.{ts,tsx}'",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ignore-path .eslintignore ./src",
+    "lint:fix": "npm run lint --fix",
+    "prettier": "prettier . -c --config .prettierrc",
+    "prettier:fix": "prettier . -c --config .prettierrc --write",
+    "rollup": "rm -rf lib && rollup -c",
+    "build:dev": "npm run rollup && npm pack",
+    "npm-publish": "yarn install && npm run build:dev && npm publish"
+  },
+  "dependencies": {
+    "@popperjs/core": "2.11.7"
+  },
+  "devDependencies": {
+    "@emotion/react": "11.11.0",
+    "@emotion/styled": "11.11.0",
+    "@rollup/plugin-babel": "6.0.3",
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-image": "3.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-terser": "0.4.3",
+    "@rollup/plugin-typescript": "11.1.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.5.1",
+    "@types/node": "^20.2.1",
+    "@types/react": "^18.2.6",
+    "@types/react-dom": "^18.2.4",
+    "@typescript-eslint/eslint-plugin": "^5.59.6",
+    "eslint": "^8.40.0",
+    "eslint-config-prettier": "8.8.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^16.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "husky": "^8.0.3",
+    "prettier": "2.8.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "rollup": "^3.22.0",
+    "rollup-plugin-dts": "5.3.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-react-svg": "3.0.3",
+    "typescript": "^5.0.4",
+    "web-vitals": "^3.3.1"
+  },
+  "peerDependencies": {
+    "react": "^version",
+    "react-dom": "^version"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

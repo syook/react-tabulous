@@ -10,52 +10,52 @@ import dts from 'rollup-plugin-dts';
 import packageJson from './package.json' assert { type: 'json' };
 
 const rollupConfig = [
-	{
-		input: 'src/reactTabulous/index.ts',
-		output: [
-			{
-				file: packageJson.main,
-				format: 'cjs',
-				sourcemap: true
-			},
-			{
-				file: packageJson.module,
-				format: 'esm',
-				sourcemap: true
-			}
-		],
-		plugins: [
-			resolve(),
-			commonjs(),
-			typescript({ tsconfig: './tsconfig.json' }),
-			postcss(),
-			image(),
-			reactSvg({
-				// svgo options
-				svgo: {
-					plugins: [], // passed to svgo
-					multipass: true
-				},
+  {
+    input: 'src/reactTabulous/index.ts',
+    output: [
+      {
+        file: packageJson.main,
+        format: 'cjs',
+        sourcemap: true
+      },
+      {
+        file: packageJson.module,
+        format: 'esm',
+        sourcemap: true
+      }
+    ],
+    plugins: [
+      resolve(),
+      commonjs(),
+      typescript({ tsconfig: './tsconfig.json' }),
+      postcss(),
+      image(),
+      reactSvg({
+        // svgo options
+        svgo: {
+          plugins: [], // passed to svgo
+          multipass: true
+        },
 
-				// whether to output jsx
-				jsx: false,
+        // whether to output jsx
+        jsx: false,
 
-				// include: string
-				include: null,
+        // include: string
+        include: null,
 
-				// exclude: string
-				exclude: null
-			}),
-			terser()
-		],
-		external: ['react', 'react-dom']
-	}
-	// {
-	// 	input: 'lib/types/entry.d.ts',
-	// 	output: [{ file: 'lib/index.d.ts', format: 'esm' }],
-	// 	plugins: [dts()],
-	// 	external: [/\.(css|less|scss)$/]
-	// }
+        // exclude: string
+        exclude: null
+      }),
+      terser()
+    ],
+    external: ['react', 'react-dom']
+  }
+  // {
+  // 	input: 'lib/types/entry.d.ts',
+  // 	output: [{ file: 'lib/index.d.ts', format: 'esm' }],
+  // 	plugins: [dts()],
+  // 	external: [/\.(css|less|scss)$/]
+  // }
 ];
 
 export default rollupConfig;

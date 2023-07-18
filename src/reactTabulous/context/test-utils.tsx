@@ -5,17 +5,15 @@ import { DataGridContextProvider } from './dataGridContextProvider';
 import { dataSet1Columns, getDataSetBasedOnCountPassed } from '../../data';
 
 const props = {
-	data: getDataSetBasedOnCountPassed(50),
-	columns: dataSet1Columns,
-	checkboxSelection: true
+  data: getDataSetBasedOnCountPassed(50),
+  columns: dataSet1Columns,
+  checkboxSelection: true
 };
 
-const Wrapper = ({ children }: any) => (
-	<DataGridContextProvider props={props}>{children}</DataGridContextProvider>
-);
+const Wrapper = ({ children }: any) => <DataGridContextProvider props={props}>{children}</DataGridContextProvider>;
 
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
-	render(ui, { wrapper: Wrapper, ...options });
+  render(ui, { wrapper: Wrapper, ...options });
 
 // const customRenderWrapperProps = {
 // 	data: [

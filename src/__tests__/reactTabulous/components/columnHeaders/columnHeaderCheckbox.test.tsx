@@ -3,10 +3,10 @@ import { customRender, screen } from '../../../../reactTabulous/context/test-uti
 import { ColumnHeaderCheckbox } from '../../../../reactTabulous/components/columnHeaders/columnHeaderCheckbox';
 
 describe('ColumnHeaderCheckbox', () => {
-	test('should render correctly', () => {
-		customRender(<ColumnHeaderCheckbox checked onBulkSelect={() => {}} />);
+  test('should render correctly', () => {
+    customRender(<ColumnHeaderCheckbox checked onBulkSelect={() => {}} />);
 
-		const checkbox = screen.getByRole('checkbox', { hidden: true });
-		expect(checkbox).toBeInTheDocument();
-	});
+    const checkbox = screen.getByRole('checkbox', { hidden: true });
+    expect(checkbox).toBeInTheDocument();
+  });
 });

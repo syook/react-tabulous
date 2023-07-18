@@ -3,17 +3,17 @@ import { useGridRootProps } from './useGridRootProps';
 import { type GridDensity } from '../models/gridDensity';
 
 export const useGridDensity = (): any => {
-	const {
-		rootState: { density },
-		updateState
-	} = useGridRootProps();
+  const {
+    rootState: { density },
+    updateState
+  } = useGridRootProps();
 
-	const onChangeDensity = useCallback(
-		(density: GridDensity) => {
-			updateState({ density });
-		},
-		[updateState]
-	);
+  const onChangeDensity = useCallback(
+    (density: GridDensity) => {
+      updateState({ density });
+    },
+    [updateState]
+  );
 
-	return { density, onChangeDensity };
+  return { density, onChangeDensity };
 };

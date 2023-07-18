@@ -1,13 +1,13 @@
 body {
-	margin: 0;
+  margin: 0;
 }
 
 body #root {
-	min-height: 100vh;
-	margin: 0;
+  min-height: 100vh;
+  margin: 0;
 }
 
 .AppContainer {
-	height: calc(100vh - 16px);
-	padding: 8px;
+  height: calc(100vh - 16px);
+  padding: 8px;
 }
