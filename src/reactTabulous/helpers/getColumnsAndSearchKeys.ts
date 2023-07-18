@@ -7,7 +7,6 @@ export const getColumnsAndSearchKeys = (
   searchKeys: string[];
   filters: any;
   searchText: string;
-  page: number;
 } => {
   const searchKeys: string[] = [];
   const newColumns: GridColDef[] = columns.map((column: GridColDef) => {
@@ -24,11 +23,11 @@ export const getColumnsAndSearchKeys = (
       isFilterable: column.isFilterable ?? false
     };
   });
+
   return {
     columns: newColumns,
     searchKeys,
     filters: [],
-    searchText: '',
-    page: 1
+    searchText: ''
   };
 };
