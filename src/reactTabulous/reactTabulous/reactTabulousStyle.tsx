@@ -191,6 +191,6 @@ export const DataGridStyle = styled.div(() => ({
     }
   },
   '.gridToolbarQuickFilter': {
-    marginRight: '5px',
+    marginRight: '5px'
   }
 }));
