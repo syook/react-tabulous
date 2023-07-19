@@ -1,6 +1,6 @@
 import { Button, IconButton, Select } from '../reactTabulous/components/widgets';
 
-const DATA_SET_COUNT = 0;
+const DATA_SET_COUNT = 1000;
 
 const minAge = 20;
 const maxAge = 80;

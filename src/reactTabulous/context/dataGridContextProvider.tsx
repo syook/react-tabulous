@@ -32,7 +32,7 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
       loading: props.loading,
       customExport: props.customExport ?? null,
       onBulkActionClick: props.onBulkActionClick ?? null,
-      rowsCount: props.rowsCount ?? null
+      rowsCount: props.rowsCount ?? null,
     }));
   }, [props.data, props.loading, props.customExport, props.onBulkActionClick, props.rowsCount, values.page, values.defaultPageSize]);
 
@@ -44,14 +44,14 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
   }, [props.selectedRows]);
 
   useEffect(() => {
-    if(isEqual(props.columns, columnPropsRef.current)) return;
+    if(isEqual(props.columns, columnPropsRef.current) && !props.isRealTimeDataUpdate) return;
     setValues((prev: any) => ({
       ...prev,
       ...getColumnsAndSearchKeys(props.columns),
       children: props.children ?? null
     }));
     columnPropsRef.current = props.columns;
-  }, [props.columns, props.children]);
+  }, [props.columns, props.children, props.isRealTimeDataUpdate]);
 
   const updateValues = (newValues: any): any => {
     setValues({ ...values, ...newValues });

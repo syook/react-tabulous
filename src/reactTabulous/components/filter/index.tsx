@@ -228,11 +228,11 @@ export const FilterForm: React.FC = () => {
         </Button>
 
         <div className="otherFilterActions">
-          <Button variant="text" size="small" icon={<Icon name="delete" size={14} />} onClick={handleClearFilter}>
+          <Button variant="text" size="small" onClick={handleClearFilter}>
             Clear All
           </Button>
 
-          <Button variant="text" size="small" icon={<Icon name="arrow-right" size={14} />} onClick={handleApplyFilter}>
+          <Button variant="contained" size="small" onClick={handleApplyFilter}>
             Apply
           </Button>
         </div>

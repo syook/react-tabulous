@@ -111,6 +111,11 @@ export interface DataGridPropsWithDefaultValues {
   checkboxSelection: boolean;
   selectedRows: GridRowId[];
   paginatedSelectedRows: GridRowId[];
+  /**
+   * If `true`, the columns will be updated with every props - Use it if the data update is real time.
+   * @default false
+   */
+  isRealTimeDataUpdate: boolean;
 
   /**
    * Bulk actions to be displayed in the toolbar.

@@ -41,6 +41,7 @@ export const DATA_GRID_PROPS_DEFAULT_VALUES = {
   bulkActions: ['delete'],
   noRowsOverlay: <NoRowsOverlay />,
   children: null,
+  isRealTimeDataUpdate: false,
 
   // methods
   onBulkActionClick: () => {},
