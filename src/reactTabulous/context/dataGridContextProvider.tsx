@@ -5,6 +5,7 @@ import { DATA_GRID_PROPS_DEFAULT_VALUES } from '../hooks/useGridRootProps';
 import { type DataGridPropsWithDefaultValues } from '../models/props/dataGridProps';
 
 import { getColumnsAndSearchKeys } from '../helpers/getColumnsAndSearchKeys';
+import isEqual from '../helpers/isEqual';
 
 export interface DataGridContextProviderProps {
   props: any;
@@ -12,6 +13,7 @@ export interface DataGridContextProviderProps {
 }
 
 export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = ({ props, children }) => {
+  const columnPropsRef = React.useRef(props.columns);
   const [values, setValues] = useState({
     ...DATA_GRID_PROPS_DEFAULT_VALUES,
     ...props,
@@ -32,7 +34,7 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
       onBulkActionClick: props.onBulkActionClick ?? null,
       rowsCount: props.rowsCount ?? null
     }));
-  }, [props, values.page, values.defaultPageSize]);
+  }, [props.data, props.loading, props.customExport, props.onBulkActionClick, props.rowsCount, values.page, values.defaultPageSize]);
 
   useEffect(() => {
     setValues((prev: any) => ({
@@ -42,11 +44,14 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
   }, [props.selectedRows]);
 
   useEffect(() => {
+    if(isEqual(props.columns, columnPropsRef.current)) return;
     setValues((prev: any) => ({
       ...prev,
-      ...getColumnsAndSearchKeys(props.columns)
+      ...getColumnsAndSearchKeys(props.columns),
+      children: props.children ?? null
     }));
-  }, [props.columns]);
+    columnPropsRef.current = props.columns;
+  }, [props.columns, props.children]);
 
   const updateValues = (newValues: any): any => {
     setValues({ ...values, ...newValues });

@@ -177,7 +177,7 @@ export const DataGridStyle = styled.div(() => ({
       "&[data-pinned='right']": {
         position: 'sticky',
         right: 0,
-        zIndex: 1,
+        zIndex: 0,
         boxShadow: 'inset 1px 0px 0px var(--grey-300, #e5e5e5)'
       }
     },
@@ -189,5 +189,8 @@ export const DataGridStyle = styled.div(() => ({
         // background: 'var(--grey-100, #fafafa)'
       }
     }
+  },
+  '.gridToolbarQuickFilter': {
+    marginRight: '5px',
   }
 }));

@@ -2,7 +2,7 @@ import { Typography } from '../components/widgets';
 
 const NoRowsOverlay = () => {
   return (
-    <div style={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
       <svg width="120" height="100" viewBox="0 0 184 152" aria-hidden="true" focusable="false">
         <g fill="none" fillRule="evenodd">
           <g transform="translate(24 31.67)">

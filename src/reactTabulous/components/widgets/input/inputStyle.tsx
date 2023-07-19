@@ -4,6 +4,7 @@ export const InputStyle = styled.div`
   &.inputV2 {
     position: relative;
     width: 100%;
+    height: 36px
   }
 
   &.inputV2.input__inline {
