@@ -5,8 +5,6 @@ export const getColumnsAndSearchKeys = (
 ): {
   columns: GridColDef[];
   searchKeys: string[];
-  filters: any;
-  searchText: string;
 } => {
   const searchKeys: string[] = [];
   const newColumns: GridColDef[] = columns.map((column: GridColDef) => {
@@ -26,8 +24,6 @@ export const getColumnsAndSearchKeys = (
 
   return {
     columns: newColumns,
-    searchKeys,
-    filters: [],
-    searchText: ''
+    searchKeys
   };
 };
