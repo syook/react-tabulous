@@ -15,7 +15,8 @@ const StyledDiv = styled.div({
     flex: 1,
     overflowY: 'auto',
     maxHeight: 300,
-    padding: '8px 0 8px 8px'
+    padding: '8px 0 8px 8px',
+    marginTop: 18
     // verticalAlign: 'middle'
   },
   '& .columnHederRows': {

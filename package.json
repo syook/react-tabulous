@@ -1,6 +1,6 @@
 {
   "name": "@syook/react-tabulous",
-  "version": "4.0.0-beta-0.4",
+  "version": "4.0.0-beta-0.5",
   "description": "Terrifically fabulous React Table",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
