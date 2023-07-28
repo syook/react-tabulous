@@ -5,6 +5,7 @@ import { DATA_GRID_PROPS_DEFAULT_VALUES } from '../hooks/useGridRootProps';
 import { type DataGridPropsWithDefaultValues } from '../models/props/dataGridProps';
 
 import { getColumnsAndSearchKeys } from '../helpers/getColumnsAndSearchKeys';
+import { getUpdatedFormattedData } from '../helpers/getUpdatedData';
 import isEqual from '../helpers/isEqual';
 
 export interface DataGridContextProviderProps {
@@ -27,22 +28,31 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
     setValues((prev: any) => ({
       ...prev,
       rootData: props.data,
-      filteredAndSortedData: props.data,
-      data: props.data.slice((values.page - 1) * values.defaultPageSize, values.page * values.defaultPageSize),
+      ...getUpdatedFormattedData({
+        rootData: props.data,
+        fetchOnPageChange: prev.fetchOnPageChange,
+        searchText: prev.searchText,
+        columns: prev.columns,
+        searchKeys: prev.searchKeys,
+        filters: prev.filters,
+        sortField: prev.sortField,
+        sortFieldType: prev.sortFieldType,
+        sortBy: prev.sortBy,
+        page: prev.page,
+        defaultPageSize: prev.defaultPageSize
+      })
+    }));
+  }, [props.data]);
+
+  useEffect(() => {
+    setValues((prev: any) => ({
+      ...prev,
       loading: props.loading,
       customExport: props.customExport ?? null,
       onBulkActionClick: props.onBulkActionClick ?? null,
       rowsCount: props.rowsCount ?? null
     }));
-  }, [
-    props.data,
-    props.loading,
-    props.customExport,
-    props.onBulkActionClick,
-    props.rowsCount,
-    values.page,
-    values.defaultPageSize
-  ]);
+  }, [props.loading, props.customExport, props.onBulkActionClick, props.rowsCount]);
 
   useEffect(() => {
     setValues((prev: any) => ({

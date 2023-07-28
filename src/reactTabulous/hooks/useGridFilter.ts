@@ -173,14 +173,17 @@ export const useGridFilter = (): any => {
 
       const pages = Math.ceil(updatedData.length / defaultPageSize);
       let pageChanges = {};
+      let pageNumber = page;
+
       if (page > pages) {
         pageChanges = { page: 1 };
+        pageNumber = 1;
       }
 
       updateState({
         filters: appliedFilters,
         filteredAndSortedData: updatedData,
-        data: updatedData.slice(0, defaultPageSize),
+        data: updatedData.slice((pageNumber - 1) * defaultPageSize, pageNumber * defaultPageSize),
         ...pageChanges
       });
     },

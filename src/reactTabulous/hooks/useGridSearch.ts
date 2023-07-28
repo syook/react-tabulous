@@ -84,16 +84,18 @@ export const useGridSearch = (): any => {
       }
 
       let pageChanges = {};
+      let pageNumber = page;
 
       const pages = Math.ceil(updatedData.length / defaultPageSize);
 
       if (page > pages) {
         pageChanges = { page: 1 };
+        pageNumber = 1;
       }
 
       updateState({
         filteredAndSortedData: updatedData,
-        data: updatedData.slice(0, defaultPageSize),
+        data: updatedData.slice((pageNumber - 1) * defaultPageSize, pageNumber * defaultPageSize),
         searchText,
         ...pageChanges
       });

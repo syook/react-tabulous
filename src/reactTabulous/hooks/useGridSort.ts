@@ -107,7 +107,7 @@ export const useGridSort = (): any => {
           return acc;
         }, {});
         const sortedRecords = sortRecords(updatedData, field, type, sortType, valueGetterOfField);
-        const newData = sortedRecords.slice(0, defaultPageSize);
+        const newData = sortedRecords.slice((page - 1) * defaultPageSize, page * defaultPageSize);
         updatedStateData = {
           defaultPageSize,
           filteredAndSortedData: sortedRecords,
