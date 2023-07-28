@@ -38,7 +38,7 @@ export const getUpdatedFormattedData = ({
       });
     }
 
-    updatedData = filters.length? filterAllData(filters, updatedData, columns): updatedData;
+    updatedData = filters.length ? filterAllData(filters, updatedData, columns) : updatedData;
 
     if (sortField && sortFieldType && sortBy) {
       const valueGetterOfField = columns.reduce((acc: any, col: any) => {
