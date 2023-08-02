@@ -19,6 +19,7 @@ export const getSearchObjValue = (
 // search for a query in an object
 export const searchObj = (row: any, searchText: string, searchKeys: string[], columnsWithValueGetter: any): boolean => {
   let found = false;
+  searchText = searchText.toLowerCase();
   for (let i = 0; i < searchKeys.length; i++) {
     const value = getSearchObjValue(row, searchKeys, i, columnsWithValueGetter);
     if (value.toString().toLowerCase().includes(searchText)) {
