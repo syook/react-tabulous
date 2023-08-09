@@ -34,7 +34,7 @@ export const GridToolbarColumns: React.FC = () => {
   const [searchKey, setSearchKey] = React.useState<string>('');
 
   const displayColumns = columns.filter((column: GridColDef) => {
-    return column.field.toLowerCase().includes(searchKey.toLowerCase());
+    return column.headerName.toLowerCase().includes(searchKey.toLowerCase());
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
