@@ -8,6 +8,7 @@ import { useGridFilter } from '../../hooks/useGridFilter';
 import { useGridRootProps } from '../../hooks/useGridRootProps';
 
 import { type FilterFieldProps } from '../../models/gridFiltersModel';
+import { type GridColDef } from '../../models';
 
 export const filterPredicates = ['And', 'Or'];
 interface FilterOperators {
@@ -84,7 +85,11 @@ export const FilterForm: React.FC = () => {
   const { handleFilterApply } = useGridFilter();
 
   const getFirstCol = (): FilterFieldProps => {
-    const firstCol = columns[0];
+    const firstCol: GridColDef = columns.find((column: GridColDef) => column.isVisible && column.isFilterable) ?? {
+      headerName: '',
+      type: '',
+      field: ''
+    };
 
     const type: keyof FilterOperators = (firstCol.type ?? 'string') as keyof FilterOperators;
 
@@ -112,7 +117,12 @@ export const FilterForm: React.FC = () => {
   if (columns.length === 0) return null;
 
   const columnOptions = columns.reduce((acc, column) => {
-    if (column.isVisible && column.isFilterable && column.type !== 'action') {
+    if (
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      (column.isVisible || gridFilters.some(filter => filter.field === column.field)) &&
+      column.isFilterable &&
+      column.type !== 'action'
+    ) {
       acc.push({ label: column.headerName, value: column.headerName });
     }
     return acc;
