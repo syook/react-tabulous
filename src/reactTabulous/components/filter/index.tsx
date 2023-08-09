@@ -56,7 +56,8 @@ const StyledFilterForm = styled.div({
       },
       '& .inputCategories': {
         width: 190,
-        marginRight: 8
+        marginRight: 8,
+        marginTop: 6
       },
       '& .inputCategories:last-child': {
         marginRight: 0
@@ -218,6 +219,7 @@ export const FilterForm: React.FC = () => {
 
               <InputCategories
                 type={filter.type}
+                disabled={['is empty', 'is not empty'].includes(filter.operator)}
                 rowIndex={index}
                 query={filter.operator}
                 options={filter.options}

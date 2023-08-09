@@ -12,6 +12,7 @@ interface InputCategoriesProps {
   onChange: any;
   options: any;
   className?: string;
+  disabled: boolean;
 }
 
 const booleanOptions = ['true', 'false'];
@@ -24,6 +25,7 @@ export const InputCategories: React.FC<InputCategoriesProps> = ({
   rowIndex,
   query,
   className = '',
+  disabled,
   onChange
 }) => {
   switch (type) {
@@ -31,6 +33,7 @@ export const InputCategories: React.FC<InputCategoriesProps> = ({
     case 'number':
       return (
         <Input
+          disabled={disabled}
           className={className}
           type={type === 'number' ? 'number' : 'text'}
           value={value || ''}
@@ -49,6 +52,7 @@ export const InputCategories: React.FC<InputCategoriesProps> = ({
         : null;
       return (
         <Select
+          disabled={disabled}
           // isMulti={isMultiSelect}
           options={options}
           value={selectValue}
@@ -71,6 +75,7 @@ export const InputCategories: React.FC<InputCategoriesProps> = ({
         // 	onChange={(e: any, { checked }: any) => onChange(checked, rowIndex)}
         // />
         <Select
+          disabled={disabled}
           options={booleanOptions}
           value={value ?? 'true'}
           className={className}
@@ -84,6 +89,7 @@ export const InputCategories: React.FC<InputCategoriesProps> = ({
     case 'date':
       return (
         <Input
+          disabled={disabled}
           type={type === 'dateTime' ? 'datetime-local' : 'date'}
           value={value || ''}
           className={className}
