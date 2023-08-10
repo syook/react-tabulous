@@ -88,7 +88,6 @@ export const FilterForm: React.FC = () => {
   const getFirstCol = (): FilterFieldProps => {
     const firstCol: GridColDef = columns.find((column: GridColDef) => column.isVisible && column.isFilterable) ?? {
       headerName: '',
-      type: '',
       field: ''
     };
 
@@ -175,80 +174,84 @@ export const FilterForm: React.FC = () => {
 
   return (
     <StyledFilterForm>
-      <div className="filterBody scrollStyle">
-        {filters.map((filter: FilterFieldProps, index) => {
-          return (
-            <div key={index} className="filterFieldRow">
-              <IconButton
-                name="close"
-                type="transparent"
-                size={14}
-                disabled={filters.length === 1}
-                onClick={() => {
-                  handleRemoveFilter(index);
-                }}
-              />
-              <Select
-                options={filterPredicates}
-                value={filter.condition}
-                style={{ visibility: index === 0 ? 'hidden' : 'visible' }}
-                className="condition"
-                onChange={e => {
-                  handleOnchange('condition', e.target.value, index);
-                }}
-                disabled={index > 1}
-              />
+      {columnOptions.length > 0 && (
+        <>
+          <div className="filterBody scrollStyle">
+            {filters.map((filter: FilterFieldProps, index) => {
+              return (
+                <div key={index} className="filterFieldRow">
+                  <IconButton
+                    name="close"
+                    type="transparent"
+                    size={14}
+                    disabled={filters.length === 1}
+                    onClick={() => {
+                      handleRemoveFilter(index);
+                    }}
+                  />
+                  <Select
+                    options={filterPredicates}
+                    value={filter.condition}
+                    style={{ visibility: index === 0 ? 'hidden' : 'visible' }}
+                    className="condition"
+                    onChange={e => {
+                      handleOnchange('condition', e.target.value, index);
+                    }}
+                    disabled={index > 1}
+                  />
 
-              <Select
-                options={columnOptions}
-                value={filter.column}
-                className="column"
-                onChange={e => {
-                  handleOnchange('column', e.target.value, index);
-                }}
-              />
+                  <Select
+                    options={columnOptions}
+                    value={filter.column}
+                    className="column"
+                    onChange={e => {
+                      handleOnchange('column', e.target.value, index);
+                    }}
+                  />
 
-              <Select
-                options={filterOperators[filter.type]}
-                value={filter.operator}
-                className="operators"
-                onChange={e => {
-                  handleOnchange('operator', e.target.value, index);
-                }}
-              />
+                  <Select
+                    options={filterOperators[filter.type]}
+                    value={filter.operator}
+                    className="operators"
+                    onChange={e => {
+                      handleOnchange('operator', e.target.value, index);
+                    }}
+                  />
 
-              <InputCategories
-                type={filter.type}
-                disabled={['is empty', 'is not empty'].includes(filter.operator)}
-                rowIndex={index}
-                query={filter.operator}
-                options={filter.options}
-                value={filter.value}
-                className="inputCategories"
-                onChange={(value: any) => {
-                  handleOnchange('value', value, index);
-                }}
-              />
+                  <InputCategories
+                    type={filter.type}
+                    disabled={['is empty', 'is not empty'].includes(filter.operator)}
+                    rowIndex={index}
+                    query={filter.operator}
+                    options={filter.options}
+                    value={filter.value}
+                    className="inputCategories"
+                    onChange={(value: any) => {
+                      handleOnchange('value', value, index);
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="filterActions">
+            <Button variant="text" size="small" icon={<Icon name="add" size={14} />} onClick={handleOnAddFilter}>
+              Add Filter
+            </Button>
+
+            <div className="otherFilterActions">
+              <Button variant="text" size="small" onClick={handleClearFilter}>
+                Clear All
+              </Button>
+
+              <Button variant="contained" size="small" onClick={handleApplyFilter}>
+                Apply
+              </Button>
             </div>
-          );
-        })}
-      </div>
-
-      <div className="filterActions">
-        <Button variant="text" size="small" icon={<Icon name="add" size={14} />} onClick={handleOnAddFilter}>
-          Add Filter
-        </Button>
-
-        <div className="otherFilterActions">
-          <Button variant="text" size="small" onClick={handleClearFilter}>
-            Clear All
-          </Button>
-
-          <Button variant="contained" size="small" onClick={handleApplyFilter}>
-            Apply
-          </Button>
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </StyledFilterForm>
   );
 };
