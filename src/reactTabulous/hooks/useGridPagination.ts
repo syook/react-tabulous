@@ -19,7 +19,7 @@ export const useGridPagination = (): any => {
     updateState
   } = useGridRootProps();
 
-  const pages = Math.ceil(paginatedRowsCount ?? filteredAndSortedData.length / defaultPageSize);
+  const pages = Math.ceil((paginatedRowsCount ?? filteredAndSortedData.length) / defaultPageSize);
 
   const onPageChange = useCallback(
     (page: number) => {
