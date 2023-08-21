@@ -26,7 +26,7 @@ export const queryCondition = (columnValue: string, operator: string, value: str
       if (type === 'boolean') {
         return (columnValue || false) === (value || false);
       }
-      return Boolean(columnValue) && columnValue.toString() === value;
+      return Boolean(columnValue) && columnValue.toString().toLowerCase() === value.toLowerCase();
     case 'is not':
       if (isOperatorTypeDate) {
         const searchDate: any = new Date(value);
@@ -38,7 +38,7 @@ export const queryCondition = (columnValue: string, operator: string, value: str
       // 		if ((searchValue || [])[0] === 0) return isEqual(attrValue, searchValue[0]);
       // 		return (searchValue || [])[0] && !isEqual(attrValue, searchValue[0]);
       // 	}
-      return Boolean(columnValue) && columnValue.toString() !== value;
+      return Boolean(columnValue) && columnValue.toString().toLowerCase() !== value.toLowerCase();
     case 'is empty':
       if (isOperatorTypeDate) return !columnValue;
       return columnValue.toString().trim().length === 0;
