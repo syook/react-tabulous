@@ -51,9 +51,10 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
       loading: props.loading,
       customExport: props.customExport ?? null,
       onBulkActionClick: props.onBulkActionClick ?? null,
-      rowsCount: props.rowsCount ?? null
+      rowsCount: props.rowsCount ?? null,
+      children: props.children ?? null
     }));
-  }, [props.loading, props.customExport, props.onBulkActionClick, props.rowsCount]);
+  }, [props.loading, props.customExport, props.onBulkActionClick, props.rowsCount, props.children]);
 
   useEffect(() => {
     setValues((prev: any) => ({
