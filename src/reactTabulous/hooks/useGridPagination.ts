@@ -30,7 +30,6 @@ export const useGridPagination = (): any => {
       } else {
         fetchOnPageChange(page, defaultPageSize, searchText, sortField, sortBy);
       }
-      updateState({ page, data: newData });
     },
     [defaultPageSize, filteredAndSortedData, updateState, fetchOnPageChange, searchText, sortField, sortBy]
   );
