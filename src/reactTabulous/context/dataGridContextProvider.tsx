@@ -42,7 +42,7 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
         defaultPageSize: prev.defaultPageSize
       }),
       fetchOnPageChange: props.fetchOnPageChange ?? null,
-      page: props.page ?? prev.page,
+      page: props.page ?? prev.page
     }));
   }, [props.data, props.fetchOnPageChange, props.page]);
 
