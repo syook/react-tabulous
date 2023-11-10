@@ -25,6 +25,7 @@ export interface DataGridPropsWithDefaultValues {
   logger: Logger;
   showColumnToolbar: boolean;
   showFilterToolbar: boolean;
+  isShowSerialNumber: boolean;
   searchKeys: string[];
   searchText: string;
   /**

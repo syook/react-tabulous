@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import { ColumnHeaderItem } from './columnHeaderItem';
 import { ColumnHeaderCheckbox } from './columnHeaderCheckbox';
+import { ColumnHeaderSerialNumber } from './columnHeaderSerialNumber';
 
 import { toCamelCase } from '../../helpers/toCamelCase';
 import { densityMapping, iconDensityMapping } from '../../constant';
@@ -37,7 +38,8 @@ export const ColumnHeaders: React.FC = () => {
       disableColumnResize,
       disableColumnSelector,
       disableMultipleColumnsSorting,
-      fetchOnPageChange
+      fetchOnPageChange,
+      isShowSerialNumber
     }
   } = useGridRootProps();
   const { handleSort } = useGridSort();
@@ -54,6 +56,8 @@ export const ColumnHeaders: React.FC = () => {
     <ColumnHeaderStyle height={densityMapping[density]} className="columnHeaders">
       {/* add checkbox for select all rows */}
       {checkboxSelection && <ColumnHeaderCheckbox checked={checkedState} onBulkSelect={handleBulkRowSelection} />}
+      {/* show serial number for all rows */}
+      {isShowSerialNumber && <ColumnHeaderSerialNumber />}
       {leftPinnedColumns.length > 0 && (
         // <div className="pinnedColumnHeaders--left">
         <>

@@ -23,6 +23,7 @@ export const DATA_GRID_PROPS_DEFAULT_VALUES = {
   sortBy: 'asc',
   showColumnToolbar: false,
   showFilterToolbar: false,
+  isShowSerialNumber: false,
   filters: [],
   searchText: '',
   checkboxSelection: false,

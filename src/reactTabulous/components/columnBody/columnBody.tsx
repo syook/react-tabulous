@@ -20,7 +20,19 @@ const ColumnRowStyle = styled.div((props: any) => ({
 
 export const ColumnBody: React.FC = () => {
   const {
-    rootState: { columns, data, emptyPlaceholder, density, checkboxSelection, selectedRows, noRowsOverlay, loading }
+    rootState: {
+      columns,
+      data,
+      emptyPlaceholder,
+      density,
+      checkboxSelection,
+      selectedRows,
+      noRowsOverlay,
+      loading,
+      isShowSerialNumber,
+      page,
+      defaultPageSize
+    }
   } = useGridRootProps();
 
   const { handleRowSelect } = useGridRowSelection();
@@ -58,6 +70,11 @@ export const ColumnBody: React.FC = () => {
                   checked={selectedRows.includes(obj.id) || selectedRows.includes(obj._id)}
                   onChange={() => handleRowSelect(obj.id ?? obj._id)}
                 />
+              </ColumnCell>
+            )}
+            {isShowSerialNumber && (
+              <ColumnCell key={index} emptyPlaceholder={emptyPlaceholder} rowIndex={index} width={20}>
+                {(page - 1) * defaultPageSize + index + 1}
               </ColumnCell>
             )}
             {leftPinnedColumns.map((column: GridColDef, colIndex: number) => {
