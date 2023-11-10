@@ -27,13 +27,18 @@ export const GridToolbarQuickFilter: React.FC = () => {
     delayQuery(e.target.value);
   };
 
+  const handleClearSearch = () => {
+    setSearchKey('');
+    delayQuery('');
+  };
+
   return (
     <Input
-      type="search"
       placeholder={searchPlaceholder}
       className="gridToolbarQuickFilter"
       value={searchKey}
       startAdornment={<Icon name="search" size={20} fill="var(--grey-500, #5f6368)" />}
+      endAdornment={searchKey ? <Icon name="close" size={20} fill="var(--grey-500, #5f6368)" onClick={handleClearSearch}/> : null}
       onChange={handleChange}
     />
   );
