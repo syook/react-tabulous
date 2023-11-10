@@ -43,6 +43,7 @@ export const DATA_GRID_PROPS_DEFAULT_VALUES = {
   noRowsOverlay: <NoRowsOverlay />,
   children: null,
   isRealTimeDataUpdate: false,
+  searchPlaceholder: 'Search',
 
   // methods
   onBulkActionClick: () => {},

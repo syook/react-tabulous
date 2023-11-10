@@ -5,7 +5,7 @@ import { useGridSearch } from '../../hooks/useGridSearch';
 import { debounce } from '../../helpers/debounce';
 
 export const GridToolbarQuickFilter: React.FC = () => {
-  const { handleSearchApply, searchText } = useGridSearch();
+  const { handleSearchApply, searchText, searchPlaceholder } = useGridSearch();
   const searchTextRef = useRef(searchText);
   const [searchKey, setSearchKey] = React.useState<string>(searchText);
 
@@ -30,7 +30,7 @@ export const GridToolbarQuickFilter: React.FC = () => {
   return (
     <Input
       type="search"
-      placeholder="Search"
+      placeholder={searchPlaceholder}
       className="gridToolbarQuickFilter"
       value={searchKey}
       startAdornment={<Icon name="search" size={20} fill="var(--grey-500, #5f6368)" />}

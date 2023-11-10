@@ -163,6 +163,10 @@ export interface DataGridPropsWithDefaultValues {
    *
    */
   customExport: null | ((filteredAndSortedData: any, searchText: string, columns: any) => void);
+  /**
+   * custom placeholder for the search field.
+   */
+  searchPlaceholder: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

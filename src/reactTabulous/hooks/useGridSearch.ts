@@ -52,7 +52,8 @@ export const useGridSearch = (): any => {
       sortField,
       sortFieldType,
       sortBy,
-      fetchOnPageChange
+      fetchOnPageChange,
+      searchPlaceholder
     },
     updateState
   } = useGridRootProps();
@@ -116,5 +117,5 @@ export const useGridSearch = (): any => {
     ]
   );
 
-  return { handleSearchApply, searchText };
+  return { handleSearchApply, searchText, searchPlaceholder };
 };
