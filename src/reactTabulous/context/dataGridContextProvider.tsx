@@ -38,7 +38,7 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
         sortField: prev.sortField,
         sortFieldType: prev.sortFieldType,
         sortBy: prev.sortBy,
-        page: prev.page,
+        page: props.page ?? prev.page,
         defaultPageSize: prev.defaultPageSize
       }),
       fetchOnPageChange: props.fetchOnPageChange ?? null,
