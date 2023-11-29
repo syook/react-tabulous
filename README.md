@@ -77,7 +77,7 @@ Or you can clone.
 ```js
 ...
 
-import ReactTabulous from 'react-tabulous';
+import { ReactTabulous } from 'react-tabulous';
 import { Button, IconButton, Select } from 'commonComponents/widgets';
 
 ...
