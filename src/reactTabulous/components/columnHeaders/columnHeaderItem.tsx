@@ -64,7 +64,7 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
 
   const { onDragStart, onDragOver, onDrop, onDragEnter } = useDragHandler(onDragUpdate);
 
-  const [width, setWidth] = React.useState<number | string>(80);
+  const [width, setWidth] = React.useState<number | string>('max-content');
 
   React.useEffect(() => {
     if (width != null && rootRef.current != null) {
