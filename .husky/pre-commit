@@ -1,5 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run prettify:fix
-git add
+# npm run lint:fix
+npx lint-staged
