@@ -12,18 +12,18 @@ export const getColumnsData = (columns: any) => {
     .join(',');
 };
 
-export const getRowsData = (rows: any, columns: any) => {
+export const getRowsData = (rows: any, columns: any, emptyPlaceholder: string) => {
   return rows
     .map((row: any) => {
       return columns
         .reduce((acc: any, column: any) => {
           let value = '';
           if (column.valueGetter) {
-            value = column.valueGetter(row);
+            value = column.valueGetter(row) || emptyPlaceholder;
           } else if (column.renderCell && column.type !== 'action') {
             value = column.renderCell(row)?.props?.children ?? column.renderCell(row)?.props?.value;
           } else if (column.type !== 'action') {
-            value = row[column.field];
+            value = row[column.field] || emptyPlaceholder;
           }
           if (`${value}`.includes(`,`)) {
             value = `"${value}"`;
@@ -38,13 +38,13 @@ export const getRowsData = (rows: any, columns: any) => {
 
 export const useGridExport = (): any => {
   const {
-    rootState: { filteredAndSortedData, columns, searchText, customExport }
+    rootState: { filteredAndSortedData, columns, searchText, customExport, emptyPlaceholder }
   } = useGridRootProps();
 
   const handleExport = useCallback(
     (type: string) => {
       const columnsData = getColumnsData(columns);
-      const dataToDisplay = getRowsData(filteredAndSortedData, columns);
+      const dataToDisplay = getRowsData(filteredAndSortedData, columns, emptyPlaceholder);
 
       const dataStr = `data:text/csv;charset=utf-8,${columnsData}\n${dataToDisplay}`;
 
@@ -60,7 +60,7 @@ export const useGridExport = (): any => {
       document.body.appendChild(link); // Required for FF
       link.click();
     },
-    [filteredAndSortedData, columns]
+    [filteredAndSortedData, columns, emptyPlaceholder]
   );
 
   return { handleExport, filteredAndSortedData, columns, searchText, customExport };
