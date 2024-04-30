@@ -17,9 +17,10 @@ describe('Switch', () => {
   });
 
   test('should render correctly when the switch is clicked', async () => {
-    user.setup();
-    render(<Switch checked onChange={() => {}} size={20} />);
+    const onChange = jest.fn();
+    render(<Switch checked onChange={onChange} size={20} />);
     const checkbox = screen.getByRole('checkbox');
     await user.click(checkbox);
+    expect(onChange).toHaveBeenCalled();
   });
 });
