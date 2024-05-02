@@ -116,18 +116,21 @@ export const FilterForm: React.FC = () => {
 
   if (columns.length === 0) return null;
 
-  const columnOptions = columns.reduce((acc, column) => {
-    if (
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      (column.isVisible || gridFilters.some(filter => filter.field === column.field)) &&
-      column.isFilterable &&
-      column.type !== 'action'
-    ) {
-      acc.push({ label: column.headerName, value: column.headerName });
-    }
-    return acc;
-    // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
-  }, [] as Array<{ label: string; value: string }>);
+  const columnOptions = columns.reduce(
+    (acc, column) => {
+      if (
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        (column.isVisible || gridFilters.some(filter => filter.field === column.field)) &&
+        column.isFilterable &&
+        column.type !== 'action'
+      ) {
+        acc.push({ label: column.headerName, value: column.headerName });
+      }
+      return acc;
+      // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
+    },
+    [] as Array<{ label: string; value: string }>
+  );
 
   const handleOnchange = (key: keyof FilterFieldProps, value: any, index: number): void => {
     let newFilters: FilterFieldProps[] = [...filters];

@@ -159,25 +159,33 @@ export const ButtonStyle = styled.button`
 
   &.buttonV2.button-outline[disabled] {
     color: var(--grey-400, #b1b1b1) !important;
-    box-shadow: 0 0 0 1px var(--grey-400, #b1b1b1) inset, 0 0 0 0 var(--grey-400, #b1b1b1) inset !important;
+    box-shadow:
+      0 0 0 1px var(--grey-400, #b1b1b1) inset,
+      0 0 0 0 var(--grey-400, #b1b1b1) inset !important;
     background-color: var(--white-600, #ffffff) !important;
   }
 
   /* outline button - primary */
   &.buttonV2.button-outline-primary {
     color: var(--primary-400, #115bb2);
-    box-shadow: 0 0 0 1px var(--primary-400, #115bb2) inset, 0 0 0 0 var(--primary-400, #115bb2) inset;
+    box-shadow:
+      0 0 0 1px var(--primary-400, #115bb2) inset,
+      0 0 0 0 var(--primary-400, #115bb2) inset;
   }
 
   &.buttonV2.button-outline-primary:hover {
     color: var(--primary-500, #0e4b92);
     background-color: var(--primary-100, #f5f8fc);
-    box-shadow: 0 0 0 1px var(--primary-500, #0e4b92) inset, 0 0 0 0 var(--primary-500, #0e4b92) inset;
+    box-shadow:
+      0 0 0 1px var(--primary-500, #0e4b92) inset,
+      0 0 0 0 var(--primary-500, #0e4b92) inset;
   }
 
   &.buttonV2.button-outline-primary.buttonV2-loading {
     color: var(--primary-300, #588cc9);
-    box-shadow: 0 0 0 1px var(--primary-300, #588cc9) inset, 0 0 0 0 var(--primary-300, #588cc9) inset;
+    box-shadow:
+      0 0 0 1px var(--primary-300, #588cc9) inset,
+      0 0 0 0 var(--primary-300, #588cc9) inset;
   }
 
   &.buttonV2.button-outline-primary.buttonV2-loading .btnLoader::before {
@@ -192,18 +200,24 @@ export const ButtonStyle = styled.button`
 
   &.buttonV2.button-outline-secondary {
     color: var(--grey-500, #5f6368);
-    box-shadow: 0 0 0 1px var(--grey-500, #5f6368) inset, 0 0 0 0 var(--grey-500, #5f6368) inset;
+    box-shadow:
+      0 0 0 1px var(--grey-500, #5f6368) inset,
+      0 0 0 0 var(--grey-500, #5f6368) inset;
   }
 
   &.buttonV2.button-outline-secondary:hover {
     color: var(--grey-600, #2c2e30);
     background-color: var(--grey-100, #fafafa);
-    box-shadow: 0 0 0 1px var(--grey-600, #2c2e30) inset, 0 0 0 0 var(--grey-600, #2c2e30) inset;
+    box-shadow:
+      0 0 0 1px var(--grey-600, #2c2e30) inset,
+      0 0 0 0 var(--grey-600, #2c2e30) inset;
   }
 
   &.buttonV2.button-outline-secondary.buttonV2-loading {
     color: var(--grey-300, #e5e5e5);
-    box-shadow: 0 0 0 1px var(--grey-300, #e5e5e5) inset, 0 0 0 0 var(--grey-300, #e5e5e5) inset;
+    box-shadow:
+      0 0 0 1px var(--grey-300, #e5e5e5) inset,
+      0 0 0 0 var(--grey-300, #e5e5e5) inset;
   }
 
   &.buttonV2.button-outline-secondary.buttonV2-loading .btnLoader::before {
@@ -218,18 +232,24 @@ export const ButtonStyle = styled.button`
 
   &.buttonV2.button-outline-success {
     color: var(--success-400, #05951b);
-    box-shadow: 0 0 0 1px var(--success-400, #05951b) inset, 0 0 0 0 var(--success-400, #05951b) inset;
+    box-shadow:
+      0 0 0 1px var(--success-400, #05951b) inset,
+      0 0 0 0 var(--success-400, #05951b) inset;
   }
 
   &.buttonV2.button-outline-success:hover {
     color: var(--success-500, #047a16);
     background-color: var(--success-100, #f5fbf6);
-    box-shadow: 0 0 0 1px var(--success-500, #047a16) inset, 0 0 0 0 var(--success-500, #047a16) inset;
+    box-shadow:
+      0 0 0 1px var(--success-500, #047a16) inset,
+      0 0 0 0 var(--success-500, #047a16) inset;
   }
 
   &.buttonV2.button-outline-success.buttonV2-loading {
     color: var(--success-300, #50b55f);
-    box-shadow: 0 0 0 1px var(--success-300, #50b55f) inset, 0 0 0 0 var(--success-300, #50b55f) inset;
+    box-shadow:
+      0 0 0 1px var(--success-300, #50b55f) inset,
+      0 0 0 0 var(--success-300, #50b55f) inset;
   }
 
   &.buttonV2.button-outline-success.buttonV2-loading .btnLoader::before {
@@ -244,18 +264,24 @@ export const ButtonStyle = styled.button`
 
   &.buttonV2.button-outline-danger {
     color: var(--danger-400, #ed505f);
-    box-shadow: 0 0 0 1px var(--danger-400, #ed505f) inset, 0 0 0 0 var(--danger-400, #ed505f) inset;
+    box-shadow:
+      0 0 0 1px var(--danger-400, #ed505f) inset,
+      0 0 0 0 var(--danger-400, #ed505f) inset;
   }
 
   &.buttonV2.button-outline-danger:hover {
     color: var(--danger-500, #c2424e);
     background-color: var(--danger-100, #fef8f9);
-    box-shadow: 0 0 0 1px var(--danger-500, #c2424e) inset, 0 0 0 0 var(--danger-500, #c2424e) inset;
+    box-shadow:
+      0 0 0 1px var(--danger-500, #c2424e) inset,
+      0 0 0 0 var(--danger-500, #c2424e) inset;
   }
 
   &.buttonV2.button-outline-danger.buttonV2-loading {
     color: var(--danger-300, #f2858f);
-    box-shadow: 0 0 0 1px var(--danger-300, #f2858f) inset, 0 0 0 0 var(--danger-300, #f2858f) inset;
+    box-shadow:
+      0 0 0 1px var(--danger-300, #f2858f) inset,
+      0 0 0 0 var(--danger-300, #f2858f) inset;
   }
 
   &.buttonV2.button-outline-danger.buttonV2-loading .btnLoader::before {

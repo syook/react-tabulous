@@ -26,10 +26,12 @@ describe('BulkActions', () => {
   });
 
   test('should render correctly when bulkAction button is clicked', async () => {
-    user.setup();
-    render(<BulkActions selectedRows={[1, 2]} bulkActions={['delete']} onBulkActionClick={() => {}} />);
+    const onBulkActionClick = jest.fn();
+    render(<BulkActions selectedRows={[1, 2]} bulkActions={['delete']} onBulkActionClick={onBulkActionClick} />);
 
     const deleteButton = screen.getByRole('button');
     await user.click(deleteButton);
+
+    expect(onBulkActionClick).toHaveBeenCalled();
   });
 });

@@ -48,8 +48,8 @@ export const InputCategories: React.FC<InputCategoriesProps> = ({
           ? value.map((v: any) => ({ value: v, label: v }))
           : []
         : (value || []).length === 1
-        ? { value: value[0], label: value[0] }
-        : null;
+          ? { value: value[0], label: value[0] }
+          : null;
       return (
         <Select
           disabled={disabled}

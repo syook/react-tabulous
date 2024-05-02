@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const DataGridStyle = styled.div(() => ({
+export const DataGridStyle = styled.div({
   height: '100%',
   '.scrollStyle': {
     '::-webkit-scrollbar': {
@@ -193,4 +193,4 @@ export const DataGridStyle = styled.div(() => ({
   '.gridToolbarQuickFilter': {
     marginRight: '5px'
   }
-}));
+});
