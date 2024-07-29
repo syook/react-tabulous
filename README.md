@@ -33,13 +33,13 @@ Or you can clone.
 
 ### c. Available Types
 
-| Type              | Filter queries available                                        | Extra props needed |
-| ----------------- | --------------------------------------------------------------- | ------------------ |
+| Type              | Filter queries available                                        | Extra props needed                  |
+| ----------------- | --------------------------------------------------------------- | ----------------------------------- |
 | `string`          | contains, does not contains, is, is not, is empty, is not empty |
 | `dateTime`/`date` | is, is not, is after, is before, is empty, is not empty         |
 | `number`          | =, =/ , < , <=, > , >= , is empty, is not empty                 |
-| `singleSelect`    | has any of, has none of, is empty, is not empty                 | options: []        |
-| `multiSelect`     | is, is not, is empty, is not empty,                             | options: []        |
+| `singleSelect`    | has any of, has none of, is empty, is not empty                 | options: [{ label: "A", value: 1 }] |
+| `multiSelect`     | is, is not, is empty, is not empty,                             | options: [{ label: "A", value: 1 }] |
 
 ### d. Component Props
 

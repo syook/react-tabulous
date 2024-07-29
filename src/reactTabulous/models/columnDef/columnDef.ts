@@ -16,7 +16,7 @@ export interface GridBaseColDef<R extends GridValidRowModel = GridValidRowModel,
   /**
    * Get the values to be displayed in the table cell.
    */
-  valueGetter?: (row: any, index?: number) => string | number;
+  valueGetter?: (row: any, index?: number) => string | number | boolean;
   /**
    * The cell which has JSX will be displayed.
    */
