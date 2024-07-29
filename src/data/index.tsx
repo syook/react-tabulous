@@ -376,7 +376,7 @@ export const dataSet2Columns = [
     type: 'singleSelect',
     valueGetter: (row: any) => row?.level,
     renderCell: (row: any) => {
-      const level: 1 | 2 | 3 = row?.level ?? 1;
+      const level: 1 | 2 | 3 = row?.level;
 
       const { text: levelText, color: levelColor } = level ? levelMapping[level] : { text: '', color: '' };
 
