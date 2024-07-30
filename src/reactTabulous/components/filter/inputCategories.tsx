@@ -2,6 +2,7 @@
 import React from 'react';
 
 import { Input, Select } from '../widgets';
+// import { getValueFromOptions } from '../../helpers/select';
 
 interface InputCategoriesProps {
   attribute?: any;
@@ -41,21 +42,23 @@ export const InputCategories: React.FC<InputCategoriesProps> = ({
         />
       );
     case 'singleSelect':
-    case 'MultiSelect':
-      const isMultiSelect = !['is', 'is not'].includes(query);
-      const selectValue = isMultiSelect
-        ? (value || []).length
-          ? value.map((v: any) => ({ value: v, label: v }))
-          : []
-        : (value || []).length === 1
-          ? { value: value[0], label: value[0] }
-          : null;
+    case 'multiSelect':
+      // const isMultiSelect = !['is', 'is not'].includes(query);
+
+      // const selectValue = isMultiSelect
+      //   ? (value || []).length
+      //     ? value.map((v: any) => ({ value: v, label: v }))
+      //     : []
+      //   : (value || []).length === 1
+      //     ? getValueFromOptions(options, value)
+      //     : null;
+
       return (
         <Select
           disabled={disabled}
           // isMulti={isMultiSelect}
           options={options}
-          value={selectValue}
+          value={value}
           className={className}
           onChange={e => {
             const newValue = e.target.value;

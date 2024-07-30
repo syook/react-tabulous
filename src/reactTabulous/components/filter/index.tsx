@@ -27,7 +27,8 @@ export const filterOperators: FilterOperators = {
   date: ['is', 'is not', 'is before', 'is after', 'is empty', 'is not empty'], //, 'is on or before', 'is on or after'
   dateTime: ['is', 'is not', 'is before', 'is after', 'is empty', 'is not empty'],
   boolean: ['is'],
-  singleSelect: ['is', 'is not', 'is any of', 'is none of', 'is empty', 'is not empty']
+  singleSelect: ['is', 'is not', 'is empty', 'is not empty']
+  // singleSelect: ['is', 'is not', 'is any of', 'is none of', 'is empty', 'is not empty']
   // multiSelect: ['has any of', 'has none of', 'is empty', 'is not empty'],
 };
 
@@ -56,8 +57,7 @@ const StyledFilterForm = styled.div({
       },
       '& .inputCategories': {
         width: 190,
-        marginRight: 8,
-        marginTop: 6
+        marginRight: 8
       },
       '& .inputCategories:last-child': {
         marginRight: 0
@@ -146,11 +146,15 @@ export const FilterForm: React.FC = () => {
       if (col.type === 'boolean') {
         newFilters[index].value = 'true';
       } else if (col.type === 'singleSelect') {
-        newFilters[index].value = col.options[0];
+        newFilters[index].value = '';
         newFilters[index].options = col.options;
       }
     } else if (key === 'condition') {
       newFilters = newFilters.map((filter, i) => ({ ...filter, condition: i === 0 ? '' : value }));
+    } else if (key === 'operator') {
+      if (value === 'is empty' || value === 'is not empty') {
+        newFilters[index].value = '';
+      }
     }
     setFilters(newFilters);
   };

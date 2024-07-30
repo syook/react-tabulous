@@ -98,18 +98,26 @@ export const filterData = (
   });
 };
 
+const isValueRequire = (operator: string): boolean => {
+  return !['is empty', 'is not empty'].includes(operator);
+};
+
 export const filterAllData = (filters: any, data: any, columns: GridColDef[]): any => {
   let updatedData = [].concat(data) as any;
-  if (filters.length === 1 && filters.some((filter: any) => filter.value !== '')) {
+
+  if (
+    filters.length === 1 &&
+    filters.some((filter: any) => (isValueRequire(filter.operator) ? filter.value !== '' : true))
+  ) {
     filters.forEach((filter: any) => {
       const { field, operator, type, value } = filter;
       const columnDef = columns.find((column: any) => column.field === field) as GridColDef;
       updatedData = filterData(updatedData, field, operator, value, type, columnDef);
     });
-  } else if (filters.some((filter: any) => filter.value !== '')) {
+  } else if (filters.some((filter: any) => (isValueRequire(filter.operator) ? filter.value !== '' : true))) {
     if (filters[1].condition === 'And') {
       filters.forEach((filter: any) => {
-        if (filter.value !== '') {
+        if (isValueRequire(filter.operator) ? filter.value !== '' : true) {
           const { field, operator, type, value } = filter;
           const columnDef = columns.find((column: any) => column.field === field) as GridColDef;
           updatedData = filterData(updatedData, field, operator, value, type, columnDef);
@@ -118,7 +126,7 @@ export const filterAllData = (filters: any, data: any, columns: GridColDef[]): a
     } else if (filters[1].condition === 'Or') {
       let orPredicateFilteredData: any = [];
       filters.forEach((filter: any) => {
-        if (filter.value !== '') {
+        if (isValueRequire(filter.operator) ? filter.value !== '' : true) {
           const { field, operator, type, value } = filter;
           const columnDef = columns.find((column: any) => column.field === field) as GridColDef;
           const currentFilterData = filterData(updatedData, field, operator, value, type, columnDef);

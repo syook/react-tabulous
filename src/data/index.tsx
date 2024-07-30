@@ -8,6 +8,12 @@ const maxAge = 80;
 const minMobile = 6600_000_000;
 const maxMobile = 9999_999_999;
 
+const levelMapping = {
+  1: { text: 'Beginner', color: 'green' },
+  2: { text: 'Intermediate', color: 'orange' },
+  3: { text: 'Advanced', color: 'red' }
+};
+
 const adjectives: string[] = [
   'awesome',
   'bold',
@@ -308,7 +314,7 @@ export const dataSet2 = Array.from({ length: DATA_SET_COUNT }, (_, i) => {
     lastJournalPublish: getRandomDateTime(),
     lastLogin: getRandomDateTimeBelowCurrentTime(),
     journalTitle: getRandomJournalTitle(),
-    level: Math.ceil(Math.random() * 3),
+    level: i > 5 ? Math.ceil(Math.random() * 3) : '',
     workPlace: workPlaceOptions[Math.floor(Math.random() * workPlaceOptions.length)],
     address: generateAddress()
   };
@@ -367,13 +373,21 @@ export const dataSet2Columns = [
   {
     field: 'level',
     headerName: 'Level',
-    type: 'string',
+    type: 'singleSelect',
+    valueGetter: (row: any) => row?.level,
     renderCell: (row: any) => {
-      const level = row?.level ?? 1;
-      const levelText = level === 1 ? 'Beginner' : level === 2 ? 'Intermediate' : 'Advanced';
-      const levelColor = level === 1 ? 'green' : level === 2 ? 'orange' : 'red';
+      const level: 1 | 2 | 3 = row?.level;
+
+      const { text: levelText, color: levelColor } = level ? levelMapping[level] : { text: '', color: '' };
+
       return <span style={{ color: levelColor }}>{levelText}</span>;
     },
+    options: [
+      { label: 'Select', value: '' },
+      { label: 'Beginner', value: 1 },
+      { label: 'Intermediate', value: 2 },
+      { label: 'Advanced', value: 3 }
+    ],
     isFilterable: true,
     isSortable: true,
     isSearchable: true

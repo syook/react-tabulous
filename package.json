@@ -1,6 +1,6 @@
 {
   "name": "@syook/react-tabulous",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Terrifically fabulous React Table",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
@@ -46,7 +46,7 @@
     "prettier:fix": "prettier . -c --config .prettierrc --write",
     "rollup": "rm -rf lib && rollup -c",
     "build:dev": "npm run rollup && npm pack",
-    "npm-publish": "yarn install && npm run build:dev && npm publish"
+    "npm-publish": "npm install && npm run build:dev && npm publish"
   },
   "dependencies": {
     "@popperjs/core": "2.11.8"
@@ -64,8 +64,8 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.96",
-    "@types/react": "^18.3.1",
+    "@types/node": "^16.18.104",
+    "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "eslint": "^8.0.1",
