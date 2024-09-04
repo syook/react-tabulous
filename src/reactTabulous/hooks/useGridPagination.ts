@@ -37,18 +37,12 @@ export const useGridPagination = (): any => {
   const onPageSizeChange = useCallback(
     (pageSize: number) => {
       let newData = [] as any;
-      let updatedPageSize = {};
-      if (!fetchOnPageChange) {
-        newData = filteredAndSortedData.slice(0, pageSize);
-        const pages = Math.ceil(filteredAndSortedData.length / pageSize);
-        if (page > pages) {
-          updatedPageSize = { page: pages };
-        }
-      } else {
+      if (fetchOnPageChange) {
         fetchOnPageChange(page, pageSize, searchText, sortField, sortBy);
-        updatedPageSize = { page: 1 };
+      } else {
+        newData = filteredAndSortedData.slice(0, pageSize);
       }
-      updateState({ defaultPageSize: pageSize, data: newData, ...updatedPageSize });
+      updateState({ defaultPageSize: pageSize, data: newData, page: 1 });
     },
     [filteredAndSortedData, updateState, page, fetchOnPageChange, searchText, sortField, sortBy]
   );
