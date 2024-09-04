@@ -6,236 +6,246 @@ To use in your own project, install it via npm package.
 
 `npm i @syook/react-tabulous`
 
-Or you can clone and build it.
+Or you can clone.
 
 `git clone git@github.com:syook/react-tabulous.git`
-
-`npm run build`
-
-The files will be under `./lib` folder.
 
 ## Options
 
 ### a. Available Column Options
 
-| Option           | Description                                                                         | Type               | isRequired | Default |
-| ---------------- | ----------------------------------------------------------------------------------- | ------------------ | ---------- | ------- |
-| `headerName`     | Name of Column to be shown in header                                                | String             | true       |         |
-| `type`           | type of the field                                                                   | String             | true       |         |
-| `field`          | String='path to get value to be displayed' function='function should return string' | String or function | true       |         |
-| `cell`           | returns the element to be shown in the column cell                                  | Function           | false      |         |
-| `isSortable`     | is column sortable                                                                  | Boolean            | false      |         |
-| `isSearchable`   | is column searchable                                                                | Boolean            | false      |         |
-| `isFilterable`   | is column filterable                                                                | Boolean            | false      |         |
-| `omitInHideList` | should the column be omitted in table and show/hide dropdown                        | Boolean            | false      |         |
-| `options`        | array of options if the type is MultiSelect or Single Select                        | Array              | false      | []      |
-| `isResizable`    | is column resizable                                                                 | Boolean            | false      | false   |
-| `fixed`          | String='left' or 'right', where to fix the column                                   | String             | false      | null    |
-| `defaultWidth`   | to fix column width to a value in pixels if width exceeding this threshold          | Number             | false      | null    |
-
-### b. Action Config Options : actions will be shown in action column in table
-
-| Option               | Description                                                                                                                                                                                                           | Type     |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `isVisible`          | Function which returns if the action is visible or not                                                                                                                                                                | Function |
-| `isDisabled`         | Function which returns if the action is disabled or not                                                                                                                                                               | Function |
-| `function`           | Function to be executed on action event                                                                                                                                                                               | Function |
-| `icon`               | Icon name to represent the action                                                                                                                                                                                     | Function |
-| `name`               | Name of action                                                                                                                                                                                                        | string   |
-| `color`              | color of action component                                                                                                                                                                                             | string   |
-| `iconColor`          | color of icon                                                                                                                                                                                                         | string   |
-| `size`               | size of icon                                                                                                                                                                                                          | string   |
-| `inverted`           | to enable inverted behaviour of action element                                                                                                                                                                        | function |
-| `iconInverted`       | to enable inverted behaviour of icon                                                                                                                                                                                  | boolean  |
-| `className`          | any custom classname to be applied for action element                                                                                                                                                                 | string   |
-| `iconClassName`      | any custom classname to be applied for icon                                                                                                                                                                           | string   |
-| `hasCustomComponent` | if the action is any custom component other than button                                                                                                                                                               | boolean  |
-| `customComponent`    | custom component above the table along with filter button (has access to filtered data in table layout, visible columns, searchText and filtered original data ), {tableData, columns, searchText, filteredTableData} | function |
+| Option         | Description                                                                | Type     | isRequired | Default |
+| -------------- | -------------------------------------------------------------------------- | -------- | ---------- | ------- |
+| `headerName`   | Name of Column to be shown in header                                       | String   | true       |         |
+| `type`         | type of the field                                                          | String   | true       |         |
+| `field`        | path to get value to be displayed                                          | String   | true       |         |
+| `valueGetter`  | should return string that to be displayed in the cell or used in filter    | Function | false      | null    |
+| `renderCell`   | returns the element to be shown in the column cell                         | Function | false      | null    |
+| `description`  | shows the description of the column on hover in tooltip                    | String   | false      | ''      |
+| `isSortable`   | is column sortable                                                         | Boolean  | false      | false   |
+| `isSearchable` | is column searchable                                                       | Boolean  | false      | false   |
+| `isFilterable` | is column filterable                                                       | Boolean  | false      | false   |
+| `isVisible`    | should hide/show the column or not                                         | Boolean  | false      | true    |
+| `options`      | array of options if the type is MultiSelect or Single Select               | Array    | false      | []      |
+| `isResizable`  | is column resizable                                                        | Boolean  | false      | false   |
+| `pinned`       | String='left' or 'right', where to fix the column                          | String   | false      | null    |
+| `width`        | to fix column width to a value in pixels if width exceeding this threshold | Number   | false      | null    |
 
 ### c. Available Types
 
-| Type              | Filter queries available                                        | Extra props needed |
-| ----------------- | --------------------------------------------------------------- | ------------------ |
-| `String`          | contains, does not contains, is, is not, is empty, is not empty |
-| `DateTime`/`Date` | is, is not, is after, is before, is empty, is not empty         |
-| `Number`          | =, =/ , < , <=, > , >= , is empty, is not empty                 |
-| `SingleSelect`    | has any of, has none of, is empty, is not empty                 | options: []        |
-| `MultiSelect`     | is, is not, is empty, is not empty,                             | options: []        |
+| Type              | Filter queries available                                        | Extra props needed                  |
+| ----------------- | --------------------------------------------------------------- | ----------------------------------- |
+| `string`          | contains, does not contains, is, is not, is empty, is not empty |
+| `dateTime`/`date` | is, is not, is after, is before, is empty, is not empty         |
+| `number`          | =, =/ , < , <=, > , >= , is empty, is not empty                 |
+| `singleSelect`    | is, is not, is empty, is not empty                              | options: [{ label: "A", value: 1 }] |
+| `multiSelect`     | is, is not, is empty, is not empty,                             | options: [{ label: "A", value: 1 }] |
 
 ### d. Component Props
 
-| Prop                   | Description                                                     | Default | Required | Type     |
-| ---------------------- | --------------------------------------------------------------- | ------- | -------- | -------- |
-| `mandatoryFields`      | ''                                                              |         | true     |          |
-| `data`                 | data for the table                                              |         | true     |          |
-| `columnDefs`           | is, is not, is empty, is not empty,                             |         | true     |          |
-| `actionDefs`           | contains, does not contains, is, is not, is empty, is not empty |         | false    |          |
-| `bulkActionDefs`       | is, is not, is after, is before, is empty, is not empty         |         | false    |          |
-| `name`                 | name of the table                                               |         | false    | string   |
-| `includeAction`        | to show actions column                                          | false   | false    | boolean  |
-| `isShowSerialNumber`   | to show serial number column                                    | false   | false    | boolean  |
-| `enableIcon`           | to show icon in serial number column                            | false   | false    | boolean  |
-| `showIcon`             | function which returns JSX element(Icon) to render              |         | false    | function |
-| `isAllowDeepSearch`    | allow a deep search in the data for the searched keyword        | false   | false    | boolean  |
-| `emptyCellPlaceHolder` | placeholder for empty cells                                     |         | false    | string   |
-| `accentColor`          | colors for top bar buttons                                      |         | false    | string   |
-| `hideBulkCount`        | hide bulk select count for bulk actions                         | false   | false    | boolean  |
-| `showResetButton`      | display reset button                                            | true    | false    | boolean  |
+| Prop                            | Description                                             | Default   | Required | Type                |
+| ------------------------------- | ------------------------------------------------------- | --------- | -------- | ------------------- |
+| `data`                          | data for the table                                      |           | true     |                     |
+| `columns`                       | columns for the table                                   |           |          |                     |
+| `emptyPlaceholder`              | placeholder for empty cells                             | ''        | false    | String              |
+| `checkboxSelection`             | shows checkbox for bulk actions                         | false     | false    | Boolean             |
+| `bulkActions`                   | bulk actions to show when checkbox selected             | []        | false    | String[]            |
+| `onBulkActionClick`             | onClick of bulk action                                  | null      | false    | Function            |
+| `loading`                       | loading state inside the table                          | false     | false    | Boolean             |
+| `defaultPageSize`               | rows per page in the table                              | 10        | false    | Number              |
+| `noRowsOverlay`                 | shows when there is no data to display                  | ReactNode | false    | String or ReactNode |
+| `density`                       | density of the rows                                     | standard  | false    | string              |
+| `hidePagination`                | hides pagination                                        | false     | false    | Boolean             |
+| `hideFooterRowCount`            | hides row count in footer                               | false     | false    | Boolean             |
+| `hideFooter`                    | hides footer                                            | false     | false    | Boolean             |
+| `disableColumnReorder`          | disables column reordering                              | false     | false    | Boolean             |
+| `disableColumnResize`           | disables column resizing                                | false     | false    | Boolean             |
+| `disableColumnPinning`          | disables column pinning                                 | false     | false    | Boolean             |
+| `disableColumnFilter`           | disables column filtering                               | false     | false    | Boolean             |
+| `disableColumnSelector`         | disables column show and hiding                         | false     | false    | Boolean             |
+| `disableDensitySelector`        | disables changing of row density                        | false     | false    | Boolean             |
+| `disableColumnMenu`             | disables showing column menu                            | false     | false    | Boolean             |
+| `disableMultipleColumnsSorting` | disables sorting option in each column                  | false     | false    | Boolean             |
+| `disableSearch`                 | disables search                                         | false     | false    | Boolean             |
+| `disableColumnExport`           | disables column export                                  | false     | false    | Boolean             |
+| `fetchOnPageChange`             | page, rows per page or sorting change for paginated API | null      | false    | Function            |
+| `rowsCount`                     | shows rows count if it is paginated API                 | false     | false    | Boolean             |
+| `customExport`                  | custom export function                                  | null      | false    | Boolean             |
 
 ## Example
 
 ```js
 ...
 
-import ReactTabulous from 'react-tabulous';
-import format from 'date-fns/format'
-import { Button, Input } from 'semantic-ui-react';
+import { ReactTabulous } from 'react-tabulous';
+import { Button, IconButton, Select } from 'commonComponents/widgets';
 
 ...
 
-onDelete = ids => {
-  console.log('onDelete', ids);
-};
+const minAge = 20;
+const maxAge = 80;
 
-onShow = rowObject => {
-  console.log('onShow', rowObject);
-};
+const workPlaceOptions = ['Bengaluru', 'Mumbai', 'Delhi', 'Chennai', 'Hyderabad'];
 
-onEdit = rowObject => {
-  console.log('onEdit', rowObject);
-};
+function generateUniqueId(): number {
+	const random: number = Math.floor(Math.random() * 10000); // Generate a random number between 0 and 9999
+	const id: string = random.toString().padStart(4, '0'); // Convert the random number to a string and ensure that it has exactly 4 digits
+	return +id;
+}
 
-onInputChange = ({ rowObject, value: newValue }) => {
-  console.log({ rowObject, newValue });
-};
+function getRandomBirthDate(): Date {
+	const minYear: number = 1900;
+	const minMonth: number = 0;
+	const currentYear: number = new Date().getFullYear();
+	const currentMonth: number = new Date().getMonth();
+	const minDate: Date = new Date(minYear, minMonth, 1);
+	const currentDate: Date = new Date(currentYear, currentMonth, 1);
+	const diffTime: number = Math.abs(currentDate.getTime() - minDate.getTime());
+	const diffDays: number = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+	const randomDays: number = Math.floor(Math.random() * diffDays);
+	const randomDate: Date = new Date(minDate);
+	randomDate.setDate(minDate.getDate() + randomDays);
+	return randomDate;
+}
 
-columnDefs = [
-  {
-    headerName: 'Name',
-    field: 'name',
-    type: 'String',
-    cell: rowObject => (
-      <Input value={rowObject.name} onChange={(_e, { value }) => this.onInputChange({ value, rowObject })} />
-    ),
-    isSortable: true,
-    isSearchable: true,
-    isFilterable: true,
-  },
-  {
-    headerName: 'Description',
-    field: 'description',
-    type: 'String',
-    cell: rowObject => rowObject.description,
-    isSortable: true,
-    isSearchable: true,
-    isFilterable: true,
-    isResizable: true,
-  },
-  {
-    headerName: 'Category',
-    field: 'category',
-    type: 'SingleSelect',
-    cell: rowObject => rowObject.category,
-    options: ['Grocery', 'Electronics', 'Home', 'Shoes', 'Computers', 'Outdoors', 'Clothing'].map((category, index) => ({
-      value: index,
-      label: category,
-    })),
-    isSortable: true,
-    isSearchable: true,
-    isFilterable: true,
-  },
-  {
-    headerName: 'Price',
-    field: 'price',
-    type: 'Number',
-    cell: rowObject => rowObject.price,
-    isSortable: true,
-    isSearchable: true,
-    isFilterable: true,
-    isResizable: true,
-  },
-  {
-    headerName: 'Expertise',
-    field: 'isExpertised',
-    type: 'Boolean',
-    cell: rowObject => (rowObject.isExpertised ? 'Yes' : 'No'),
-    isSortable: true,
-    isSearchable: false,
-    isFilterable: true,
-  },
-  {
-    headerName: 'Availability',
-    field: 'availability',
-    type: 'MultiSelect',
-    cell: rowObject => rowObject.availability.join(', '),
-    options: ['Yes', 'No', 'Maybe'].map(a => ({ value: a, label: a })),
-    isSortable: true,
-    isSearchable: false,
-    isFilterable: true,
-    fixed: 'left',
-    defaultWidth: 100,
-  },
-  {
-    headerName: 'Started at',
-    field: 'created',
-    cell: rowObject => format(new Date(rowObject.created), 'dd-MMM-yyyy hh:mm a'),
-    type: 'Date',
-    isSortable: true,
-    isSearchable: false,
-    isFilterable: true,
-    isResizable: true,
-    defaultWidth: 200,
-  },
-];
+const data = Array.from({ length: 50 }, (_, i) => {
+	const id = generateUniqueId();
 
-updatingObjectId = () => false;
+	return {
+		id,
+		name: `test${i + 1}`,
+		email: `test${i + 1}@test.com`,
+		age: Math.floor(Math.random() * (maxAge - minAge + 1)) + minAge,,
+		birthDate: getRandomBirthDate(),
+		level: Math.ceil(Math.random() * 3),
+		workPlace: workPlaceOptions[Math.floor(Math.random() * workPlaceOptions.length)]
+	};
+});
 
-actionDefs = [
+const columns = [
+	{
+		field: 'id',
+		headerName: 'ID',
+		type: 'number',
+		isFilterable: true,
+		isSortable: true,
+		isSearchable: true
+	},
   {
-    name: 'Show',
-    isVisible: _rowObject => true,
-    isDisabled: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
-    isLoading: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
-    function: this.onShow,
-    icon: 'eye',
-    color: '#85C1E9',
-  },
+		field: 'name',
+		headerName: 'Name',
+		type: 'string',
+		isFilterable: true,
+		isSortable: true,
+		isSearchable: true
+	},
   {
-    name: 'Delete',
-    isVisible: rowObject => !rowObject.isDeleted,
-    isDisabled: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
-    isLoading: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
-    function: rowObject => this.onDelete(rowObject),
-    icon: 'trash',
-    color: '#E8515D',
-  },
-];
+		field: 'age',
+		headerName: 'Age',
+		type: 'number',
+		isFilterable: true,
+		isSortable: true,
+		isSearchable: true
+	},
+	{
+		field: 'level',
+		headerName: 'Level',
+		type: 'string',
+		renderCell: (row: any) => {
+			const level = row?.level ?? 1;
+			const levelText = level === 1 ? 'Beginner' : level === 2 ? 'Intermediate' : 'Advanced';
+			const levelColor = level === 1 ? 'green' : level === 2 ? 'orange' : 'red';
+			return <span style={{ color: levelColor }}>{levelText}</span>;
+		},
+		isFilterable: true,
+		isSortable: true,
+		isSearchable: true
+	},
+	{
+		field: 'birthDate',
+		headerName: 'Birth Date',
+		type: 'date',
+		isFilterable: true,
+		isSortable: true,
+		isSearchable: true
+	},
+  {
+		field: 'email',
+		headerName: 'Email Address',
+		type: 'string',
+		isFilterable: true,
+		// isSortable: true,
+		isSearchable: true
+	},
+  {
+		field: 'workPlace',
+		headerName: 'Work Place',
+		type: 'string',
+		renderCell: (row: any) => {
+			const workPlace = row?.workPlace ?? '';
 
-bulkActionDefs = [{ action: 'delete', function: this.onDelete }];
+			const onChange = (event: any) => {
+				console.log(event.target.value);
+			};
 
-customComponents = () => (
-  <>
-    <Button disabled size="small" onClick={() => null}>
-      Button 1
-    </Button>
-    <Button onClick={() => null}>Button 2</Button>
-  </>
-);
+			return <Select value={workPlace} options={workPlaceOptions} onChange={onChange} />;
+		}
+	},
+  {
+		field: 'action',
+		headerName: 'Action',
+		type: 'action',
+		renderCell: (row: any) => {
+			const onClick = () => {
+				alert(JSON.stringify(row, null, 2));
+				console.log(row);
+			};
+
+			return (
+				<div style={{ display: 'flex' }}>
+					<IconButton name="add" onClick={onClick} type="transparent" size={16} />
+					<IconButton name="close" onClick={onClick} type="transparent" size={16} />
+					<Button size="small" variant="contained" onClick={onClick}>
+						Click
+					</Button>
+				</div>
+			);
+		}
+	}
+]
+
+const customComponent = React.useCallback(
+		(filteredAndSortedData: any, searchText: string, columns: any) => {
+			return (
+				<div>
+					<Button
+						onClick={() => {
+							console.log('Button clicked', filteredAndSortedData, searchText, columns);
+						}}
+					>
+						Create New User
+					</Button>
+				</div>
+			);
+		},
+		[]
+	);
 
 ...
 
 <ReactTabulous
-  actionDefs={this.actionDefs}
-  bulkActionDefs={this.bulkActionDefs}
-  data={this.state.data || []}
-  includeAction={true}
-  mandatoryFields={['Name']}
-  name={'Table Name'}
-  columnDefs={this.columnDefs}
-  isShowSerialNumber={true}
-  isAllowDeepSearch={true}
-  showResetButton={true}>
-  {this.customComponents}
+	data={data}
+	columns={columns}
+	emptyPlaceholder="N/A"
+	checkboxSelection
+	noRowsOverlay={<NoRowsOverlay />}
+	defaultPageSize={50}
+	bulkActions={['delete', 'edit']}
+	onBulkActionClick={(action, selectedRows) => {
+		console.log(action, selectedRows);
+	}}
+>
+	{customComponent}
 </ReactTabulous>
 
 ...

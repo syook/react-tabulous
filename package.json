@@ -1,11 +1,13 @@
 {
   "name": "@syook/react-tabulous",
-  "version": "2.9.1",
+  "version": "4.0.2",
   "description": "Terrifically fabulous React Table",
-  "main": "lib/react-tabulous.min.js",
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
+  "types": "lib/index.d.ts",
   "files": [
     "README.md",
-    "lib/"
+    "lib"
   ],
   "keywords": [
     "syook",
@@ -23,67 +25,81 @@
   "bugs": {
     "url": "https://github.com/syook/react-tabulous/issues"
   },
-  "homepage": "https://github.com/syook/react-tabulous#readme",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "mkdir -p lib && rm -rf lib/* && NODE_ENV=production webpack --config webpack.config.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "npm-publish": "npm i && npm run build && npm publish"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
   "lint-staged": {
-    "*.{js,jsx,json}": [
-      "prettier --single-quote --write",
-      "git add"
+    "*.{js,jsx,json,css}": [
+      "npm run prettier:fix"
+    ],
+    "*.{js, jsx, ts, tsx}": [
+      "npm run lint:fix"
     ]
   },
-  "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
-    "@babel/node": "^7.2.2",
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/plugin-transform-react-jsx": "^7.3.0",
-    "@babel/preset-env": "^7.4.4",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.4.4",
-    "css-loader": "^2.1.1",
-    "html-webpack-plugin": "^3.2.0",
-    "husky": "^2.3.0",
-    "lint-staged": "^8.1.7",
-    "prettier": "^1.18.2",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "^3.0.0",
-    "style-loader": "^0.23.1",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.2"
+  "scripts": {
+    "prepare": "husky install",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "coverage": "npm test -- --coverage --watchAll --collectCoverageFrom='!src/data/**/*.{ts,tsx}'",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ignore-path .eslintignore ./src",
+    "lint:fix": "npm run lint --fix",
+    "prettier": "prettier . -c --config .prettierrc",
+    "prettier:fix": "prettier . -c --config .prettierrc --write",
+    "rollup": "rm -rf lib && rollup -c",
+    "build:dev": "npm run rollup && npm pack",
+    "npm-publish": "npm install && npm run build:dev && npm publish"
   },
   "dependencies": {
-    "date-fns": "^2.0.0-alpha.27",
-    "lodash": "^4.17.11",
-    "moment": "^2.24.0",
-    "react-datepicker": "^2.8.0",
-    "react-select": "^2.4.3",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.86.0"
+    "@popperjs/core": "2.11.8"
   },
-  "peerDependencies": {
-    "react": "16.8 - 17",
-    "react-dom": "16.8 - 17"
+  "devDependencies": {
+    "@emotion/react": "11.11.4",
+    "@emotion/styled": "11.11.5",
+    "@rollup/plugin-babel": "6.0.3",
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-image": "3.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-terser": "0.4.3",
+    "@rollup/plugin-typescript": "11.1.1",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.104",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "8.8.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "husky": "^9.0.11",
+    "prettier": "3.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "rollup": "^3.22.0",
+    "rollup-plugin-dts": "5.3.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-react-svg": "3.0.3",
+    "typescript": "^4.9.5",
+    "web-vitals": "^3.3.1"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
