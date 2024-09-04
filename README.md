@@ -2,7 +2,7 @@
 
 ## Installation
 
-To use in your own project, install it via npm package.
+To use in your own project, install it via [npm package](https://www.npmjs.com/package/@syook/react-tabulous).
 
 `npm i @syook/react-tabulous`
 
