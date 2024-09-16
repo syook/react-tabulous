@@ -1,24 +1,15 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true
-  },
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', 'react'],
   extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'prettier',
     'react-app',
     'react-app/jest',
-    'plugin:react/recommended',
-    'standard-with-typescript',
-    'plugin:react-hooks/recommended',
-    'prettier'
+    'plugin:@typescript-eslint/recommended'
   ],
-  overrides: [],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json'],
-    tsconfigRootDir: __dirname
-  },
-  plugins: ['react'],
   rules: {
     semi: [2, 'always'],
     'no-debugger': 'off',
@@ -29,7 +20,21 @@ module.exports = {
     '@typescript-eslint/restrict-template-expressions': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/restrict-plus-operands': 'off'
+    '@typescript-eslint/restrict-plus-operands': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-empty-function': 'off'
+  },
+  overrides: [],
+  ignorePatterns: ['.eslintrc.js'],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json'],
+    tsconfigRootDir: __dirname
+  },
+  env: {
+    browser: true,
+    es6: true
   },
   settings: {
     react: {

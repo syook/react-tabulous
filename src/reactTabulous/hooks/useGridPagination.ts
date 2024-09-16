@@ -60,6 +60,6 @@ export const useGridPagination = (): any => {
     rowCount:
       (paginatedRowsCount ?? filteredAndSortedData.length) > defaultPageSize
         ? defaultPageSize
-        : paginatedRowsCount ?? filteredAndSortedData.length
+        : (paginatedRowsCount ?? filteredAndSortedData.length)
   };
 };
