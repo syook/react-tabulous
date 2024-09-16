@@ -28,7 +28,8 @@ module.exports = {
     'react/display-name': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off'
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/restrict-plus-operands': 'off'
   },
   settings: {
     react: {
