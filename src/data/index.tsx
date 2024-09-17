@@ -75,7 +75,7 @@ function generateBio(): string {
   const adjective: string = adjectives[Math.floor(Math.random() * adjectives.length)]; // Pick a random adjective
   const noun: string = nouns[Math.floor(Math.random() * nouns.length)]; // Pick a random noun
   const age: number = Math.floor(Math.random() * 50) + 18; // Generate a random age between 18 and 67
-  const bio: string = `I'm an ${adjective} ${noun} who loves to explore new things. I'm ${age} years old and passionate about making the world a better place.`;
+  const bio = `I'm an ${adjective} ${noun} who loves to explore new things. I'm ${age} years old and passionate about making the world a better place.`;
   return bio;
 }
 
@@ -107,13 +107,13 @@ function getRandomJournalTitle(): string {
   const randomAdjective: string = adjectives[Math.floor(Math.random() * adjectives.length)];
   const randomNoun: string = nouns[Math.floor(Math.random() * nouns.length)];
   const randomIndex: number = Math.floor(Math.random() * 100) + 1;
-  const randomTitle: string = `${randomAdjective} ${randomNoun} ${randomIndex}`;
+  const randomTitle = `${randomAdjective} ${randomNoun} ${randomIndex}`;
   return randomTitle;
 }
 
 function getRandomBirthDate(): Date {
-  const minYear: number = 1900;
-  const minMonth: number = 0;
+  const minYear = 1900;
+  const minMonth = 0;
   const currentYear: number = new Date().getFullYear();
   const currentMonth: number = new Date().getMonth();
   const minDate: Date = new Date(minYear, minMonth, 1);
@@ -127,8 +127,8 @@ function getRandomBirthDate(): Date {
 }
 
 function getRandomDateTime(): Date {
-  const minYear: number = 1900;
-  const minMonth: number = 0;
+  const minYear = 1900;
+  const minMonth = 0;
   const currentYear: number = new Date().getFullYear();
   const currentMonth: number = new Date().getMonth();
   const minDate: Date = new Date(minYear, minMonth, 1);
@@ -273,7 +273,7 @@ export const dataSet1 = Array.from({ length: DATA_SET_COUNT }, (_, i) => ({
   email: `test${i + 1}@test.com`
 }));
 
-export const getDataSetBasedOnCountPassed = (count: number = 20) => {
+export const getDataSetBasedOnCountPassed = (count = 20) => {
   const dataSet = Array.from({ length: count }, (_, i) => ({
     name: `test${i + 1}`,
     email: `test${i + 1}@test.com`

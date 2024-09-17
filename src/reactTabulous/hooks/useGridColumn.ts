@@ -29,7 +29,7 @@ export const useGridColumn = (): any => {
   );
 
   const onToggleColumns = useCallback(
-    (isVisible: boolean = false) => {
+    (isVisible = false) => {
       const newData = columns.map((column: GridColDef) => ({ ...column, isVisible }));
       updateState({ columns: newData });
     },
