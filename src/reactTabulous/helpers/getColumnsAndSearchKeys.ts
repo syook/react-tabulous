@@ -14,7 +14,7 @@ export const getColumnsAndSearchKeys = (
     return {
       ...column,
       isVisible: column.isVisible ?? true,
-      pinned: column.type === 'action' ? GridPinnedPosition.right : column.pinned ?? null,
+      pinned: column.type === 'action' ? GridPinnedPosition.right : (column.pinned ?? null),
       width: column.width ?? 'max-content',
       isSearchable: column.isSearchable ?? false,
       isSortable: column.isSortable ?? false,
