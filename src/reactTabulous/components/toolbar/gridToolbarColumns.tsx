@@ -5,6 +5,7 @@ import { Button, Icon, Input, Popup, Switch, Typography } from '../widgets';
 
 import { useGridColumn } from '../../hooks/useGridColumn';
 import { type GridColDef } from '../../models/columnDef/columnDef';
+import { isStringIncludes } from '../../helpers/select';
 
 const StyledDiv = styled.div({
   display: 'flex',
@@ -34,7 +35,7 @@ export const GridToolbarColumns: React.FC = () => {
   const [searchKey, setSearchKey] = React.useState<string>('');
 
   const displayColumns = columns.filter((column: GridColDef) => {
-    return column.headerName.toLowerCase().includes(searchKey.toLowerCase());
+    return isStringIncludes(column.headerName, searchKey);
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

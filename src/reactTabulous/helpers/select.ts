@@ -5,7 +5,7 @@ export interface OptionInterface {
   label: string;
 }
 
-export const getLowercase = (string: ValueType) => `${string}`.toLowerCase();
+export const getLowercase = (string: ValueType) => `${string ?? ''}`.toLowerCase();
 export const isStringMatch = (string: ValueType, search: ValueType) => getLowercase(string) === getLowercase(search);
 export const isStringIncludes = (string: ValueType, search: ValueType) =>
   getLowercase(string).includes(getLowercase(search));

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useGridRootProps } from './useGridRootProps';
+import { isStringIncludes } from '../helpers/select';
 
 export const getColumnsData = (columns: any) => {
   return columns
@@ -25,7 +26,7 @@ export const getRowsData = (rows: any, columns: any, emptyPlaceholder: string) =
           } else if (column.type !== 'action') {
             value = row[column.field] || emptyPlaceholder;
           }
-          if (`${value}`.includes(`,`)) {
+          if (isStringIncludes(value, ',')) {
             value = `"${value}"`;
           }
           acc.push(value);
