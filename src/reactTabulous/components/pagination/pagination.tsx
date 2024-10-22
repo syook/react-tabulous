@@ -59,7 +59,7 @@ export const Pagination: React.FC = () => {
   return (
     <ContainerDiv>
       {!hideFooterRowCount && (
-        <Typography>{`${!pages ? pages : page * defaultPageSize - defaultPageSize + 1} - ${
+        <Typography className="paginationPageCount">{`${!pages ? pages : page * defaultPageSize - defaultPageSize + 1} - ${
           page * rowCount > totalRowCount ? totalRowCount : page * rowCount
         } of ${totalRowCount}`}</Typography>
       )}

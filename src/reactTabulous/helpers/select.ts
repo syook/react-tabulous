@@ -2,7 +2,7 @@ type ValueType = string | number | boolean;
 
 export interface OptionInterface {
   value: ValueType;
-  label: string;
+  label: string | number;
 }
 
 export const getLowercase = (string: ValueType) => `${string ?? ''}`.toLowerCase();
