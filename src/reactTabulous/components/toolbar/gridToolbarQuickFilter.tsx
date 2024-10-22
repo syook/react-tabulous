@@ -1,35 +1,26 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 import { Icon, Input } from '../widgets';
 
 import { useGridSearch } from '../../hooks/useGridSearch';
-import { debounce } from '../../helpers/debounce';
+import useDebounce from '../../hooks/useDebounce';
 
 export const GridToolbarQuickFilter: React.FC = () => {
   const { handleSearchApply, searchText, searchPlaceholder } = useGridSearch();
-  const searchTextRef = useRef(searchText);
   const [searchKey, setSearchKey] = React.useState<string>(searchText);
 
-  React.useEffect(() => {
-    if (searchTextRef.current !== searchText) {
-      setSearchKey(searchText);
-      searchTextRef.current = searchText;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTextRef.current, searchText]);
+  const delayValue = useDebounce(searchKey, 500);
 
-  const delayQuery = debounce(value => {
-    handleSearchApply(value);
-    searchTextRef.current = value;
-  }, 500);
+  useEffect(() => {
+    handleSearchApply(delayValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [delayValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearchKey(e.target.value);
-    delayQuery(e.target.value);
   };
 
   const handleClearSearch = () => {
     setSearchKey('');
-    delayQuery('');
   };
 
   return (
