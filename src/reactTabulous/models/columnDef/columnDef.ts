@@ -2,6 +2,7 @@ import { type ColumnType } from './columnType';
 import { type GridValidRowModel } from '../gridRows';
 import { type GridPinnedPosition } from './columnPin';
 import { type GridActionsCellItemProps } from '../../components/cell/gridActionsCellItem';
+import { OptionInterface } from '../../helpers/select';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface GridBaseColDef<R extends GridValidRowModel = GridValidRowModel, V = any, F = V> {
@@ -56,6 +57,10 @@ export interface GridBaseColDef<R extends GridValidRowModel = GridValidRowModel,
    * The column to sortable or not.
    */
   isFilterable?: boolean;
+  /**
+   * The column to show options in filter.
+   */
+  options?: OptionInterface[];
 }
 
 export interface GridActionsColDef<R extends GridValidRowModel = any, V = any, F = V> extends GridBaseColDef<R, V, F> {

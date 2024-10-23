@@ -3,15 +3,16 @@ import { useGridRootProps } from './useGridRootProps';
 import { sortRecords } from './useGridSort';
 import { getColumnsWithValueGetter, searchObj } from './useGridSearch';
 import { type GridColDef } from '../models';
+import { getLowercase, isStringIncludes } from '../helpers/select';
 
 export const queryCondition = (columnValue: string, operator: string, value: string, type: string): boolean => {
   const isOperatorTypeDate: boolean = type === 'date' || operator === 'dateTime';
 
   switch (operator) {
     case 'contains':
-      return Boolean(columnValue) && columnValue.toLowerCase().includes(value?.toLowerCase());
+      return Boolean(columnValue) && isStringIncludes(columnValue, value);
     case 'does not contains':
-      return Boolean(columnValue) && !columnValue.toLowerCase().includes(value?.toLowerCase());
+      return Boolean(columnValue) && !isStringIncludes(columnValue, value);
     case 'is':
       if (isOperatorTypeDate) {
         const searchDate: any = new Date(value);
@@ -26,7 +27,8 @@ export const queryCondition = (columnValue: string, operator: string, value: str
       if (type === 'boolean') {
         return (columnValue || false) === (value || false);
       }
-      return Boolean(columnValue) && columnValue.toString().toLowerCase() === value.toLowerCase();
+
+      return Boolean(columnValue) && getLowercase(columnValue) === getLowercase(value);
     case 'is not':
       if (isOperatorTypeDate) {
         const searchDate: any = new Date(value);
@@ -38,7 +40,7 @@ export const queryCondition = (columnValue: string, operator: string, value: str
       // 		if ((searchValue || [])[0] === 0) return isEqual(attrValue, searchValue[0]);
       // 		return (searchValue || [])[0] && !isEqual(attrValue, searchValue[0]);
       // 	}
-      return Boolean(columnValue) && columnValue.toString().toLowerCase() !== value.toLowerCase();
+      return Boolean(columnValue) && getLowercase(columnValue) !== getLowercase(value);
     case 'is empty':
       if (isOperatorTypeDate) return !columnValue;
       return columnValue.toString().trim().length === 0;
