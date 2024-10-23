@@ -4,6 +4,7 @@ import { filterAllData } from './useGridFilter';
 import { sortRecords } from './useGridSort';
 
 import { type GridColDef } from '../models';
+import { getLowercase, isStringIncludes } from '../helpers/select';
 
 export const getSearchObjValue = (
   row: any,
@@ -19,10 +20,10 @@ export const getSearchObjValue = (
 // search for a query in an object
 export const searchObj = (row: any, searchText: string, searchKeys: string[], columnsWithValueGetter: any): boolean => {
   let found = false;
-  searchText = searchText.toLowerCase();
+  searchText = getLowercase(searchText);
   for (let i = 0; i < searchKeys.length; i++) {
     const value = getSearchObjValue(row, searchKeys, i, columnsWithValueGetter);
-    if (value.toString().toLowerCase().includes(searchText)) {
+    if (isStringIncludes(value, searchText)) {
       found = true;
       return found;
     }
