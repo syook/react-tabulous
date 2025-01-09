@@ -127,7 +127,7 @@ function getRandomBirthDate(): Date {
 }
 
 function getRandomDateTime(): Date {
-  const minYear = 1900;
+  const minYear = 2000;
   const minMonth = 0;
   const currentYear: number = new Date().getFullYear();
   const currentMonth: number = new Date().getMonth();

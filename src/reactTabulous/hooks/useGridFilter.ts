@@ -63,15 +63,28 @@ export const queryCondition = (columnValue: string, operator: string, value: str
       return +columnValue >= +value;
 
     // Dates
+    case 'is after': {
+      const searchDate: any = new Date(value);
+      const columnDateValue: any = new Date(columnValue);
+      return searchDate - columnDateValue < 0;
+    }
+
+    case 'is on or after': {
+      const searchDate: any = new Date(value);
+      const columnDateValue: any = new Date(columnValue);
+      return searchDate - columnDateValue <= 0;
+    }
+
     case 'is before': {
       const searchDate: any = new Date(value);
       const columnDateValue: any = new Date(columnValue);
       return searchDate - columnDateValue > 0;
     }
-    case 'is after': {
+
+    case 'is on or before': {
       const searchDate: any = new Date(value);
       const columnDateValue: any = new Date(columnValue);
-      return searchDate - columnDateValue < 0;
+      return searchDate - columnDateValue >= 0;
     }
 
     default:
