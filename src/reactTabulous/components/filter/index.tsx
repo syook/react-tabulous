@@ -24,8 +24,8 @@ interface FilterOperators {
 export const filterOperators: FilterOperators = {
   string: ['contains', 'does not contains', 'is', 'is not', 'is empty', 'is not empty'],
   number: ['=', '≠', '<', '>', '≤', '≥', 'is empty', 'is not empty'],
-  date: ['is', 'is not', 'is before', 'is after', 'is empty', 'is not empty'], //, 'is on or before', 'is on or after'
-  dateTime: ['is', 'is not', 'is before', 'is after', 'is empty', 'is not empty'],
+  date: ['is', 'is not', 'is after', 'is on or after', 'is before', 'is on or before', 'is empty', 'is not empty'],
+  dateTime: ['is', 'is not', 'is after', 'is on or after', 'is before', 'is on or before', 'is empty', 'is not empty'],
   boolean: ['is'],
   singleSelect: ['is', 'is not', 'is empty', 'is not empty']
   // singleSelect: ['is', 'is not', 'is any of', 'is none of', 'is empty', 'is not empty']
