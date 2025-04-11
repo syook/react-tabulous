@@ -1,4 +1,6 @@
+import styled from '@emotion/styled';
 import { type GridPinnedPosition } from '../../models';
+import { ColumnAlignment } from '../../models/columnDef/columnAlign';
 
 type ColumnCellProps = React.HTMLAttributes<HTMLDivElement> & {
   width?: number | string;
@@ -7,6 +9,7 @@ type ColumnCellProps = React.HTMLAttributes<HTMLDivElement> & {
   column?: any;
   emptyPlaceholder: string;
   rowIndex: number;
+  align: ColumnAlignment;
 };
 
 const getCellData = (children: any, row: any, column: any, emptyPlaceholder: string, rowIndex: number) => {
@@ -23,6 +26,14 @@ const getCellData = (children: any, row: any, column: any, emptyPlaceholder: str
   }
 };
 
+interface StyledContainerProps {
+  $align: ColumnAlignment;
+}
+
+const StyledCell = styled('div')<StyledContainerProps>`
+  text-align: ${props => props.$align};
+`;
+
 const ColumnCell: React.FC<ColumnCellProps> = ({
   children,
   width,
@@ -30,7 +41,8 @@ const ColumnCell: React.FC<ColumnCellProps> = ({
   row,
   column,
   emptyPlaceholder,
-  rowIndex
+  rowIndex,
+  align
 }) => {
   const style = width != null ? { width, minWidth: width, maxWidth: width } : {};
 
@@ -38,9 +50,9 @@ const ColumnCell: React.FC<ColumnCellProps> = ({
   const extraProps = typeof data === 'string' ? { title: data } : {};
 
   return (
-    <div className="columnCell" style={style} data-pinned={pinned} {...extraProps}>
+    <StyledCell className="columnCell" style={style} data-pinned={pinned} $align={align} {...extraProps}>
       {data}
-    </div>
+    </StyledCell>
   );
 };
 

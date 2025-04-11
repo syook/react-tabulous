@@ -3,6 +3,7 @@ import { type GridValidRowModel } from '../gridRows';
 import { type GridPinnedPosition } from './columnPin';
 import { type GridActionsCellItemProps } from '../../components/cell/gridActionsCellItem';
 import { OptionInterface } from '../../helpers/select';
+import { ColumnAlignment } from './columnAlign';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface GridBaseColDef<R extends GridValidRowModel = GridValidRowModel, V = any, F = V> {
@@ -61,6 +62,10 @@ export interface GridBaseColDef<R extends GridValidRowModel = GridValidRowModel,
    * The column to show options in filter.
    */
   options?: OptionInterface[];
+  /**
+   * Align the column.
+   */
+  align?: ColumnAlignment;
 }
 
 export interface GridActionsColDef<R extends GridValidRowModel = any, V = any, F = V> extends GridBaseColDef<R, V, F> {
