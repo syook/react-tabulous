@@ -59,7 +59,7 @@ export const DataGridStyle = styled.div({
       position: 'sticky',
       top: 0,
       zIndex: 2,
-      alignItems: 'center',
+      // alignItems: 'right',
       background: 'var(--grey-100, #fafafa)',
       display: 'table-row',
       fontSize: '12px',

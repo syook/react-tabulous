@@ -65,7 +65,7 @@ export const ColumnBody: React.FC = () => {
         return (
           <ColumnRowStyle height={densityMapping[density]} className="columnRow" key={index}>
             {checkboxSelection && (
-              <ColumnCell key="grid-checkbox" emptyPlaceholder={emptyPlaceholder} rowIndex={index}>
+              <ColumnCell key="grid-checkbox" emptyPlaceholder={emptyPlaceholder} rowIndex={index} align={'right'}>
                 <Checkbox
                   checked={selectedRows.includes(obj.id) || selectedRows.includes(obj._id)}
                   onChange={() => handleRowSelect(obj.id ?? obj._id)}
@@ -73,11 +73,13 @@ export const ColumnBody: React.FC = () => {
               </ColumnCell>
             )}
             {isShowSerialNumber && (
-              <ColumnCell key={index} emptyPlaceholder={emptyPlaceholder} rowIndex={index} width={20}>
+              <ColumnCell key={index} emptyPlaceholder={emptyPlaceholder} rowIndex={index} align={'right'} width={20}>
                 {(page - 1) * defaultPageSize + index + 1}
               </ColumnCell>
             )}
             {leftPinnedColumns.map((column: GridColDef, colIndex: number) => {
+              const align = column?.align || column?.type === 'number' ? 'right' : 'left';
+
               return (
                 <ColumnCell
                   key={`${column.headerName}-${index}-${colIndex}`}
@@ -88,12 +90,15 @@ export const ColumnBody: React.FC = () => {
                   column={column}
                   emptyPlaceholder={emptyPlaceholder}
                   rowIndex={index}
+                  align={align}
                 />
               );
             })}
 
             {/* <div> */}
             {columnsWithoutPinned.map((column: GridColDef, colIndex: number) => {
+              const align = column?.align ? column.align : column?.type === 'number' ? 'right' : 'left';
+
               return (
                 <ColumnCell
                   key={`${column.headerName}-${index}-${colIndex}`}
@@ -104,12 +109,15 @@ export const ColumnBody: React.FC = () => {
                   column={column}
                   emptyPlaceholder={emptyPlaceholder}
                   rowIndex={index}
+                  align={align}
                 />
               );
             })}
             {/* </div> */}
 
             {rightPinnedColumns.map((column: GridColDef, colIndex: number) => {
+              const align = column?.align || column?.type === 'number' ? 'right' : 'left';
+
               return (
                 <ColumnCell
                   key={`${column.headerName}-${index}-${colIndex}`}
@@ -120,6 +128,7 @@ export const ColumnBody: React.FC = () => {
                   column={column}
                   emptyPlaceholder={emptyPlaceholder}
                   rowIndex={index}
+                  align={align}
                 />
               );
             })}

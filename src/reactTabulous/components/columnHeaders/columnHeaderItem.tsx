@@ -1,13 +1,35 @@
 import React from 'react';
+import styled from '@emotion/styled';
+
 import { IconButton } from '../widgets';
 import ColumnHeaderMenu from './columnHeaderMenu';
 
 import classnames from '../../helpers/classnames';
 import { type onDragUpdateType, useDragHandler } from '../../hooks/useDragHandler';
 import { type GridPinnedPosition, type GridSortDirection } from '../../models';
+import { ColumnAlignment } from '../../models/columnDef/columnAlign';
+import { alignMapping } from '../../constant';
+
+interface ColumnObject {
+  field: string;
+  type: string;
+}
+
+interface StyledContainerProps {
+  $align: ColumnAlignment;
+}
+
+const StyledHeaderContainer = styled('div')<StyledContainerProps>`
+  .columnHeaderContainer {
+    flex-direction: ${props => alignMapping[props.$align]};
+    .columnHeaderTitleContainer {
+      flex-direction: ${props => alignMapping[props.$align]};
+    }
+  }
+`;
 
 type ColumnHeaderItemProps = React.HTMLAttributes<HTMLDivElement> & {
-  columnObj: any;
+  columnObj: ColumnObject;
   type: string;
   disabledMoveLeft?: boolean;
   disabledMoveRight?: boolean;
@@ -23,10 +45,12 @@ type ColumnHeaderItemProps = React.HTMLAttributes<HTMLDivElement> & {
   sortBy: GridSortDirection;
   iconButtonSize?: number;
   pinned?: GridPinnedPosition;
+  fieldWidth?: number | string;
+  align: ColumnAlignment;
   onDragUpdate: onDragUpdateType;
-  handleSort: (field: string, type: string, value?: any) => void;
-  handlePin: (field: string, value?: any) => void;
-  handleMove: (field: string, value?: any) => void;
+  handleSort: (field: string, type: string, value: GridSortDirection | null) => void;
+  handlePin: (field: string, value: GridPinnedPosition | null) => void;
+  handleMove: (field: string, direction: 'left' | 'right') => void;
   handleWidth: (field: string, value: number) => void;
   onHideColumns: (field: string) => void;
   onToggleColumnToolbar: () => void;
@@ -51,6 +75,8 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
   sortBy,
   iconButtonSize = 24,
   pinned,
+  fieldWidth,
+  align,
   handleSort,
   handlePin,
   handleMove,
@@ -64,7 +90,7 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
 
   const { onDragStart, onDragOver, onDrop, onDragEnter } = useDragHandler(onDragUpdate);
 
-  const [width, setWidth] = React.useState<number | string>('max-content');
+  const [width, setWidth] = React.useState<number | string>(fieldWidth ?? 'max-content');
 
   React.useEffect(() => {
     if (width != null && rootRef.current != null) {
@@ -134,12 +160,13 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
   const showMenu = !isAllMenuDisabled && type !== 'action' ? !disableColumnMenu : false;
 
   return (
-    <div
+    <StyledHeaderContainer
       ref={rootRef}
       role="columnheader"
       className="columnHeader"
       data-field={headerName}
       data-pinned={pinned}
+      $align={align}
       {...draggableProps}
     >
       <div className="columnHeaderContainer">
@@ -180,28 +207,26 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
           handleColumnResize(data.width);
         }}
       />
-    </div>
+    </StyledHeaderContainer>
   );
 };
 
 interface DividerProps {
   disableColumnResize: boolean;
-  // onResize: (e: React.MouseEvent<HTMLDivElement>, data: { width: number }) => void;
   onResize: (data: { width: number }) => void;
 }
 
 const Divider: React.FC<DividerProps> = ({ disableColumnResize, onResize }) => {
-  const handleMouseDown = (
-    e: any // React.MouseEvent<HTMLDivElement>
-  ) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (disableColumnResize) return;
     e.preventDefault();
     const startX = e.pageX;
 
-    const startWidth = e.target.parentNode?.offsetWidth;
+    const startWidth = (e.target as HTMLElement).parentElement?.offsetWidth;
     if (!startWidth) return;
+
     const handleMouseMove = (e: MouseEvent) => {
-      const newWidth = +startWidth + e.pageX - startX;
+      const newWidth = startWidth + e.pageX - startX;
       onResize({ width: newWidth });
     };
 
@@ -209,6 +234,7 @@ const Divider: React.FC<DividerProps> = ({ disableColumnResize, onResize }) => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
+
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };
@@ -216,7 +242,7 @@ const Divider: React.FC<DividerProps> = ({ disableColumnResize, onResize }) => {
   return (
     <div
       className={classnames('columnSeparator', { 'columnSeparator--resizable': !disableColumnResize })}
-      onMouseDown={disableColumnResize ? () => {} : handleMouseDown}
+      onMouseDown={handleMouseDown}
     ></div>
   );
 };
