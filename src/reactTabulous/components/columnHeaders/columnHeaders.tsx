@@ -42,6 +42,7 @@ export const ColumnHeaders: React.FC = () => {
       isShowSerialNumber
     }
   } = useGridRootProps();
+
   const { handleSort } = useGridSort();
   const { onToggleColumnToolbar, onHideColumns, onMoveColumn, onDragColumn } = useGridColumn();
   const { onToggleFilterToolbar } = useGridFilter();
@@ -62,12 +63,16 @@ export const ColumnHeaders: React.FC = () => {
         // <div className="pinnedColumnHeaders--left">
         <>
           {leftPinnedColumns.map((obj: any, index: number) => {
+            const align = obj?.align ? obj.align : obj?.type === 'number' ? 'right' : 'left';
+
             return (
               <ColumnHeaderItem
                 disabledMoveLeft
                 disabledMoveRight
                 columnObj={obj}
                 type={obj.type}
+                fieldWidth={obj.width}
+                align={align}
                 key={`${obj.headerName}-${index}`}
                 iconButtonSize={iconDensityMapping[density]}
                 headerName={toCamelCase(obj.headerName)}
@@ -100,6 +105,8 @@ export const ColumnHeaders: React.FC = () => {
       {/* <div> */}
 
       {columnsWithoutPinned.map((obj: any, index: number) => {
+        const align = obj?.align ? obj.align : obj?.type === 'number' ? 'right' : 'left';
+
         return (
           <ColumnHeaderItem
             disabledMoveLeft={columns.findIndex((column: GridColDef) => column.field === obj.field) === 0}
@@ -109,6 +116,8 @@ export const ColumnHeaders: React.FC = () => {
             }
             columnObj={obj}
             type={obj.type}
+            fieldWidth={obj.width}
+            align={align}
             key={`${obj.headerName}-${index}`}
             iconButtonSize={iconDensityMapping[density]}
             headerName={toCamelCase(obj.headerName)}
@@ -141,12 +150,16 @@ export const ColumnHeaders: React.FC = () => {
         // <div className="pinnedColumnHeaders--right">
         <>
           {rightPinnedColumns.map((obj: any, index: number) => {
+            const align = obj?.align ? obj.align : obj?.type === 'number' ? 'right' : 'left';
+
             return (
               <ColumnHeaderItem
                 disabledMoveLeft
                 disabledMoveRight
                 columnObj={obj}
                 type={obj.type}
+                fieldWidth={obj.width}
+                align={align}
                 key={`${obj.headerName}-${index}`}
                 iconButtonSize={iconDensityMapping[density]}
                 headerName={toCamelCase(obj.headerName)}

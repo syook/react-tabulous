@@ -1,3 +1,5 @@
+import { OptionInterface } from '../helpers/select';
+
 export interface FilterFieldProps {
   condition: string;
   column: string;
@@ -5,5 +7,5 @@ export interface FilterFieldProps {
   operator: string;
   value: any;
   field: string;
-  options?: string[];
+  options?: string[] | OptionInterface[];
 }

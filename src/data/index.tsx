@@ -1,3 +1,4 @@
+import { GridColDef } from '../reactTabulous';
 import { Button, IconButton, Select } from '../reactTabulous/components/widgets';
 
 const DATA_SET_COUNT = 1000;
@@ -321,7 +322,7 @@ export const dataSet2 = Array.from({ length: DATA_SET_COUNT }, (_, i) => {
 });
 
 export const dataSet2Columns1 = [];
-export const dataSet2Columns = [
+export const dataSet2Columns: GridColDef[] = [
   {
     field: 'id',
     headerName: 'ID',
@@ -364,7 +365,9 @@ export const dataSet2Columns = [
   },
   {
     field: 'age',
-    headerName: 'Age',
+    headerName: 'Age of the registered users',
+    width: 250,
+    align: 'left',
     type: 'number',
     isFilterable: true,
     isSortable: true,
@@ -410,8 +413,10 @@ export const dataSet2Columns = [
   },
   {
     field: 'mobile',
+    // headerName: 'Mobile of the registered users',
     headerName: 'Mobile',
     type: 'number',
+    width: 300,
     isFilterable: true,
     // isSortable: true,
     isSearchable: true
