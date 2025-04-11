@@ -92,8 +92,8 @@ export const FilterForm: React.FC = () => {
     };
 
     const type: keyof FilterOperators = (firstCol.type ?? 'string') as keyof FilterOperators;
-
     const operator = filterOperators[type][0];
+    const options = type === 'singleSelect' ? (firstCol.options ?? []) : [];
 
     return {
       condition: 'And',
@@ -101,7 +101,8 @@ export const FilterForm: React.FC = () => {
       type,
       operator,
       value: '',
-      field: firstCol.field
+      field: firstCol.field,
+      options
     };
   };
 
