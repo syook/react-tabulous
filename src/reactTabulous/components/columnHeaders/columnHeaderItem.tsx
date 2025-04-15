@@ -24,6 +24,11 @@ const StyledHeaderContainer = styled('div')<StyledContainerProps>`
     flex-direction: ${props => alignMapping[props.$align]};
     .columnHeaderTitleContainer {
       flex-direction: ${props => alignMapping[props.$align]};
+      .columnHeaderTitle {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 `;
@@ -87,6 +92,7 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
   onToggleFilterToolbar
 }) => {
   const rootRef = React.useRef<HTMLDivElement>(null);
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   const { onDragStart, onDragOver, onDrop, onDragEnter } = useDragHandler(onDragUpdate);
 
@@ -100,6 +106,18 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width]);
+
+  React.useEffect(() => {
+    const content = contentRef.current;
+    if (content) {
+      const isOverflowing = content.scrollWidth > content.clientWidth;
+      if (isOverflowing && typeof children === 'string') {
+        content.title = children;
+      } else {
+        content.removeAttribute('title');
+      }
+    }
+  }, [children, width]);
 
   const handleColumnResize = (width: number) => {
     const widthToSet = width <= 50 ? 50 : width;
@@ -171,7 +189,9 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
     >
       <div className="columnHeaderContainer">
         <div className="columnHeaderTitleContainer">
-          <div className="columnHeaderTitle">{children}</div>
+          <div ref={contentRef} className="columnHeaderTitle">
+            {children}
+          </div>
           {!disableMultipleColumnsSorting && (
             <IconButton
               className={`columnHeaderAction ${sortBy}`}
