@@ -166,7 +166,8 @@ export const useGridFilter = (): any => {
       sortFieldType,
       sortBy,
       searchText,
-      searchKeys
+      searchKeys,
+      onFilterChange
     },
     updateState
   } = useGridRootProps();
@@ -177,6 +178,9 @@ export const useGridFilter = (): any => {
 
       updatedData = filterAllData(appliedFilters, updatedData, columns);
 
+      if (onFilterChange) {
+        onFilterChange(appliedFilters);
+      }
       if (searchText) {
         const columnsWithValueGetter = getColumnsWithValueGetter(columns);
         updatedData = updatedData.filter((row: any) => {
@@ -210,7 +214,19 @@ export const useGridFilter = (): any => {
         ...pageChanges
       });
     },
-    [updateState, rootData, defaultPageSize, page, sortField, sortFieldType, sortBy, searchText, searchKeys, columns]
+    [
+      updateState,
+      rootData,
+      defaultPageSize,
+      page,
+      sortField,
+      sortFieldType,
+      sortBy,
+      searchText,
+      searchKeys,
+      columns,
+      onFilterChange
+    ]
   );
 
   const onToggleFilterToolbar = useCallback(() => {

@@ -42,9 +42,10 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
         defaultPageSize: prev.defaultPageSize
       }),
       fetchOnPageChange: props.fetchOnPageChange ?? null,
+      onFilterChange: props.onFilterChange ?? null,
       page: props.page ?? prev.page
     }));
-  }, [props.data, props.fetchOnPageChange, props.page]);
+  }, [props.data, props.fetchOnPageChange, props.page, props.onFilterChange]);
 
   useEffect(() => {
     setValues((prev: any) => ({
