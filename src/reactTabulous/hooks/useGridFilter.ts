@@ -167,6 +167,7 @@ export const useGridFilter = (): any => {
       sortBy,
       searchText,
       searchKeys,
+      filters,
       onFilterChange
     },
     updateState
@@ -233,5 +234,5 @@ export const useGridFilter = (): any => {
     updateState({ showFilterToolbar: !showFilterToolbar });
   }, [showFilterToolbar, updateState]);
 
-  return { showFilterToolbar, columns, handleFilterApply, onToggleFilterToolbar };
+  return { showFilterToolbar, columns, filters, handleFilterApply, onToggleFilterToolbar };
 };
