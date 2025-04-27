@@ -164,7 +164,7 @@ export interface DataGridPropsWithDefaultValues {
    */
   customExport: null | ((filteredAndSortedData: any, searchText: string, columns: any) => void);
   /**
-   * if the export is custom.
+   * Callback fired when filter is changed with filters as arguments.
    *
    */
   onFilterChange: null | ((filters: FilterFieldProps[]) => void);
