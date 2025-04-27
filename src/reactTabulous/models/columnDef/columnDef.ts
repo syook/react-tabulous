@@ -16,6 +16,10 @@ export interface GridBaseColDef<R extends GridValidRowModel = GridValidRowModel,
    */
   headerName: string;
   /**
+   * The hover text of the column rendered in the column header cell.
+   */
+  headerHoverText?: string;
+  /**
    * Get the values to be displayed in the table cell.
    */
   valueGetter?: (row: any, index?: number) => string | number | boolean;

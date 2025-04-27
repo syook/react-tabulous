@@ -47,6 +47,7 @@ type ColumnHeaderItemProps = React.HTMLAttributes<HTMLDivElement> & {
   disableMultipleColumnsSorting: boolean;
   fetchOnPageChange: boolean;
   headerName: string;
+  headerHoverText: string;
   sortBy: GridSortDirection;
   iconButtonSize?: number;
   pinned?: GridPinnedPosition;
@@ -77,6 +78,7 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
   disableMultipleColumnsSorting,
   fetchOnPageChange,
   headerName,
+  headerHoverText,
   sortBy,
   iconButtonSize = 24,
   pinned,
@@ -185,6 +187,7 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
       data-field={headerName}
       data-pinned={pinned}
       $align={align}
+      title={headerHoverText}
       {...draggableProps}
     >
       <div className="columnHeaderContainer">

@@ -10,8 +10,46 @@ import {
   dataSet2Columns
   // getDataSetBasedOnCountPassed,
 } from './data';
-import { ReactTabulous } from './reactTabulous';
+import { FilterFieldProps, ReactTabulous } from './reactTabulous';
 import { Button } from './reactTabulous/components/widgets';
+
+const filters: FilterFieldProps[] = [
+  {
+    condition: 'And',
+    column: 'Address',
+    type: 'string',
+    operator: 'contains',
+    value: 'Karnataka',
+    field: 'address',
+    options: []
+  },
+  {
+    condition: 'And',
+    column: 'Level',
+    type: 'singleSelect',
+    operator: 'is',
+    value: '1',
+    field: 'level',
+    options: [
+      {
+        label: 'Select',
+        value: ''
+      },
+      {
+        label: 'Beginner',
+        value: 1
+      },
+      {
+        label: 'Intermediate',
+        value: 2
+      },
+      {
+        label: 'Advanced',
+        value: 3
+      }
+    ]
+  }
+];
 
 const App: React.FC = () => {
   // const [isLoading, setIsLoading] = React.useState(false);
@@ -33,6 +71,10 @@ const App: React.FC = () => {
   // 		setIsLoading(false);
   // 	}, 2000);
   // };
+
+  const onFilterChange = (filters: FilterFieldProps[]) => {
+    console.log('Filter data', filters);
+  };
 
   const customComponent = React.useCallback((filteredAndSortedData: any, searchText: string, columns: any) => {
     return (
@@ -102,6 +144,8 @@ const App: React.FC = () => {
         // fetchOnPageChange={fetchOnPageChange}
         // rowsCount={rowsCount}
         // customExport={customExport}
+        filters={filters}
+        onFilterChange={onFilterChange}
       >
         {customComponent}
       </ReactTabulous>

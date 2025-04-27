@@ -334,6 +334,7 @@ export const dataSet2Columns: GridColDef[] = [
   {
     field: 'profile',
     headerName: 'Profile',
+    headerHoverText: 'Profile of the registered users',
     type: 'string',
     renderCell: (row: any) => {
       return (
@@ -365,7 +366,8 @@ export const dataSet2Columns: GridColDef[] = [
   },
   {
     field: 'age',
-    headerName: 'Age of the registered users',
+    headerName: 'Age',
+    headerHoverText: 'Age of the registered users',
     width: 250,
     align: 'left',
     type: 'number',
