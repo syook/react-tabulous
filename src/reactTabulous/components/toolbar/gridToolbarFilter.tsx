@@ -6,13 +6,13 @@ import { FilterForm } from '../filter';
 import { useGridFilter } from '../../hooks/useGridFilter';
 
 const StyledIndicator = styled.div({
-  width: 10,
-  height: 10,
+  width: 8,
+  height: 8,
   position: 'absolute',
-  right: 5,
-  top: 2,
+  right: 4,
+  top: 0,
   borderRadius: '50%',
-  backgroundColor: 'var(--blue-500, #007bff)'
+  backgroundColor: 'currentColor'
 });
 
 export const GridToolbarFilter: React.FC = () => {
