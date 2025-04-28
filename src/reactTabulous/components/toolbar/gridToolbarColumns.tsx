@@ -36,7 +36,7 @@ const StyledIndicator = styled.div({
   right: 4,
   top: 0,
   borderRadius: '50%',
-  backgroundColor: 'currentColor'
+  backgroundColor: 'var(--primary-400, #115bb2)'
 });
 
 export const GridToolbarColumns: React.FC = () => {
