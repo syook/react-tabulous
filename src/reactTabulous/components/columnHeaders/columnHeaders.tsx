@@ -76,7 +76,7 @@ export const ColumnHeaders: React.FC = () => {
                 key={`${obj.headerName}-${index}`}
                 iconButtonSize={iconDensityMapping[density]}
                 headerName={toCamelCase(obj.headerName)}
-                headerHoverText={obj.headerHoverText}
+                headerPopupContent={obj.headerPopupContent}
                 sortBy={sortField === obj.field ? sortBy : null}
                 pinned={obj.pinned}
                 disableColumnFilter={disableColumnFilter || !obj.isFilterable}
@@ -122,7 +122,7 @@ export const ColumnHeaders: React.FC = () => {
             key={`${obj.headerName}-${index}`}
             iconButtonSize={iconDensityMapping[density]}
             headerName={toCamelCase(obj.headerName)}
-            headerHoverText={obj.headerHoverText}
+            headerPopupContent={obj.headerPopupContent}
             sortBy={sortField === obj.field ? sortBy : null}
             pinned={obj.pinned}
             disableColumnFilter={disableColumnFilter || !obj.isFilterable}
@@ -165,7 +165,7 @@ export const ColumnHeaders: React.FC = () => {
                 key={`${obj.headerName}-${index}`}
                 iconButtonSize={iconDensityMapping[density]}
                 headerName={toCamelCase(obj.headerName)}
-                headerHoverText={obj.headerHoverText}
+                headerPopupContent={obj.headerPopupContent}
                 sortBy={sortField === obj.field ? sortBy : null}
                 pinned={obj.pinned}
                 disableColumnFilter={disableColumnFilter || !obj.isFilterable}

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { IconButton } from '../widgets';
+import { Icon, IconButton, Popup, Typography } from '../widgets';
 import ColumnHeaderMenu from './columnHeaderMenu';
 
 import classnames from '../../helpers/classnames';
@@ -29,9 +29,18 @@ const StyledHeaderContainer = styled('div')<StyledContainerProps>`
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      .columnHeaderHoverTitle {
+        margin-top: 6px;
+        margin-left: 4px;
+        cursor: pointer;
+      }
     }
   }
 `;
+
+const StyledDiv = styled.div({
+  padding: '4px'
+});
 
 type ColumnHeaderItemProps = React.HTMLAttributes<HTMLDivElement> & {
   columnObj: ColumnObject;
@@ -47,7 +56,7 @@ type ColumnHeaderItemProps = React.HTMLAttributes<HTMLDivElement> & {
   disableMultipleColumnsSorting: boolean;
   fetchOnPageChange: boolean;
   headerName: string;
-  headerHoverText: string;
+  headerPopupContent: string | HTMLElement | JSX.Element | Element | (() => JSX.Element);
   sortBy: GridSortDirection;
   iconButtonSize?: number;
   pinned?: GridPinnedPosition;
@@ -78,7 +87,7 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
   disableMultipleColumnsSorting,
   fetchOnPageChange,
   headerName,
-  headerHoverText,
+  headerPopupContent,
   sortBy,
   iconButtonSize = 24,
   pinned,
@@ -187,7 +196,6 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
       data-field={headerName}
       data-pinned={pinned}
       $align={align}
-      title={headerHoverText}
       {...draggableProps}
     >
       <div className="columnHeaderContainer">
@@ -195,6 +203,18 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
           <div ref={contentRef} className="columnHeaderTitle">
             {children}
           </div>
+          {headerPopupContent && (
+            <Popup noPadding trigger={<Icon name="info" size={14} className="columnHeaderHoverTitle" />}>
+              {typeof headerPopupContent === 'string' ? (
+                <StyledDiv>
+                  <Typography>{headerPopupContent}</Typography>
+                </StyledDiv>
+              ) : (
+                <>{headerPopupContent}</>
+              )}
+            </Popup>
+          )}
+
           {!disableMultipleColumnsSorting && (
             <IconButton
               className={`columnHeaderAction ${sortBy}`}
@@ -224,6 +244,7 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
           />
         )}
       </div>
+
       <Divider
         disableColumnResize={disableColumnResize}
         onResize={data => {
