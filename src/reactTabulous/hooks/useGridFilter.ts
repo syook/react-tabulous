@@ -43,10 +43,10 @@ export const queryCondition = (columnValue: string, operator: string, value: str
       return Boolean(columnValue) && getLowercase(columnValue) !== getLowercase(value);
     case 'is empty':
       if (isOperatorTypeDate) return !columnValue;
-      return columnValue.toString().trim().length === 0;
+      return columnValue?.toString()?.trim()?.length === 0;
     case 'is not empty':
       if (isOperatorTypeDate) return Boolean(isOperatorTypeDate);
-      return columnValue.toString().trim().length > 0;
+      return columnValue?.toString()?.trim()?.length > 0;
 
     // Numbers
     case '=':
