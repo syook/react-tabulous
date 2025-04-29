@@ -180,7 +180,13 @@ export const useGridFilter = (): any => {
       updatedData = filterAllData(appliedFilters, updatedData, columns);
 
       if (onFilterChange) {
-        onFilterChange(appliedFilters);
+        const formattedFilters = appliedFilters.map((filter: any) => ({
+          column: filter.field,
+          operator: filter.operator,
+          value: filter.value,
+          condition: filter.condition
+        }));
+        onFilterChange(formattedFilters);
       }
       if (searchText) {
         const columnsWithValueGetter = getColumnsWithValueGetter(columns);

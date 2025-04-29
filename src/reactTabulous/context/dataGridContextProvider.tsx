@@ -4,9 +4,10 @@ import { DataGridRootPropsContext } from './dataGridRootPropsContext';
 import { DATA_GRID_PROPS_DEFAULT_VALUES } from '../hooks/useGridRootProps';
 import { type DataGridPropsWithDefaultValues } from '../models/props/dataGridProps';
 
+import isEqual from '../helpers/isEqual';
 import { getColumnsAndSearchKeys } from '../helpers/getColumnsAndSearchKeys';
 import { getUpdatedFormattedData } from '../helpers/getUpdatedData';
-import isEqual from '../helpers/isEqual';
+import { getFormattedFilters } from '../helpers/getFormattedFilters';
 
 export interface DataGridContextProviderProps {
   props: any;
@@ -21,7 +22,8 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
     rootData: props.data,
     ...getColumnsAndSearchKeys(props.columns),
     filteredAndSortedData: props.data,
-    data: []
+    data: [],
+    filters: getFormattedFilters(props.filters ?? [], props.columns)
   });
 
   useEffect(() => {

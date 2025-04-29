@@ -17,37 +17,38 @@ const filters: FilterFieldProps[] = [
   {
     condition: 'And',
     column: 'Address',
-    type: 'string',
     operator: 'contains',
-    value: 'Karnataka',
-    field: 'address',
-    options: []
+    value: 'Karnataka'
   },
   {
     condition: 'And',
     column: 'Level',
-    type: 'singleSelect',
     operator: 'is',
-    value: '1',
-    field: 'level',
-    options: [
-      {
-        label: 'Select',
-        value: ''
-      },
-      {
-        label: 'Beginner',
-        value: 1
-      },
-      {
-        label: 'Intermediate',
-        value: 2
-      },
-      {
-        label: 'Advanced',
-        value: 3
-      }
-    ]
+    value: '1'
+  },
+  {
+    condition: 'And',
+    column: 'Birth Date',
+    operator: 'is',
+    value: '2025-04-01'
+  },
+  {
+    condition: 'And',
+    column: 'ID',
+    operator: '=',
+    value: '1281'
+  },
+  {
+    condition: 'And',
+    column: 'Last Journal Publish Date',
+    operator: 'is before',
+    value: '2025-04-29T10:33'
+  },
+  {
+    condition: 'And',
+    column: 'Logged In',
+    operator: 'is',
+    value: 'true'
   }
 ];
 

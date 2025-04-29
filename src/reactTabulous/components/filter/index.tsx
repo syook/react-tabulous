@@ -218,7 +218,7 @@ export const FilterForm: React.FC = () => {
                   />
 
                   <Select
-                    options={filterOperators[filter.type]}
+                    options={filterOperators[filter?.type || 'string']}
                     value={filter.operator}
                     className="operators"
                     onChange={e => {
