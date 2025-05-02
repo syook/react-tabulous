@@ -109,7 +109,9 @@ export const FilterForm: React.FC = () => {
   const [filters, setFilters] = React.useState<FilterFieldProps[]>([getFirstCol()]);
 
   React.useEffect(() => {
-    const hasFilterValues = gridFilters.some(filter => filter.value !== '');
+    const hasFilterValues = gridFilters.some(
+      filter => filter.value !== '' || ['is empty', 'is not empty'].includes(filter.operator)
+    );
     const newObj = hasFilterValues ? gridFilters : [getFirstCol()];
     setFilters(newObj);
     // eslint-disable-next-line react-hooks/exhaustive-deps
