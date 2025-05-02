@@ -4,7 +4,7 @@ export const getFormattedFilters = (filters: FilterFieldProps[], columns: GridBa
   const formattedFilters = [];
   for (let i = 0; i < filters.length; i++) {
     const column = columns.find(col => col.headerName === filters[i].column);
-    if (column && filters[i].value) {
+    if (column && (filters[i].value || ['is empty', 'is not empty'].includes(filters[i]?.operator))) {
       const field = column.field ? { field: column.field } : {};
       const filter = { ...filters[i], type: column.type ?? 'string', ...field, options: [] };
       if (column.type === 'singleSelect') {
