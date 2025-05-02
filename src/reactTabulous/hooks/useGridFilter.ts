@@ -43,10 +43,10 @@ export const queryCondition = (columnValue: string, operator: string, value: str
       return Boolean(columnValue) && getLowercase(columnValue) !== getLowercase(value);
     case 'is empty':
       if (isOperatorTypeDate) return !columnValue;
-      return columnValue.toString().trim().length === 0;
+      return columnValue?.toString()?.trim()?.length === 0;
     case 'is not empty':
       if (isOperatorTypeDate) return Boolean(isOperatorTypeDate);
-      return columnValue.toString().trim().length > 0;
+      return columnValue?.toString()?.trim()?.length > 0;
 
     // Numbers
     case '=':
@@ -166,7 +166,9 @@ export const useGridFilter = (): any => {
       sortFieldType,
       sortBy,
       searchText,
-      searchKeys
+      searchKeys,
+      filters,
+      onFilterChange
     },
     updateState
   } = useGridRootProps();
@@ -177,6 +179,9 @@ export const useGridFilter = (): any => {
 
       updatedData = filterAllData(appliedFilters, updatedData, columns);
 
+      if (onFilterChange) {
+        onFilterChange(appliedFilters);
+      }
       if (searchText) {
         const columnsWithValueGetter = getColumnsWithValueGetter(columns);
         updatedData = updatedData.filter((row: any) => {
@@ -210,12 +215,24 @@ export const useGridFilter = (): any => {
         ...pageChanges
       });
     },
-    [updateState, rootData, defaultPageSize, page, sortField, sortFieldType, sortBy, searchText, searchKeys, columns]
+    [
+      updateState,
+      rootData,
+      defaultPageSize,
+      page,
+      sortField,
+      sortFieldType,
+      sortBy,
+      searchText,
+      searchKeys,
+      columns,
+      onFilterChange
+    ]
   );
 
   const onToggleFilterToolbar = useCallback(() => {
     updateState({ showFilterToolbar: !showFilterToolbar });
   }, [showFilterToolbar, updateState]);
 
-  return { showFilterToolbar, columns, handleFilterApply, onToggleFilterToolbar };
+  return { showFilterToolbar, columns, filters, handleFilterApply, onToggleFilterToolbar };
 };

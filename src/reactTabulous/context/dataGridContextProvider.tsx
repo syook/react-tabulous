@@ -4,9 +4,10 @@ import { DataGridRootPropsContext } from './dataGridRootPropsContext';
 import { DATA_GRID_PROPS_DEFAULT_VALUES } from '../hooks/useGridRootProps';
 import { type DataGridPropsWithDefaultValues } from '../models/props/dataGridProps';
 
+import isEqual from '../helpers/isEqual';
 import { getColumnsAndSearchKeys } from '../helpers/getColumnsAndSearchKeys';
 import { getUpdatedFormattedData } from '../helpers/getUpdatedData';
-import isEqual from '../helpers/isEqual';
+import { getFormattedFilters } from '../helpers/getFormattedFilters';
 
 export interface DataGridContextProviderProps {
   props: any;
@@ -21,7 +22,8 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
     rootData: props.data,
     ...getColumnsAndSearchKeys(props.columns),
     filteredAndSortedData: props.data,
-    data: []
+    data: [],
+    filters: getFormattedFilters(props.filters ?? [], props.columns)
   });
 
   useEffect(() => {
@@ -42,9 +44,10 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
         defaultPageSize: prev.defaultPageSize
       }),
       fetchOnPageChange: props.fetchOnPageChange ?? null,
+      onFilterChange: props.onFilterChange ?? null,
       page: props.page ?? prev.page
     }));
-  }, [props.data, props.fetchOnPageChange, props.page]);
+  }, [props.data, props.fetchOnPageChange, props.page, props.onFilterChange]);
 
   useEffect(() => {
     setValues((prev: any) => ({

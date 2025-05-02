@@ -1,10 +1,22 @@
+import styled from '@emotion/styled';
+
 import { Button, Icon, Popup } from '../widgets';
 
 import { FilterForm } from '../filter';
 import { useGridFilter } from '../../hooks/useGridFilter';
 
+const StyledIndicator = styled.div({
+  width: 8,
+  height: 8,
+  position: 'absolute',
+  right: 4,
+  top: 0,
+  borderRadius: '50%',
+  backgroundColor: 'currentColor'
+});
+
 export const GridToolbarFilter: React.FC = () => {
-  const { showFilterToolbar, onToggleFilterToolbar } = useGridFilter();
+  const { filters, showFilterToolbar, onToggleFilterToolbar } = useGridFilter();
 
   const handleOnclose = () => {
     showFilterToolbar && onToggleFilterToolbar();
@@ -18,6 +30,11 @@ export const GridToolbarFilter: React.FC = () => {
       trigger={
         <Button variant="text" size="small" icon={<Icon name="filter-list" size={14} />}>
           FILTERS
+          {(filters.length > 1 ||
+            (filters.length === 1 &&
+              (!!filters[0]?.value || ['is empty', 'is not empty'].includes(filters[0]?.operator)))) && (
+            <StyledIndicator />
+          )}
         </Button>
       }
     >

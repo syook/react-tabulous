@@ -164,6 +164,11 @@ export interface DataGridPropsWithDefaultValues {
    */
   customExport: null | ((filteredAndSortedData: any, searchText: string, columns: any) => void);
   /**
+   * Callback fired when filter is changed with filters as arguments.
+   *
+   */
+  onFilterChange: null | ((filters: FilterFieldProps[]) => void);
+  /**
    * custom placeholder for the search field.
    */
   searchPlaceholder: string;

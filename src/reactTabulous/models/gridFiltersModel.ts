@@ -6,6 +6,6 @@ export interface FilterFieldProps {
   type: 'string' | 'number' | 'date' | 'dateTime' | 'boolean' | 'singleSelect';
   operator: string;
   value: any;
-  field: string;
+  field?: string;
   options?: string[] | OptionInterface[];
 }

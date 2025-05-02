@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
 
 import { Button, Icon, Input, Popup, Switch, Typography } from '../widgets';
@@ -29,6 +29,16 @@ const StyledDiv = styled.div({
   '.columnFooter': { display: 'flex', justifyContent: 'space-between', padding: 8 }
 });
 
+const StyledIndicator = styled.div({
+  width: 8,
+  height: 8,
+  position: 'absolute',
+  right: 4,
+  top: 0,
+  borderRadius: '50%',
+  backgroundColor: 'currentColor'
+});
+
 export const GridToolbarColumns: React.FC = () => {
   const { columns, showColumnToolbar, onHideColumns, onToggleColumns, onToggleColumnToolbar } = useGridColumn();
 
@@ -37,6 +47,8 @@ export const GridToolbarColumns: React.FC = () => {
   const displayColumns = columns.filter((column: GridColDef) => {
     return isStringIncludes(column.headerName, searchKey);
   });
+
+  const isColumnsHidden = useMemo(() => columns.some((col: GridColDef) => !col.isVisible), [columns]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearchKey(e.target.value);
@@ -55,6 +67,7 @@ export const GridToolbarColumns: React.FC = () => {
       trigger={
         <Button variant="text" size="small" icon={<Icon name="column" size={18} />}>
           COLUMNS
+          {isColumnsHidden && <StyledIndicator />}
         </Button>
       }
     >

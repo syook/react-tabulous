@@ -10,8 +10,49 @@ import {
   dataSet2Columns
   // getDataSetBasedOnCountPassed,
 } from './data';
-import { ReactTabulous } from './reactTabulous';
+import { FilterFieldProps, ReactTabulous } from './reactTabulous';
 import { Button } from './reactTabulous/components/widgets';
+
+// const filters: FilterFieldProps[] = [
+//   {
+//     condition: 'And',
+//     column: 'Address',
+//     operator: 'contains',
+//     value: 'Karnataka'
+//   },
+//   {
+//     condition: 'And',
+//     column: 'Level',
+//     operator: 'is',
+//     value: '1'
+//   },
+//   {
+//     condition: 'And',
+//     column: 'Birth Date',
+//     operator: 'is',
+//     value: '2025-04-01'
+//   },
+//   {
+//     condition: 'And',
+//     column: 'ID',
+//     operator: '=',
+//     value: '1281'
+//   },
+//   {
+//     condition: 'And',
+//     column: 'Last Journal Publish Date',
+//     operator: 'is before',
+//     value: '2025-04-29T10:33'
+//   },
+//   {
+//     condition: 'And',
+//     column: 'Logged In',
+//     operator: 'is',
+//     value: 'true'
+//   }
+// ];
+
+const filters: FilterFieldProps[] = [];
 
 const App: React.FC = () => {
   // const [isLoading, setIsLoading] = React.useState(false);
@@ -33,6 +74,10 @@ const App: React.FC = () => {
   // 		setIsLoading(false);
   // 	}, 2000);
   // };
+
+  const onFilterChange = (filters: FilterFieldProps[]) => {
+    console.log('Filter data', filters);
+  };
 
   const customComponent = React.useCallback((filteredAndSortedData: any, searchText: string, columns: any) => {
     return (
@@ -102,6 +147,8 @@ const App: React.FC = () => {
         // fetchOnPageChange={fetchOnPageChange}
         // rowsCount={rowsCount}
         // customExport={customExport}
+        filters={filters}
+        onFilterChange={onFilterChange}
       >
         {customComponent}
       </ReactTabulous>

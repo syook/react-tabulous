@@ -49,7 +49,8 @@ export const DATA_GRID_PROPS_DEFAULT_VALUES = {
   onBulkActionClick: () => {},
   fetchOnPageChange: null,
   rowsCount: null,
-  customExport: null
+  customExport: null,
+  onFilterChange: null
   // disableMultipleColumnsFiltering: false,
   // disableMultipleRowSelection: false,
   // disableRowSelectionOnClick: false,
