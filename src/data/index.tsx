@@ -360,9 +360,9 @@ export const dataSet2Columns: GridColDef[] = [
     field: 'name',
     headerName: 'Name',
     type: 'string',
-    headerPopupContent: (
-      <span style={{ padding: 10, color: 'red', backgroundColor: 'yellow' }}>Name of the registered users</span>
-    ),
+    // headerPopupContent: (
+    //   <span style={{ padding: 10, color: 'red', backgroundColor: 'yellow' }}>Name of the registered users</span>
+    // ),
     isFilterable: true,
     isSortable: true,
     isSearchable: true
@@ -370,7 +370,9 @@ export const dataSet2Columns: GridColDef[] = [
   {
     field: 'age',
     headerName: 'Age',
-    headerPopupContent: 'Age of the registered users',
+    headerPopupContent: () => (
+      <span style={{ padding: 10, color: 'red', backgroundColor: 'yellow' }}>Age of the registered users</span>
+    ),
     width: 250,
     align: 'left',
     type: 'number',

@@ -18,7 +18,7 @@ export interface GridBaseColDef<R extends GridValidRowModel = GridValidRowModel,
   /**
    * The hover text or component of the column rendered in the column header cell.
    */
-  headerPopupContent?: string | HTMLElement | JSX.Element | Element | (() => JSX.Element);
+  headerPopupContent?: string | (() => JSX.Element);
   /**
    * Get the values to be displayed in the table cell.
    */

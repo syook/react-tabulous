@@ -205,13 +205,15 @@ export const ColumnHeaderItem: React.FC<ColumnHeaderItemProps> = ({
           </div>
           {headerPopupContent && (
             <Popup noPadding trigger={<Icon name="info" size={14} className="columnHeaderHoverTitle" />}>
-              {typeof headerPopupContent === 'string' ? (
-                <StyledDiv>
-                  <Typography>{headerPopupContent}</Typography>
-                </StyledDiv>
-              ) : (
-                <>{headerPopupContent}</>
-              )}
+              <>
+                {typeof headerPopupContent === 'string' ? (
+                  <StyledDiv>
+                    <Typography>{headerPopupContent}</Typography>
+                  </StyledDiv>
+                ) : typeof headerPopupContent === 'function' ? (
+                  <>{headerPopupContent()}</>
+                ) : null}
+              </>
             </Popup>
           )}
 
