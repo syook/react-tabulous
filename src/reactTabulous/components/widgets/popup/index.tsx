@@ -13,7 +13,7 @@ const StyledPopup = styled.div((props: any) => ({
   backgroundColor: '#fff',
   fontFamily: 'var(--font-family, Roboto, Helvetica, Arial, sans-serif)',
   boxShadow:
-    'rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px'
+    'var(--popup-shadow-1, rgba(0, 0, 0, 0.2)) 0px 5px 5px -3px, var(--popup-shadow-2, rgba(0, 0, 0, 0.14)) 0px 8px 10px 1px, var(--popup-shadow-3, rgba(0, 0, 0, 0.12)) 0px 3px 14px 2px'
 }));
 
 type PopupProps = React.HTMLAttributes<HTMLDivElement> & {

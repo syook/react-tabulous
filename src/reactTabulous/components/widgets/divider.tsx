@@ -6,7 +6,7 @@ const StyledDivider = styled.hr(() => ({
   flexShrink: 0,
   borderWidth: 0,
   borderStyle: 'solid',
-  borderColor: 'rgba(0, 0, 0, 0.12)',
+  borderColor: 'var(--divider-border-color, rgba(0, 0, 0, 0.12))',
   borderBottomWidth: 'thin'
 }));
 

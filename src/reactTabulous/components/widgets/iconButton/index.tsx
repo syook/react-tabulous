@@ -25,7 +25,7 @@ const StyledIconButton = styled.div((props: any) => ({
     outlineColor: 'var(--primary-400, #115bb2)'
   },
   ':hover': {
-    background: 'rgba(0, 0, 0, 0.04)'
+    background: 'var(-icon-button-hover, rgba(0, 0, 0, 0.04))'
   },
   '&.disabled': {
     cursor: 'default',

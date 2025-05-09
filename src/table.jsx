@@ -65,7 +65,7 @@ const Divider = ({ onResize }) => {
         width: '5px',
         cursor: 'col-resize',
         zIndex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.1)'
+        backgroundColor: 'var(--divider-color, rgba(0, 0, 0, 0.1))'
       }}
       onMouseDown={handleMouseDown}
     ></div>
