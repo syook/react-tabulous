@@ -9,7 +9,7 @@ const GridBulkActionContainer = styled.div({
   display: 'flex',
   flexWrap: 'wrap',
   alignItems: 'center',
-  padding: '4px 4px 0',
+  padding: '4px 12px 0',
   button: {
     textTransform: 'capitalize'
   }
@@ -24,7 +24,9 @@ interface BulkActionsProps {
 export const BulkActions: FC<BulkActionsProps> = ({ selectedRows, bulkActions, onBulkActionClick }) => {
   return (
     <GridBulkActionContainer>
-      <Typography variant="subheading1">{selectedRows.length} Selected</Typography>
+      <Typography variant="h4" style={{ marginLeft: 5 }}>
+        {selectedRows.length} Selected
+      </Typography>
       {bulkActions.map((action: any) => {
         if (typeof action === 'string') {
           return (
