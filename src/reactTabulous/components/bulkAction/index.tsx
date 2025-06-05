@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import styled from '@emotion/styled';
 
-import { Button } from '../widgets';
+import { Button, Typography } from '../widgets';
 import { type GridRowId } from '../../models';
 
 const GridBulkActionContainer = styled.div({
@@ -24,6 +24,7 @@ interface BulkActionsProps {
 export const BulkActions: FC<BulkActionsProps> = ({ selectedRows, bulkActions, onBulkActionClick }) => {
   return (
     <GridBulkActionContainer>
+      <Typography variant="subheading1">{selectedRows.length} Selected</Typography>
       {bulkActions.map((action: any) => {
         if (typeof action === 'string') {
           return (
