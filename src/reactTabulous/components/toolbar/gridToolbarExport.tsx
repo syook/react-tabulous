@@ -1,4 +1,5 @@
-import { Button, Icon, Menu, MenuItem, Popup } from '../widgets';
+import { Icon, Menu, MenuItem, Popup } from '../widgets';
+import ToolbarButton from './toolbarButton';
 import { useGridExport } from '../../hooks/useGridExport';
 
 export const GridToolbarExport: React.FC = () => {
@@ -11,21 +12,21 @@ export const GridToolbarExport: React.FC = () => {
   return (
     <>
       {customExport ? (
-        <Button
+        <ToolbarButton
           variant="text"
           size="small"
           icon={<Icon name="download" size={14} />}
           onClick={() => customExport(filteredAndSortedData, searchText, columns)}
         >
-          EXPORT
-        </Button>
+          Export
+        </ToolbarButton>
       ) : (
         <Popup
           noPadding
           trigger={
-            <Button variant="text" size="small" icon={<Icon name="download" size={14} />}>
-              EXPORT
-            </Button>
+            <ToolbarButton variant="text" size="small" icon={<Icon name="download" size={14} />}>
+              Export
+            </ToolbarButton>
           }
         >
           <Menu>

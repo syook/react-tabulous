@@ -9,7 +9,7 @@ import { GridToolbarQuickFilter } from './gridToolbarQuickFilter';
 import { useGridRootProps } from '../../hooks/useGridRootProps';
 
 const GridToolbarContainer = styled.div({
-  gap: 4,
+  gap: 6,
   display: 'flex',
   flexWrap: 'wrap',
   alignItems: 'center',
