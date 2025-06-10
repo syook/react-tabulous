@@ -8,8 +8,8 @@ const ToolbarButton = styled(Button)({
   },
   '&.buttonV2.button-text': {
     borderRadius: 4,
-    border: '1px solid var(--color-border, #E5E7EB)',
-    color: 'var(--color-text, #1F2937)'
+    border: '1px solid var(--border-color, #E5E7EB)',
+    color: 'var(--text-color, #1F2937)'
   }
 });
 
