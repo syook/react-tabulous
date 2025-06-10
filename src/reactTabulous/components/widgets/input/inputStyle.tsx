@@ -36,7 +36,7 @@ export const InputStyle = styled.div`
     border: 1px solid var(--border-color, #e5e7eb);
     background: var(--widget-bg, #ffffff);
     border-radius: 4px;
-    color: #000;
+    color: var(--text-color, #000000);
     font-family: var(--font-family);
     box-sizing: border-box;
     height: 32px;
