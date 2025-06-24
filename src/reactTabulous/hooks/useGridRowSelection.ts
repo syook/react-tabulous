@@ -12,13 +12,15 @@ export const useGridRowSelection = (): any => {
   const [checkedState, setCheckedState] = useState<boolean | 'indeterminate'>(false);
 
   useEffect(() => {
-    if (selectedRows.length === 0) {
+    if (selectedRows.length === 0 || filteredAndSortedData.length === 0) {
       setCheckedState(false);
+      updateState({ selectedRows: [] });
     } else if (selectedRows.length === filteredAndSortedData.length) {
       setCheckedState(true);
     } else {
       setCheckedState('indeterminate');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredAndSortedData.length, selectedRows.length]);
 
   // update row selection
