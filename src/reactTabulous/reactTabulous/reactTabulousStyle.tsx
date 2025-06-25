@@ -20,7 +20,7 @@ export const DataGridStyle = styled.div({
     flex: '1 1 0%',
     boxSizing: 'border-box',
     position: 'relative',
-    border: '1px solid #E5E5E5',
+    border: '1px solid var(--grey-300, #e5e5e5)',
     borderRadius: '4px',
     fontFamily: 'var(--font-family, Roboto, Helvetica, Arial, sans-serif)',
     fontWeight: '400',
@@ -53,7 +53,7 @@ export const DataGridStyle = styled.div({
       justifyContent: 'space-between',
       alignItems: 'center',
       minHeight: '40px',
-      borderTop: '1px solid rgb(81, 81, 81)'
+      borderTop: '1px solid var(--grey-500, rgb(81, 81, 81))'
     },
     '.columnHeaders': {
       position: 'sticky',
@@ -130,15 +130,15 @@ export const DataGridStyle = styled.div({
           bottom: 0,
           width: '2px',
           maxHeight: '18px',
-          backgroundColor: 'rgba(0, 0, 0, 0.1)'
+          backgroundColor: 'var(--black-10, rgba(0, 0, 0, 0.1))'
         },
         '.columnSeparator--resizable': {
           cursor: 'col-resize',
           '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)'
+            backgroundColor: 'var(--black-50, rgba(0, 0, 0, 0.5))'
           },
           '&:active': {
-            backgroundColor: 'rgba(0, 0, 0, 0.9)'
+            backgroundColor: 'var(--black-90, rgba(0, 0, 0, 0.9))'
           }
         },
         '& .columnHeaderAction': {

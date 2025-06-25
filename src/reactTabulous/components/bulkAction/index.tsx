@@ -1,15 +1,16 @@
 import { type FC } from 'react';
 import styled from '@emotion/styled';
 
-import { Button } from '../widgets';
+import { Button, Typography } from '../widgets';
 import { type GridRowId } from '../../models';
+import { useGridRowSelection } from '../../hooks/useGridRowSelection';
 
 const GridBulkActionContainer = styled.div({
-  gap: 4,
   display: 'flex',
   flexWrap: 'wrap',
   alignItems: 'center',
-  padding: '4px 4px 0',
+  gap: 8,
+  padding: '16px 12px 14px',
   button: {
     textTransform: 'capitalize'
   }
@@ -18,21 +19,25 @@ const GridBulkActionContainer = styled.div({
 interface BulkActionsProps {
   selectedRows: GridRowId[];
   bulkActions: any;
-  onBulkActionClick: (action: any, selectedRows: GridRowId[]) => void;
+  onBulkActionClick: (action: any, selectedRows: GridRowId[], resetSelectedRows: () => void) => void;
 }
 
 export const BulkActions: FC<BulkActionsProps> = ({ selectedRows, bulkActions, onBulkActionClick }) => {
+  const { resetSelectedRows } = useGridRowSelection();
   return (
     <GridBulkActionContainer>
+      <Typography variant="h4" style={{ marginLeft: 5 }}>
+        {selectedRows.length} Selected
+      </Typography>
       {bulkActions.map((action: any) => {
         if (typeof action === 'string') {
           return (
             <Button
               size="small"
               key={action}
-              variant="text"
+              variant="contained"
               onClick={e => {
-                onBulkActionClick(action, selectedRows);
+                onBulkActionClick(action, selectedRows, resetSelectedRows);
               }}
             >
               {action}

@@ -1,4 +1,5 @@
-import { Button, Icon, Menu, MenuItem, Popup } from '../widgets';
+import { Icon, Menu, MenuItem, Popup } from '../widgets';
+import ToolbarButton from './toolbarButton';
 import { useGridDensity } from '../../hooks/useGridDensity';
 
 export const GridToolbarDensity: React.FC = () => {
@@ -7,9 +8,9 @@ export const GridToolbarDensity: React.FC = () => {
     <Popup
       noPadding
       trigger={
-        <Button variant="text" size="small" icon={<Icon name="density" size={18} />}>
-          DENSITY
-        </Button>
+        <ToolbarButton variant="text" size="small" icon={<Icon name="density" size={20} />}>
+          Density
+        </ToolbarButton>
       }
     >
       <Menu>

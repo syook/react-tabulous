@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 
 import { Button, Icon, Input, Popup, Switch, Typography } from '../widgets';
 
+import ToolbarButton from './toolbarButton';
+
 import { useGridColumn } from '../../hooks/useGridColumn';
 import { type GridColDef } from '../../models/columnDef/columnDef';
 import { isStringIncludes } from '../../helpers/select';
@@ -65,10 +67,10 @@ export const GridToolbarColumns: React.FC = () => {
       noPadding
       onClose={handleOnclose}
       trigger={
-        <Button variant="text" size="small" icon={<Icon name="column" size={18} />}>
-          COLUMNS
+        <ToolbarButton variant="text" size="small" icon={<Icon name="column" size={18} />}>
+          Columns
           {isColumnsHidden && <StyledIndicator />}
-        </Button>
+        </ToolbarButton>
       }
     >
       <StyledDiv>

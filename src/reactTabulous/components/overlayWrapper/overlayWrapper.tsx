@@ -11,7 +11,7 @@ const OverlayWrapperInner = styled.div<StyledProps>(props => {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,.02)',
+    backgroundColor: 'var(--overlay-wrapper-background-color, rgb(255, 255, 255))',
     '.overlayWrapperLoader': {
       width: 40,
       height: 40,

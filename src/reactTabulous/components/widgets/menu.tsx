@@ -31,13 +31,13 @@ const StyledMenuItem = styled.li({
     }
   },
   '&:hover': {
-    backgroundColor: '#f5f5f5'
+    backgroundColor: 'var(--menu-hover-bg, #f5f5f5)'
   },
   '&:active': {
-    backgroundColor: '#e0e0e0'
+    backgroundColor: 'var(--menu-active-bg, #e0e0e0)'
   },
   '&[data-selected=true]': {
-    backgroundColor: '#f5f5f5'
+    backgroundColor: 'var(--menu-hover-bg, #f5f5f5)'
   },
   '&:first-of-type': {
     borderTopLeftRadius: 4,

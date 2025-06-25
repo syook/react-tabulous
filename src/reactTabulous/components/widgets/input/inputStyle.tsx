@@ -33,10 +33,10 @@ export const InputStyle = styled.div`
     font-size: 14px;
     line-height: 16px;
     font-weight: 400;
-    border: 1px solid var(--grey-400, #b1b1b1);
-    background: #ffffff;
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: var(--widget-bg, #ffffff);
     border-radius: 4px;
-    color: #000;
+    color: var(--text-color, #000000);
     font-family: var(--font-family);
     box-sizing: border-box;
     height: 32px;

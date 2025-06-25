@@ -141,8 +141,8 @@ const App: React.FC = () => {
         // ]}
         defaultPageSize={50}
         bulkActions={['delete', 'edit']}
-        onBulkActionClick={(action, selectedRows) => {
-          console.log(action, selectedRows);
+        onBulkActionClick={(action, selectedRows, resetSelectedRows) => {
+          console.log(action, selectedRows, resetSelectedRows);
         }}
         // fetchOnPageChange={fetchOnPageChange}
         // rowsCount={rowsCount}
