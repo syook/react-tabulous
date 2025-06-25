@@ -128,8 +128,9 @@ export interface DataGridPropsWithDefaultValues {
    * Callback fired when a bulk action is clicked.
    * @param {string} action The action clicked.
    * @param {GridRowId[]} selectedRows The selected rows.
+   * @param {() => void} resetSelectedRows Function to reset the selected rows.
    */
-  onBulkActionClick: (action: string, selectedRows: GridRowId[]) => void;
+  onBulkActionClick: (action: string, selectedRows: GridRowId[], resetSelectedRows: () => void) => void;
   /**
    * The text to be displayed when the grid is empty.
    * @default 'No rows'

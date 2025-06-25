@@ -58,5 +58,10 @@ export const useGridRowSelection = (): any => {
     }
   }, [filteredAndSortedData, selectedRows.length, updateState]);
 
-  return { checkedState, selectedRows, handleRowSelect, handleBulkRowSelection };
+  const resetSelectedRows = useCallback(() => {
+    updateState({ selectedRows: [] });
+    setCheckedState(false);
+  }, [updateState]);
+
+  return { checkedState, selectedRows, handleRowSelect, handleBulkRowSelection, resetSelectedRows };
 };
