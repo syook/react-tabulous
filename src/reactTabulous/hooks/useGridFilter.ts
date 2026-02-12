@@ -5,7 +5,13 @@ import { getColumnsWithValueGetter, searchObj } from './useGridSearch';
 import { type GridColDef } from '../models';
 import { getLowercase, isStringIncludes } from '../helpers/select';
 
-export const queryCondition = (columnValue: string, operator: string, value: string, type: string): boolean => {
+export const queryCondition = (
+  columnValue: string,
+  operator: string,
+  value: string,
+  type: string,
+  value2?: string
+): boolean => {
   const isOperatorTypeDate: boolean = type === 'date' || operator === 'dateTime';
 
   switch (operator) {
@@ -87,6 +93,20 @@ export const queryCondition = (columnValue: string, operator: string, value: str
       return searchDate - columnDateValue >= 0;
     }
 
+    // For conditional formatting (and future filter support)
+    case 'is between':
+      if (type === 'number') {
+        return +columnValue >= +value && +columnValue <= +(value2 || value);
+      }
+      // For dates/strings, simple range check
+      return columnValue >= value && columnValue <= (value2 || value);
+    case 'is not between':
+      if (type === 'number') {
+        return +columnValue < +value || +columnValue > +(value2 || value);
+      }
+      // For dates/strings, simple range check
+      return columnValue < value || columnValue > (value2 || value);
+
     default:
       return false;
   }
@@ -106,10 +126,11 @@ export const filterData = (
   operator: string,
   value: string,
   type: string,
-  columnDef: GridColDef
+  columnDef: GridColDef,
+  value2?: string
 ): any => {
   return data.filter((d: any) => {
-    return queryCondition(getQueryValue(d, column, columnDef), operator, value, type);
+    return queryCondition(getQueryValue(d, column, columnDef), operator, value, type, value2);
   });
 };
 
@@ -125,26 +146,26 @@ export const filterAllData = (filters: any, data: any, columns: GridColDef[]): a
     filters.some((filter: any) => (isValueRequire(filter.operator) ? filter.value !== '' : true))
   ) {
     filters.forEach((filter: any) => {
-      const { field, operator, type, value } = filter;
+      const { field, operator, type, value, value2 } = filter;
       const columnDef = columns.find((column: any) => column.field === field) as GridColDef;
-      updatedData = filterData(updatedData, field, operator, value, type, columnDef);
+      updatedData = filterData(updatedData, field, operator, value, type, columnDef, value2);
     });
   } else if (filters.some((filter: any) => (isValueRequire(filter.operator) ? filter.value !== '' : true))) {
     if (filters[1].condition === 'And') {
       filters.forEach((filter: any) => {
         if (isValueRequire(filter.operator) ? filter.value !== '' : true) {
-          const { field, operator, type, value } = filter;
+          const { field, operator, type, value, value2 } = filter;
           const columnDef = columns.find((column: any) => column.field === field) as GridColDef;
-          updatedData = filterData(updatedData, field, operator, value, type, columnDef);
+          updatedData = filterData(updatedData, field, operator, value, type, columnDef, value2);
         }
       });
     } else if (filters[1].condition === 'Or') {
       let orPredicateFilteredData: any = [];
       filters.forEach((filter: any) => {
         if (isValueRequire(filter.operator) ? filter.value !== '' : true) {
-          const { field, operator, type, value } = filter;
+          const { field, operator, type, value, value2 } = filter;
           const columnDef = columns.find((column: any) => column.field === field) as GridColDef;
-          const currentFilterData = filterData(updatedData, field, operator, value, type, columnDef);
+          const currentFilterData = filterData(updatedData, field, operator, value, type, columnDef, value2);
           orPredicateFilteredData = [...new Set([...orPredicateFilteredData, ...currentFilterData])];
         }
       });

@@ -50,7 +50,9 @@ export const DATA_GRID_PROPS_DEFAULT_VALUES = {
   fetchOnPageChange: null,
   rowsCount: null,
   customExport: null,
-  onFilterChange: null
+  onFilterChange: null,
+  conditionalFormatting: [],
+  onConditionalFormattingChange: null
   // disableMultipleColumnsFiltering: false,
   // disableMultipleRowSelection: false,
   // disableRowSelectionOnClick: false,

@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { type GridPinnedPosition } from '../../models';
 import { ColumnAlignment } from '../../models/columnDef/columnAlign';
+import { useGridRootProps } from '../../hooks/useGridRootProps';
+import { getConditionalCellStyle } from '../../helpers/getConditionalCellStyle';
 
 type ColumnCellProps = React.HTMLAttributes<HTMLDivElement> & {
   width?: number | string;
@@ -8,8 +10,8 @@ type ColumnCellProps = React.HTMLAttributes<HTMLDivElement> & {
   row?: any;
   column?: any;
   emptyPlaceholder: string;
-  rowIndex: number;
-  align: ColumnAlignment;
+  rowIndex?: number;
+  align?: ColumnAlignment;
 };
 
 const getCellData = (children: any, row: any, column: any, emptyPlaceholder: string, rowIndex: number) => {
@@ -41,10 +43,20 @@ const ColumnCell: React.FC<ColumnCellProps> = ({
   row,
   column,
   emptyPlaceholder,
-  rowIndex,
-  align
+  rowIndex = 0,
+  align = 'left'
 }) => {
-  const style = width != null ? { width, minWidth: width, maxWidth: width } : {};
+  // Get rules and columns from context for conditional formatting (independent of filters).
+  const {
+    rootState: { conditionalFormatting = [] }
+  } = useGridRootProps();
+
+  const conditionalStyle = getConditionalCellStyle(row, column, rowIndex, conditionalFormatting);
+
+  const style = {
+    ...(width != null ? { width, minWidth: width, maxWidth: width } : {}),
+    ...conditionalStyle
+  };
 
   const data = getCellData(children, row, column, emptyPlaceholder, rowIndex);
   const extraProps = typeof data === 'string' ? { title: data } : {};

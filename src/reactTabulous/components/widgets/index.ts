@@ -1,6 +1,7 @@
 export * from './button';
 export * from './checkbox';
 export * from './divider';
+export * from './dotIndicator';
 export * from './icon';
 export * from './iconButton';
 export * from './loader';

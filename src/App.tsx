@@ -10,7 +10,7 @@ import {
   dataSet2Columns
   // getDataSetBasedOnCountPassed,
 } from './data';
-import { FilterFieldProps, ReactTabulous } from './reactTabulous';
+import { FilterFieldProps, ReactTabulous, type GridConditionalFormattingRule } from './reactTabulous';
 import { Button } from './reactTabulous/components/widgets';
 
 // const filters: FilterFieldProps[] = [
@@ -54,6 +54,27 @@ import { Button } from './reactTabulous/components/widgets';
 
 const filters: FilterFieldProps[] = [];
 
+// Sample conditional formatting rules (applied independently; demo age >50 red, level advanced bold)
+// (Relies on field for column targeting; no columns array)
+const conditionalFormattingRules: GridConditionalFormattingRule[] = [
+  {
+    id: 'rule-1',
+    field: 'age',
+    operator: '>',
+    value: 50,
+    style: { backgroundColor: '#ffcccc', textColor: '#990000' },
+    priority: 1
+  },
+  {
+    id: 'rule-2',
+    field: 'level',
+    operator: '=',
+    value: 3,
+    style: { textColor: 'blue' },
+    priority: 2
+  }
+];
+
 const App: React.FC = () => {
   // const [isLoading, setIsLoading] = React.useState(false);
   // const [newData, setNewData] = React.useState(getDataSetBasedOnCountPassed(25));
@@ -77,6 +98,10 @@ const App: React.FC = () => {
 
   const onFilterChange = (filters: FilterFieldProps[]) => {
     console.log('Filter data', filters);
+  };
+
+  const onConditionalFormattingChange = (rules: GridConditionalFormattingRule[]) => {
+    console.log('Conditional formatting rules updated', rules);
   };
 
   const customComponent = React.useCallback((filteredAndSortedData: any, searchText: string, columns: any) => {
@@ -149,6 +174,8 @@ const App: React.FC = () => {
         // customExport={customExport}
         filters={filters}
         onFilterChange={onFilterChange}
+        conditionalFormatting={conditionalFormattingRules}
+        onConditionalFormattingChange={onConditionalFormattingChange}
       >
         {customComponent}
       </ReactTabulous>

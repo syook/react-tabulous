@@ -23,7 +23,8 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
     ...getColumnsAndSearchKeys(props.columns),
     filteredAndSortedData: props.data,
     data: [],
-    filters: getFormattedFilters(props.filters ?? [], props.columns)
+    filters: getFormattedFilters(props.filters ?? [], props.columns),
+    conditionalFormatting: props.conditionalFormatting ?? []
   });
 
   useEffect(() => {
@@ -45,9 +46,18 @@ export const DataGridContextProvider: React.FC<DataGridContextProviderProps> = (
       }),
       fetchOnPageChange: props.fetchOnPageChange ?? null,
       onFilterChange: props.onFilterChange ?? null,
+      conditionalFormatting: props.conditionalFormatting ?? prev.conditionalFormatting,
+      onConditionalFormattingChange: props.onConditionalFormattingChange ?? null,
       page: props.page ?? prev.page
     }));
-  }, [props.data, props.fetchOnPageChange, props.page, props.onFilterChange]);
+  }, [
+    props.data,
+    props.fetchOnPageChange,
+    props.page,
+    props.onFilterChange,
+    props.conditionalFormatting,
+    props.onConditionalFormattingChange
+  ]);
 
   useEffect(() => {
     setValues((prev: any) => ({

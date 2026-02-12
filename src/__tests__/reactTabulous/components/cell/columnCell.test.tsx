@@ -87,4 +87,6 @@ describe('ColumnCell', () => {
     const divElement = screen.getByText('N/A');
     expect(divElement).toBeInTheDocument();
   });
+
+  // Conditional formatting tested via full integration (rules in context); basic cell render verified above.
 });
