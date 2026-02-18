@@ -5,3 +5,4 @@ export * from './gridFiltersModel';
 export * from './gridRows';
 export * from './gridSortModel';
 export * from './logger';
+export * from './gridConditionalFormatting';

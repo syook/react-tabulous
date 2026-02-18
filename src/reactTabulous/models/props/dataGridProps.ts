@@ -5,6 +5,7 @@ import { type GridSortDirection } from '../gridSortModel';
 import { type Logger } from '../logger';
 import { type GridRowId, type GridValidRowModel } from '../gridRows';
 import { type FilterFieldProps } from '../gridFiltersModel';
+import { type GridConditionalFormattingRule } from '../gridConditionalFormatting';
 
 export interface DataGridPropsWithDefaultValues {
   data: any;
@@ -163,12 +164,25 @@ export interface DataGridPropsWithDefaultValues {
    * if the export is custom.
    *
    */
-  customExport: null | ((filteredAndSortedData: any, searchText: string, columns: any) => void);
+  customExport:
+    | null
+    | ((filteredAndSortedData: any, searchText: string, columns: any, conditionalFormatting?: any) => void);
   /**
    * Callback fired when filter is changed with filters as arguments.
    *
    */
   onFilterChange: null | ((filters: FilterFieldProps[]) => void);
+  /**
+   * Conditional formatting rules to apply to cells/rows.
+   * Rules evaluated independently (after filters/sorts).
+   * Multiple rules; later rules override on conflicts based on order/priority.
+   * @default []
+   */
+  conditionalFormatting: GridConditionalFormattingRule[];
+  /**
+   * Callback fired when conditional formatting rules change.
+   */
+  onConditionalFormattingChange: null | ((rules: GridConditionalFormattingRule[]) => void);
   /**
    * custom placeholder for the search field.
    */

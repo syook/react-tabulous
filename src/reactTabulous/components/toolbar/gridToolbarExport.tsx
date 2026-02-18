@@ -3,7 +3,8 @@ import ToolbarButton from './toolbarButton';
 import { useGridExport } from '../../hooks/useGridExport';
 
 export const GridToolbarExport: React.FC = () => {
-  const { handleExport, filteredAndSortedData, columns, searchText, customExport } = useGridExport();
+  const { handleExport, filteredAndSortedData, columns, searchText, customExport, conditionalFormatting } =
+    useGridExport();
 
   const handleDataExport = (type: string) => {
     handleExport(type);
@@ -16,7 +17,7 @@ export const GridToolbarExport: React.FC = () => {
           variant="text"
           size="small"
           icon={<Icon name="download" size={14} />}
-          onClick={() => customExport(filteredAndSortedData, searchText, columns)}
+          onClick={() => customExport(filteredAndSortedData, searchText, columns, conditionalFormatting)}
         >
           Export
         </ToolbarButton>

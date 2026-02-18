@@ -6,6 +6,7 @@ import { GridToolbarDensity } from './gridToolbarDensity';
 import { GridToolbarExport } from './gridToolbarExport';
 import { GridToolbarFilter } from './gridToolbarFilter';
 import { GridToolbarQuickFilter } from './gridToolbarQuickFilter';
+import { GridToolbarConditionalFormatting } from './gridToolbarConditionalFormatting';
 import { useGridRootProps } from '../../hooks/useGridRootProps';
 
 const GridToolbarContainer = styled.div({
@@ -41,6 +42,7 @@ export const GridToolbar: React.FC = () => {
     <GridToolbarContainer>
       {!disableColumnSelector && <GridToolbarColumns />}
       {!disableColumnFilter && !fetchOnPageChange && <GridToolbarFilter />}
+      <GridToolbarConditionalFormatting />
       {!disableDensitySelector && <GridToolbarDensity />}
       {!fetchOnPageChange && !disableColumnExport && <GridToolbarExport />}
       <StyledSpaceDiv />

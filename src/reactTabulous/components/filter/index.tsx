@@ -11,7 +11,7 @@ import { type FilterFieldProps } from '../../models/gridFiltersModel';
 import { type GridColDef } from '../../models';
 
 export const filterPredicates = ['And', 'Or'];
-interface FilterOperators {
+export interface FilterOperators {
   string: string[];
   number: string[];
   date: string[];
@@ -23,9 +23,31 @@ interface FilterOperators {
 
 export const filterOperators: FilterOperators = {
   string: ['contains', 'does not contains', 'is', 'is not', 'is empty', 'is not empty'],
-  number: ['=', '≠', '<', '>', '≤', '≥', 'is empty', 'is not empty'],
-  date: ['is', 'is not', 'is after', 'is on or after', 'is before', 'is on or before', 'is empty', 'is not empty'],
-  dateTime: ['is', 'is not', 'is after', 'is on or after', 'is before', 'is on or before', 'is empty', 'is not empty'],
+  number: ['=', '≠', '<', '>', '≤', '≥', 'is between', 'is not between', 'is empty', 'is not empty'],
+  date: [
+    'is',
+    'is not',
+    'is after',
+    'is on or after',
+    'is before',
+    'is on or before',
+    'is between',
+    'is not between',
+    'is empty',
+    'is not empty'
+  ],
+  dateTime: [
+    'is',
+    'is not',
+    'is after',
+    'is on or after',
+    'is before',
+    'is on or before',
+    'is between',
+    'is not between',
+    'is empty',
+    'is not empty'
+  ],
   boolean: ['is'],
   singleSelect: ['is', 'is not', 'is empty', 'is not empty']
   // singleSelect: ['is', 'is not', 'is any of', 'is none of', 'is empty', 'is not empty']
@@ -143,6 +165,7 @@ export const FilterForm: React.FC = () => {
       const type = col.type ?? 'string';
       newFilters[index].type = type;
       newFilters[index].value = '';
+      newFilters[index].value2 = undefined;
       newFilters[index].field = col.field;
       newFilters[index].operator = filterOperators[type as keyof FilterOperators][0];
       newFilters[index].options = [];
@@ -157,14 +180,22 @@ export const FilterForm: React.FC = () => {
     } else if (key === 'operator') {
       if (value === 'is empty' || value === 'is not empty') {
         newFilters[index].value = '';
+        newFilters[index].value2 = undefined;
+      } else if (value === 'is between' || value === 'is not between') {
+        newFilters[index].value2 = newFilters[index].value2 || '';
+      } else {
+        newFilters[index].value2 = undefined;
       }
+    } else if (key === 'value2') {
+      newFilters[index].value2 = value;
     }
     setFilters(newFilters);
   };
 
   const handleOnAddFilter = (): void => {
     const newObj = getFirstCol();
-    setFilters(p => p.concat({ ...newObj, condition: 'And' }));
+    const condition = filters.length === 0 ? '' : filters[filters.length - 1].condition || 'And';
+    setFilters(p => p.concat({ ...newObj, condition }));
   };
 
   const handleClearFilter = () => {
@@ -188,6 +219,7 @@ export const FilterForm: React.FC = () => {
         <>
           <div className="filterBody scrollStyle">
             {filters.map((filter: FilterFieldProps, index) => {
+              console.log('🚀 ~ FilterForm ~ filter:', filter);
               return (
                 <div key={index} className="filterFieldRow">
                   <IconButton
@@ -228,18 +260,48 @@ export const FilterForm: React.FC = () => {
                     }}
                   />
 
-                  <InputCategories
-                    type={filter.type}
-                    disabled={['is empty', 'is not empty'].includes(filter.operator)}
-                    rowIndex={index}
-                    query={filter.operator}
-                    options={filter.options}
-                    value={filter.value}
-                    className="inputCategories"
-                    onChange={(value: any) => {
-                      handleOnchange('value', value, index);
-                    }}
-                  />
+                  {filter.operator === 'is between' || filter.operator === 'is not between' ? (
+                    <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                      <InputCategories
+                        type={filter.type}
+                        disabled={false}
+                        rowIndex={index}
+                        query={filter.operator}
+                        options={filter.options}
+                        value={filter.value}
+                        className="inputCategories"
+                        onChange={(value: any) => {
+                          handleOnchange('value', value, index);
+                        }}
+                      />
+                      <span>and</span>
+                      <InputCategories
+                        type={filter.type}
+                        disabled={false}
+                        rowIndex={index}
+                        query={filter.operator}
+                        options={filter.options}
+                        value={filter.value2 || ''}
+                        className="inputCategories"
+                        onChange={(value2: any) => {
+                          handleOnchange('value2', value2, index);
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <InputCategories
+                      type={filter.type}
+                      disabled={['is empty', 'is not empty'].includes(filter.operator)}
+                      rowIndex={index}
+                      query={filter.operator}
+                      options={filter.options}
+                      value={filter.value}
+                      className="inputCategories"
+                      onChange={(value: any) => {
+                        handleOnchange('value', value, index);
+                      }}
+                    />
+                  )}
                 </div>
               );
             })}
