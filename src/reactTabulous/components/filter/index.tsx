@@ -194,7 +194,8 @@ export const FilterForm: React.FC = () => {
 
   const handleOnAddFilter = (): void => {
     const newObj = getFirstCol();
-    setFilters(p => p.concat({ ...newObj, condition: 'And' }));
+    const condition = filters.length === 0 ? '' : filters[filters.length - 1].condition || 'And';
+    setFilters(p => p.concat({ ...newObj, condition }));
   };
 
   const handleClearFilter = () => {
@@ -218,6 +219,7 @@ export const FilterForm: React.FC = () => {
         <>
           <div className="filterBody scrollStyle">
             {filters.map((filter: FilterFieldProps, index) => {
+              console.log('🚀 ~ FilterForm ~ filter:', filter);
               return (
                 <div key={index} className="filterFieldRow">
                   <IconButton
