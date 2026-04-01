@@ -79,6 +79,7 @@ export const GridToolbarConditionalFormatting: React.FC = () => {
       if (
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         column.isVisible &&
+        column.isFormattable &&
         column.type !== 'action'
       ) {
         acc.push({ label: column.headerName, value: column.headerName });

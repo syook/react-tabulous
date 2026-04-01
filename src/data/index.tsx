@@ -329,7 +329,8 @@ export const dataSet2Columns: GridColDef[] = [
     type: 'number',
     isFilterable: true,
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'profile',
@@ -365,7 +366,8 @@ export const dataSet2Columns: GridColDef[] = [
     // ),
     isFilterable: true,
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'age',
@@ -378,7 +380,8 @@ export const dataSet2Columns: GridColDef[] = [
     type: 'number',
     isFilterable: true,
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'level',
@@ -400,7 +403,8 @@ export const dataSet2Columns: GridColDef[] = [
     ],
     isFilterable: true,
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'birthDate',
@@ -408,7 +412,8 @@ export const dataSet2Columns: GridColDef[] = [
     type: 'date',
     isFilterable: true,
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'email',
@@ -416,7 +421,8 @@ export const dataSet2Columns: GridColDef[] = [
     type: 'string',
     isFilterable: true,
     // isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'mobile',
@@ -426,7 +432,8 @@ export const dataSet2Columns: GridColDef[] = [
     width: 300,
     isFilterable: true,
     // isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'lastLogin',
@@ -434,7 +441,8 @@ export const dataSet2Columns: GridColDef[] = [
     type: 'dateTime',
     isFilterable: true,
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'isLoggedIn',
@@ -442,7 +450,8 @@ export const dataSet2Columns: GridColDef[] = [
     type: 'boolean',
     isFilterable: true,
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'workPlace',
@@ -467,7 +476,8 @@ export const dataSet2Columns: GridColDef[] = [
     headerName: 'Address',
     isFilterable: true,
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'lastJournalPublish',
@@ -475,7 +485,8 @@ export const dataSet2Columns: GridColDef[] = [
     type: 'dateTime',
     isFilterable: true,
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   // {
   // 	field: 'bio',
@@ -488,7 +499,8 @@ export const dataSet2Columns: GridColDef[] = [
     type: 'string',
     isFilterable: true,
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
+    isFormattable: true
   },
   {
     field: 'action',

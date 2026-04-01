@@ -112,7 +112,6 @@ export const FilterForm: React.FC = () => {
       headerName: '',
       field: ''
     };
-    console.log('🚀 ~ getFirstCol ~ columns:', columns);
 
     const type: keyof FilterOperators = (firstCol.type ?? 'string') as keyof FilterOperators;
     const operator = filterOperators[type][0];

@@ -59,9 +59,13 @@ export interface GridBaseColDef<R extends GridValidRowModel = GridValidRowModel,
    */
   isSortable?: boolean;
   /**
-   * The column to sortable or not.
+   * The column to filterable or not.
    */
   isFilterable?: boolean;
+  /**
+   * The column to formatable cells or not.
+   */
+  isFormattable?: boolean;
   /**
    * The column to show options in filter.
    */

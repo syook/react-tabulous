@@ -14,22 +14,23 @@ Or you can clone.
 
 ### a. Available Column Options
 
-| Option         | Description                                                                | Type     | isRequired | Default |
-| -------------- | -------------------------------------------------------------------------- | -------- | ---------- | ------- |
-| `headerName`   | Name of Column to be shown in header                                       | String   | true       |         |
-| `type`         | type of the field                                                          | String   | true       |         |
-| `field`        | path to get value to be displayed                                          | String   | true       |         |
-| `valueGetter`  | should return string that to be displayed in the cell or used in filter    | Function | false      | null    |
-| `renderCell`   | returns the element to be shown in the column cell                         | Function | false      | null    |
-| `description`  | shows the description of the column on hover in tooltip                    | String   | false      | ''      |
-| `isSortable`   | is column sortable                                                         | Boolean  | false      | false   |
-| `isSearchable` | is column searchable                                                       | Boolean  | false      | false   |
-| `isFilterable` | is column filterable                                                       | Boolean  | false      | false   |
-| `isVisible`    | should hide/show the column or not                                         | Boolean  | false      | true    |
-| `options`      | array of options if the type is MultiSelect or Single Select               | Array    | false      | []      |
-| `isResizable`  | is column resizable                                                        | Boolean  | false      | false   |
-| `pinned`       | String='left' or 'right', where to fix the column                          | String   | false      | null    |
-| `width`        | to fix column width to a value in pixels if width exceeding this threshold | Number   | false      | null    |
+| Option          | Description                                                                | Type     | isRequired | Default |
+| --------------- | -------------------------------------------------------------------------- | -------- | ---------- | ------- |
+| `headerName`    | Name of Column to be shown in header                                       | String   | true       |         |
+| `type`          | type of the field                                                          | String   | true       |         |
+| `field`         | path to get value to be displayed                                          | String   | true       |         |
+| `valueGetter`   | should return string that to be displayed in the cell or used in filter    | Function | false      | null    |
+| `renderCell`    | returns the element to be shown in the column cell                         | Function | false      | null    |
+| `description`   | shows the description of the column on hover in tooltip                    | String   | false      | ''      |
+| `isSortable`    | is column sortable                                                         | Boolean  | false      | false   |
+| `isSearchable`  | is column searchable                                                       | Boolean  | false      | false   |
+| `isFilterable`  | is column filterable                                                       | Boolean  | false      | false   |
+| `isFormattable` | is column formattable                                                      | Boolean  | false      | false   |
+| `isVisible`     | should hide/show the column or not                                         | Boolean  | false      | true    |
+| `options`       | array of options if the type is MultiSelect or Single Select               | Array    | false      | []      |
+| `isResizable`   | is column resizable                                                        | Boolean  | false      | false   |
+| `pinned`        | String='left' or 'right', where to fix the column                          | String   | false      | null    |
+| `width`         | to fix column width to a value in pixels if width exceeding this threshold | Number   | false      | null    |
 
 ### c. Available Types
 
@@ -129,7 +130,8 @@ const columns = [
 		type: 'number',
 		isFilterable: true,
 		isSortable: true,
-		isSearchable: true
+		isSearchable: true,
+    isFormattable: true
 	},
   {
 		field: 'name',
@@ -137,7 +139,8 @@ const columns = [
 		type: 'string',
 		isFilterable: true,
 		isSortable: true,
-		isSearchable: true
+		isSearchable: true,
+    isFormattable: true
 	},
   {
 		field: 'age',
@@ -145,7 +148,8 @@ const columns = [
 		type: 'number',
 		isFilterable: true,
 		isSortable: true,
-		isSearchable: true
+		isSearchable: true,
+    isFormattable: true
 	},
 	{
 		field: 'level',
@@ -159,7 +163,8 @@ const columns = [
 		},
 		isFilterable: true,
 		isSortable: true,
-		isSearchable: true
+		isSearchable: true,
+    isFormattable: true
 	},
 	{
 		field: 'birthDate',
@@ -167,7 +172,8 @@ const columns = [
 		type: 'date',
 		isFilterable: true,
 		isSortable: true,
-		isSearchable: true
+		isSearchable: true,
+    isFormattable: true
 	},
   {
 		field: 'email',
@@ -175,7 +181,8 @@ const columns = [
 		type: 'string',
 		isFilterable: true,
 		// isSortable: true,
-		isSearchable: true
+		isSearchable: true,
+    isFormattable: true
 	},
   {
 		field: 'workPlace',
