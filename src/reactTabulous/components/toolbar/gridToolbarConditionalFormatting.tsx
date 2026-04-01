@@ -73,6 +73,22 @@ export const GridToolbarConditionalFormatting: React.FC = () => {
 
   // Local state for rules (edits don't apply live; only on Apply button)
   const [localRules, setLocalRules] = React.useState<GridConditionalFormattingRule[]>([]);
+
+  const columnOptions = columns.reduce(
+    (acc, column) => {
+      if (
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        column.isVisible &&
+        column.type !== 'action'
+      ) {
+        acc.push({ label: column.headerName, value: column.headerName });
+      }
+      return acc;
+      // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
+    },
+    [] as Array<{ label: string; value: string }>
+  );
+
   // Get type-aware operators for a field (reuses filter logic)
   const getOperatorsForField = React.useCallback(
     (field: string): string[] => {
@@ -186,7 +202,7 @@ export const GridToolbarConditionalFormatting: React.FC = () => {
                   const newField = e.target.value;
                   setLocalRules(prev => updateRuleField(prev, rule.id, newField, columns));
                 }}
-                options={columns.map((col: any) => ({ label: col.headerName || col.field, value: col.field }))}
+                options={columnOptions}
                 className="column"
               />
               {/* Operator (dynamic based on column type, like filters) */}

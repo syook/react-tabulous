@@ -112,6 +112,7 @@ export const FilterForm: React.FC = () => {
       headerName: '',
       field: ''
     };
+    console.log('🚀 ~ getFirstCol ~ columns:', columns);
 
     const type: keyof FilterOperators = (firstCol.type ?? 'string') as keyof FilterOperators;
     const operator = filterOperators[type][0];
@@ -219,7 +220,6 @@ export const FilterForm: React.FC = () => {
         <>
           <div className="filterBody scrollStyle">
             {filters.map((filter: FilterFieldProps, index) => {
-              console.log('🚀 ~ FilterForm ~ filter:', filter);
               return (
                 <div key={index} className="filterFieldRow">
                   <IconButton
