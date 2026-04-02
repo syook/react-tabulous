@@ -457,6 +457,7 @@ export const dataSet2Columns: GridColDef[] = [
     field: 'workPlace',
     headerName: 'Work Place',
     type: 'string',
+    valueGetter: (row: any) => row?.workPlace,
     renderCell: (row: any) => {
       const workPlace = row?.workPlace ?? '';
 
@@ -465,7 +466,8 @@ export const dataSet2Columns: GridColDef[] = [
       };
 
       return <Select value={workPlace} options={workPlaceOptions} onChange={onChange} />;
-    }
+    },
+    isFormattable: true
   },
   {
     field: 'address',

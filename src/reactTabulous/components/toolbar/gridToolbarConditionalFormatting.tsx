@@ -82,7 +82,7 @@ export const GridToolbarConditionalFormatting: React.FC = () => {
         column.isFormattable &&
         column.type !== 'action'
       ) {
-        acc.push({ label: column.headerName, value: column.headerName });
+        acc.push({ label: column.headerName, value: column.field });
       }
       return acc;
       // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
