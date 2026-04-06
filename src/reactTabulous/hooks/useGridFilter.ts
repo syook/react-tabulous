@@ -25,11 +25,9 @@ export const queryCondition = (
         const columnDateValue: any = new Date(columnValue);
         return Boolean(columnValue) && searchDate.toDateString() === columnDateValue.toDateString();
       }
-      // TODO: singleselect filter to be added
-      // if (attributeType === 'singleselect') {
-      // 	if ((searchValue || [])[0] === 0) return isEqual(attrValue, searchValue[0]);
-      // 	return (searchValue || [])[0] && isEqual(attrValue, searchValue[0]);
-      // }
+      if (type === 'singleSelect') {
+        return Boolean(columnValue) && Boolean(value) && columnValue === value;
+      }
       if (type === 'boolean') {
         return (columnValue || false) === (value || false);
       }
@@ -41,11 +39,9 @@ export const queryCondition = (
         const columnDateValue: any = new Date(columnValue);
         return Boolean(columnValue) && searchDate.toDateString() !== columnDateValue.toDateString();
       }
-      // TODO: singleselect filter to be added
-      // 	if (attributeType === 'singleselect') {
-      // 		if ((searchValue || [])[0] === 0) return isEqual(attrValue, searchValue[0]);
-      // 		return (searchValue || [])[0] && !isEqual(attrValue, searchValue[0]);
-      // 	}
+      if (type === 'singleSelect') {
+        return Boolean(columnValue) && Boolean(value) && columnValue !== value;
+      }
       return Boolean(columnValue) && getLowercase(columnValue) !== getLowercase(value);
     case 'is empty':
       if (isOperatorTypeDate) return !columnValue;
