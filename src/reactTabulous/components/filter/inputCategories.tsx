@@ -95,6 +95,7 @@ export const InputCategories: React.FC<InputCategoriesProps> = ({
           disabled={disabled}
           type={type === 'dateTime' ? 'datetime-local' : 'date'}
           value={value || ''}
+          max={type === 'dateTime' ? '9999-12-31T23:59' : '9999-12-31'}
           className={className}
           onChange={(e: { target: { value: any } }) => onChange(e.target.value, rowIndex)}
         />
