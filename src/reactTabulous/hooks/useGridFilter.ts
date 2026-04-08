@@ -74,12 +74,18 @@ export const queryCondition = (
     case 'is on or after': {
       const searchDate: any = new Date(value);
       const columnDateValue: any = new Date(columnValue);
+      if (isOperatorTypeDate) {
+        return searchDate.toDateString() === columnDateValue.toDateString() || searchDate - columnDateValue < 0;
+      }
       return searchDate - columnDateValue <= 0;
     }
 
     case 'is before': {
       const searchDate: any = new Date(value);
       const columnDateValue: any = new Date(columnValue);
+      if (isOperatorTypeDate) {
+        return searchDate.toDateString() !== columnDateValue.toDateString() && searchDate - columnDateValue > 0;
+      }
       return searchDate - columnDateValue > 0;
     }
 
