@@ -12,7 +12,7 @@ export const queryCondition = (
   type: string,
   value2?: string
 ): boolean => {
-  const isOperatorTypeDate: boolean = type === 'date' || operator === 'dateTime';
+  const isOperatorTypeDate: boolean = type === 'date' || type === 'dateTime';
 
   switch (operator) {
     case 'contains':
@@ -94,13 +94,23 @@ export const queryCondition = (
       if (type === 'number') {
         return +columnValue >= +value && +columnValue <= +(value2 || value);
       }
-      // For dates/strings, simple range check
+      if (isOperatorTypeDate) {
+        const colDate = new Date(columnValue).getTime();
+        const fromDate = new Date(value).getTime();
+        const toDate = new Date(value2 || value).getTime();
+        return Boolean(columnValue) && colDate >= fromDate && colDate <= toDate;
+      }
       return columnValue >= value && columnValue <= (value2 || value);
     case 'is not between':
       if (type === 'number') {
         return +columnValue < +value || +columnValue > +(value2 || value);
       }
-      // For dates/strings, simple range check
+      if (isOperatorTypeDate) {
+        const colDate = new Date(columnValue).getTime();
+        const fromDate = new Date(value).getTime();
+        const toDate = new Date(value2 || value).getTime();
+        return Boolean(columnValue) && (colDate < fromDate || colDate > toDate);
+      }
       return columnValue < value || columnValue > (value2 || value);
 
     default:
