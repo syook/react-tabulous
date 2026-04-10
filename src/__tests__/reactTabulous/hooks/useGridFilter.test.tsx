@@ -3,6 +3,8 @@ import { filterAllData, queryCondition, useGridFilter } from '../../../reactTabu
 import { DataGridContextProvider } from '../../../reactTabulous/context';
 import { dataSet1Columns, getDataSetBasedOnCountPassed } from '../../../data';
 
+const filterColumns = [{ field: 'name' }, { field: 'age' }, { field: 'address' }] as any;
+
 describe('filterAllData', () => {
   test('should return data if filter is empty', () => {
     const filters = [
@@ -20,7 +22,7 @@ describe('filterAllData', () => {
         address: 'test address'
       }
     ];
-    expect(filterAllData(filters, data)).toEqual(data);
+    expect(filterAllData(filters, data, filterColumns)).toEqual(data);
   });
 
   test('should return filtered data if filter is not empty', () => {
@@ -44,7 +46,7 @@ describe('filterAllData', () => {
         address: 'test address1'
       }
     ];
-    expect(filterAllData(filters, data)).toEqual([
+    expect(filterAllData(filters, data, filterColumns)).toEqual([
       {
         name: 'test',
         age: 20,
@@ -94,7 +96,7 @@ describe('filterAllData', () => {
         address: 'test address1'
       }
     ];
-    expect(filterAllData(filters, data)).toEqual([
+    expect(filterAllData(filters, data, filterColumns)).toEqual([
       {
         name: 'test',
         age: 20,
@@ -139,7 +141,7 @@ describe('filterAllData', () => {
         address: 'test address1'
       }
     ];
-    expect(filterAllData(filters, data)).toEqual([
+    expect(filterAllData(filters, data, filterColumns)).toEqual([
       {
         name: 'test',
         age: 20,
@@ -321,6 +323,32 @@ describe('queryCondition', () => {
     const value = '2024-01-10';
     const type = 'date';
     expect(queryCondition(columnValue, operator, value, type)).toEqual(false);
+  });
+
+  test.each([
+    ['is', '2024-01-10T10:30', '2024-01-10T10:30', true],
+    ['is', '2024-01-10T10:30:45', '2024-01-10T10:30', true],
+    ['is', '2024-01-10T10:30', '2024-01-10T10:45', false],
+    ['is not', '2024-01-10T10:30', '2024-01-10T10:45', true],
+    ['is not', '2024-01-10T10:30:45', '2024-01-10T10:30', false],
+    ['is after', '2024-01-10T10:30', '2024-01-10T10:15', true],
+    ['is on or after', '2024-01-10T10:30', '2024-01-10T10:30', true],
+    ['is before', '2024-01-10T10:30', '2024-01-10T10:45', true],
+    ['is on or before', '2024-01-10T10:30', '2024-01-10T10:30', true]
+  ])('should handle "%s" operator for dateTime values', (operator, columnValue, value, expected) => {
+    expect(queryCondition(columnValue, operator, value, 'dateTime')).toEqual(expected);
+  });
+
+  test('should handle "is between" operator for dateTime values', () => {
+    expect(
+      queryCondition('2024-01-10T10:30', 'is between', '2024-01-10T10:15', 'dateTime', '2024-01-10T10:45')
+    ).toEqual(true);
+  });
+
+  test('should handle "is not between" operator for dateTime values', () => {
+    expect(
+      queryCondition('2024-01-10T10:30', 'is not between', '2024-01-10T10:31', 'dateTime', '2024-01-10T10:45')
+    ).toEqual(true);
   });
 });
 

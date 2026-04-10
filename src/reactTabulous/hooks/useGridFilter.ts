@@ -5,6 +5,86 @@ import { getColumnsWithValueGetter, searchObj } from './useGridSearch';
 import { type GridColDef } from '../models';
 import { getLowercase, isStringIncludes } from '../helpers/select';
 
+const getValidDate = (dateValue: string): Date | null => {
+  const parsedDate = new Date(dateValue);
+  return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
+};
+
+const getDateOnlyTime = (dateValue: Date): number => {
+  return new Date(dateValue.getFullYear(), dateValue.getMonth(), dateValue.getDate()).getTime();
+};
+
+const getDateTimeToMinuteTime = (dateValue: Date): number => {
+  return new Date(
+    dateValue.getFullYear(),
+    dateValue.getMonth(),
+    dateValue.getDate(),
+    dateValue.getHours(),
+    dateValue.getMinutes(),
+    0,
+    0
+  ).getTime();
+};
+
+type TemporalComparators = {
+  hasValidTemporalValues: boolean;
+  hasValidRangeValues: boolean;
+  isSameDate: boolean;
+  isSameDateTimeToMinute: boolean;
+  compareTime: number;
+  compareDate: number;
+  compareFrom: number;
+  compareTo: number;
+  compareDateFrom: number;
+  compareDateTo: number;
+};
+
+const getTemporalComparators = (columnValue: string, value: string, value2?: string): TemporalComparators => {
+  const searchDate = getValidDate(value);
+  const columnDateValue = getValidDate(columnValue);
+  const fromDate = getValidDate(value);
+  const toDate = getValidDate(value2 || value);
+
+  const hasValidTemporalValues = Boolean(searchDate && columnDateValue);
+  const hasValidRangeValues = Boolean(columnDateValue && fromDate && toDate);
+
+  const isSameDate = hasValidTemporalValues
+    ? getDateOnlyTime(searchDate as Date) === getDateOnlyTime(columnDateValue as Date)
+    : false;
+  const isSameDateTimeToMinute = hasValidTemporalValues
+    ? getDateTimeToMinuteTime(searchDate as Date) === getDateTimeToMinuteTime(columnDateValue as Date)
+    : false;
+
+  const compareTime = hasValidTemporalValues
+    ? (columnDateValue as Date).getTime() - (searchDate as Date).getTime()
+    : NaN;
+  const compareDate = hasValidTemporalValues
+    ? getDateOnlyTime(columnDateValue as Date) - getDateOnlyTime(searchDate as Date)
+    : NaN;
+
+  const compareFrom = hasValidRangeValues ? (columnDateValue as Date).getTime() - (fromDate as Date).getTime() : NaN;
+  const compareTo = hasValidRangeValues ? (columnDateValue as Date).getTime() - (toDate as Date).getTime() : NaN;
+  const compareDateFrom = hasValidRangeValues
+    ? getDateOnlyTime(columnDateValue as Date) - getDateOnlyTime(fromDate as Date)
+    : NaN;
+  const compareDateTo = hasValidRangeValues
+    ? getDateOnlyTime(columnDateValue as Date) - getDateOnlyTime(toDate as Date)
+    : NaN;
+
+  return {
+    hasValidTemporalValues,
+    hasValidRangeValues,
+    isSameDate,
+    isSameDateTimeToMinute,
+    compareTime,
+    compareDate,
+    compareFrom,
+    compareTo,
+    compareDateFrom,
+    compareDateTo
+  };
+};
+
 export const queryCondition = (
   columnValue: string,
   operator: string,
@@ -12,7 +92,16 @@ export const queryCondition = (
   type: string,
   value2?: string
 ): boolean => {
-  const isOperatorTypeDate: boolean = type === 'date' || type === 'dateTime';
+  const isDateType = type === 'date';
+  const isDateTimeType = type === 'dateTime';
+  const isTemporalType = isDateType || isDateTimeType;
+  let temporalComparators: TemporalComparators | null = null;
+  const getTemporalData = (): TemporalComparators => {
+    if (!temporalComparators) {
+      temporalComparators = getTemporalComparators(columnValue, value, value2);
+    }
+    return temporalComparators;
+  };
 
   switch (operator) {
     case 'contains':
@@ -20,10 +109,13 @@ export const queryCondition = (
     case 'does not contains':
       return Boolean(columnValue) && !isStringIncludes(columnValue, value);
     case 'is':
-      if (isOperatorTypeDate) {
-        const searchDate: any = new Date(value);
-        const columnDateValue: any = new Date(columnValue);
-        return Boolean(columnValue) && searchDate.toDateString() === columnDateValue.toDateString();
+      if (isDateType) {
+        const { isSameDate } = getTemporalData();
+        return Boolean(columnValue) && isSameDate;
+      }
+      if (isDateTimeType) {
+        const { hasValidTemporalValues, isSameDateTimeToMinute } = getTemporalData();
+        return Boolean(columnValue) && hasValidTemporalValues && isSameDateTimeToMinute;
       }
       if (type === 'singleSelect') {
         return Boolean(columnValue) && Boolean(value) && columnValue === value;
@@ -34,20 +126,23 @@ export const queryCondition = (
 
       return Boolean(columnValue) && getLowercase(columnValue) === getLowercase(value);
     case 'is not':
-      if (isOperatorTypeDate) {
-        const searchDate: any = new Date(value);
-        const columnDateValue: any = new Date(columnValue);
-        return Boolean(columnValue) && searchDate.toDateString() !== columnDateValue.toDateString();
+      if (isDateType) {
+        const { hasValidTemporalValues, isSameDate } = getTemporalData();
+        return Boolean(columnValue) && hasValidTemporalValues && !isSameDate;
+      }
+      if (isDateTimeType) {
+        const { hasValidTemporalValues, isSameDateTimeToMinute } = getTemporalData();
+        return Boolean(columnValue) && hasValidTemporalValues && !isSameDateTimeToMinute;
       }
       if (type === 'singleSelect') {
         return Boolean(columnValue) && Boolean(value) && columnValue !== value;
       }
       return Boolean(columnValue) && getLowercase(columnValue) !== getLowercase(value);
     case 'is empty':
-      if (isOperatorTypeDate) return !columnValue;
+      if (isTemporalType) return !columnValue;
       return columnValue?.toString()?.trim()?.length === 0;
     case 'is not empty':
-      if (isOperatorTypeDate) return Boolean(isOperatorTypeDate);
+      if (isTemporalType) return Boolean(columnValue);
       return columnValue?.toString()?.trim()?.length > 0;
 
     // Numbers
@@ -65,57 +160,75 @@ export const queryCondition = (
       return +columnValue >= +value;
 
     // Dates
-    case 'is after': {
-      const searchDate: any = new Date(value);
-      const columnDateValue: any = new Date(columnValue);
-      return searchDate - columnDateValue < 0;
-    }
-
-    case 'is on or after': {
-      const searchDate: any = new Date(value);
-      const columnDateValue: any = new Date(columnValue);
-      if (isOperatorTypeDate) {
-        return searchDate.toDateString() === columnDateValue.toDateString() || searchDate - columnDateValue < 0;
+    case 'is after':
+      if (isDateType) {
+        const { hasValidTemporalValues, compareDate } = getTemporalData();
+        return hasValidTemporalValues && compareDate > 0;
       }
-      return searchDate - columnDateValue <= 0;
-    }
-
-    case 'is before': {
-      const searchDate: any = new Date(value);
-      const columnDateValue: any = new Date(columnValue);
-      if (isOperatorTypeDate) {
-        return searchDate.toDateString() !== columnDateValue.toDateString() && searchDate - columnDateValue > 0;
+      if (isDateTimeType) {
+        const { hasValidTemporalValues, compareTime } = getTemporalData();
+        return hasValidTemporalValues && compareTime > 0;
       }
-      return searchDate - columnDateValue > 0;
-    }
+      return false;
 
-    case 'is on or before': {
-      const searchDate: any = new Date(value);
-      const columnDateValue: any = new Date(columnValue);
-      return searchDate - columnDateValue >= 0;
-    }
+    case 'is on or after':
+      if (isDateType) {
+        const { hasValidTemporalValues, compareDate } = getTemporalData();
+        return hasValidTemporalValues && compareDate >= 0;
+      }
+      if (isDateTimeType) {
+        const { hasValidTemporalValues, compareTime } = getTemporalData();
+        return hasValidTemporalValues && compareTime >= 0;
+      }
+      return false;
+
+    case 'is before':
+      if (isDateType) {
+        const { hasValidTemporalValues, compareDate } = getTemporalData();
+        return hasValidTemporalValues && compareDate < 0;
+      }
+      if (isDateTimeType) {
+        const { hasValidTemporalValues, compareTime } = getTemporalData();
+        return hasValidTemporalValues && compareTime < 0;
+      }
+      return false;
+
+    case 'is on or before':
+      if (isDateType) {
+        const { hasValidTemporalValues, compareDate } = getTemporalData();
+        return hasValidTemporalValues && compareDate <= 0;
+      }
+      if (isDateTimeType) {
+        const { hasValidTemporalValues, compareTime } = getTemporalData();
+        return hasValidTemporalValues && compareTime <= 0;
+      }
+      return false;
 
     // For conditional formatting (and future filter support)
     case 'is between':
       if (type === 'number') {
         return +columnValue >= +value && +columnValue <= +(value2 || value);
       }
-      if (isOperatorTypeDate) {
-        const colDate = new Date(columnValue).getTime();
-        const fromDate = new Date(value).getTime();
-        const toDate = new Date(value2 || value).getTime();
-        return Boolean(columnValue) && colDate >= fromDate && colDate <= toDate;
+      if (isDateType) {
+        const { hasValidRangeValues, compareDateFrom, compareDateTo } = getTemporalData();
+        return Boolean(columnValue) && hasValidRangeValues && compareDateFrom >= 0 && compareDateTo <= 0;
+      }
+      if (isDateTimeType) {
+        const { hasValidRangeValues, compareFrom, compareTo } = getTemporalData();
+        return Boolean(columnValue) && hasValidRangeValues && compareFrom >= 0 && compareTo <= 0;
       }
       return columnValue >= value && columnValue <= (value2 || value);
     case 'is not between':
       if (type === 'number') {
         return +columnValue < +value || +columnValue > +(value2 || value);
       }
-      if (isOperatorTypeDate) {
-        const colDate = new Date(columnValue).getTime();
-        const fromDate = new Date(value).getTime();
-        const toDate = new Date(value2 || value).getTime();
-        return Boolean(columnValue) && (colDate < fromDate || colDate > toDate);
+      if (isDateType) {
+        const { hasValidRangeValues, compareDateFrom, compareDateTo } = getTemporalData();
+        return Boolean(columnValue) && hasValidRangeValues && (compareDateFrom < 0 || compareDateTo > 0);
+      }
+      if (isDateTimeType) {
+        const { hasValidRangeValues, compareFrom, compareTo } = getTemporalData();
+        return Boolean(columnValue) && hasValidRangeValues && (compareFrom < 0 || compareTo > 0);
       }
       return columnValue < value || columnValue > (value2 || value);
 
